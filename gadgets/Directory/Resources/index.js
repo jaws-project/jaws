@@ -18,7 +18,7 @@ function Jaws_Gadget_Directory() { return {
     },
 
     playMedia: function(fid, elPreview) {
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'PlayMedia',
             {id: fid},
             function(response, status) {
@@ -48,7 +48,7 @@ function Jaws_Gadget_Directory() { return {
      */
     deleteFile: function(id) {
         if (confirm(this.gadget.defines.confirmDelete)) {
-            this.gadget.ajax.callAsync(
+            this.gadget.ajax.call(
                 'DeleteFile',
                 {fileId: id}
             );
@@ -76,7 +76,7 @@ function Jaws_Gadget_Directory() { return {
             scrollTop: $("#fileUIArea").offset().top
         }, 1000);
 
-        var fileInfo = this.gadget.ajax.callAsync('GetFile', {id: id}, false, {'async': false});
+        var fileInfo = this.gadget.ajax.call('GetFile', {id: id}, false, {'async': false});
         $('#file_form #title').val(fileInfo['title']);
         $('#description').val(fileInfo['description']);
         $('#file_form #tags').val(fileInfo['tags']);
@@ -95,7 +95,7 @@ function Jaws_Gadget_Directory() { return {
             }
         ];
 
-        DirectoryAjax.callAsync(
+        DirectoryAjax.call(
             'GetDirectory', {type: Jaws.gadgets.Directory.defines.type},
             function(response, status) {
                 var dataSource = {};

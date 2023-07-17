@@ -83,7 +83,7 @@ function updateFiles(parent)
     if (parent === undefined) {
         parent = Jaws.gadgets.Directory.defines.currentDir;
     }
-    DirectoryAjax.callAsync('GetFiles', {'curr_action':currentAction, 'parent':parent}, displayFiles);
+    DirectoryAjax.call('GetFiles', {'curr_action':currentAction, 'parent':parent}, displayFiles);
 
     updatePath();
     $('#dir_searchbar').hide();
@@ -242,7 +242,7 @@ function openMedia(id, type)
         action = 'GetDownloadURL';
         params = {'id':id};
     }
-    DirectoryAjax.callAsync(action, params, function(response) {
+    DirectoryAjax.call(action, params, function(response) {
         if (currentAction == 'Directory') {
             $('#form').html(response);
             return;
@@ -271,7 +271,7 @@ function downloadFile(id)
     }
     var file = fileById[id];
     if (!file) {
-        file = fileById[id] = DirectoryAjax.callAsync('GetFile', {'id':id}, false, {'async': false});
+        file = fileById[id] = DirectoryAjax.call('GetFile', {'id':id}, false, {'async': false});
     }
     if (file.is_dir) {
         return;
@@ -279,7 +279,7 @@ function downloadFile(id)
     if (file.dl_url) {
         window.location.assign(file.dl_url);
     } else {
-        DirectoryAjax.callAsync('GetDownloadURL', {'id':id}, function(resposne) {
+        DirectoryAjax.call('GetDownloadURL', {'id':id}, function(resposne) {
             fileById[id].dl_url = resposne;
             window.location.assign(resposne);
         });
@@ -292,7 +292,7 @@ function downloadFile(id)
 function updatePath()
 {
     var path = $('#dir_path').html('');
-    DirectoryAjax.callAsync(
+    DirectoryAjax.call(
         'GetPath',
         {'curr_action':currentAction, 'id':Jaws.gadgets.Directory.defines.currentDir},
         function(pathArr) {
@@ -350,13 +350,13 @@ function props()
     if (data.is_dir) {
         form = cachedForms.viewDir;
         if (!form) {
-            form = DirectoryAjax.callAsync('DirectoryForm', {}, false, {'async': false});
+            form = DirectoryAjax.call('DirectoryForm', {}, false, {'async': false});
         }
         cachedForms.viewDir = form;
     } else {
         form = cachedForms.viewFile;
         if (!form) {
-            form = DirectoryAjax.callAsync('FileForm', {}, false, {'async': false});
+            form = DirectoryAjax.call('FileForm', {}, false, {'async': false});
         }
         cachedForms.viewFile = form;
     }
@@ -383,7 +383,7 @@ function del()
 {
     if (idSet.length === 0) return;
     if (confirm(Jaws.gadgets.Directory.defines.confirmDelete)) {
-        DirectoryAjax.callAsync('Delete', {'id_set':idSet.join(',')});
+        DirectoryAjax.call('Delete', {'id_set':idSet.join(',')});
     }
 }
 
@@ -392,7 +392,7 @@ function del()
  */
 function move() {
     if (idSet.length === 0) return;
-    var tree = DirectoryAjax.callAsync('GetTree', {'id_set':idSet.join(',')}, false, {'async': false}),
+    var tree = DirectoryAjax.call('GetTree', {'id_set':idSet.join(',')}, false, {'async': false}),
         form = $('#form');
     form.html(tree);
     form.find('a').on('click', function () {
@@ -408,7 +408,7 @@ function submitMove() {
     var tree = $('#dir_tree'),
         selected = tree.find('a.selected')[0],
         target = $(selected).attr('id').substring(5, $(selected).attr('id').length);
-    DirectoryAjax.callAsync('Move', {'id_set':idSet.join(','), 'target':target});
+    DirectoryAjax.call('Move', {'id_set':idSet.join(','), 'target':target});
 }
 
 /**
@@ -430,7 +430,7 @@ function newDirectory()
 {
     cancel();
     if (!cachedForms.editDir) {
-        cachedForms.editDir = DirectoryAjax.callAsync('DirectoryForm', {mode:'edit'}, false, {'async': false});
+        cachedForms.editDir = DirectoryAjax.call('DirectoryForm', {mode:'edit'}, false, {'async': false});
     }
     $('#form').html(cachedForms.editDir);
     $('#frm_dir').find('input[name=title]').focus();
@@ -443,7 +443,7 @@ function newDirectory()
 function editDirectory(id)
 {
     if (!cachedForms.editDir) {
-        cachedForms.editDir = DirectoryAjax.callAsync('DirectoryForm', {mode:'edit'}, false, {'async': false});
+        cachedForms.editDir = DirectoryAjax.call('DirectoryForm', {mode:'edit'}, false, {'async': false});
     }
     $('#form').html(cachedForms.editDir);
     var data = fileById[id],
@@ -462,7 +462,7 @@ function newFile()
 {
     cancel();
     if (!cachedForms.editFile) {
-        cachedForms.editFile = DirectoryAjax.callAsync('FileForm', {mode:'edit'}, false, {'async': false});
+        cachedForms.editFile = DirectoryAjax.call('FileForm', {mode:'edit'}, false, {'async': false});
     }
     $('#form').html(cachedForms.editFile);
     $('#tr_file').hide();
@@ -479,7 +479,7 @@ function newFile()
 function editFile(id)
 {
     if (!cachedForms.editFile) {
-        cachedForms.editFile = DirectoryAjax.callAsync('FileForm', {mode:'edit'}, false, {'async': false});
+        cachedForms.editFile = DirectoryAjax.call('FileForm', {mode:'edit'}, false, {'async': false});
     }
     $('#form').html(cachedForms.editFile);
     var form = $('#frm_file')[0],
@@ -620,7 +620,7 @@ function submitDirectory()
     var action = (idSet.length === 0)? 'CreateDirectory' : 'UpdateDirectory',
         data = $.unserialize($('#frm_dir').serialize());
     data.description = $('#description').val();
-    DirectoryAjax.callAsync(action, data);
+    DirectoryAjax.call(action, data);
 }
 
 /**
@@ -632,7 +632,7 @@ function submitFile()
     data.description = $('#description').val();
     data.thumbnail = uploadedThumbnail;
 
-    DirectoryAjax.callAsync('SaveFile', data);
+    DirectoryAjax.call('SaveFile', data);
 }
 
 /**
@@ -650,7 +650,7 @@ function performSearch()
 {
     var query = $.unserialize($('#frm_search').serialize());
     query.id = Jaws.gadgets.Directory.defines.currentDir;
-    DirectoryAjax.callAsync('Search', query);
+    DirectoryAjax.call('Search', query);
 }
 
 /**
