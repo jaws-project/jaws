@@ -219,7 +219,7 @@ function Jaws_Gadget_Policy() { return {
         }
 
         if ($('#id').val() == 0) {
-            this.gadget.ajax.callAsync(
+            this.gadget.ajax.call(
                 'AddIPRange', [
                     $('#from_ipaddress').val(),
                     $('#to_ipaddress').val(),
@@ -229,7 +229,7 @@ function Jaws_Gadget_Policy() { return {
                 ]
             );
         } else {
-            this.gadget.ajax.callAsync(
+            this.gadget.ajax.call(
                 'EditIPRange', [
                     $('#id').val(),
                     $('#from_ipaddress').val(),
@@ -250,7 +250,7 @@ function Jaws_Gadget_Policy() { return {
     {
         this.currentAction = 'IPBlocking';
         this.selectDataGridRow($(element).parent().parent()[0]);
-        var ipRange = this.gadget.ajax.callAsync('GetIPRange', id, false, {'async': false});
+        var ipRange = this.gadget.ajax.call('GetIPRange', id, false, {'async': false});
 
         $('#id').val(ipRange['id']);
         $('#from_ipaddress').val(ipRange['from_ip']);
@@ -269,7 +269,7 @@ function Jaws_Gadget_Policy() { return {
         this.selectDataGridRow($(element).parent().parent()[0]);
         var answer = confirm(this.gadget.defines.confirmIPRangeDelete);
         if (answer) {
-            this.gadget.ajax.callAsync('DeleteIPRange', id);
+            this.gadget.ajax.call('DeleteIPRange', id);
         }
         this.unselectDataGridRow();
     },
@@ -285,9 +285,9 @@ function Jaws_Gadget_Policy() { return {
         }
 
         if ($('#id').val() == 0) {
-            this.gadget.ajax.callAsync('AddAgent', [$('#agent').val(), $('#script').val(), $('#blocked').val()]);
+            this.gadget.ajax.call('AddAgent', [$('#agent').val(), $('#script').val(), $('#blocked').val()]);
         } else {
-            this.gadget.ajax.callAsync(
+            this.gadget.ajax.call(
                 'EditAgent',
                 [$('#id').val(), $('#agent').val(), $('#script').val(), $('#blocked').val()]
             );
@@ -302,7 +302,7 @@ function Jaws_Gadget_Policy() { return {
     {
         this.currentAction = 'AgentBlocking';
         this.selectDataGridRow($(element).parent().parent()[0]);
-        var agent = this.gadget.ajax.callAsync('GetAgent', id, false, {'async': false});
+        var agent = this.gadget.ajax.call('GetAgent', id, false, {'async': false});
 
         $('#id').val(agent['id']);
         $('#agent').val(agent['agent'].defilter());
@@ -319,7 +319,7 @@ function Jaws_Gadget_Policy() { return {
         this.selectDataGridRow($(element).parent().parent()[0]);
         var answer = confirm(this.gadget.defines.confirmAgentDelete);
         if (answer) {
-            this.gadget.ajax.callAsync('DeleteAgent', id);
+            this.gadget.ajax.call('DeleteAgent', id);
         }
         this.unselectDataGridRow();
     },
@@ -330,7 +330,7 @@ function Jaws_Gadget_Policy() { return {
     setBlockUndefinedIP: function()
     {
         try {
-            this.gadget.ajax.callAsync('IPBlockingBlockUndefined', $('#block_undefined_ip').prop('checked'));
+            this.gadget.ajax.call('IPBlockingBlockUndefined', $('#block_undefined_ip').prop('checked'));
         } catch(e) {
             alert(e);
         }
@@ -342,7 +342,7 @@ function Jaws_Gadget_Policy() { return {
     setBlockUndefinedAgent: function()
     {
         try {
-            this.gadget.ajax.callAsync(
+            this.gadget.ajax.call(
                 'AgentBlockingBlockUndefined',
                 $('#block_undefined_agent').prop('checked')
             );
@@ -357,7 +357,7 @@ function Jaws_Gadget_Policy() { return {
     saveEncryptionSettings: function()
     {
         try {
-            this.gadget.ajax.callAsync(
+            this.gadget.ajax.call(
                 'UpdateEncryptionSettings', [
                     $('#enabled').val(),
                     $('#key_age').val(),
@@ -375,7 +375,7 @@ function Jaws_Gadget_Policy() { return {
     saveAntiSpamSettings: function()
     {
         try {
-            this.gadget.ajax.callAsync(
+            this.gadget.ajax.call(
                 'UpdateAntiSpamSettings', [
                     $('#filter').val(),
                     $('#default_captcha').val(),
@@ -395,7 +395,7 @@ function Jaws_Gadget_Policy() { return {
     saveAdvancedPolicies: function()
     {
         try {
-            this.gadget.ajax.callAsync(
+            this.gadget.ajax.call(
                 'UpdateAdvancedPolicies', [
                     $('#password_complexity').val(),
                     $('#password_bad_count').val(),
@@ -490,7 +490,7 @@ function Jaws_Gadget_Policy() { return {
         }
         columns = Object.values(columns);
 
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'GetZones', {
                 'offset': options.pageIndex * options.pageSize,
                 'limit': options.pageSize,
@@ -591,7 +591,7 @@ function Jaws_Gadget_Policy() { return {
      */
     editZone: function (id) {
         this.selectedZone = id;
-        this.ajax.callAsync('GetZone',
+        this.ajax.call('GetZone',
             {'id': id},
             function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
@@ -620,7 +620,7 @@ function Jaws_Gadget_Policy() { return {
      */
     editZoneRange: function (id) {
         this.selectedZoneRange = id;
-        this.ajax.callAsync('GetZoneRange',
+        this.ajax.call('GetZoneRange',
             {'id': id},
             function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
@@ -641,9 +641,9 @@ function Jaws_Gadget_Policy() { return {
     saveZone: function () {
         var data = {'title': $('#title').val()};
         if (this.selectedZone === 0) {
-            this.ajax.callAsync('InsertZone', {'data': data});
+            this.ajax.call('InsertZone', {'data': data});
         } else {
-            this.ajax.callAsync('UpdateZone', {'id': this.selectedZone, 'data': data});
+            this.ajax.call('UpdateZone', {'id': this.selectedZone, 'data': data});
         }
     },
 
@@ -653,9 +653,9 @@ function Jaws_Gadget_Policy() { return {
     saveZoneRange: function () {
         var data = {'zone': this.selectedZone, 'from': $('#from').val(), 'to': $('#to').val()};
         if (this.selectedZoneRange === 0) {
-            this.ajax.callAsync('InsertZoneRange', {'data': data});
+            this.ajax.call('InsertZoneRange', {'data': data});
         } else {
-            this.ajax.callAsync('UpdateZoneRange', {'id': this.selectedZoneRange, 'data': data});
+            this.ajax.call('UpdateZoneRange', {'id': this.selectedZoneRange, 'data': data});
         }
     },
 
@@ -667,7 +667,7 @@ function Jaws_Gadget_Policy() { return {
             return false;
         }
 
-        this.ajax.callAsync('DeleteZone', {'id': id});
+        this.ajax.call('DeleteZone', {'id': id});
     },
 
     /**
@@ -678,7 +678,7 @@ function Jaws_Gadget_Policy() { return {
             return false;
         }
 
-        this.ajax.callAsync('DeleteZoneRange', {'id': rangeId});
+        this.ajax.call('DeleteZoneRange', {'id': rangeId});
     },
 
     /**
@@ -702,7 +702,7 @@ function Jaws_Gadget_Policy() { return {
         }
         columns = Object.values(columns);
 
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'GetZoneRanges', {
                 'offset': options.pageIndex * options.pageSize,
                 'limit': options.pageSize,
@@ -818,7 +818,7 @@ function Jaws_Gadget_Policy() { return {
      */
     editZoneAction: function (id) {
         this.selectedZoneAction = id;
-        this.ajax.callAsync('GetZoneAction',
+        this.ajax.call('GetZoneAction',
             {'id': id},
             function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
@@ -861,7 +861,7 @@ function Jaws_Gadget_Policy() { return {
             return false;
         }
 
-        this.ajax.callAsync('DeleteZoneAction', {'id': id});
+        this.ajax.call('DeleteZoneAction', {'id': id});
     },
 
     /**
@@ -870,9 +870,9 @@ function Jaws_Gadget_Policy() { return {
     saveZoneAction: function () {
         var data = $.unserialize($('#zone-action-form').serialize());
         if (this.selectedZoneAction === 0) {
-            this.ajax.callAsync('InsertZoneAction', {'data': data});
+            this.ajax.call('InsertZoneAction', {'data': data});
         } else {
-            this.ajax.callAsync('UpdateZoneAction', {'id': this.selectedZoneAction, 'data': data});
+            this.ajax.call('UpdateZoneAction', {'id': this.selectedZoneAction, 'data': data});
         }
     },
 
@@ -892,7 +892,7 @@ function Jaws_Gadget_Policy() { return {
         var elem = $('#action');
         $(elem).html('');
 
-        this.ajax.callAsync('GetGadgetActions', {'gadget': gadget}, function (response, status, callOptions) {
+        this.ajax.call('GetGadgetActions', {'gadget': gadget}, function (response, status, callOptions) {
             if (response['type'] == 'alert-success') {
                 callOptions.showMessage = false;
                 var actions = {};
@@ -951,7 +951,7 @@ function Jaws_Gadget_Policy() { return {
         }
         columns = Object.values(columns);
 
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'GetZoneActions', {
                 'offset': options.pageIndex * options.pageSize,
                 'limit': options.pageSize,
