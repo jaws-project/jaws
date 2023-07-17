@@ -43,7 +43,7 @@ var VisitCounterCallback = {
  */
 function resetCounter()
 {
-    VisitCounterAjax.callAsync('ResetCounter');    
+    VisitCounterAjax.call('ResetCounter');    
 }
 
 /**
@@ -51,7 +51,7 @@ function resetCounter()
  */
 function cleanEntries()
 {
-    VisitCounterAjax.callAsync('CleanEntries');    
+    VisitCounterAjax.call('CleanEntries');    
 }
 
 /**
@@ -59,7 +59,7 @@ function cleanEntries()
  */
 function updateStats()
 {
-    $('#stats_from').html(VisitCounterAjax.callAsync('GetStartDate', {}, false, {'async': false}));
+    $('#stats_from').html(VisitCounterAjax.call('GetStartDate', {}, false, {'async': false}));
     $('#visitors').html(0);
     $('#impressions').html(0);
 }
@@ -81,7 +81,7 @@ function updateProperties(form)
         }
     });
 
-    VisitCounterAjax.callAsync(
+    VisitCounterAjax.call(
         'UpdateProperties',
         [counters.join(), numDays, type, mode, customText]
     );
