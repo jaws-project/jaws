@@ -81,7 +81,7 @@ function eventsDataSource(options, callback) {
         'search': filters
     };
 
-    var rows = EventsCalendarAjax.callSync('GetEvents', options);
+    var rows = EventsCalendarAjax.callAsync('GetEvents', options, false, {'async': false});
 
     var items = rows.records;
     var totalItems = rows.total;
@@ -230,7 +230,7 @@ function editEvent(id)
 {
     selectedEvent = id;
     $('#friendModalLabel').html(CONST.editEvent);
-    var eInfo = EventsCalendarAjax.callSync('GetEvent', {'id': selectedEvent});
+    var eInfo = EventsCalendarAjax.callAsync('GetEvent', {'id': selectedEvent}, false, {'async': false});
     if (eInfo) {
         var $form = $('form#events-form'),
             form = $form.get(0);

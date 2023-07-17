@@ -148,7 +148,7 @@ function toggleUsers(gid)
     var container = $('#sys_users').empty(),
         users = usersByGroup[gid];
     if (users === undefined) {
-        users = ECAjax.callSync('GetUsers', {'gid':gid});
+        users = ECAjax.callAsync('GetUsers', {'gid':gid}, false, {'async': false});
         usersByGroup[gid] = users;
     }
     $.each(users, function (i, user) {
