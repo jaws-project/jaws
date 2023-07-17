@@ -70,7 +70,7 @@ function Jaws_Gadget_PrivateMessage() { return {
      * Reset attachments after save draft a message
      */
     resetAttachments: function (message_id) {
-        var ui = this.ajax.callAsync('GetMessageAttachmentUI',
+        var ui = this.ajax.call('GetMessageAttachmentUI',
             {'id': message_id},
             function (response, status, callOptions) {
             if (response['type'] == 'alert-success') {
@@ -196,7 +196,7 @@ function Jaws_Gadget_PrivateMessage() { return {
         }
 
         var attachments = this.uploadedFiles.concat(this.getSelectedAttachments());
-        this.ajax.callAsync(
+        this.ajax.call(
             'SendMessage', {
                 'id': $('#id').val(),
                 'is_draft': isDraft,
@@ -235,7 +235,7 @@ function Jaws_Gadget_PrivateMessage() { return {
      */
     searchUsers: function (term) {
         this.searchTimeout = null;
-        this.ajax.callAsync('GetUsers',
+        this.ajax.call('GetUsers',
             {'term': term},
             function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
@@ -327,7 +327,7 @@ function Jaws_Gadget_PrivateMessage() { return {
                     return false;
                 }
 
-                this.ajax.callAsync(
+                this.ajax.call(
                     'GetUsers',
                     {'term': term},
                     function (response, status) {
@@ -367,7 +367,7 @@ function Jaws_Gadget_PrivateMessage() { return {
                     });
                 }
 
-                var userExist = this.ajax.callAsync('CheckUserExist', {'user': data.value}, false, {'async': false});
+                var userExist = this.ajax.call('CheckUserExist', {'user': data.value}, false, {'async': false});
                 if (!duplicated && userExist) {
                     callback(data);
                 }
@@ -385,7 +385,7 @@ function Jaws_Gadget_PrivateMessage() { return {
      * Compose message UI
      */
     composeMessage: function () {
-        this.ajax.callAsync(
+        this.ajax.call(
             'Compose',
             {},
             function (response, status, callOptions) {
@@ -404,7 +404,7 @@ function Jaws_Gadget_PrivateMessage() { return {
      */
     viewMessage: function (id) {
         this.selectedMessage = id;
-        this.ajax.callAsync(
+        this.ajax.call(
             'Message',
             {'id': id},
             function (response, status, callOptions) {
@@ -448,7 +448,7 @@ function Jaws_Gadget_PrivateMessage() { return {
      */
     deleteMessage: function (ids) {
         if (confirm(this.gadget.defines.confirmDelete)) {
-            this.ajax.callAsync(
+            this.ajax.call(
                 'DeleteMessage',
                 {'ids': ids}
             );
@@ -460,7 +460,7 @@ function Jaws_Gadget_PrivateMessage() { return {
      */
     trashMessage: function (ids) {
         if (confirm(this.gadget.defines.confirmDelete)) {
-            this.ajax.callAsync(
+            this.ajax.call(
                 'TrashMessage',
                 {'ids': ids}
             );
@@ -471,7 +471,7 @@ function Jaws_Gadget_PrivateMessage() { return {
      * Restore trash message
      */
     restoreTrashMessage: function (ids) {
-        this.ajax.callAsync(
+        this.ajax.call(
             'RestoreTrashMessage',
             {'ids': ids}
         );
@@ -481,7 +481,7 @@ function Jaws_Gadget_PrivateMessage() { return {
      * Archive Message
      */
     archiveMessage: function (ids, doArchive) {
-        this.ajax.callAsync(
+        this.ajax.call(
             'ArchiveMessage',
             {'ids': ids, 'archive': doArchive}
         );
@@ -491,7 +491,7 @@ function Jaws_Gadget_PrivateMessage() { return {
      * Mark Message (as read or unread)
      */
     markMessage: function (ids, read) {
-        this.ajax.callAsync(
+        this.ajax.call(
             'ChangeMessageRead',
             {'ids': ids, 'read': read}
         );
@@ -509,7 +509,7 @@ function Jaws_Gadget_PrivateMessage() { return {
         }
         columns = Object.values(columns);
 
-        this.ajax.callAsync(
+        this.ajax.call(
             'GetMessages', {
                 'offset': options.pageIndex * options.pageSize,
                 'limit': options.pageSize,
