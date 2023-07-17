@@ -59,7 +59,7 @@ function cleanEntries()
  */
 function updateStats()
 {
-    $('#stats_from').html(VisitCounterAjax.callSync('GetStartDate'));
+    $('#stats_from').html(VisitCounterAjax.callAsync('GetStartDate', {}, false, {'async': false}));
     $('#visitors').html(0);
     $('#impressions').html(0);
 }
