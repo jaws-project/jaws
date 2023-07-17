@@ -124,7 +124,7 @@ function toggleUsers(gid)
     var container = $('#sys_users').empty(),
         users = usersByGroup[gid];
     if (users === undefined) {
-        users = NotepadAjax.callSync('GetUsers', {'gid':gid});
+        users = NotepadAjax.callAsync('GetUsers', {'gid':gid}, false, {'async': false});
         usersByGroup[gid] = users;
     }
     $.each(users, function (i, user) {
