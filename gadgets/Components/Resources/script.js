@@ -107,8 +107,8 @@ var ComponentsCallback = {
 function init()
 {
     components = pluginsMode?
-        ComponentsAjax.callAsync('GetPlugins', {}, false, {'async': false}):
-        ComponentsAjax.callAsync('GetGadgets', {}, false, {'async': false});
+        ComponentsAjax.call('GetPlugins', {}, false, {'async': false}):
+        ComponentsAjax.call('GetGadgets', {}, false, {'async': false});
     buildComponentList();
     $('#tabs').find('li').on('click', switchTab);
     $('#components').find('h3').each(function(i) {
@@ -363,8 +363,8 @@ function componentInfo()
     var infoEl = $('#component_info').show();
     if (!infoEl.length) {
         $('#component_form').html(pluginsMode ?
-            ComponentsAjax.callAsync('GetPluginInfo', selectedComponent, false, {'async': false}):
-            ComponentsAjax.callAsync('GetGadgetInfo', selectedComponent, false, {'async': false})
+            ComponentsAjax.call('GetPluginInfo', selectedComponent, false, {'async': false}):
+            ComponentsAjax.call('GetGadgetInfo', selectedComponent, false, {'async': false})
         );
     }
     $('#summary').hide();
@@ -380,7 +380,7 @@ function componentRegistry(reset)
 {
     if (!regCache) {
         var table = $('<table>'),
-            res = ComponentsAjax.callAsync('GetRegistry', [selectedComponent, pluginsMode], false, {'async': false}),
+            res = ComponentsAjax.call('GetRegistry', [selectedComponent, pluginsMode], false, {'async': false}),
             div = $('<div>').html(res.ui);
         $('#component_form').append(div.find('div'));
         $.each(res.data, function(name, value) {
@@ -424,7 +424,7 @@ function componentACL(reset)
 {
     if (!aclCache) {
         var table = $('<table>'),
-            res = ComponentsAjax.callAsync('GetACL', [selectedComponent, pluginsMode], false, {'async': false}),
+            res = ComponentsAjax.call('GetACL', [selectedComponent, pluginsMode], false, {'async': false}),
             div = $('<div>').html(res.ui);
         $('#component_form').append(div.find('div'));
         $.each(res.acls, function(i, acl) {
@@ -464,25 +464,25 @@ function setupComponent()
     var comp = components[selectedComponent];
     switch (comp.state) {
         case 'outdated':
-            ComponentsAjax.callAsync('UpgradeGadget2', selectedComponent);
+            ComponentsAjax.call('UpgradeGadget2', selectedComponent);
             break;
         case 'notinstalled':
             if (pluginsMode) {
-                ComponentsAjax.callAsync('InstallPlugin', selectedComponent);
+                ComponentsAjax.call('InstallPlugin', selectedComponent);
             } else {
-                ComponentsAjax.callAsync('InstallGadget2', selectedComponent);
+                ComponentsAjax.call('InstallGadget2', selectedComponent);
             }
             break;
         case 'installed':
             if (pluginsMode) {
                 if (confirm(Jaws.gadgets.Components.defines.confirmUninstallPlugin)) {
-                    ComponentsAjax.callAsync('UninstallPlugin', selectedComponent);
+                    ComponentsAjax.call('UninstallPlugin', selectedComponent);
                 }
             } else {
                 if (comp.disabled) {
-                    ComponentsAjax.callAsync('EnableGadget', selectedComponent);
+                    ComponentsAjax.call('EnableGadget', selectedComponent);
                 } else if (confirm(Jaws.gadgets.Components.defines.confirmUninstallGadget)) {
-                    ComponentsAjax.callAsync('UninstallGadget2', selectedComponent);
+                    ComponentsAjax.call('UninstallGadget2', selectedComponent);
                 }
             }
             break;
@@ -494,7 +494,7 @@ function setupComponent()
  */
 function enableGadget()
 {
-    ComponentsAjax.callAsync('EnableGadget', selectedComponent);
+    ComponentsAjax.call('EnableGadget', selectedComponent);
 }
 
 /**
@@ -503,7 +503,7 @@ function enableGadget()
 function disableGadget()
 {
     if (confirm(Jaws.gadgets.Components.defines.confirmDisableGadget)) {
-        ComponentsAjax.callAsync('DisableGadget', selectedComponent);
+        ComponentsAjax.call('DisableGadget', selectedComponent);
     }
 }
 
@@ -537,7 +537,7 @@ function onValueChange()
  */
 function saveRegistry()
 {
-    ComponentsAjax.callAsync('UpdateRegistry', [selectedComponent, regChanges]);
+    ComponentsAjax.call('UpdateRegistry', [selectedComponent, regChanges]);
 }
 
 /**
@@ -545,7 +545,7 @@ function saveRegistry()
  */
 function saveACL()
 {
-    ComponentsAjax.callAsync('UpdateACL', [selectedComponent, aclChanges]);
+    ComponentsAjax.call('UpdateACL', [selectedComponent, aclChanges]);
 }
 
 /**
@@ -555,7 +555,7 @@ function pluginUsage(reset)
 {
     if (!usageCache) {
         var tbody = $('<tbody>'),
-            res = ComponentsAjax.callAsync('GetPluginUsage', selectedComponent, false, {'async': false}),
+            res = ComponentsAjax.call('GetPluginUsage', selectedComponent, false, {'async': false}),
             div = $('<div>').html(res.ui);
         $('#component_form').append(div.first('div'));
         $.each(res.usage.gadgets, function(i, gadget) {
@@ -598,7 +598,7 @@ function savePluginUsage()
         total = usageEl.find('input[name=frontend]').length;
     backend = (backend.length === total) ? '*' : backend.join(',');
     frontend = (frontend.length === total) ? '*' : frontend.join(',');
-    ComponentsAjax.callAsync('UpdatePluginUsage', [selectedComponent, backend, frontend]);
+    ComponentsAjax.call('UpdatePluginUsage', [selectedComponent, backend, frontend]);
 }
 
 /**
