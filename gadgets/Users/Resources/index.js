@@ -214,7 +214,7 @@ function editContact(cid)
 {
     selectedContact = cid;
     $('#contactModalLabel').html(Jaws.gadgets.Users.defines.lbl_editContact);
-    var cInfo = UsersAjax.callSync('GetContact', {'id': selectedContact});
+    var cInfo = UsersAjax.callAsync('GetContact', {'id': selectedContact}, false, {'async': false});
     if (cInfo) {
         initContactForm(cInfo);
         $('#contactModal').modal('show');
@@ -276,7 +276,7 @@ function editUser(id)
     currentAction = "UserAccount";
     selectedUser = id;
     $('#userModalLabel').html(Jaws.gadgets.Users.defines.editUser_title);
-    var userInfo = UsersAjax.callSync('GetUser', {'id': selectedUser, 'account': true});
+    var userInfo = UsersAjax.callAsync('GetUser', {'id': selectedUser, 'account': true}, false, {'async': false});
     if (userInfo) {
         $('#users-form input, #users-form select, #users-form textarea').each(
             function () {
@@ -318,7 +318,7 @@ function editGroup(id)
 {
     currentAction = "Group";
     selectedGroup = id;
-    var gInfo = UsersAjax.callSync('GetGroup', {'id': selectedGroup});
+    var gInfo = UsersAjax.callAsync('GetGroup', {'id': selectedGroup}, false, {'async': false});
     if (gInfo) {
         $('#groups-form input, #groups-form select, #groups-form textarea').each(
             function () {
@@ -350,7 +350,7 @@ function editUserGroups(id)
     $('#users-groups-form input[type=checkbox]').prop('checked', false);
 
     $('#userGroupsModalLabel').html(Jaws.gadgets.Users.defines.editUser_title);
-    var uGroups = UsersAjax.callSync('GetUserGroups', {'uid': selectedUser});
+    var uGroups = UsersAjax.callAsync('GetUserGroups', {'uid': selectedUser}, false, {'async': false});
     if (uGroups) {
         $.each(uGroups, function(index, gid) {
             if ($('#users-groups-form #group_' + gid).length) {
@@ -372,7 +372,7 @@ function editGroupUsers(id)
 
     $('#group-users-form input[type=checkbox]').prop('checked', false);
 
-    var gUsers = UsersAjax.callSync('GetGroupUsers', {'gid': selectedGroup});
+    var gUsers = UsersAjax.callAsync('GetGroupUsers', {'gid': selectedGroup}, false, {'async': false});
     if (gUsers) {
         $.each(gUsers, function(index, user) {
             if ($('#group-users-form #user_' + user['id']).length) {
@@ -528,7 +528,7 @@ function saveGroup()
 function changeCountry(country, elProvince)
 {
     elProvince.html('');
-    var provinces = SettingsInUsersAjax.callSync('GetProvinces', {'country': country});
+    var provinces = SettingsInUsersAjax.callAsync('GetProvinces', {'country': country}, false, {'async': false});
     $.each(provinces, function (index, province) {
         elProvince.append('<option value="' + province.province + '">' + province.title + '</option>');
     });
@@ -540,9 +540,11 @@ function changeCountry(country, elProvince)
 function changeProvince(province, elCity, elCountry)
 {
     elCity.html('');
-    var cities = SettingsInUsersAjax.callSync(
+    var cities = SettingsInUsersAjax.callAsync(
         'GetCities',
-        {'province': province, 'country': elCountry.val()}
+        {'province': province, 'country': elCountry.val()},
+        false,
+        {'async': false}
     );
     $.each(cities, function (index, city) {
         elCity.append('<option value="' + city.city + '">' + city.title + '</option>');
@@ -774,7 +776,7 @@ function groupsDataSource(options, callback) {
         term: $('#filter_term').val()
     };
 
-    var rows = UsersAjax.callSync('GetGroups');
+    var rows = UsersAjax.callAsync('GetGroups', {}, false, {'async': false});
     var items = rows.records;
     var totalItems = rows.total;
     var totalPages = Math.ceil(totalItems / pageSize);
@@ -1034,7 +1036,7 @@ function friendsDataSource(options, callback) {
         'searchBy': options.search || ''
     };
 
-    var rows = UsersAjax.callSync('GetFriendGroups', options);
+    var rows = UsersAjax.callAsync('GetFriendGroups', options, false, {'async': false});
 
     var items = rows.records;
     var totalItems = rows.total;
@@ -1148,7 +1150,7 @@ function editFriendGroup(id)
 {
     selectedFriendGroup = id;
     $('#friendModalLabel').html(Jaws.gadgets.Users.defines.lbl_editFriend);
-    var gInfo = UsersAjax.callSync('GetFriendGroup', {'id': selectedFriendGroup});
+    var gInfo = UsersAjax.callAsync('GetFriendGroup', {'id': selectedFriendGroup}, false, {'async': false});
     if (gInfo) {
         $('#friends-form #name').val(gInfo.name);
         $('#friends-form #title').val(gInfo.title);
@@ -1176,7 +1178,7 @@ function editFriendMembers(id)
 
     $('#friends-users-form input[type=checkbox]').prop('checked', false);
 
-    var gUsers = UsersAjax.callSync('GetGroupUsers', {'gid': selectedFriendGroup});
+    var gUsers = UsersAjax.callAsync('GetGroupUsers', {'gid': selectedFriendGroup}, false, {'async': false});
     if (gUsers) {
         $.each(gUsers, function(index, user) {
             if ($('#friends-users-form #user_' + user['id']).length) {
@@ -1248,7 +1250,7 @@ function bookmarksDataSource(options, callback) {
         'filters': filters
     };
 
-    var rows = UsersAjax.callSync('GetBookmarks', options);
+    var rows = UsersAjax.callAsync('GetBookmarks', options, false, {'async': false});
     var items = rows.records;
     var totalItems = rows.total;
     var totalPages = Math.ceil(totalItems / pageSize);
@@ -1334,7 +1336,7 @@ function initiateBookmarksDG() {
 function editBookmark(id) {
     selectedBookmark = id;
     $('#bookmarkModalLabel').html(Jaws.gadgets.Users.defines.lbl_edit);
-    var bInfo = UsersAjax.callSync('GetBookmark', {'id': selectedBookmark});
+    var bInfo = UsersAjax.callAsync('GetBookmark', {'id': selectedBookmark}, false, {'async': false});
     if (bInfo) {
         $('#bookmark-form input, #bookmark-form select, #bookmark-form textarea').each(
             function () {
@@ -1360,13 +1362,15 @@ function deleteBookmark(id) {
  * Open bookmark windows
  */
 function openBookmarkWindows(gadget, action, reference, url) {
-    var bookmarkUI = UsersAjax.callSync(
+    var bookmarkUI = UsersAjax.callAsync(
         'BookmarkUI',
         {
             'bookmark_gadget': gadget,
             'bookmark_action': action,
             'bookmark_reference': reference
-        }
+        },
+        false,
+        {'async': false}
     );
     $("#bookmark-dialog-" + gadget + '-' + action + '-' + reference).html(bookmarkUI);
     $('#bookmarkModal-'+ gadget + '-' + action + '-' + reference).modal();

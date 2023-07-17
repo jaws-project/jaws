@@ -111,7 +111,7 @@ function Jaws_Gadget_Users() { return {
      * change province combo
      */
     changeProvince: function(province, cityElement) {
-        var cities = this.SettingsInUsersAjax.callSync('GetCities', {'province': province, 'country': 364});
+        var cities = this.SettingsInUsersAjax.callAsync('GetCities', {'province': province, 'country': 364}, false, {'async': false});
         $('#' + cityElement ).html('');
         $.each(cities, function (index, city) {
             $("#" + cityElement).append('<option value="' + city.city + '">' + city.title + '</option>');
