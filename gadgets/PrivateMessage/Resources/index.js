@@ -367,7 +367,7 @@ function Jaws_Gadget_PrivateMessage() { return {
                     });
                 }
 
-                var userExist = this.ajax.callSync('CheckUserExist', {'user': data.value});
+                var userExist = this.ajax.callAsync('CheckUserExist', {'user': data.value}, false, {'async': false});
                 if (!duplicated && userExist) {
                     callback(data);
                 }
