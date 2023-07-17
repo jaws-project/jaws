@@ -79,7 +79,7 @@ function addWebcam(form)
     }
 
     try {
-        WebcamAjax.callAsync('NewWebcam', [webcamTitle, webcamUrl, webcamRefresh]);
+        WebcamAjax.call('NewWebcam', [webcamTitle, webcamUrl, webcamRefresh]);
     } catch(e) {
         alert(e);
     }
@@ -96,7 +96,7 @@ function updateWebcam(form)
         webcamUrl     = form.elements['url'].value,
         webcamRefresh = form.elements['refresh'].value;
 
-    WebcamAjax.callAsync('UpdateWebcam', [webcamId, webcamTitle, webcamUrl, webcamRefresh]);
+    WebcamAjax.call('UpdateWebcam', [webcamId, webcamTitle, webcamUrl, webcamRefresh]);
     cleanForm(form);
 }
 
@@ -117,7 +117,7 @@ function submitForm(form)
  */
 function deleteWebcam(id)
 {
-    WebcamAjax.callAsync('DeleteWebcam', [id]);
+    WebcamAjax.call('DeleteWebcam', [id]);
     cleanForm(document.getElementById('webcam_form'));
 }
 
@@ -126,7 +126,7 @@ function deleteWebcam(id)
  */
 function editWebcam(id)
 {
-    WebcamAjax.callAsync('GetWebcam', [id]);
+    WebcamAjax.call('GetWebcam', [id]);
 }
 
 /**
@@ -135,7 +135,7 @@ function editWebcam(id)
 function updateProperties(form)
 {
     var limitRandom = form.elements['limit_random'].value;
-    WebcamAjax.callAsync('UpdateProperties', [limitRandom]);
+    WebcamAjax.call('UpdateProperties', [limitRandom]);
 }
 
 $(document).ready(function() {
