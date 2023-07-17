@@ -41,7 +41,7 @@ function save_lang()
         $('#lang_name').val())
     {
         lang_str = $('#lang_code').val().trim() + ';' + $('#lang_name').val().trim();
-        LanguagesAjax.callAsync('SaveLanguage', lang_str);
+        LanguagesAjax.call('SaveLanguage', lang_str);
     }
 }
 
@@ -136,7 +136,7 @@ function change_lang_option()
         $('#btn_save').css('visibility', 'visible');
         $('#btn_cancel').css('visibility', 'visible');
         $('#lang_strings').html(
-            LanguagesAjax.callAsync('GetLangDataUI', [$('#component').val(), $('#lang').val()], false, {'async': false})
+            LanguagesAjax.call('GetLangDataUI', [$('#component').val(), $('#lang').val()], false, {'async': false})
         );
         filterTranslated();
     }
@@ -163,7 +163,7 @@ function save_lang_data()
         data['strings'][this.name] = $(this).val();
     });
 
-    LanguagesAjax.callAsync('SetLangData', [component, lang, data]);
+    LanguagesAjax.call('SetLangData', [component, lang, data]);
     LangDataChanged = false;
     data = null;
 }
