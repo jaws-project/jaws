@@ -232,7 +232,7 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
      *
      */
     getNotificationDrivers: function (name, offset, reset) {
-        var result = this.ajax.callSync('GetNotificationDrivers');
+        var result = this.ajax.callAsync('GetNotificationDrivers', {}, false, {'async': false});
         resetGrid(name, result);
     },
 
