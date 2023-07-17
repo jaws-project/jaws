@@ -106,14 +106,19 @@ function unselectDataGridRow()
  */
 function getBannersDataGrid(name, offset, reset)
 {
-    var banners = BannerAjax.callSync(
+    var banners = BannerAjax.callAsync(
         'getBannersDataGrid',
-        [name, offset, $('#bgroup_filter').val(), $('#domain_filter').val()]
+        [name, offset, $('#bgroup_filter').val(), $('#domain_filter').val()],
+        false, {'async': false}
     );
     if (reset) {
         stopAction();
         $('#'+name)[0].setCurrentPage(0);
-        var total = BannerAjax.callSync('GetBannersCount', [$('#bgroup_filter').val(), $('#domain_filter').val()]);
+        var total = BannerAjax.callAsync(
+            'GetBannersCount',
+            [$('#bgroup_filter').val(), $('#domain_filter').val()],
+            false, {'async': false}
+        );
     }
 
     resetGrid(name, banners, total);
@@ -147,7 +152,7 @@ function changeThroughUpload(checked) {
 function getGroups()
 {
     resetCombo($('#groups_combo')[0]);
-    var groupList = BannerAjax.callSync('GetGroups', [-1, -1]);
+    var groupList = BannerAjax.callAsync('GetGroups', [-1, -1], false, {'async': false});
     if (groupList != false) {
         var combo = $('#groups_combo')[0];
         var i = 0;
@@ -336,7 +341,7 @@ function deleteGroup()
 function addGroup()
 {
     if (cacheMasterForm == null) {
-        cacheMasterForm = BannerAjax.callSync('GetGroupUI');
+        cacheMasterForm = BannerAjax.callAsync('GetGroupUI', {}, false, {'async': false});
     }
     currentAction = 'AddGroup';
 
@@ -359,7 +364,7 @@ function editBanner(element, bid)
 
     selectDataGridRow(element.parentNode.parentNode);
 
-    var banner = BannerAjax.callSync('GetBanner', bid);
+    var banner = BannerAjax.callAsync('GetBanner', bid, false, {'async': false});
     $('#bid').val(banner['id']);
     $('#domain').val(banner['domain']);
     $('#title').val(banner['title'].defilter());
@@ -387,7 +392,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheMasterForm == null) {
-        cacheMasterForm = BannerAjax.callSync('GetGroupUI');
+        cacheMasterForm = BannerAjax.callAsync('GetGroupUI', {}, false, {'async': false});
     }
 
     $('#group_banners_area').html('');
@@ -399,7 +404,7 @@ function editGroup(gid)
     $('#add_group').css('display', 'none');
     $('#group_area').html(cacheMasterForm);
     selectedGroup = gid;
-    var groupInfo = BannerAjax.callSync('GetGroup', selectedGroup);
+    var groupInfo = BannerAjax.callAsync('GetGroup', selectedGroup, false, {'async': false});
     $('#gid').val(groupInfo['id']);
     $('#title').val(groupInfo['title'].defilter());
     $('#count').val(groupInfo['limit_count']);
@@ -545,7 +550,7 @@ function editGroupBanners()
 {
     if (selectedGroup == null) {return;}
     if (cacheSlaveForm == null) {
-        cacheSlaveForm = BannerAjax.callSync('GetGroupBannersUI');
+        cacheSlaveForm = BannerAjax.callAsync('GetGroupBannersUI', {}, false, {'async': false});
     }
     $('#save_group').css('display', 'inline');
     $('#add_banners').css('display', 'none');
@@ -557,7 +562,7 @@ function editGroupBanners()
     $('#published').prop('disabled', true);
     //--
     currentAction = 'ManageGroupBanners';
-    var banners = BannerAjax.callSync('GetBanners', [-1, selectedGroup]);
+    var banners = BannerAjax.callAsync('GetBanners', [-1, selectedGroup], false, {'async': false});
     var box = $('#group_members')[0];
     box.length = 0;
     for(var i = 0; i < banners.length; i++) {
