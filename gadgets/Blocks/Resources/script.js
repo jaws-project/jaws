@@ -167,7 +167,7 @@ function edit(id)
     currentMode = 'edit';
     $('#block_id').prop('disabled', false);
     loading_message = Jaws.gadgets.Blocks.defines.retrievingMessage;
-    var block = BlocksAjax.callSync('GetBlock', id);
+    var block = BlocksAjax.callAsync('GetBlock', id, false, {'async': false});
     fillEditorEntries(block);
     $('#block_id_txt').html(id);
     switchTab('edit', block['title']);
@@ -255,7 +255,7 @@ function returnToEdit()
             combo.disabled = true;
         } else {
             loading_message = Jaws.gadgets.Blocks.defines.retrievingMessage;
-            var block = BlocksAjax.callSync('GetBlock', previousID);
+            var block = BlocksAjax.callAsync('GetBlock', previousID, false, {'async': false});
             fillEditorEntries(block);
             b.disabled = false;
             combo.disabled = false;
