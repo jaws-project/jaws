@@ -86,7 +86,7 @@ function Jaws_Gadget_Comments() { return {
         }
         columns = Object.values(columns);
 
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'GetComments', {
                 'offset': options.pageIndex * options.pageSize,
                 'limit': options.pageSize,
@@ -253,7 +253,7 @@ function Jaws_Gadget_Comments() { return {
     editComment: function (id) {
         this.selectedComment = id;
 
-        this.ajax.callAsync('GetComment',
+        this.ajax.call('GetComment',
             {'id': id},
             function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
@@ -279,7 +279,7 @@ function Jaws_Gadget_Comments() { return {
         var data = $.unserialize($('#comment-form').serialize());
         data.gadget = this.gadget.defines.gadget;
         data.send_email = sendEmail;
-        this.ajax.callAsync('UpdateComment', {'id': this.selectedComment, 'data': data});
+        this.ajax.call('UpdateComment', {'id': this.selectedComment, 'data': data});
     },
 
     /**
@@ -289,21 +289,21 @@ function Jaws_Gadget_Comments() { return {
         if (!confirm(this.gadget.defines.confirmCommentDelete)) {
             return false;
         }
-        this.ajax.callAsync('DeleteComments', {'ids':ids});
+        this.ajax.call('DeleteComments', {'ids':ids});
     },
 
     /**
      * mark comments
      */
     markComments: function (ids, status) {
-        this.ajax.callAsync('MarkComments', {'ids':ids, 'status':status});
+        this.ajax.call('MarkComments', {'ids':ids, 'status':status});
     },
 
     /**
      * save properties
      */
     saveSettings: function () {
-        this.ajax.callAsync(
+        this.ajax.call(
             'SaveSettings', {
                 'allow_comments': $('#allow_comments').val(),
                 'default_comment_status': $('#default_comment_status').val(),
