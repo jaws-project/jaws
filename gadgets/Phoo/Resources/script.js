@@ -38,7 +38,7 @@ function ImportImages()
 
         $('#percent').html(percent + '%');
         $('#img_percent').css('width', percent + '%');
-        PhooAjax.callAsync(
+        PhooAjax.call(
             'ImportImage', [
                 items[currentIndex]['image'],
                 items[currentIndex]['name'], album
@@ -74,7 +74,7 @@ function updatePhoto()
         }
     }
 
-    PhooAjax.callAsync(
+    PhooAjax.call(
         'UpdatePhoto',
         [id, title, description, allow_comments, published, albums, meta_description, meta_keywords, tags]
     );
@@ -97,7 +97,7 @@ function addEntry(title)
  */
 function filterAlbums(gid)
 {
-    var response = PhooAjax.callAsync('GetAlbums', {}, false, {'async': false});
+    var response = PhooAjax.call('GetAlbums', {}, false, {'async': false});
     var select = $('#albums_list');
     select.options.length = 0;
     for (var i=0; i<response.length; i++) {
