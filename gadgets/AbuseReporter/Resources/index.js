@@ -28,7 +28,7 @@ function stopAction() {
  * Open report windows
  */
 function openReportWindows(gadget, action, reference, url) {
-    var reportUI = AbuseReporterAjax.callAsync(
+    var reportUI = AbuseReporterAjax.call(
         'ReportUI',
         {
             'report_gadget': gadget,
@@ -46,7 +46,7 @@ function openReportWindows(gadget, action, reference, url) {
  */
 function saveReport(gadget, action, reference, url) {
     var formId = "#report-form-" + gadget + '-' + action + '-' + reference;
-    AbuseReporterAjax.callAsync(
+    AbuseReporterAjax.call(
         'SaveReport',
         {
             'report_gadget': gadget,

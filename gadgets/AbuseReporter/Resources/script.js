@@ -41,7 +41,7 @@ function editReport(id)
 {
     selectedReport = id;
     $('#reportModalLabel').html(Jaws.gadgets.AbuseReporter.defines.lbl_editReport);
-    var reportInfo = AbuseReporterAjax.callAsync('GetReport', {'id': selectedReport}, false, {'async': false});
+    var reportInfo = AbuseReporterAjax.call('GetReport', {'id': selectedReport}, false, {'async': false});
     if (reportInfo) {
         $('#report-form input, #report-form select, #report-form textarea').each(
             function () {
@@ -59,7 +59,7 @@ function editReport(id)
  */
 function saveReport()
 {
-    AbuseReporterAjax.callAsync(
+    AbuseReporterAjax.call(
         'UpdateReport', {
             id: selectedReport,
             data: $.unserialize($('form#report-form').serialize())
@@ -74,7 +74,7 @@ function saveReport()
 function deleteReport(id)
 {
     if (confirm(Jaws.gadgets.AbuseReporter.defines.confirmDelete)) {
-        AbuseReporterAjax.callAsync('DeleteReport', {'id': id});
+        AbuseReporterAjax.call('DeleteReport', {'id': id});
     }
 }
 
@@ -116,7 +116,7 @@ function reportsDataSource(options, callback) {
     }
     columns = Object.values(columns);
 
-    AbuseReporterAjax.callAsync(
+    AbuseReporterAjax.call(
         'GetReports', {
             'offset': options.offset,
             'limit': options.pageSize,
