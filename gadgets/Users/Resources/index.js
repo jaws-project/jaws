@@ -176,7 +176,7 @@ function stopAction() {
  */
 function updateContact()
 {
-    UsersAjax.callAsync(
+    UsersAjax.call(
         'UpdateContact',
         $.unserialize($('fieldset#contact').serialize())
     );
@@ -188,7 +188,7 @@ function updateContact()
  */
 function saveContact()
 {
-    UsersAjax.callAsync(
+    UsersAjax.call(
         'SaveContact', {
             cid: selectedContact,
             data: $.unserialize($('form#contacts-form').serialize())
@@ -203,7 +203,7 @@ function deleteContacts(ids)
 {
     var confirmation = confirm(Jaws.gadgets.Users.defines.confirmDelete);
     if (confirmation) {
-        UsersAjax.callAsync('DeleteContacts', {'ids': ids});
+        UsersAjax.call('DeleteContacts', {'ids': ids});
     }
 }
 
@@ -214,7 +214,7 @@ function editContact(cid)
 {
     selectedContact = cid;
     $('#contactModalLabel').html(Jaws.gadgets.Users.defines.lbl_editContact);
-    var cInfo = UsersAjax.callAsync('GetContact', {'id': selectedContact}, false, {'async': false});
+    var cInfo = UsersAjax.call('GetContact', {'id': selectedContact}, false, {'async': false});
     if (cInfo) {
         initContactForm(cInfo);
         $('#contactModal').modal('show');
@@ -264,7 +264,7 @@ function updatePreferences(form)
         postData[key] = val;
     });
 
-    UsersAjax.callAsync('UpdatePreferences', postData);
+    UsersAjax.call('UpdatePreferences', postData);
     return false;
 }
 
@@ -276,7 +276,7 @@ function editUser(id)
     currentAction = "UserAccount";
     selectedUser = id;
     $('#userModalLabel').html(Jaws.gadgets.Users.defines.editUser_title);
-    var userInfo = UsersAjax.callAsync('GetUser', {'id': selectedUser, 'account': true}, false, {'async': false});
+    var userInfo = UsersAjax.call('GetUser', {'id': selectedUser, 'account': true}, false, {'async': false});
     if (userInfo) {
         $('#users-form input, #users-form select, #users-form textarea').each(
             function () {
@@ -318,7 +318,7 @@ function editGroup(id)
 {
     currentAction = "Group";
     selectedGroup = id;
-    var gInfo = UsersAjax.callAsync('GetGroup', {'id': selectedGroup}, false, {'async': false});
+    var gInfo = UsersAjax.call('GetGroup', {'id': selectedGroup}, false, {'async': false});
     if (gInfo) {
         $('#groups-form input, #groups-form select, #groups-form textarea').each(
             function () {
@@ -350,7 +350,7 @@ function editUserGroups(id)
     $('#users-groups-form input[type=checkbox]').prop('checked', false);
 
     $('#userGroupsModalLabel').html(Jaws.gadgets.Users.defines.editUser_title);
-    var uGroups = UsersAjax.callAsync('GetUserGroups', {'uid': selectedUser}, false, {'async': false});
+    var uGroups = UsersAjax.call('GetUserGroups', {'uid': selectedUser}, false, {'async': false});
     if (uGroups) {
         $.each(uGroups, function(index, gid) {
             if ($('#users-groups-form #group_' + gid).length) {
@@ -372,7 +372,7 @@ function editGroupUsers(id)
 
     $('#group-users-form input[type=checkbox]').prop('checked', false);
 
-    var gUsers = UsersAjax.callAsync('GetGroupUsers', {'gid': selectedGroup}, false, {'async': false});
+    var gUsers = UsersAjax.call('GetGroupUsers', {'gid': selectedGroup}, false, {'async': false});
     if (gUsers) {
         $.each(gUsers, function(index, user) {
             if ($('#group-users-form #user_' + user['id']).length) {
@@ -417,7 +417,7 @@ function saveUser()
                     );
                     formData['password'] = password;
                     delete formData['prev_status'];
-                    UsersAjax.callAsync('AddUser', {'data': formData});
+                    UsersAjax.call('AddUser', {'data': formData});
                 });
 
             } else {
@@ -425,7 +425,7 @@ function saveUser()
                     $('#users-form input, #users-form select, #users-form textarea').serialize()
                 );
                 delete formData['password'];
-                UsersAjax.callAsync('UpdateUser', {'uid': selectedUser, 'data': formData});
+                UsersAjax.call('UpdateUser', {'uid': selectedUser, 'data': formData});
             }
 
             break;
@@ -444,7 +444,7 @@ function saveUser()
                     counter++;
                 }
             }
-            UsersAjax.callAsync('AddUserToGroups', {'uid': selectedUser, 'groups': keys});
+            UsersAjax.call('AddUserToGroups', {'uid': selectedUser, 'groups': keys});
             break;
 
     }
@@ -469,7 +469,7 @@ function updatePassword()
             password = objRSACrypt.encrypt($('#password-form #password').val());
         }
 
-        UsersAjax.callAsync(
+        UsersAjax.call(
             'UpdateUserPassword',
             {
                 'uid': selectedUser,
@@ -494,10 +494,10 @@ function saveGroup()
             }
             if (selectedGroup == null) {
                 var formData = $.unserialize($('#groups-form input,#groups-form select,#groups-form textarea').serialize());
-                UsersAjax.callAsync('AddGlobalGroup', {'data': formData});
+                UsersAjax.call('AddGlobalGroup', {'data': formData});
             } else {
                 var formData = $.unserialize($('#groups-form input,#groups-form select,#groups-form textarea').serialize());
-                UsersAjax.callAsync('UpdateGlobalGroup', {'id': selectedGroup, 'data': formData});
+                UsersAjax.call('UpdateGlobalGroup', {'id': selectedGroup, 'data': formData});
             }
             break;
 
@@ -515,7 +515,7 @@ function saveGroup()
                 }
             }
 
-            UsersAjax.callAsync('AddUsersToGroup', {'gid': selectedGroup, 'users': keys});
+            UsersAjax.call('AddUsersToGroup', {'gid': selectedGroup, 'users': keys});
             break;
 
     }
@@ -528,7 +528,7 @@ function saveGroup()
 function changeCountry(country, elProvince)
 {
     elProvince.html('');
-    var provinces = SettingsInUsersAjax.callAsync('GetProvinces', {'country': country}, false, {'async': false});
+    var provinces = SettingsInUsersAjax.call('GetProvinces', {'country': country}, false, {'async': false});
     $.each(provinces, function (index, province) {
         elProvince.append('<option value="' + province.province + '">' + province.title + '</option>');
     });
@@ -540,7 +540,7 @@ function changeCountry(country, elProvince)
 function changeProvince(province, elCity, elCountry)
 {
     elCity.html('');
-    var cities = SettingsInUsersAjax.callAsync(
+    var cities = SettingsInUsersAjax.call(
         'GetCities',
         {'province': province, 'country': elCountry.val()},
         false,
@@ -557,7 +557,7 @@ function changeProvince(province, elCity, elCountry)
 function deleteUser(id)
 {
     if (confirm(Jaws.gadgets.Users.defines.confirmDelete)) {
-        UsersAjax.callAsync('DeleteUser', {'id': id});
+        UsersAjax.call('DeleteUser', {'id': id});
     }
 }
 
@@ -567,7 +567,7 @@ function deleteUser(id)
 function deleteGroup(id)
 {
     if (confirm(Jaws.gadgets.Users.defines.confirmDelete)) {
-        UsersAjax.callAsync('DeleteGlobalGroup', {'id': id});
+        UsersAjax.call('DeleteGlobalGroup', {'id': id});
     }
 }
 
@@ -594,7 +594,7 @@ function usersDataSource(options, callback) {
     }
     columns = Object.values(columns);
 
-    UsersAjax.callAsync(
+    UsersAjax.call(
         'getUsers', {
             'offset': options.pageIndex * options.pageSize,
             'limit': options.pageSize,
@@ -776,7 +776,7 @@ function groupsDataSource(options, callback) {
         term: $('#filter_term').val()
     };
 
-    var rows = UsersAjax.callAsync('GetGroups', {}, false, {'async': false});
+    var rows = UsersAjax.call('GetGroups', {}, false, {'async': false});
     var items = rows.records;
     var totalItems = rows.total;
     var totalPages = Math.ceil(totalItems / pageSize);
@@ -900,7 +900,7 @@ function contactsDataSource(options, callback) {
     }
     columns = Object.values(columns);
 
-    UsersAjax.callAsync(
+    UsersAjax.call(
         'GetContacts', {
             'search': options.search || '',
             'limit': options.pageSize,
@@ -1036,7 +1036,7 @@ function friendsDataSource(options, callback) {
         'searchBy': options.search || ''
     };
 
-    var rows = UsersAjax.callAsync('GetFriendGroups', options, false, {'async': false});
+    var rows = UsersAjax.call('GetFriendGroups', options, false, {'async': false});
 
     var items = rows.records;
     var totalItems = rows.total;
@@ -1135,7 +1135,7 @@ function initiateFriendsDG() {
  */
 function saveFriendGroup()
 {
-    UsersAjax.callAsync(
+    UsersAjax.call(
         'SaveFriendGroup', {
             id: selectedFriendGroup,
             data: $.unserialize($('form#friends-form').serialize())
@@ -1150,7 +1150,7 @@ function editFriendGroup(id)
 {
     selectedFriendGroup = id;
     $('#friendModalLabel').html(Jaws.gadgets.Users.defines.lbl_editFriend);
-    var gInfo = UsersAjax.callAsync('GetFriendGroup', {'id': selectedFriendGroup}, false, {'async': false});
+    var gInfo = UsersAjax.call('GetFriendGroup', {'id': selectedFriendGroup}, false, {'async': false});
     if (gInfo) {
         $('#friends-form #name').val(gInfo.name);
         $('#friends-form #title').val(gInfo.title);
@@ -1165,7 +1165,7 @@ function editFriendGroup(id)
 function deleteFriendGroups(ids)
 {
     if (confirm(Jaws.gadgets.Users.defines.confirmDelete)) {
-        UsersAjax.callAsync('DeleteFriendGroups', {'ids': ids});
+        UsersAjax.call('DeleteFriendGroups', {'ids': ids});
     }
 }
 
@@ -1178,7 +1178,7 @@ function editFriendMembers(id)
 
     $('#friends-users-form input[type=checkbox]').prop('checked', false);
 
-    var gUsers = UsersAjax.callAsync('GetGroupUsers', {'gid': selectedFriendGroup}, false, {'async': false});
+    var gUsers = UsersAjax.call('GetGroupUsers', {'gid': selectedFriendGroup}, false, {'async': false});
     if (gUsers) {
         $.each(gUsers, function(index, user) {
             if ($('#friends-users-form #user_' + user['id']).length) {
@@ -1207,7 +1207,7 @@ function saveFriendMembers()
         }
     }
 
-    UsersAjax.callAsync('AddUsersToFriendGroup', {'gid': selectedFriendGroup, 'users': keys});
+    UsersAjax.call('AddUsersToFriendGroup', {'gid': selectedFriendGroup, 'users': keys});
 }
 
 
@@ -1250,7 +1250,7 @@ function bookmarksDataSource(options, callback) {
         'filters': filters
     };
 
-    var rows = UsersAjax.callAsync('GetBookmarks', options, false, {'async': false});
+    var rows = UsersAjax.call('GetBookmarks', options, false, {'async': false});
     var items = rows.records;
     var totalItems = rows.total;
     var totalPages = Math.ceil(totalItems / pageSize);
@@ -1336,7 +1336,7 @@ function initiateBookmarksDG() {
 function editBookmark(id) {
     selectedBookmark = id;
     $('#bookmarkModalLabel').html(Jaws.gadgets.Users.defines.lbl_edit);
-    var bInfo = UsersAjax.callAsync('GetBookmark', {'id': selectedBookmark}, false, {'async': false});
+    var bInfo = UsersAjax.call('GetBookmark', {'id': selectedBookmark}, false, {'async': false});
     if (bInfo) {
         $('#bookmark-form input, #bookmark-form select, #bookmark-form textarea').each(
             function () {
@@ -1354,7 +1354,7 @@ function editBookmark(id) {
  */
 function deleteBookmark(id) {
     if (confirm(Jaws.gadgets.Users.defines.confirmDelete)) {
-        UsersAjax.callAsync('DeleteBookmark', {'id': id});
+        UsersAjax.call('DeleteBookmark', {'id': id});
     }
 }
 
@@ -1362,7 +1362,7 @@ function deleteBookmark(id) {
  * Open bookmark windows
  */
 function openBookmarkWindows(gadget, action, reference, url) {
-    var bookmarkUI = UsersAjax.callAsync(
+    var bookmarkUI = UsersAjax.call(
         'BookmarkUI',
         {
             'bookmark_gadget': gadget,
@@ -1381,7 +1381,7 @@ function openBookmarkWindows(gadget, action, reference, url) {
  */
 function saveBookmark(gadget, action, reference, url) {
     var formId = "#bookmark-form-" + gadget + '-' + action + '-' + reference;
-    UsersAjax.callAsync(
+    UsersAjax.call(
         'UpdateBookmark',
         {
             'bookmark_gadget': gadget,
@@ -1400,7 +1400,7 @@ function saveBookmark(gadget, action, reference, url) {
  * Update a bookmark
  */
 function updateBookmark() {
-    UsersAjax.callAsync(
+    UsersAjax.call(
         'UpdateBookmark',
         {
             'bookmark_gadget': $('#bookmark-form #gadget').val(),

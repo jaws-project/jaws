@@ -15,7 +15,7 @@ function Jaws_Gadget_Users_Action_ACLs() {
          * view a acl permissions
          */
         viewACL: function(component, acl) {
-            this.ajax.callAsync(
+            this.ajax.call(
                 'GetACLGroupsUsers',
                 {component: component, acl:acl},
                 function (response) {
@@ -67,7 +67,7 @@ function Jaws_Gadget_Users_Action_ACLs() {
                 });
 
             } else {
-                this.ajax.callAsync('GetACLs', {component: pid}, function (response) {
+                this.ajax.call('GetACLs', {component: pid}, function (response) {
                     $.each(response, function (key, acl) {
                         childNodesArray.push(
                             {

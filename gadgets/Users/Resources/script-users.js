@@ -112,7 +112,7 @@ function Jaws_Gadget_Users_Action_Users() {
                     formData['password'] = password;
                     // delete formData['modulus'];
                     // delete formData['exponent'];
-                    this.ajax.callAsync('AddUser', {'data': formData});
+                    this.ajax.call('AddUser', {'data': formData});
                 } else {
                     var formData = $.unserialize(
                         $('#users-form input, #users-form select, #users-form textarea').serialize()
@@ -123,7 +123,7 @@ function Jaws_Gadget_Users_Action_Users() {
                     delete formData['length'];
                     delete formData['modulus'];
                     delete formData['exponent'];
-                    this.ajax.callAsync('UpdateUser', {'id':  this.selectedUser, 'data': formData});
+                    this.ajax.call('UpdateUser', {'id':  this.selectedUser, 'data': formData});
                 }
             }, this);
         },
@@ -135,7 +135,7 @@ function Jaws_Gadget_Users_Action_Users() {
             var formData = $.unserialize($('#user-personal-form').serialize());
             delete formData['reqGadget'];
             delete formData['reqAction'];
-            this.ajax.callAsync('UpdatePersonal', {'id':  this.selectedUser, 'data': formData});
+            this.ajax.call('UpdatePersonal', {'id':  this.selectedUser, 'data': formData});
         },
 
         /**
@@ -150,7 +150,7 @@ function Jaws_Gadget_Users_Action_Users() {
                 var keys = $(aclTag).attr('id').split(':');
                 acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
             });
-            this.ajax.callAsync('UpdateUserACL', {
+            this.ajax.call('UpdateUserACL', {
                 'uid': this.selectedUser,
                 'component': $('#components').val(),
                 'acls': acls
@@ -162,7 +162,7 @@ function Jaws_Gadget_Users_Action_Users() {
          */
         deleteUsers: function (uids) {
             if (confirm(this.t('user_confirm_delete'))) {
-                this.ajax.callAsync('DeleteUsers', {'uids': uids});
+                this.ajax.call('DeleteUsers', {'uids': uids});
             }
         },
 
@@ -170,7 +170,7 @@ function Jaws_Gadget_Users_Action_Users() {
          * Delete user's ACL
          */
         deleteUserACLs: function(acls) {
-            this.ajax.callAsync('DeleteUserACLs', {
+            this.ajax.call('DeleteUserACLs', {
                 'uid': this.selectedUser,
                 'acls': acls
             });
@@ -180,7 +180,7 @@ function Jaws_Gadget_Users_Action_Users() {
          * Save user's contact
          */
         saveUserContact: function() {
-            this.ajax.callAsync(
+            this.ajax.call(
                 'UpdateUserContacts', {
                     'uid': this.selectedUser,
                     'data': $.unserialize($('#user-contacts-form').serialize())
@@ -191,7 +191,7 @@ function Jaws_Gadget_Users_Action_Users() {
          * Save user's extra data
          */
         saveUserExtra: function () {
-            this.ajax.callAsync(
+            this.ajax.call(
                 'UpdateUserExtra', {
                     'uid': this.selectedUser,
                     'data': $.unserialize($('#user-extra-form').serialize())
@@ -215,7 +215,7 @@ function Jaws_Gadget_Users_Action_Users() {
                     password = objRSACrypt.encrypt(password);
                 }
 
-                this.ajax.callAsync(
+                this.ajax.call(
                     'UpdateUserPassword', {
                         'uid': this.selectedUser,
                         'password': password,
@@ -230,7 +230,7 @@ function Jaws_Gadget_Users_Action_Users() {
         editUser: function(uid) {
             this.selectedUser = uid;
 
-            this.ajax.callAsync('GetUser', {
+            this.ajax.call('GetUser', {
                     'id': this.selectedUser,
                     'account': true
                 }, function (response, status, callOptions) {
@@ -289,7 +289,7 @@ function Jaws_Gadget_Users_Action_Users() {
          * Delete user from groups
          */
         deleteUserFromGroups: function (groupIds) {
-            this.ajax.callAsync('DeleteUserFromGroups', {'uid': this.selectedUser, 'groupIds': groupIds});
+            this.ajax.call('DeleteUserFromGroups', {'uid': this.selectedUser, 'groupIds': groupIds});
         },
 
         /**
@@ -299,7 +299,7 @@ function Jaws_Gadget_Users_Action_Users() {
             this.selectedUser = uid;
             this.currentAction = 'UserPersonal';
 
-            this.ajax.callAsync('GetUser', {
+            this.ajax.call('GetUser', {
                     'id': uid,
                     'account': true,
                     'personal': true,
@@ -336,7 +336,7 @@ function Jaws_Gadget_Users_Action_Users() {
             this.selectedUser = uid;
             this.currentAction = 'UserContacts';
 
-            this.ajax.callAsync('GetUserContact', {
+            this.ajax.call('GetUserContact', {
                     'uid': uid
                 }, function (response, status, callOptions) {
                     if (response.type === 'alert-success') {
@@ -366,7 +366,7 @@ function Jaws_Gadget_Users_Action_Users() {
             this.selectedUser = uid;
             this.currentAction = 'UserExtra';
 
-            this.ajax.callAsync('GetUserExtra', {
+            this.ajax.call('GetUserExtra', {
                     'uid': uid
                 }, function (response, status, callOptions) {
                     if (response.type === 'alert-success') {
@@ -442,7 +442,7 @@ function Jaws_Gadget_Users_Action_Users() {
             }
             columns = Object.values(columns);
 
-            this.ajax.callAsync(
+            this.ajax.call(
                 'getUsers', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,
@@ -651,7 +651,7 @@ function Jaws_Gadget_Users_Action_Users() {
             }
             columns = Object.values(columns);
 
-            this.ajax.callAsync(
+            this.ajax.call(
                 'GetObjectACLs', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,
@@ -816,7 +816,7 @@ function Jaws_Gadget_Users_Action_Users() {
             }
             columns = Object.values(columns);
 
-            this.ajax.callAsync(
+            this.ajax.call(
                 'GetUserGroups', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,

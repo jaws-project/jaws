@@ -56,7 +56,7 @@ function Jaws_Gadget_Users_Action_Groups() {
          */
         deleteGroups: function(gids) {
             if (confirm(this.t('user_confirm_delete'))) {
-                this.ajax.callAsync('DeleteGroups', {'gids': gids});
+                this.ajax.call('DeleteGroups', {'gids': gids});
             }
         },
 
@@ -64,7 +64,7 @@ function Jaws_Gadget_Users_Action_Groups() {
          * Delete users from group
          */
         deleteUsersFromGroup: function (userIds) {
-            this.ajax.callAsync('DeleteUsersFromGroup', {'gid': this.selectedGroup, 'userIds': userIds});
+            this.ajax.call('DeleteUsersFromGroup', {'gid': this.selectedGroup, 'userIds': userIds});
         },
 
         /**
@@ -74,7 +74,7 @@ function Jaws_Gadget_Users_Action_Groups() {
             this.selectedGroup = gid;
             $('#groupModal .modal-title').html(this.t('groups_edit'));
 
-            this.ajax.callAsync('GetGroup', {
+            this.ajax.call('GetGroup', {
                     'gid': this.selectedGroup
                 }, function (response, status, callOptions) {
                     if (response.type === 'alert-success') {
@@ -115,12 +115,12 @@ function Jaws_Gadget_Users_Action_Groups() {
             }
 
             if (this.selectedGroup == 0) {
-                this.ajax.callAsync(
+                this.ajax.call(
                     'AddGroup', {
                         'data': $.unserialize($('#group-form input,#group-form select,#group-form textarea').serialize())
                     });
             } else {
-                this.ajax.callAsync(
+                this.ajax.call(
                     'UpdateGroup', {
                         'gid': this.selectedGroup,
                         'data': $.unserialize($('#group-form input,#group-form select,#group-form textarea').serialize())
@@ -140,7 +140,7 @@ function Jaws_Gadget_Users_Action_Groups() {
                 var keys = $(aclTag).attr('id').split(':');
                 acls[index] = [keys[0], keys[1], $(aclTag).attr('alt')];
             });
-            this.ajax.callAsync('UpdateGroupACL', {
+            this.ajax.call('UpdateGroupACL', {
                 'gid': this.selectedGroup,
                 'component': $('#components').val(),
                 'acls': acls
@@ -165,7 +165,7 @@ function Jaws_Gadget_Users_Action_Groups() {
          * Delete group's ACL
          */
         deleteGroupACLs: function(acls) {
-            this.ajax.callAsync('DeleteGroupACLs', {
+            this.ajax.call('DeleteGroupACLs', {
                 'gid': this.selectedGroup,
                 'acls': acls
             });
@@ -211,7 +211,7 @@ function Jaws_Gadget_Users_Action_Groups() {
             }
             columns = Object.values(columns);
 
-            this.ajax.callAsync(
+            this.ajax.call(
                 'GetGroups', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,
@@ -389,7 +389,7 @@ function Jaws_Gadget_Users_Action_Groups() {
             }
             columns = Object.values(columns);
 
-            this.ajax.callAsync(
+            this.ajax.call(
                 'GetObjectACLs', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,
@@ -554,7 +554,7 @@ function Jaws_Gadget_Users_Action_Groups() {
             }
             columns = Object.values(columns);
 
-            this.ajax.callAsync(
+            this.ajax.call(
                 'GetGroupUsers', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,

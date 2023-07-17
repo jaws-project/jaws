@@ -37,7 +37,7 @@ function Jaws_Gadget_Users_Action_OnlineUsers() {
          */
         deleteOnlineUsers: function(ids) {
             if (confirm(this.t('online_confirm_throwout'))) {
-                this.ajax.callAsync('DeleteSessions', {'ids': ids});
+                this.ajax.call('DeleteSessions', {'ids': ids});
             }
         },
 
@@ -46,7 +46,7 @@ function Jaws_Gadget_Users_Action_OnlineUsers() {
          */
         blockOnlineUsersIP: function(ids) {
             if (confirm(this.t('online_confirm_blockip'))) {
-                this.ajax.callAsync('IPsBlock', {'ids': ids});
+                this.ajax.call('IPsBlock', {'ids': ids});
             }
         },
 
@@ -55,7 +55,7 @@ function Jaws_Gadget_Users_Action_OnlineUsers() {
          */
         blockOnlineUsersAgent: function(ids) {
             if (confirm(this.t('online_confirm_blockagent'))) {
-                this.ajax.callAsync('AgentsBlock', {'ids': ids});
+                this.ajax.call('AgentsBlock', {'ids': ids});
             }
         },
 
@@ -104,7 +104,7 @@ function Jaws_Gadget_Users_Action_OnlineUsers() {
             }
             columns = Object.values(columns);
 
-            this.ajax.callAsync(
+            this.ajax.call(
                 'GetOnlineUsers', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,

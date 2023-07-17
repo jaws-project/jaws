@@ -34,7 +34,7 @@ function Jaws_Gadget_Users() { return {
      * Add an user to a group
      */
     addUserToGroup: function (uid, gid) {
-        this.gadget.ajax.callAsync('AddUserToGroup', {
+        this.gadget.ajax.call('AddUserToGroup', {
             'uid': uid,
             'gid': gid
         });
@@ -61,7 +61,7 @@ function Jaws_Gadget_Users() { return {
             return;
         }
 
-        this.ajax.callAsync('GetACLKeys', {
+        this.ajax.call('GetACLKeys', {
                 'id': id,
                 'comp': $('#components').val(),
                 'action': action
@@ -111,7 +111,7 @@ function Jaws_Gadget_Users() { return {
      * change province combo
      */
     changeProvince: function(province, cityElement) {
-        var cities = this.SettingsInUsersAjax.callAsync('GetCities', {'province': province, 'country': 364}, false, {'async': false});
+        var cities = this.SettingsInUsersAjax.call('GetCities', {'province': province, 'country': 364}, false, {'async': false});
         $('#' + cityElement ).html('');
         $.each(cities, function (index, city) {
             $("#" + cityElement).append('<option value="' + city.city + '">' + city.title + '</option>');
@@ -154,7 +154,7 @@ function Jaws_Gadget_Users() { return {
      * Search users and fill combo
      */
     searchUsersAndFillCombo: function (comboElm) {
-        this.ajax.callAsync(
+        this.ajax.call(
             'getUsers',
             {'filters': {'filter_term': $(comboElm).find('>input').val()}, 'limit': 10},
             $.proxy(function (response, status) {
@@ -172,7 +172,7 @@ function Jaws_Gadget_Users() { return {
      * Search groups and fill combo
      */
     searchGroupsAndFillCombo: function (comboElm) {
-        this.ajax.callAsync(
+        this.ajax.call(
             'GetGroups',
             {'filters': {'filter_term': $(comboElm).find('>input').val()}, 'limit': 10},
             $.proxy(function (response, status) {
