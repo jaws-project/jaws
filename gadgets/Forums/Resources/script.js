@@ -94,7 +94,7 @@ function saveForums()
     if (currentAction == 'Groups') {
         cacheForumForm = null;
         if ($('#gid').val() == 0) {
-            var response = ForumsAjax.callSync(
+            var response = ForumsAjax.callAsync(
                 'InsertGroup', [
                     $('#title').val(),
                     $('#description').val(),
@@ -102,7 +102,8 @@ function saveForums()
                     $('#order').val(),
                     $('#locked').val(),
                     $('#published').val()
-                ]
+                ],
+                false, {'async': false}
             );
             if (response['type'] == 'alert-success') {
                 AddNewForumGroup(response['data']);
@@ -123,7 +124,7 @@ function saveForums()
         }
     } else {
         if ($('#fid').val() == 0) {
-            var response = ForumsAjax.callSync(
+            var response = ForumsAjax.callAsync(
                 'InsertForum', [
                     $('#gid').val(),
                     $('#title').val(),
@@ -133,14 +134,15 @@ function saveForums()
                     $('#locked').val(),
                     $('#private').val(),
                     $('#published').val()
-                ]
+                ],
+                false, {'async': false}
             );
             if (response['type'] == 'alert-success') {
                 AddNewForumItem($('#gid').val(), response['data'], $('#order').val());
                 stopAction();
             }
         } else {
-            var response = ForumsAjax.callSync(
+            var response = ForumsAjax.callAsync(
                 'UpdateForum', [
                     $('#fid').val(),
                     $('#gid').val(),
@@ -151,7 +153,8 @@ function saveForums()
                     $('#locked').val(),
                     $('#private').val(),
                     $('#published').val()
-                ]
+                ],
+                false, {'async': false}
             );
             if (response['type'] == 'alert-success') {
                 $('#forum_'+$('#fid').val()).find('a').first().html($('#title').val());
@@ -199,7 +202,7 @@ function forumsOrders(gid, selected) {
 function addGroup()
 {
     if (cacheGroupForm == null) {
-        cacheGroupForm = ForumsAjax.callSync('GetGroupUI');
+        cacheGroupForm = ForumsAjax.callAsync('GetGroupUI', {}, false, {'async': false});
     }
     currentAction = 'Groups';
 
@@ -218,7 +221,7 @@ function addGroup()
 function addForum(gid)
 {
     if (cacheForumForm == null) {
-        cacheForumForm = ForumsAjax.callSync('GetForumUI');
+        cacheForumForm = ForumsAjax.callAsync('GetForumUI', {}, false, {'async': false});
     }
 
     stopAction();
@@ -242,7 +245,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheGroupForm == null) {
-        cacheGroupForm = ForumsAjax.callSync('GetGroupUI');
+        cacheGroupForm = ForumsAjax.callAsync('GetGroupUI', {}, false, {'async': false});
     }
     currentAction = 'Groups';
 
@@ -253,7 +256,7 @@ function editGroup(gid)
     $('#btn_add').css('display', 'none');
     $('#forums_edit').html(cacheGroupForm);  
 
-    var group = ForumsAjax.callSync('GetGroup', gid);
+    var group = ForumsAjax.callAsync('GetGroup', gid, false, {'async': false});
 
     $('#gid').val(group['id']);
     $('#title').val(group['title']);
@@ -272,7 +275,7 @@ function editForum(element, fid)
     if (fid == 0) return;
     selectTreeRow(fid);
     if (cacheForumForm == null) {
-        cacheForumForm = ForumsAjax.callSync('GetForumUI');
+        cacheForumForm = ForumsAjax.callAsync('GetForumUI', {}, false, {'async': false});
     }
     currentAction = 'Forums';
 
@@ -283,7 +286,7 @@ function editForum(element, fid)
     $('#btn_add').css('display', 'none');
     $('#forums_edit').html(cacheForumForm);  
 
-    var forum = ForumsAjax.callSync('GetForum', fid);
+    var forum = ForumsAjax.callAsync('GetForum', fid, false, {'async': false});
     $('#fid').val(forum['id']);
     $('#gid').val(forum['gid']);
     $('#title').val(forum['title']);
@@ -308,7 +311,7 @@ function delForums()
               msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
             cacheForumForm = null;
-            var response = ForumsAjax.callSync('DeleteGroup', gid);
+            var response = ForumsAjax.callAsync('DeleteGroup', gid, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 $('#group_'+gid).remove();
             }
@@ -321,7 +324,7 @@ function delForums()
               $('#forum_'+fid).find('a').first().html()+
               msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
-            var response = ForumsAjax.callSync('DeleteForum', fid);
+            var response = ForumsAjax.callAsync('DeleteForum', fid, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 $('#forum_'+fid).remove();
             }
