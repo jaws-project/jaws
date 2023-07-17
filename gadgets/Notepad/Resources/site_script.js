@@ -85,7 +85,7 @@ function submitNote(form)
 function deleteNote(id)
 {
     if (confirm(confirmDelete)) {
-        NotepadAjax.callAsync('DeleteNote', {id_set:id});
+        NotepadAjax.call('DeleteNote', {id_set:id});
     }
 }
 
@@ -101,7 +101,7 @@ function deleteNotes()
         return;
     }
     if (confirm(confirmDelete)) {
-        NotepadAjax.callAsync('DeleteNote', {id_set:id_set.join(',')});
+        NotepadAjax.call('DeleteNote', {id_set:id_set.join(',')});
     }
 }
 
@@ -124,7 +124,7 @@ function toggleUsers(gid)
     var container = $('#sys_users').empty(),
         users = usersByGroup[gid];
     if (users === undefined) {
-        users = NotepadAjax.callAsync('GetUsers', {'gid':gid}, false, {'async': false});
+        users = NotepadAjax.call('GetUsers', {'gid':gid}, false, {'async': false});
         usersByGroup[gid] = users;
     }
     $.each(users, function (i, user) {
@@ -169,7 +169,7 @@ function updateShareUsers()
  */
 function submitShare(id)
 {
-    NotepadAjax.callAsync(
+    NotepadAjax.call(
         'UpdateShare',
         {'id':id, 'users':Object.keys(sharedNoteUsers).join(',')}
     );
