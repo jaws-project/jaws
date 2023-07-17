@@ -250,7 +250,7 @@ function Jaws_Gadget_Policy() { return {
     {
         this.currentAction = 'IPBlocking';
         this.selectDataGridRow($(element).parent().parent()[0]);
-        var ipRange = this.gadget.ajax.callSync('GetIPRange', id);
+        var ipRange = this.gadget.ajax.callAsync('GetIPRange', id, false, {'async': false});
 
         $('#id').val(ipRange['id']);
         $('#from_ipaddress').val(ipRange['from_ip']);
@@ -302,7 +302,7 @@ function Jaws_Gadget_Policy() { return {
     {
         this.currentAction = 'AgentBlocking';
         this.selectDataGridRow($(element).parent().parent()[0]);
-        var agent = this.gadget.ajax.callSync('GetAgent', id);
+        var agent = this.gadget.ajax.callAsync('GetAgent', id, false, {'async': false});
 
         $('#id').val(agent['id']);
         $('#agent').val(agent['agent'].defilter());
