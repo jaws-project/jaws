@@ -85,7 +85,7 @@ function saveMenus()
         }
         cacheMenuForm = null;
         if (selectedGroup == null) {
-            var response = MenuAjax.callAsync(
+            var response = MenuAjax.call(
                 'InsertGroup', [
                     $('#title').val(),
                     $('#home').val(),
@@ -101,7 +101,7 @@ function saveMenus()
                 stopAction();
             }
         } else {
-            MenuAjax.callAsync(
+            MenuAjax.call(
                 'UpdateGroup', [
                     $('#gid').val(),
                     $('#title').val(),
@@ -118,7 +118,7 @@ function saveMenus()
             return false;
         }
         if (selectedMenu == null) {
-            var response = MenuAjax.callAsync(
+            var response = MenuAjax.call(
                 'InsertMenu', [
                     $('#pid').val(),
                     $('#gid').val(),
@@ -143,7 +143,7 @@ function saveMenus()
                 stopAction();
             }
         } else {
-            var response = MenuAjax.callAsync(
+            var response = MenuAjax.call(
                 'UpdateMenu', [
                     $('#mid').val(),
                     $('#pid').val(),
@@ -220,7 +220,7 @@ function setOrderCombo(gid, pid, selected) {
 function addGroup()
 {
     if (cacheGroupForm == null) {
-        cacheGroupForm = MenuAjax.callAsync('GetGroupUI', {}, false, {'async': false});
+        cacheGroupForm = MenuAjax.call('GetGroupUI', {}, false, {'async': false});
     }
     currentAction = 'Groups';
 
@@ -260,7 +260,7 @@ function mm_leave(eid)
 function addMenu(gid, pid)
 {
     if (cacheMenuForm == null) {
-        cacheMenuForm = MenuAjax.callAsync('GetMenuUI', {}, false, {'async': false});
+        cacheMenuForm = MenuAjax.call('GetMenuUI', {}, false, {'async': false});
     }
 
     stopAction();
@@ -300,7 +300,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheGroupForm == null) {
-        cacheGroupForm = MenuAjax.callAsync('GetGroupUI', {}, false, {'async': false});
+        cacheGroupForm = MenuAjax.call('GetGroupUI', {}, false, {'async': false});
     }
     currentAction = 'Groups';
     selectedGroup = gid;
@@ -312,7 +312,7 @@ function editGroup(gid)
     $('#btn_add').css('display', 'none');
     $('#menus_edit').html(cacheGroupForm);  
 
-    var groupInfo = MenuAjax.callAsync('GetGroups', selectedGroup, false, {'async': false});
+    var groupInfo = MenuAjax.call('GetGroups', selectedGroup, false, {'async': false});
 
     $('#gid').val(groupInfo['id']);
     $('#title').val(groupInfo['title'].defilter());
@@ -329,7 +329,7 @@ function editMenu(mid)
 {
     if (mid == 0) return;
     if (cacheMenuForm == null) {
-        cacheMenuForm = MenuAjax.callAsync('GetMenuUI', {}, false, {'async': false});
+        cacheMenuForm = MenuAjax.call('GetMenuUI', {}, false, {'async': false});
     }
     currentAction = 'Menus';
 
@@ -353,7 +353,7 @@ function editMenu(mid)
     $('#menu_'+mid).find('div').first().css('background-color', m_bg_color);
 
     selectedMenu = mid;
-    var menuInfo = MenuAjax.callAsync('GetMenu', selectedMenu, false, {'async': false});
+    var menuInfo = MenuAjax.call('GetMenu', selectedMenu, false, {'async': false});
     getParentMenus(menuInfo['gid'], mid);
 
     $('#mid').val(menuInfo['id']);
@@ -398,7 +398,7 @@ function delMenus()
               msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
             cacheMenuForm = null;
-            var response = MenuAjax.callAsync('DeleteGroup', gid, false, {'async': false});
+            var response = MenuAjax.call('DeleteGroup', gid, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 $('#group_'+gid).remove();
             }
@@ -409,7 +409,7 @@ function delMenus()
         var msg = Jaws.gadgets.Menu.defines.confirmMenuDelete;
         msg = msg.substr(0,  msg.indexOf('%s%')) + $('#menu_'+mid).find('a').first().html() + msg.substr(msg.indexOf('%s%')+3);
         if (confirm(msg)) {
-            var response = MenuAjax.callAsync('DeleteMenu', mid, false, {'async': false});
+            var response = MenuAjax.call('DeleteMenu', mid, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 $('#menu_'+mid).remove();
             }
@@ -422,7 +422,7 @@ function delMenus()
  * Get list of menu levels
  */
 function getParentMenus(gid, mid) {
-    var parents = MenuAjax.callAsync('GetParentMenus', [gid, mid], false, {'async': false});
+    var parents = MenuAjax.call('GetParentMenus', [gid, mid], false, {'async': false});
     $('#pid').empty();
     $.each(parents, function(key, item) {
         $('#pid').append($('<option>').val(item['pid']).text(item['title']));
@@ -451,7 +451,7 @@ function getReferences(gadget)
         }
         return;
     }
-    var links = MenuAjax.callAsync('GetPublicURList', gadget, false, {'async': false});
+    var links = MenuAjax.call('GetPublicURList', gadget, false, {'async': false});
     cachedMenus[gadget] = new Array();
     $('#references').empty();
     $.each(links, function(i, link) {
