@@ -22,11 +22,12 @@ class Jaws_Response
     {
         $resType = preg_replace('/[^[:alnum:]_\-]/', '', $resType);
         $drivers = array_map('basename', glob(ROOT_JAWS_PATH . 'include/Jaws/Response/*.php'));
-        if (false === $driver = array_search(strtolower("$resType.php"), array_map('strtolower', $drivers))) {
-            return $data;
+        if (false !== $driver = array_search(strtolower("$resType.php"), array_map('strtolower', $drivers))) {
+            $resType = basename($drivers[$driver], '.php');
+        } else {
+            $resType = 'Text';
         }
 
-        $resType = basename($drivers[$driver], '.php');
         $resTypeFile = ROOT_JAWS_PATH . "include/Jaws/Response/$resType.php";
         if (!file_exists($resTypeFile)) {
             return $data;

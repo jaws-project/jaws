@@ -1,27 +1,32 @@
 <?php
 /**
- * Jaws GZip Response driver
+ * Jaws GZip-Text Response driver
  *
  * @category    Response
  * @package     Core
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2017-2022 Jaws Development Group
+ * @copyright   2017-2023 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Jaws_Response_GZip
+class Jaws_Response_GZText
 {
     /**
-     * Returns gzip-ed data
+     * Returns gzipped raw data
      *
      * @access  public
      * @param   string  $data   Data string
-     * @return  string  Returns gzip-ed data
+     * @return  string  Returns gzipped raw data
      */
     static function get($data)
     {
         $data = gzencode($data, COMPRESS_LEVEL, FORCE_GZIP);
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
         header('Content-Length: '.strlen($data));
         header('Content-Encoding: gzip');
+
         return $data;
     }
 
