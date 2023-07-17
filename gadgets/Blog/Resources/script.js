@@ -207,7 +207,7 @@ function parseText(form)
 {
     var title   = form.elements['title'].value;
     var content = $('#text_block').val();
-    content = BlogAjax.callSync('ParseText', content);
+    content = BlogAjax.callAsync('ParseText', content, false, {'async': false});
 
     var preview = document.getElementById('preview');
     preview.style.display = 'block';
@@ -246,10 +246,10 @@ function searchTrackback()
  */
 function updatePostsDatagrid(cat, status, search, limit, resetCounter)
 {
-    var result = BlogAjax.callSync('SearchPosts', [cat, status, search, limit]);
+    var result = BlogAjax.callAsync('SearchPosts', [cat, status, search, limit], false, {'async': false});
     resetGrid('posts_datagrid', result);
     if (resetCounter) {
-        var size = BlogAjax.callSync('SizeOfSearch', [cat, status, search]);
+        var size = BlogAjax.callAsync('SizeOfSearch', [cat, status, search], false, {'async': false});
         $('#posts_datagrid')[0].rowsSize = size;
         $('#posts_datagrid')[0].setCurrentPage(0);
         $('#posts_datagrid')[0].updatePageCounter();
@@ -392,10 +392,10 @@ function lastValues()
  */
 function updateTrackbacksDatagrid(limit, filter, search, status, resetCounter)
 {
-    result = BlogAjax.callSync('SearchTrackbacks', [limit, filter, search, status]);
+    result = BlogAjax.callAsync('SearchTrackbacks', [limit, filter, search, status], false, {'async': false});
     resetGrid('trackbacks_datagrid', result);
     if (resetCounter) {
-        var size = BlogAjax.callSync('SizeOfTrackbacksSearch', [filter, search, status]);
+        var size = BlogAjax.callAsync('SizeOfTrackbacksSearch', [filter, search, status], false, {'async': false});
         $('#trackbacks_datagrid')[0].rowsSize    = size;
         $('#trackbacks_datagrid')[0].setCurrentPage(0);
         $('#trackbacks_datagrid')[0].updatePageCounter();
@@ -500,7 +500,7 @@ function editCategory(id)
 
     $('#legend_title').html(Jaws.gadgets.Blog.defines.editCategory_title);
     $('#btn_delete').css('display', 'inline');
-    var category = BlogAjax.callSync('GetCategory', id);
+    var category = BlogAjax.callAsync('GetCategory', id, false, {'async': false});
 
     $('#name').val(category['name']);
     $('#fast_url').val(category['fast_url']);
@@ -524,7 +524,7 @@ function resetCategoryForm()
  */
 function resetCategoryCombo()
 {
-    var categories = BlogAjax.callSync('GetCategories');
+    var categories = BlogAjax.callAsync('GetCategories', {}, false, {'async': false});
     $('#category_id').html('');
 
     $.each(categories, function(key, value) {
