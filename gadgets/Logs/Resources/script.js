@@ -79,7 +79,7 @@ function Jaws_Gadget_Logs() { return {
         }
         columns = Object.values(columns);
 
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'GetLogs', {
                 'offset': options.pageIndex * options.pageSize,
                 'limit': options.pageSize,
@@ -211,7 +211,7 @@ function Jaws_Gadget_Logs() { return {
      *
      */
     viewLog: function (id) {
-        this.ajax.callAsync('GetLog',
+        this.ajax.call('GetLog',
             {'id': id},
             function (response, status, callOptions) {
                 if (response['type'] == 'alert-success') {
@@ -257,14 +257,14 @@ function Jaws_Gadget_Logs() { return {
         } else {
             params.ids = ids;
         }
-        this.ajax.callAsync('DeleteLogs', params);
+        this.ajax.call('DeleteLogs', params);
     },
 
     /**
      * save properties
      */
     saveSettings: function () {
-        this.ajax.callAsync(
+        this.ajax.call(
             'SaveSettings', {
                 'log_priority_level': $('#priority').val(),
                 'log_parameters': $('#log_parameters').val()
@@ -276,7 +276,7 @@ function Jaws_Gadget_Logs() { return {
      * Search users and fill combo
      */
     searchUsersAndFillCombo: function (comboElm) {
-        Jaws_Gadget.getInstance('Users').gadget.ajax.callAsync(
+        Jaws_Gadget.getInstance('Users').gadget.ajax.call(
             'getUsers',
             {'filters': {'filter_term': $(comboElm).find('>input').val()}, 'limit': 10},
             $.proxy(function (response, status) {
