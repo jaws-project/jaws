@@ -44,10 +44,10 @@ function Jaws_Gadget_Quotes_Action_quotes() {
             // 'category_quotes_0': $('select[name="category_quotes_0"]').find('option:selected').val()
 
             if (this.selectedQuote === 0) {
-                this.ajax.callAsync('insertQuote', data);
+                this.ajax.call('insertQuote', data);
             } else {
                 data.id = this.selectedQuote;
-                this.ajax.callAsync('updateQuote', data);
+                this.ajax.call('updateQuote', data);
             }
         },
 
@@ -56,7 +56,7 @@ function Jaws_Gadget_Quotes_Action_quotes() {
          */
         editQuote: function(id) {
             this.selectedQuote = id;
-            this.ajax.callAsync('getQuote', {'id': this.selectedQuote},
+            this.ajax.call('getQuote', {'id': this.selectedQuote},
                 function (response, status) {
                     if (response.type === 'alert-success') {
                         const quoteInfo = response.data;
@@ -101,7 +101,7 @@ function Jaws_Gadget_Quotes_Action_quotes() {
          */
         deleteQuote: function(id) {
             if (confirm(Jaws.t('confirm_delete'))) {
-                this.ajax.callAsync('deleteQuote', {'id': id});
+                this.ajax.call('deleteQuote', {'id': id});
             }
         },
 
@@ -146,7 +146,7 @@ function Jaws_Gadget_Quotes_Action_quotes() {
             }
             columns = Object.values(columns);
 
-            this.gadget.ajax.callAsync(
+            this.gadget.ajax.call(
                 'getQuotes', {
                     'offset': options.pageIndex * options.pageSize,
                     'limit': options.pageSize,
