@@ -437,7 +437,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
      * @param   function    progress    Progress callback function
      * @return  void
      */
-    this.callAsync = function (action, data, done, callOptions, progress) {
+    this.call = function (action, data, done, callOptions, progress) {
         var options = {};
         var gadget, baseScript;
 
@@ -1146,9 +1146,9 @@ var JawsDataGrid = {
         var firstValues = $('#' + this.name)[0].getFirstPagerValues();
         var objGadget  = $('#' + this.name)[0].objectName;
         if (objGadget instanceof JawsAjax) {
-            result = objGadget.callAsync('getData', [firstValues, $('#' + this.name)[0].id], false, {'async': false});
+            result = objGadget.call('getData', [firstValues, $('#' + this.name)[0].id], false, {'async': false});
         } else {
-            result = objGadget.ajax.callAsync('getData', [firstValues, $('#' + this.name)[0].id], false, {'async': false});
+            result = objGadget.ajax.call('getData', [firstValues, $('#' + this.name)[0].id], false, {'async': false});
         }
         resetGrid(this.name, result);
         $('#' + this.name)[0].firstPage();
@@ -1162,9 +1162,9 @@ var JawsDataGrid = {
         var previousValues = $('#' + this.name)[0].getPreviousPagerValues();
         var objGadget  = $('#' + this.name)[0].objectName;
         if (objGadget instanceof JawsAjax) {
-            result = objGadget.callAsync('getData', [previousValues, $('#' + this.name)[0].id], false, {'async': false});
+            result = objGadget.call('getData', [previousValues, $('#' + this.name)[0].id], false, {'async': false});
         } else {
-            result = objGadget.ajax.callAsync('getData', [previousValues, $('#' + this.name)[0].id], false, {'async': false});
+            result = objGadget.ajax.call('getData', [previousValues, $('#' + this.name)[0].id], false, {'async': false});
         }
 
         resetGrid(this.name, result);
@@ -1179,9 +1179,9 @@ var JawsDataGrid = {
         var nextValues     = $('#' + this.name)[0].getNextPagerValues();
         var objGadget  = $('#' + this.name)[0].objectName;
         if (objGadget instanceof JawsAjax) {
-            result = objGadget.callAsync('getData', [nextValues, $('#' + this.name)[0].id], false, {'async': false});
+            result = objGadget.call('getData', [nextValues, $('#' + this.name)[0].id], false, {'async': false});
         } else {
-            result = objGadget.ajax.callAsync('getData', [nextValues, $('#' + this.name)[0].id], false, {'async': false});
+            result = objGadget.ajax.call('getData', [nextValues, $('#' + this.name)[0].id], false, {'async': false});
         }
         
         resetGrid(this.name, result);
@@ -1196,9 +1196,9 @@ var JawsDataGrid = {
         var lastValues = $('#' + this.name)[0].getLastPagerValues();
         var objGadget  = $('#' + this.name)[0].objectName;
         if (objGadget instanceof JawsAjax) {
-            result = objGadget.callAsync('getData', [lastValues, $('#' + this.name)[0].id], false, {'async': false});
+            result = objGadget.call('getData', [lastValues, $('#' + this.name)[0].id], false, {'async': false});
         } else {
-            result = objGadget.ajax.callAsync('getData', [lastValues, $('#' + this.name)[0].id], false, {'async': false});
+            result = objGadget.ajax.call('getData', [lastValues, $('#' + this.name)[0].id], false, {'async': false});
         }
 
         resetGrid(this.name, result);
@@ -1213,9 +1213,9 @@ var JawsDataGrid = {
         var currentPage = $('#' + this.name)[0].getCurrentPage();
         var objGadget  = $('#' + this.name)[0].objectName;
         if (objGadget instanceof JawsAjax) {
-            result = objGadget.callAsync('getData', [currentPage, $('#' + this.name)[0].id], false, {'async': false});
+            result = objGadget.call('getData', [currentPage, $('#' + this.name)[0].id], false, {'async': false});
         } else {
-            result = objGadget.ajax.callAsync('getData', [currentPage, $('#' + this.name)[0].id], false, {'async': false});
+            result = objGadget.ajax.call('getData', [currentPage, $('#' + this.name)[0].id], false, {'async': false});
         }
 
         resetGrid(this.name, result);
@@ -1599,7 +1599,7 @@ function urlBase64ToUint8Array(base64String) {
 function updateWebPushSubscription(pushSubscription) {
     pushSubscription = eval('(' + JSON.stringify(pushSubscription) + ')');
     pushSubscription.contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
-    Jaws_Gadget.getInstance('Notification').gadget.ajax.callAsync(
+    Jaws_Gadget.getInstance('Notification').gadget.ajax.call(
         'UpdateWebPushSubscription',
         pushSubscription,
         false,
