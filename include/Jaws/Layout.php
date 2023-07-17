@@ -755,7 +755,7 @@ class Jaws_Layout
         } else {
             $content = $this->_Template->Get();
             if ($this->app->GZipEnabled()) {
-                $this->app->request->update('restype', 'gzip');
+                $this->app->request->update('restype', 'gztext');
             }
             return $content;
         }
