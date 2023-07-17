@@ -54,7 +54,7 @@ function Jaws_Gadget_ControlPanel() { return {
 
         // check jaws project website for latest version
         if ($('#do_checking').val() == 1) {
-            this.gadget.ajax.callAsync('JawsVersion');
+            this.gadget.ajax.call('JawsVersion');
         }
     },
 
