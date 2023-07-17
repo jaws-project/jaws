@@ -159,7 +159,7 @@ function editContact(element, id)
 
     selectDataGridRow(element.parentNode.parentNode);
 
-    var contact = ContactAjax.callSync('GetContact', id);
+    var contact = ContactAjax.callAsync('GetContact', id, false, {'async': false});
     $('#id').val(contact['id']);
     $('#contact_ip').html(contact['ip']);
     $('#name').val(contact['name']);
@@ -198,14 +198,14 @@ function editReply(element, id)
     selectDataGridRow(element.parentNode.parentNode);
 
     if (cacheReplyForm == null) {
-        cacheReplyForm = ContactAjax.callSync('ReplyUI');
+        cacheReplyForm = ContactAjax.callAsync('ReplyUI', false, {'async': false});
     }
     currentAction = 'Reply';
 
     selectedContact = id;
     $('#legend_title').html(Jaws.gadgets.Contact.defines.contactReply_title);
     $('#c_work_area').html(cacheReplyForm);
-    var replyData = ContactAjax.callSync('GetReply', selectedContact);
+    var replyData = ContactAjax.callAsync('GetReply', selectedContact, false, {'async': false});
     $('#id').val(replyData['id']);
     $('#name').val(replyData['name']);
     $('#email').val(replyData['email']);
@@ -253,10 +253,10 @@ function deleteContact(element, id)
  */
 function getContacts(name, offset, reset)
 {
-    var result = ContactAjax.callSync('GetContacts', [$('#recipient_filter').val(), offset]);
+    var result = ContactAjax.callAsync('GetContacts', [$('#recipient_filter').val(), offset], false, {'async': false});
     if (reset) {
         $('#' + name)[0].setCurrentPage(0);
-        var total = ContactAjax.callSync('GetContactsCount', $('#recipient_filter').val());
+        var total = ContactAjax.callAsync('GetContactsCount', $('#recipient_filter').val(), false, {'async': false});
     }
     resetGrid(name, result, total);
 }
@@ -269,7 +269,7 @@ function editRecipient(element, id)
 {
     currentAction = 'Recipients';
     selectDataGridRow(element.parentNode.parentNode);
-    var recipient = ContactAjax.callSync('GetRecipient', id);
+    var recipient = ContactAjax.callAsync('GetRecipient', id, false, {'async': false});
     $('#id').val(recipient['id']);
     $('#name').val(recipient['name'].defilter());
     $('#email').val(recipient['email']);
@@ -366,7 +366,7 @@ function updateUsers(group)
         $('#users').val(0);
         group = false;
     }
-    var users = ContactAjax.callSync('GetUsers', group);
+    var users = ContactAjax.callAsync('GetUsers', group, false, {'async': false});
     $('#users').empty().append($('<option>').html(Jaws.gadgets.Contact.defines.lblAllGroupUsers).val(0));
     $.each(users, function(i, user) {
         $('#users').append($('<option>').html(user['nickname']).val(user['id']));
@@ -469,7 +469,7 @@ function removeAttachment() {
  */
 function previewMessage()
 {
-    var preview  = ContactAjax.callSync('GetMessagePreview', $('#message').val()),
+    var preview  = ContactAjax.callAsync('GetMessagePreview', $('#message').val(), false, {'async': false}),
         width    = 750,
         height   = 500,
         left     = ($(document).width() - width) / 2,
