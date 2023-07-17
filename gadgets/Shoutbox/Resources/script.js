@@ -22,7 +22,7 @@ function updateProperties(form)
     var limitEntries = form['limit_entries'].value,
         max_strlen = form['max_strlen'].value,
         authority = form['authority'].value;
-    ShoutboxAjax.callAsync('UpdateProperties', [limitEntries, max_strlen, authority]);
+    ShoutboxAjax.call('UpdateProperties', [limitEntries, max_strlen, authority]);
 }
 
 var ShoutboxAjax = new JawsAjax('Shoutbox', ShoutboxCallback);

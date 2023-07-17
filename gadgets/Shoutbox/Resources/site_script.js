@@ -14,7 +14,7 @@
  */
 function GetComments()
 {
-    var comments = ShoutboxAjax.callAsync('GetComments', {}, false, {'async': false});
+    var comments = ShoutboxAjax.call('GetComments', {}, false, {'async': false});
     $('.shoutbox_comments').html(comments);
 }
 
