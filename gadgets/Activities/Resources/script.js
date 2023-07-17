@@ -35,14 +35,14 @@ function getActivities(name, offset, reset)
         'domain'    : $('#filter_domain').val()
     };
 
-    var result = ActivitiesAjax.callAsync('GetActivities', {
+    var result = ActivitiesAjax.call('GetActivities', {
         'offset': offset,
         'order': $('#order_type').val(),
         'filters': filters
     }, false, {'async': false});
 
     if (reset) {
-        var total = ActivitiesAjax.callAsync('GetActivitiesCount', {
+        var total = ActivitiesAjax.call('GetActivitiesCount', {
             'filters': filters
         }, false, {'async': false});
     }
@@ -62,12 +62,12 @@ function activitiesDGAction(combo)
         }
         var confirmation = confirm(Jaws.gadgets.Activities.defines.confirmActivitiesDelete);
         if (confirmation) {
-            ActivitiesAjax.callAsync('DeleteActivities', rows);
+            ActivitiesAjax.call('DeleteActivities', rows);
         }
     } else if (combo.val() == 'deleteAll') {
         var confirmation = confirm(Jaws.gadgets.Activities.defines.confirmActivitiesDelete);
         if (confirmation) {
-            ActivitiesAjax.callAsync('DeleteAllActivities');
+            ActivitiesAjax.call('DeleteAllActivities');
         }
     }}
 
