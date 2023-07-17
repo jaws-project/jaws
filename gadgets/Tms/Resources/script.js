@@ -113,7 +113,7 @@ function editTheme(theme)
 
     cleanWorkingArea(true);
 
-    var themeInfo = TmsAjax.callSync('GetThemeInfo', theme);
+    var themeInfo = TmsAjax.callAsync('GetThemeInfo', theme, false, {'async': false});
     if (themeInfo == null) {
         return false; //Check
     }
