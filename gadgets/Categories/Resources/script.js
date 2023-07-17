@@ -68,7 +68,7 @@ function Jaws_Gadget_Categories() { return {
     editCategory: function(id) {
         this.selectedCategory = id;
         $('#categoryModalLabel').html(this.gadget.defines.lbl_edit);
-        this.gadget.ajax.callAsync('GetCategory', {'id': this.selectedCategory}, 
+        this.gadget.ajax.call('GetCategory', {'id': this.selectedCategory}, 
             function (response, status) {
                 if (response['type'] == 'alert-success') {
                     var value;
@@ -110,11 +110,11 @@ function Jaws_Gadget_Categories() { return {
             }
         }
         if (this.selectedCategory === 0) {
-            this.gadget.ajax.callAsync('InsertCategory', {
+            this.gadget.ajax.call('InsertCategory', {
                 data: data
             });
         } else {
-            this.gadget.ajax.callAsync('UpdateCategory', {
+            this.gadget.ajax.call('UpdateCategory', {
                 id: this.selectedCategory,
                 data: data
             });
@@ -126,7 +126,7 @@ function Jaws_Gadget_Categories() { return {
      */
     deleteCategory: function(id) {
         if (confirm(this.gadget.defines.confirmDelete)) {
-            this.gadget.ajax.callAsync('DeleteCategory', {'id': id});
+            this.gadget.ajax.call('DeleteCategory', {'id': id});
         }
     },
 
@@ -183,7 +183,7 @@ function Jaws_Gadget_Categories() { return {
 
         console.log('filters', filters);
 
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'GetCategories', {
                 'offset': options.offset,
                 'limit': options.pageSize,

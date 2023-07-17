@@ -57,7 +57,7 @@ function Jaws_Gadget_Categories() { return {
 
                             transport: $.proxy(
                                 function (params, success, failure) {
-                                    this.gadget.ajax.callAsync(
+                                    this.gadget.ajax.call(
                                         'getCategories',
                                         {
                                             'interface': {
