@@ -94,7 +94,7 @@ function saveForums()
     if (currentAction == 'Groups') {
         cacheForumForm = null;
         if ($('#gid').val() == 0) {
-            var response = ForumsAjax.callAsync(
+            var response = ForumsAjax.call(
                 'InsertGroup', [
                     $('#title').val(),
                     $('#description').val(),
@@ -110,7 +110,7 @@ function saveForums()
                 stopAction();
             }
         } else {
-            ForumsAjax.callAsync(
+            ForumsAjax.call(
                 'UpdateGroup', [
                     $('#gid').val(),
                     $('#title').val(),
@@ -124,7 +124,7 @@ function saveForums()
         }
     } else {
         if ($('#fid').val() == 0) {
-            var response = ForumsAjax.callAsync(
+            var response = ForumsAjax.call(
                 'InsertForum', [
                     $('#gid').val(),
                     $('#title').val(),
@@ -142,7 +142,7 @@ function saveForums()
                 stopAction();
             }
         } else {
-            var response = ForumsAjax.callAsync(
+            var response = ForumsAjax.call(
                 'UpdateForum', [
                     $('#fid').val(),
                     $('#gid').val(),
@@ -202,7 +202,7 @@ function forumsOrders(gid, selected) {
 function addGroup()
 {
     if (cacheGroupForm == null) {
-        cacheGroupForm = ForumsAjax.callAsync('GetGroupUI', {}, false, {'async': false});
+        cacheGroupForm = ForumsAjax.call('GetGroupUI', {}, false, {'async': false});
     }
     currentAction = 'Groups';
 
@@ -221,7 +221,7 @@ function addGroup()
 function addForum(gid)
 {
     if (cacheForumForm == null) {
-        cacheForumForm = ForumsAjax.callAsync('GetForumUI', {}, false, {'async': false});
+        cacheForumForm = ForumsAjax.call('GetForumUI', {}, false, {'async': false});
     }
 
     stopAction();
@@ -245,7 +245,7 @@ function editGroup(gid)
 {
     if (gid == 0) return;
     if (cacheGroupForm == null) {
-        cacheGroupForm = ForumsAjax.callAsync('GetGroupUI', {}, false, {'async': false});
+        cacheGroupForm = ForumsAjax.call('GetGroupUI', {}, false, {'async': false});
     }
     currentAction = 'Groups';
 
@@ -256,7 +256,7 @@ function editGroup(gid)
     $('#btn_add').css('display', 'none');
     $('#forums_edit').html(cacheGroupForm);  
 
-    var group = ForumsAjax.callAsync('GetGroup', gid, false, {'async': false});
+    var group = ForumsAjax.call('GetGroup', gid, false, {'async': false});
 
     $('#gid').val(group['id']);
     $('#title').val(group['title']);
@@ -275,7 +275,7 @@ function editForum(element, fid)
     if (fid == 0) return;
     selectTreeRow(fid);
     if (cacheForumForm == null) {
-        cacheForumForm = ForumsAjax.callAsync('GetForumUI', {}, false, {'async': false});
+        cacheForumForm = ForumsAjax.call('GetForumUI', {}, false, {'async': false});
     }
     currentAction = 'Forums';
 
@@ -286,7 +286,7 @@ function editForum(element, fid)
     $('#btn_add').css('display', 'none');
     $('#forums_edit').html(cacheForumForm);  
 
-    var forum = ForumsAjax.callAsync('GetForum', fid, false, {'async': false});
+    var forum = ForumsAjax.call('GetForum', fid, false, {'async': false});
     $('#fid').val(forum['id']);
     $('#gid').val(forum['gid']);
     $('#title').val(forum['title']);
@@ -311,7 +311,7 @@ function delForums()
               msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
             cacheForumForm = null;
-            var response = ForumsAjax.callAsync('DeleteGroup', gid, false, {'async': false});
+            var response = ForumsAjax.call('DeleteGroup', gid, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 $('#group_'+gid).remove();
             }
@@ -324,7 +324,7 @@ function delForums()
               $('#forum_'+fid).find('a').first().html()+
               msg.substr(msg.indexOf('%s%') + 3);
         if (confirm(msg)) {
-            var response = ForumsAjax.callAsync('DeleteForum', fid, false, {'async': false});
+            var response = ForumsAjax.call('DeleteForum', fid, false, {'async': false});
             if (response['type'] == 'alert-success') {
                 $('#forum_'+fid).remove();
             }

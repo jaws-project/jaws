@@ -67,7 +67,7 @@ function editPost(pid)
         scrollTop: $("#postUIArea").offset().top
     }, 1000);
 
-    var postInfo = ForumsAjax.callAsync('GetPost', {pid: pid}, false, {'async': false});
+    var postInfo = ForumsAjax.call('GetPost', {pid: pid}, false, {'async': false});
     $('#message').val(postInfo['message'].defilter());
     $('#post_form #update_reason').val(postInfo['update_reason'].defilter());
 }
@@ -84,7 +84,7 @@ function replyPost(pid)
         scrollTop: $("#postUIArea").offset().top
     }, 1000);
 
-    var postInfo = ForumsAjax.callAsync('GetPost', {pid: pid}, false, {'async': false});
+    var postInfo = ForumsAjax.call('GetPost', {pid: pid}, false, {'async': false});
     $('#message').val('[quote=' + postInfo['nickname'] + "]\n"+ postInfo['message'] + "\n[/quote]\n");
 }
 
