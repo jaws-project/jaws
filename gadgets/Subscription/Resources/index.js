@@ -16,7 +16,7 @@ function Jaws_Gadget_Subscription() { return {
      * Update subscription
      */
     updateSubscription: function() {
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'UpdateSubscription',
             $.unserialize($('form[name=subscription]').serialize())
         );

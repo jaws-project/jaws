@@ -39,14 +39,14 @@ function getSubscriptions(name, offset, reset)
         'gadget'    : $('#filter_gadget').val()
     };
 
-    var result = SubscriptionAjax.callAsync('GetSubscriptions', {
+    var result = SubscriptionAjax.call('GetSubscriptions', {
         'offset': offset,
         'order': $('#order_type').val(),
         'filters': filters
     }, false, {'async': false});
 
     if (reset) {
-        var total = SubscriptionAjax.callAsync('GetSubscriptionsCount', {
+        var total = SubscriptionAjax.call('GetSubscriptionsCount', {
             'filters': filters
         }, false, {'async': false});
     }
@@ -66,7 +66,7 @@ function subscriptionDGAction(combo)
         }
         var confirmation = confirm(Jaws.gadgets.Subscription.defines.confirmSubscriptionDelete);
         if (confirmation) {
-            SubscriptionAjax.callAsync('DeleteSubscriptions', rows);
+            SubscriptionAjax.call('DeleteSubscriptions', rows);
         }
     }
 }
