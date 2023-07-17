@@ -18,7 +18,7 @@ var ServerTimeCallback = {
  */
 function updateProperties(form)
 {
-    ServerTimeAjax.callAsync('UpdateProperties', $('#date_format').val());
+    ServerTimeAjax.call('UpdateProperties', $('#date_format').val());
 
 }
 
