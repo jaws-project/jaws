@@ -60,7 +60,7 @@ function listCategories(gadget, force_open)
     gFlagimage = $('#gadget_' + gadget + ' img')[0];
     divSubList = $('#sitemap_gadget_' + gadget);
     if (divSubList.html() == '') {
-        var category_list = SitemapAjax.callAsync('GetCategoriesList', gadget, false, {'async': false});
+        var category_list = SitemapAjax.call('GetCategoriesList', gadget, false, {'async': false});
         if (!category_list.blank()) {
             divSubList.html(category_list);
         } else {
@@ -86,7 +86,7 @@ function editGadget(gadget)
     if (gadget == null) return;
     unselectTreeRow();
     if (cacheGadgetForm == null) {
-        cacheGadgetForm = SitemapAjax.callAsync('GetGadgetUI', {}, false, {'async': false});
+        cacheGadgetForm = SitemapAjax.call('GetGadgetUI', {}, false, {'async': false});
     }
     currentAction = 'Gadget';
     selectedGadget = gadget;
@@ -96,7 +96,7 @@ function editGadget(gadget)
     $('#btn_save').css('display', 'inline');
     $('#category_edit').html(cacheGadgetForm);
 
-    var gadgetInfo = SitemapAjax.callAsync('GetGadget', {'gname':gadget}, false, {'async': false});
+    var gadgetInfo = SitemapAjax.call('GetGadget', {'gname':gadget}, false, {'async': false});
 
     if (gadgetInfo != null) {
         $('#priority').val(gadgetInfo['priority']);
@@ -114,7 +114,7 @@ function editCategory(element, gadget, cid)
     if (cid == 0) return;
     selectTreeRow(element.parentNode);
     if (cacheCategoryForm == null) {
-        cacheCategoryForm = SitemapAjax.callAsync('GetCategoryUI', {}, false, {'async': false});
+        cacheCategoryForm = SitemapAjax.call('GetCategoryUI', {}, false, {'async': false});
     }
     currentAction = 'Category';
     selectedCategory = cid;
@@ -127,7 +127,7 @@ function editCategory(element, gadget, cid)
     $('#btn_save').css('display', 'inline');
     $('#category_edit').html(cacheCategoryForm);
 
-    var categoryInfo = SitemapAjax.callAsync('GetCategory', {'gname':gadget, 'cid':cid}, false, {'async': false});
+    var categoryInfo = SitemapAjax.call('GetCategory', {'gname':gadget, 'cid':cid}, false, {'async': false});
 
     if (categoryInfo != null) {
         $('#cid').val(categoryInfo['id']);
@@ -146,7 +146,7 @@ function syncSitemap(gadget)
         return;
     }
     selectedGadget = gadget;
-    SitemapAjax.callAsync('SyncSitemapXML', {'gname':gadget});
+    SitemapAjax.call('SyncSitemapXML', {'gname':gadget});
 }
 
 /**
@@ -154,7 +154,7 @@ function syncSitemap(gadget)
  */
 function syncSitemapDataFile(gadget)
 {
-    SitemapAjax.callAsync('SyncSitemapData', {'gname':gadget});
+    SitemapAjax.call('SyncSitemapData', {'gname':gadget});
 }
 
 /**
@@ -162,7 +162,7 @@ function syncSitemapDataFile(gadget)
  */
 function pingSearchEngines()
 {
-    SitemapAjax.callAsync('PingSearchEngines');
+    SitemapAjax.call('PingSearchEngines');
 }
 
 /**
@@ -198,7 +198,7 @@ function unselectTreeRow()
 function saveProperties() {
     if (currentAction == 'Category') {
         cacheCategoryForm = null;
-        SitemapAjax.callAsync('UpdateCategory',
+        SitemapAjax.call('UpdateCategory',
             {
                 'gname': selectedGadget,
                 'category': selectedCategory,
@@ -211,7 +211,7 @@ function saveProperties() {
         );
     } else if(currentAction == 'Gadget') {
         cacheGadgetForm = null;
-        SitemapAjax.callAsync('UpdateGadgetProperties',
+        SitemapAjax.call('UpdateGadgetProperties',
             {
                 'gname': selectedGadget,
                 data: {
@@ -228,7 +228,7 @@ function saveProperties() {
  * Update robots
  */
 function updateRobots() {
-    SitemapAjax.callAsync('UpdateRobots', {'robots': $('#robots').val() });
+    SitemapAjax.call('UpdateRobots', {'robots': $('#robots').val() });
 }
 
 var SitemapAjax = new JawsAjax('Sitemap', SitemapCallback);
