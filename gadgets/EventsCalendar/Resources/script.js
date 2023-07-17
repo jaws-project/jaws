@@ -81,7 +81,7 @@ function eventsDataSource(options, callback) {
         'search': filters
     };
 
-    var rows = EventsCalendarAjax.callAsync('GetEvents', options, false, {'async': false});
+    var rows = EventsCalendarAjax.call('GetEvents', options, false, {'async': false});
 
     var items = rows.records;
     var totalItems = rows.total;
@@ -201,12 +201,12 @@ function saveEvent() {
 
     var data = $.unserialize($('form#events-form').serialize());
     if (selectedEvent == 0) {
-        EventsCalendarAjax.callAsync(
+        EventsCalendarAjax.call(
             'CreateEvent', data
         );
     } else {
         data.id = selectedEvent;
-        EventsCalendarAjax.callAsync(
+        EventsCalendarAjax.call(
             'UpdateEvent', data
         );
     }
@@ -218,7 +218,7 @@ function saveEvent() {
 function deleteEvents(ids)
 {
     if (confirm(CONST.confirmDelete)) {
-        EventsCalendarAjax.callAsync('DeleteEvents', {'ids': ids});
+        EventsCalendarAjax.call('DeleteEvents', {'ids': ids});
     }
 }
 
@@ -230,7 +230,7 @@ function editEvent(id)
 {
     selectedEvent = id;
     $('#friendModalLabel').html(CONST.editEvent);
-    var eInfo = EventsCalendarAjax.callAsync('GetEvent', {'id': selectedEvent}, false, {'async': false});
+    var eInfo = EventsCalendarAjax.call('GetEvent', {'id': selectedEvent}, false, {'async': false});
     if (eInfo) {
         var $form = $('form#events-form'),
             form = $form.get(0);

@@ -107,7 +107,7 @@ function submitEvent(form)
 function deleteEvent(id)
 {
     if (confirm(Jaws.gadgets.EventsCalendar.defines.confirmDelete)) {
-        ECAjax.callAsync('DeleteEvent', {id_set:id});
+        ECAjax.call('DeleteEvent', {id_set:id});
     }
 }
 
@@ -124,7 +124,7 @@ function deleteEvents()
         return input.value;
     });
     if (confirm(Jaws.gadgets.EventsCalendar.defines.confirmDelete)) {
-        ECAjax.callAsync('DeleteEvent', {id_set:idSet.join(',')});
+        ECAjax.call('DeleteEvent', {id_set:idSet.join(',')});
     }
 }
 
@@ -148,7 +148,7 @@ function toggleUsers(gid)
     var container = $('#sys_users').empty(),
         users = usersByGroup[gid];
     if (users === undefined) {
-        users = ECAjax.callAsync('GetUsers', {'gid':gid}, false, {'async': false});
+        users = ECAjax.call('GetUsers', {'gid':gid}, false, {'async': false});
         usersByGroup[gid] = users;
     }
     $.each(users, function (i, user) {
@@ -193,7 +193,7 @@ function updateShareUsers()
  */
 function submitShare(id)
 {
-    ECAjax.callAsync(
+    ECAjax.call(
         'UpdateShare',
         {'id':id, 'users': Object.keys(sharedEventUsers).join(',')}
     );
