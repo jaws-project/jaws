@@ -36,7 +36,7 @@ function saveChanges(form)
     } else {
         gadgets = '*';
     }
-    SearchAjax.callAsync('SaveChanges', gadgets);
+    SearchAjax.call('SaveChanges', gadgets);
 }
 
 function show_gadgets () {
