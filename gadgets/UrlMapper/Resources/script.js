@@ -108,7 +108,7 @@ function rebuildAliasCombo()
     while(combo.options.length != 0) {
         combo.options[0] = null;
     }
-    var aliases = UrlMapperAjax.callAsync('GetAliases', {}, false, {'async': false});
+    var aliases = UrlMapperAjax.call('GetAliases', {}, false, {'async': false});
     if (aliases != false) {
         var i =0;
         $.each(aliases, function(index, value) {
@@ -130,7 +130,7 @@ function rebuildAliasCombo()
  */
 function editAlias(id)
 {
-    var alias = UrlMapperAjax.callAsync('GetAlias', id, false, {'async': false});
+    var alias = UrlMapperAjax.call('GetAlias', id, false, {'async': false});
     $('#alias_id').val(id);
     $('#custom_url').val(alias['real_url']);
     $('#alias').val(alias['alias_url']);
@@ -143,14 +143,14 @@ function editAlias(id)
 function saveAlias()
 {
     if ($('#alias_id').val() == '-') {
-        UrlMapperAjax.callAsync(
+        UrlMapperAjax.call(
             'AddAlias', [
                 $('#alias').val(),
                 $('#custom_url').val()
             ]
         );
     } else {
-        UrlMapperAjax.callAsync(
+        UrlMapperAjax.call(
             'UpdateAlias', [
                 $('#alias_id').val(),
                 $('#alias').val(),
@@ -166,7 +166,7 @@ function saveAlias()
 function deleteCurrentAlias()
 {
     if ($('#alias-combo').prop('selectedIndex') != -1) {
-        UrlMapperAjax.callAsync('DeleteAlias', $('#alias-combo').val());
+        UrlMapperAjax.call('DeleteAlias', $('#alias-combo').val());
     }
     stopAction();
 }
@@ -176,7 +176,7 @@ function deleteCurrentAlias()
  */
 function updateProperties(form)
 {
-    UrlMapperAjax.callAsync(
+    UrlMapperAjax.call(
         'UpdateSettings', [
             form['enabled'].value,
             form['use_aliases'].value,
@@ -191,7 +191,7 @@ function updateProperties(form)
  */
 function saveMap()
 {
-    UrlMapperAjax.callAsync(
+    UrlMapperAjax.call(
         'UpdateMap', [
             selectedMap,
             $('#custom_map_route').val(),
@@ -209,7 +209,7 @@ function editErrorMap(element, emid)
     $('#legend_title').html(Jaws.gadgets.UrlMapper.defines.editErrorMap_title);
     selectDataGridRow($(element).parent().parent()[0]);
 
-    var errorMapInfo = UrlMapperAjax.callAsync('GetErrorMap', selectedErrorMap, false, {'async': false});
+    var errorMapInfo = UrlMapperAjax.call('GetErrorMap', selectedErrorMap, false, {'async': false});
     $('#url').val(errorMapInfo['url']);
     $('#code').val(errorMapInfo['code']);
     $('#new_url').val(errorMapInfo['new_url']);
@@ -229,7 +229,7 @@ function editMap(element, mid)
     $('#legend_title').html(Jaws.gadgets.UrlMapper.defines.editMap_title);
     selectDataGridRow(element.parentNode.parentNode);
 
-    var mapInfo = UrlMapperAjax.callAsync('GetMap', selectedMap, false, {'async': false});
+    var mapInfo = UrlMapperAjax.call('GetMap', selectedMap, false, {'async': false});
     $('#map_route').val(mapInfo['map']);
     $('#map_ext').val(mapInfo['extension']);
     $('#map_order').val(mapInfo['order']);
@@ -254,7 +254,7 @@ function showActionMaps()
 
     resetGrid('maps_datagrid', '');
     //Get maps of this action and gadget
-    var result = UrlMapperAjax.callAsync(
+    var result = UrlMapperAjax.call(
         'GetActionMaps',
         [$('#gadgets_combo').val(), $('#actions_combo').val()],
         false, {'async': false}
@@ -270,7 +270,7 @@ function rebuildActionCombo()
 {
     var combo = $('#actions_combo')[0];
     var selectedGadget = $('#gadgets_combo').val();
-    var actions = UrlMapperAjax.callAsync('GetGadgetActions', selectedGadget, false, {'async': false});
+    var actions = UrlMapperAjax.call('GetGadgetActions', selectedGadget, false, {'async': false});
 
     combo.options.length = 0;
     if (actions != false) {
@@ -338,7 +338,7 @@ function getErrorMaps(name, offset, reset)
         'new_code'  : $('#filter_new_code').val()
     };
 
-    var result = UrlMapperAjax.callAsync('GetErrorMaps', {
+    var result = UrlMapperAjax.call('GetErrorMaps', {
         'offset': offset,
         'order': $('#order_type').val(),
         'filters': filters
@@ -346,7 +346,7 @@ function getErrorMaps(name, offset, reset)
 
     if (reset) {
         $('#' + name)[0].setCurrentPage(0);
-        var total = UrlMapperAjax.callAsync('GetErrorMapsCount', {
+        var total = UrlMapperAjax.call('GetErrorMapsCount', {
             'filters': filters
         }, false, {'async': false});
 
@@ -383,14 +383,14 @@ function errorMapsDGAction()
         if (rows.length < 1) {
             return;
         }
-        UrlMapperAjax.callAsync('DeleteErrorMaps', rows);
+        UrlMapperAjax.call('DeleteErrorMaps', rows);
     } else if (combo.value == 'deleteAll') {
         if (confirmation) {
-            UrlMapperAjax.callAsync('DeleteErrorMapsFilters', {'filters': null});
+            UrlMapperAjax.call('DeleteErrorMapsFilters', {'filters': null});
         }
     } else if (combo.value == 'deleteFiltered') {
         if (confirmation) {
-            UrlMapperAjax.callAsync('DeleteErrorMapsFilters', {'filters': filters});
+            UrlMapperAjax.call('DeleteErrorMapsFilters', {'filters': filters});
         }
     }
 }
@@ -401,7 +401,7 @@ function errorMapsDGAction()
 function saveErrorMap()
 {
     if (selectedErrorMap != null && selectedErrorMap > 0) {
-        UrlMapperAjax.callAsync(
+        UrlMapperAjax.call(
             'UpdateErrorMap', [
                 selectedErrorMap,
                 $('#url').val(),
@@ -411,7 +411,7 @@ function saveErrorMap()
             ]
         );
     } else {
-        UrlMapperAjax.callAsync(
+        UrlMapperAjax.call(
             'AddErrorMap', [
                 $('#url').val(),
                 $('#code').val(),
