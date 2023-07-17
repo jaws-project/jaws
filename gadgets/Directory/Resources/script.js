@@ -271,7 +271,7 @@ function downloadFile(id)
     }
     var file = fileById[id];
     if (!file) {
-        file = fileById[id] = DirectoryAjax.callSync('GetFile', {'id':id});
+        file = fileById[id] = DirectoryAjax.callAsync('GetFile', {'id':id}, false, {'async': false});
     }
     if (file.is_dir) {
         return;
@@ -350,13 +350,13 @@ function props()
     if (data.is_dir) {
         form = cachedForms.viewDir;
         if (!form) {
-            form = DirectoryAjax.callSync('DirectoryForm');
+            form = DirectoryAjax.callAsync('DirectoryForm', {}, false, {'async': false});
         }
         cachedForms.viewDir = form;
     } else {
         form = cachedForms.viewFile;
         if (!form) {
-            form = DirectoryAjax.callSync('FileForm');
+            form = DirectoryAjax.callAsync('FileForm', {}, false, {'async': false});
         }
         cachedForms.viewFile = form;
     }
@@ -392,7 +392,7 @@ function del()
  */
 function move() {
     if (idSet.length === 0) return;
-    var tree = DirectoryAjax.callSync('GetTree', {'id_set':idSet.join(',')}),
+    var tree = DirectoryAjax.callAsync('GetTree', {'id_set':idSet.join(',')}, false, {'async': false}),
         form = $('#form');
     form.html(tree);
     form.find('a').on('click', function () {
@@ -430,7 +430,7 @@ function newDirectory()
 {
     cancel();
     if (!cachedForms.editDir) {
-        cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {mode:'edit'});
+        cachedForms.editDir = DirectoryAjax.callAsync('DirectoryForm', {mode:'edit'}, false, {'async': false});
     }
     $('#form').html(cachedForms.editDir);
     $('#frm_dir').find('input[name=title]').focus();
@@ -443,7 +443,7 @@ function newDirectory()
 function editDirectory(id)
 {
     if (!cachedForms.editDir) {
-        cachedForms.editDir = DirectoryAjax.callSync('DirectoryForm', {mode:'edit'});
+        cachedForms.editDir = DirectoryAjax.callAsync('DirectoryForm', {mode:'edit'}, false, {'async': false});
     }
     $('#form').html(cachedForms.editDir);
     var data = fileById[id],
@@ -462,7 +462,7 @@ function newFile()
 {
     cancel();
     if (!cachedForms.editFile) {
-        cachedForms.editFile = DirectoryAjax.callSync('FileForm', {mode:'edit'});
+        cachedForms.editFile = DirectoryAjax.callAsync('FileForm', {mode:'edit'}, false, {'async': false});
     }
     $('#form').html(cachedForms.editFile);
     $('#tr_file').hide();
@@ -479,7 +479,7 @@ function newFile()
 function editFile(id)
 {
     if (!cachedForms.editFile) {
-        cachedForms.editFile = DirectoryAjax.callSync('FileForm', {mode:'edit'});
+        cachedForms.editFile = DirectoryAjax.callAsync('FileForm', {mode:'edit'}, false, {'async': false});
     }
     $('#form').html(cachedForms.editFile);
     var form = $('#frm_file')[0],

@@ -76,7 +76,7 @@ function Jaws_Gadget_Directory() { return {
             scrollTop: $("#fileUIArea").offset().top
         }, 1000);
 
-        var fileInfo = this.gadget.ajax.callSync('GetFile', {id: id});
+        var fileInfo = this.gadget.ajax.callAsync('GetFile', {id: id}, false, {'async': false});
         $('#file_form #title').val(fileInfo['title']);
         $('#description').val(fileInfo['description']);
         $('#file_form #tags').val(fileInfo['tags']);
