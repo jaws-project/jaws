@@ -35,16 +35,16 @@ function getActivities(name, offset, reset)
         'domain'    : $('#filter_domain').val()
     };
 
-    var result = ActivitiesAjax.callSync('GetActivities', {
+    var result = ActivitiesAjax.callAsync('GetActivities', {
         'offset': offset,
         'order': $('#order_type').val(),
         'filters': filters
-    });
+    }, false, {'async': false});
 
     if (reset) {
-        var total = ActivitiesAjax.callSync('GetActivitiesCount', {
+        var total = ActivitiesAjax.callAsync('GetActivitiesCount', {
             'filters': filters
-        });
+        }, false, {'async': false});
     }
     resetGrid(name, result, total);
 }
