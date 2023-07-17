@@ -16,7 +16,7 @@ var SettingsCallback = {
  */
 function updateSettings()
 {
-    var result = SettingsAjax.callAsync(
+    var result = SettingsAjax.call(
         'UpdateSettings',
         $.unserialize($('form[name=settings]').serialize())
     );

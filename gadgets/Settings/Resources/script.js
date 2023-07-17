@@ -18,7 +18,7 @@ function Jaws_Gadget_Settings() { return {
      * Update advanced settings
      */
     submitAdvancedForm: function() {
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'UpdateAdvancedSettings',
             $.unserialize($('#settingsForm input,select,textarea').serialize())
         );
@@ -56,14 +56,14 @@ function Jaws_Gadget_Settings() { return {
 
         var settings = $.unserialize($('#settingsForm input,select,textarea').serialize());
         settings["site_custom_meta"] = customMeta;
-        this.gadget.ajax.callAsync('UpdateMetaSettings', settings);
+        this.gadget.ajax.call('UpdateMetaSettings', settings);
     },
 
     /**
      * Update mail-server settings
      */
     submitMailSettingsForm: function() {
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'UpdateMailSettings',
             $.unserialize($('#settingsForm input,select,textarea').serialize())
         );
@@ -73,7 +73,7 @@ function Jaws_Gadget_Settings() { return {
      * Update proxy settings
      */
     submitProxySettingsForm: function() {
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'UpdateProxySettings',
             $.unserialize($('#settingsForm input,select,textarea').serialize())
         );
@@ -107,7 +107,7 @@ function Jaws_Gadget_Settings() { return {
      * Update ftp-server settings
      */
     submitFTPSettingsForm: function() {
-        this.gadget.ajax.callAsync(
+        this.gadget.ajax.call(
             'UpdateFTPSettings',
             $.unserialize($('#settingsForm input,select,textarea').serialize())
         );
@@ -134,7 +134,7 @@ function Jaws_Gadget_Settings_Action_BasicSettings() { return {
      * Update basic settings
      */
     submitBasicForm: function() {
-        this.ajax.callAsync(
+        this.ajax.call(
             'UpdateBasicSettings',
             $.unserialize($('#settingsForm input,select,textarea').serialize())
         );
