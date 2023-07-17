@@ -90,7 +90,7 @@ function updateTerm()
         combo.options[combo.selectedIndex].text = term;
         // Call function
         loading_message = Jaws.gadgets.Glossary.defines.updatingMessage;
-        GlossaryAjax.callAsync('UpdateTerm', [id, term, fast_url, contents]);
+        GlossaryAjax.call('UpdateTerm', [id, term, fast_url, contents]);
     }
 }
 
@@ -100,7 +100,7 @@ function updateTerm()
 function deleteTerm()
 {
     loading_message = Jaws.gadgets.Glossary.defines.deletingMessage;
-    GlossaryAjax.callAsync('DeleteTerm', $('#term_id').val());
+    GlossaryAjax.call('DeleteTerm', $('#term_id').val());
 }
 
 /**
@@ -174,7 +174,7 @@ function edit(id)
     previousID  = id;
     currentMode = 'edit';
     loading_message = Jaws.gadgets.Glossary.defines.retrievingMessage;
-    var termData = GlossaryAjax.callAsync('GetTerm', id, false, {'async': false});
+    var termData = GlossaryAjax.call('GetTerm', id, false, {'async': false});
     fillEditorEntries(termData);
     editTitle  = termData['term'];
     switchTab('edit', termData['term']);
@@ -190,7 +190,7 @@ function preview()
     $('#preview_title').html($('#term_title').val());
 
     // Use this if you want to use plugins
-    GlossaryAjax.callAsync('ParseText', term_contents);
+    GlossaryAjax.call('ParseText', term_contents);
     //$('#preview_contents').html(term_contents);
 }
 
@@ -223,7 +223,7 @@ function newTerm()
     }
 
     loading_message = Jaws.gadgets.Glossary.defines.savingMessage;
-    GlossaryAjax.callAsync('NewTerm', [term, fast_url, contents]);
+    GlossaryAjax.call('NewTerm', [term, fast_url, contents]);
 }
 
 /**
@@ -256,7 +256,7 @@ function returnToEdit()
             combo.disabled = true;
         } else {
             loading_message = Jaws.gadgets.Glossary.defines.retrievingMessage;
-            var termData = GlossaryAjax.callAsync('GetTerm', previousID, false, {'async': false});
+            var termData = GlossaryAjax.call('GetTerm', previousID, false, {'async': false});
             fillEditorEntries(termData);
             b.disabled = false;
             combo.disabled = false;
