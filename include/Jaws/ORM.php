@@ -319,7 +319,9 @@ class Jaws_ORM
      */
     function fetchmode($fetchmode)
     {
-        $this->_fetchmode = $fetchmode;
+        if (!empty($fetchmode)) {
+            $this->_fetchmode = $fetchmode;
+        }
         return $this;
     }
 
@@ -776,13 +778,19 @@ class Jaws_ORM
      */
     function orderBy($args)
     {
-        foreach(func_get_args() as $arg) {
-            // quote arg identifier
-            if (is_object($arg)) {
-                $this->_orderBy[] = $arg->get(). $arg->sort;
-                unset($arg);
+        foreach(func_get_args() as $args) {
+            // quote args identifier
+            if (is_object($args)) {
+                $this->_orderBy[] = $args->get(). $args->sort;
+                unset($args);
             } else {
-                $this->_orderBy[] = $this->quoteIdentifier($arg);
+                if (is_array($args)) {
+                    foreach($args as $arg) {
+                        $this->_orderBy[] = $this->quoteIdentifier($arg);
+                    }
+                } else {
+                    $this->_orderBy[] = $this->quoteIdentifier($args);
+                }
             }
         }
 
