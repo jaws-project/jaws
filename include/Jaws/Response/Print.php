@@ -24,12 +24,13 @@ class Jaws_Response_Print
         header('Cache-Control: no-cache, must-revalidate');
         header('Pragma: no-cache');
 
+        $jawsApp = Jaws::getInstance();
         // if current theme has a error code html file, return it, if not return the messages.
-        $theme = Jaws::getInstance()->GetTheme();
-        $site_name = Jaws::getInstance()->registry->fetch('site_name', 'Settings');
+        $theme = $jawsApp->GetTheme();
+        $site_name = $jawsApp->registry->fetch('site_name', 'Settings');
         if (file_exists($theme['path'] . 'Print.html')) {
             // fetch all registry keys related to site attributes
-            $siteAttributes = Jaws::getInstance()->registry->fetchAll('Settings', false);
+            $siteAttributes = $jawsApp->registry->fetchAll('Settings', false);
 
             $tpl = new Jaws_Template();
             $tpl->Load('Print.html', $theme['path']);
@@ -47,7 +48,13 @@ class Jaws_Response_Print
             $tpl->SetVariable('site-license',     $siteAttributes['site_license']);
             $tpl->SetVariable('site-copyright',   $siteAttributes['site_copyright']);
 
-            $tpl->SetVariable('content', $data);
+            $tpl->SetVariable(
+                'page-title',
+                !empty($jawsApp->mainAction)?
+                    $jawsApp->mainAction->getAttribute($jawsApp->mainRequest['action'], 'title') :
+                    $site_name
+            );
+            $tpl->SetVariable('page-content', $data);
             $tpl->ParseBlock('layout');
             return $tpl->Get();
         }
