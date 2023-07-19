@@ -522,69 +522,6 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         }
     };
 
-    /**
-     * Performs asynchronous file upload
-     *
-     * @param   {string}    action      Jaws action name
-     * @param   {file}      file        File object to be uploaded
-     * @param   {function}  done        Success callback function
-     * @param   {function}  progress    Progress callback function
-     * @return  {boolean}
-     */
-    this.uploadFile = function (action, formData, done, progress, callOptions) {
-        var gadget, baseScript;
-
-        callOptions = callOptions || {};
-        // response message/loading container
-        if (!callOptions.hasOwnProperty('message_container')) {
-            var rc_gadget, rc_action;
-            rc_gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
-            rc_action = this.baseAction? this.baseAction : this.mainRequest['action'];
-            callOptions.message_container = $("#"+(rc_gadget+'_'+ rc_action+'_'+'response').toLowerCase());
-        }
-
-        gadget = callOptions.hasOwnProperty('gadget')? callOptions.gadget : this.gadget;
-        baseScript = callOptions.hasOwnProperty('baseScript')? callOptions.baseScript : this.baseScript;
-
-        var options = {
-            async: true,
-            type: 'POST',
-            data: formData,
-            dataType: 'text',
-            action: action,
-            timeout: 10 * 60 * 1000, /* 10 minutes */
-            contentType: false,
-            processData: false,
-            cache: false,
-            done: done? $.proxy(done, this.callbackObject) : undefined,
-            xhr: function() {
-                // handle the upload progress
-                var xhr = $.ajaxSettings.xhr();
-                if (xhr.upload) {
-                    xhr.upload.addEventListener('progress', progress, false);
-                    return xhr;
-                }
-            }
-        };
-        // url
-        options.url  = baseScript + '?reqGadget=' + gadget + '&reqAction=' + action;
-        if (callOptions.hasOwnProperty('restype')) {
-            options.url+= '&restype=' + callOptions.restype;
-        } else {
-            options.url+= '&restype=json';
-        }
-
-        options.callOptions = callOptions;
-        options.beforeSend = this.onSend.bind(this, options);
-        options.success = this.onSuccess.bind(this, options);
-        options.error = this.onError.bind(this, options);
-        options.complete = this.onComplete.bind(this, options);
-        // prevent auto redirect, we handle it manually if required
-        options.headers = {'Auto-Redirects': '0'}
-
-        return $.ajax(options);
-    };
-
     this.onSend = function (reqOptions) {
         // start show loading indicator
         this.callbackObject.gadget.message.loading(true, reqOptions.callOptions.message_container);
