@@ -865,14 +865,12 @@ function initiateGroupsDG() {
 function uploadVCardFile() {
     var $file = $('<input>', {type: 'file', name: 'file', 'multiple': false});
     $file.change(function () {
-        var xhr = UsersAjax.uploadFile(
+        var xhr = UsersAjax.call(
             'ImportVCard',
             this.files[0],
             function (response, code) {
                 if (response.type == 'alert-success' && code == 200) {
                 }
-            },
-            function (e) {
             }
         );
     }).trigger('click');
