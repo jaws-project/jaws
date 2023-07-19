@@ -474,6 +474,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             switch (callOptions.restype) {
                 case 'json':
                 case 'text':
+                case 'print':
                     xhr.responseType = '';
                     break;
 
@@ -590,9 +591,9 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
     };
 
     this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
-        // ----
+        // file
         let disposition = jqXHR.getResponseHeader('content-disposition');
-        if (disposition) {
+        if (disposition || reqOptions.xhr().responseType == 'blob') {
             let filename = '';
             let filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
             let matches = filenameRegex.exec(disposition);
@@ -608,6 +609,13 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             link.remove();
             URL.revokeObjectURL(url);
         }
+
+        // print
+        if (reqOptions.callOptions.restype == 'print') {
+            let $print = $('<iframe>').appendTo('body');
+            $print.contents().find('html').html(data).get(0).ownerDocument.defaultView.print();
+            $print.remove();
+        }
     };
 
     this.onError = function (reqOptions, jqXHR, textStatus, errorThrown) {
@@ -618,7 +626,10 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         // hide loading
         this.callbackObject.gadget.message.loading(false, reqOptions.callOptions.message_container);
 
-        let response = eval('(' + jqXHR.responseText + ')');
+        let response = jqXHR.responseText;
+        if (reqOptions.callOptions.restype == 'json') {
+            response = eval('(' + response + ')');
+        }
         // ajax redirect
         if ([301, 302].indexOf(jqXHR.status) != -1) {
             window.location = response;
