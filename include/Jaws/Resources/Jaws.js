@@ -550,8 +550,14 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         // print
         if (reqOptions.callOptions.restype == 'print') {
             let $print = $('<iframe>').appendTo('body');
-            $print.contents().find('html').html(data).get(0).ownerDocument.defaultView.print();
-            $print.remove();
+            let doc = $print[0].contentWindow.document;
+            doc.open();
+            doc.write(data);
+            doc.close();
+            $print.on('load', function(el) {
+                $print.contents().find('html').get(0).ownerDocument.defaultView.print();
+                $print.remove();
+            });
         }
     };
 
