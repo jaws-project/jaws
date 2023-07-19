@@ -338,6 +338,7 @@ class Jaws_Gadget
             if (!empty($objAction)) {
                 // set in main request
                 $jawsApp->inMainRequest = true;
+                $jawsApp->mainAction = $objAction;
                 $reqResult = $objAction->Execute($reqAction, null, '', $privateAccess);
                 if (Jaws_Error::isError($reqResult)) {
                     $reqResult = $reqResult->GetMessage();

@@ -39,6 +39,13 @@ class Jaws
     );
 
     /**
+     * The main action object
+     * @var     Jaws_Gadget_Action
+     * @access  public
+     */
+    public $mainAction = null;
+
+    /**
      * Main request is running?
      * @var     bool
      * @access  public

@@ -40,22 +40,6 @@ class Jaws_Layout
     );
 
     /**
-     * Page title
-     *
-     * @access  private
-     * @var     string
-     */
-    var $_Title = null;
-
-    /**
-     * Page description
-     *
-     * @access  private
-     * @var     string
-     */
-    var $_Description = null;
-
-    /**
      * Page languages
      *
      * @access  private
@@ -318,36 +302,17 @@ class Jaws_Layout
     }
 
     /**
-     * Changes the site-title with something else
-     *
-     * @access  public
-     * @param   string  $title  New title
-     */
-    function SetTitle($title)
-    {
-        $this->_Title = strip_tags($title);
-    }
-
-    /**
-     * Gets the site-title
-     *
-     * @access  public
-     * @return  string  site-title
-     */
-    function GetTitle()
-    {
-        return $this->_Title;
-    }
-
-    /**
      * Assign the right head's title
      *
      * @access  public
      */
     function PutTitle()
     {
-        if (!empty($this->_Title)) {
-            $pageTitle = array($this->_Title, $this->attributes['site_name']);
+        if (!empty($this->app->mainAction)) {
+            $pageTitle = array(
+                $this->app->mainAction->getAttribute($this->app->mainRequest['action'], 'title'),
+                $this->attributes['site_name']
+            );
         } else {
             $slogan = $this->attributes['site_slogan'];
             $pageTitle   = array();
@@ -373,27 +338,18 @@ class Jaws_Layout
     }
 
     /**
-     * Changes the site-description with something else
-     *
-     * @access  public
-     * @param   string  $desc  New description
-     */
-    function SetDescription($desc)
-    {
-        $this->_Description = strip_tags((string)$desc);
-    }
-
-    /**
      * Assign the right page's description
      *
      * @access  public
      */
     function PutDescription()
     {
-        if (empty($this->_Description)) {
-            $this->_Description = $this->attributes['site_description'];
+        if (empty($this->app->mainAction)) {
+            $pageDescription = $this->attributes['site_description'];
+        } else {
+            $pageDescription = $this->app->mainAction->getAttribute($this->app->mainRequest['action'], 'description');
         }
-        $this->_Template->ResetVariable('site-description', $this->_Description, 'layout');
+        $this->_Template->ResetVariable('site-description', $pageDescription, 'layout');
     }
 
     /**
@@ -520,10 +476,6 @@ class Jaws_Layout
         $privateAccess = $this->app->registry->fetch('global_website', 'Settings') == 'false';
         $items = $this->GetLayoutItems();
         if (!Jaws_Error::IsError($items)) {
-            // temporary store page title/description
-            $title = $this->_Title;
-            $description = $this->_Description;
-
             $section = '';
             foreach ($items as $item) {
                 $block = 'layout/' . $item['section'];
@@ -580,10 +532,6 @@ class Jaws_Layout
                 $this->_Template->SetVariable('action_mode', strtolower($this->app->requestedActionMode));
                 $this->_Template->ParseBlock($block, $ignore = empty($content));
             }
-
-            // restore stored title/description because layout action can't them
-            $this->_Title = $title;
-            $this->_Description = $description;
         }
     }
 
