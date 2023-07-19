@@ -749,7 +749,9 @@ function uploadCategoryImage(fileElem) {
     let formData = new FormData();
         formData.append('file[]', $('#image_file').get(0).files[0]);
 
-    var xhr = BlogAjax.uploadFile('UploadImage', formData,
+    var xhr = BlogAjax.call(
+        'UploadImage',
+        formData,
         function (response, code, callOptions) {
             if (code != 200) {
                 if (code == 0) {
@@ -766,6 +768,7 @@ function uploadCategoryImage(fileElem) {
             deleteCategoryImage = false;
             $progress.remove();
             $cancel.remove();
+        }, {
         },
         function (e) {
             if (uploadCanceled) {
