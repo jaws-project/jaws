@@ -1,0 +1,47 @@
+<!-- BEGIN layout -->
+<!DOCTYPE html>
+<html lang="{{site-languages}}" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <base href="{{base_url}}" />
+  <title>{{site-title}}</title>
+  <meta name="author" content="{{site-author}}" />
+  <meta name="keywords" content="{{site-keywords}}" />
+  <meta name="description" content="{{site-description}}" />
+  <meta name="viewport" content="width=device-width, maximum-scale=2.0, initial-scale=1.0"/>
+  <link rel="stylesheet" type="text/css" href="libraries/bootstrap.fuelux/css/bootstrap.fuelux{{.dir}}.css?{{site-buildnumber}}" />
+  <!-- BEGIN metas -->{{elements}}<!-- END metas -->
+  <!-- BEGIN links -->{{elements}}<!-- END links -->
+  <link rel="stylesheet" type="text/css" href="{{theme_url}}print{{.dir}}.css?{{site-buildnumber}}" />
+</head>
+<body class="main_layout_{{main_layout}}" id="main_gadget_{{main_gadget}}">
+  <div class="print-page">
+    <header class="print-page-header">
+      <div class="print-page-container text-center">
+       {{page-title}}
+      </div>
+    </header>
+
+    <table class="print-page-table">
+      <thead><tr><th><div class="print-page-header-space"></div></th></tr></thead>
+      <tbody>
+      <tr>
+        <td>
+        <main class="main">
+          <div class="print-page-container">{{page-content}}</div>
+        </main>
+        </td>
+      </tr>
+      </tbody>
+      <tfoot><tr><td><div class="print-page-footer-space"></div></td></tr></tfoot>
+    </table>
+
+    <footer class="print-page-footer">
+      <div class="print-page-container text-center">
+        {{site-copyright}}
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
+<!-- END layout -->
