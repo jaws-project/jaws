@@ -186,38 +186,6 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
 
 
     /**
-     * Sets the browser's title (<title></title>)
-     *
-     * @access  public
-     * @param   string  $title  Browser's title
-     * @return  void
-     */
-    public function SetTitle($title)
-    {
-        //Set title in case we are no running on standalone..
-        if (isset($this->app->layout)) {
-            $this->app->layout->SetTitle($title);
-        }
-    }
-
-
-    /**
-     * Sets the browser's title (<title></title>)
-     *
-     * @access  public
-     * @param   string  $title  Browser's title
-     * @return  void
-     */
-    public function SetDescription($desc)
-    {
-        //Set description in case we are no running on standalone..
-        if (isset($this->app->layout)) {
-            $this->app->layout->SetDescription($desc);
-        }
-    }
-
-
-    /**
      * Add keywords to meta keywords tag
      *
      * @access  public
@@ -295,11 +263,6 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
             }
         }
 
-        if (isset($this->app->layout)) {
-            $this->app->layout->SetTitle($this->gadget::t('ACTIONS_'.$action.'_TITLE'));
-            $this->app->layout->SetDescription($this->gadget::t('ACTIONS_'.$action.'_DESC'));
-        }
-
         $file = $this->gadget->actions[JAWS_SCRIPT][$action]['file'];
         if (JAWS_SCRIPT == 'index') {
             $objAction = $this->gadget->action->load($file);
@@ -311,6 +274,9 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
         }
 
         if (method_exists($objAction, $action)) {
+            $objAction->setAttribute($action, 'title', $this->gadget::t('ACTIONS_'.$action.'_TITLE'));
+            $objAction->setAttribute($action, 'description', $this->gadget::t('ACTIONS_'.$action.'_DESC'));
+
             if ($privateAccess &&
                 !$this->app->session->user->logged &&
                 !$objAction->getAttribute($action, 'global')
