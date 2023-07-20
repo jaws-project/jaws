@@ -50,7 +50,11 @@ footer.print-page-footer {
   width: 100%;
 }
 
-.main  table {
+.main {
+  width: 100vw;
+  overflow-x: hidden;
+}
+.main table {
   width: 100%
 }
 .main table td, .main table th {
