@@ -1,46 +1,89 @@
+<form name="account" action="{{base_script}}" method="post">
+<input type="hidden" name="reqGadget" value="{{pagination.gadget}}" />
+<input type="hidden" name="reqAction" value="{{pagination.action}}" />
+
 <nav class="gadget_pagination" aria-label="Page navigation">
   <ul class="pagination">
-    {% for page in pagination.pager %}
-      {% assign pagination.params.page = page %}
-      {% assign pageURL = pagination.gadget | urlmap: pagination.action, pagination.params %}
-      {% case forloop.key %}
-        {% when 'previous' %}
-          {% if page %}
-            <li>
-              <a href="{{ pageURL }}" aria-label="Previous">
-                <span aria-hidden="true">{{ "global.pagination_previous" | t }}</span>
-              </a>
-            </li>
-          {% else %}
-            <li class="disabled">
-              <a href="#" aria-label="Previous">
-                <span aria-hidden="true">{{ "global.pagination_previous" | t }}</span>
-              </a>
-            </li>
-          {% endif %}
-        {% when 'current' %}
-          <li class="active"><a href="{{ pageURL }}">{{ page }}</a></li>
-        {% when 'next' %}
-          {% if page %}
-            <li>
-              <a href="{{ pageURL }}" aria-label="Next">
-               <span aria-hidden="true">{{ "global.pagination_next" | t }}</span>
-              </a>
-            </li>
-          {% else %}
-            <li class="disabled">
-              <a href="#" aria-label="Next">
-                <span aria-hidden="true">{{ "global.pagination_next" | t }}</span>
-              </a>
-            </li>
-          {% endif %}
-        {% when 'separator' %}
-          <li class="disabled"><a href="#">...</a></li>
-        {% else %}
-          {% if forloop.key != 'total' %}
-            <li><a href="{{ pageURL }}">{{ page }}</a></li>
-          {% endif %}
-      {% endcase %}
-    {% endfor %}
+    {%- assign pagination.params.limit = pagination.limit %}
+    {%- if pagination.perpage %}
+    <li>
+      <div>
+        <span>{{ "global.perpage" | t }}</span>
+        <select name="limit" data-width="5rem" style="width:unset" data-minimum-results-for-search="Infinity" onchange="this.form.submit()">
+          {%- for pagesize in pagination.perpage %}
+          <option value="{{pagesize}}" {{- pagination.limit | equal: pagesize, ' selected', '' -}} >{{pagesize}}</option>
+          {%- endfor %}
+        </select>
+      </div>
+    </li>
+    {%- else %}
+    <input type="hidden" name="limit" value="{{pagination.limit}}" />
+    {%- endif %}
+
+    {%- if pagination.sort %}
+    {%- assign pagination.params.sort = pagination.sort.default %}
+
+    {%- if pagination.sort.options %}
+    <li>
+      <div>
+        <span>{{ "global.sort" | t }}</span>
+        <select name="sort" data-width="10rem" style="width:unset" data-minimum-results-for-search="Infinity" onchange="this.form.submit()">
+          {%- for option in pagination.sort.options %}
+          <option value="{{forloop.key}}" {{- pagination.sort.default | equal: forloop.key, ' selected', '' -}}>{{option}}</option>
+          {%- endfor %}
+        </select>
+      </div>
+    </li>
+    {%- else %}
+    <input type="hidden" name="sort" value="{{pagination.sort.default}}" />
+    {%- endif %}
+
+    {%- endif %}
+
+    {%- for page in pagination.pages %}
+      {%- assign pagination.params.page = page %}
+      {%- assign pageURL = pagination.gadget | urlmap: pagination.action, pagination.params %}
+
+      {%- case forloop.key %}
+      {%- when 'previous' %}
+      {%- if page %}
+    <li>
+      <a href="{{ pageURL }}" aria-label="Previous">
+        <span aria-hidden="true">{{ "global.pagination_previous" | t }}</span>
+      </a>
+    </li>
+      {%- else %}
+    <li class="disabled">
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">{{ "global.pagination_previous" | t }}</span>
+      </a>
+    </li>
+    {%- endif %}
+    {%- when 'current' %}
+    <li class="active"><a href="{{ pageURL }}">{{ page }}</a></li>
+    {%- when 'next' %}
+    {%- if page %}
+    <li>
+      <a href="{{ pageURL }}" aria-label="Next">
+       <span aria-hidden="true">{{ "global.pagination_next" | t }}</span>
+      </a>
+    </li>
+    {%- else %}
+    <li class="disabled">
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">{{ "global.pagination_next" | t }}</span>
+      </a>
+    </li>
+      {%- endif %}
+    {%- when 'separator' %}
+    <li class="disabled"><a href="#">...</a></li>
+    {%- else %}
+    {%- if forloop.key != 'total' %}
+    <li><a href="{{ pageURL }}">{{ page }}</a></li>
+    {%- endif %}
+    {%- endcase %}
+
+    {%- endfor %}
   </ul>
 </nav>
+</form>

@@ -93,27 +93,27 @@ class Jaws_Gadget_Actions_PageNavigation extends Jaws_Gadget_Class
      * Get navigate pagination
      *
      * @access  public
-     * @param   int     $current    Current page number
-     * @param   int     $ipp        Item per page
-     * @param   int     $total      Total items
+     * @param   array   $options    Pagination options
      * @param   string  $action     Gadget action name
      * @param   array   $params     Action params array
-     * @param   string  $label      Total label
      * @param   string  $gadget     Gadget name
      * @return  array   Pager navigation array
      */
-    function xpagination($current, $ipp, $total, $action, $params = array(), $label = '', $gadget = '')
+    function xpagination(array $options, $action, $params = array(),  $gadget = '')
     {
-        $pager = $this->GetPagerNumbered($current, $ipp, $total);
-        if (empty($pager)) {
-            return false;
+        $pages = false;
+        if (array_key_exists('pages', $options) && $options['pages']) {
+            $pages = $this->GetPagerNumbered($options['page'], $options['limit'], $options['total']);
         }
 
         return array(
-            'gadget' => $this->gadget->name,
-            'action' => $action,
-            'label'  => $label,
-            'pager'  => $pager
+            'gadget'  => $this->gadget->name,
+            'action'  => $action,
+            'params'  => $params,
+            'pages'   => $pages,
+            'limit'   => $options['limit'],
+            'sort'    => array_key_exists('sort', $options)? $options['sort'] : '',
+            'perpage' => array_key_exists('perpage', $options)? $options['perpage'] : [],
         );
     }
 
