@@ -345,6 +345,7 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
         return false;
     }
 
+
     /**
      * Get action attributes
      *
@@ -357,6 +358,7 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
     {
         return (array)@$this->gadget->actions[$script][$action];
     }
+
 
     /**
      * Get action attribute
