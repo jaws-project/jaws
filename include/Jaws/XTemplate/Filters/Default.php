@@ -209,6 +209,27 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Checks if input statement contains given needle
+     *
+     * @param   mixed   $needle     The searched value
+     * @param   mixed   $input      The array|string to search in
+     * @param   mixed   $column_key The column of values to search(int|string|null)
+     * @return  bool    Returns true if needle is found, false otherwise
+     */
+    public static function in($needle, $input, $column_key = null)
+    {
+        if ($input instanceof \Traversable) {
+            $input = iterator_to_array($input);
+        }
+
+        if (is_array($input)) {
+            return in_array($needle, is_null($column_key)? $input : array_column($input, $column_key));
+        } else {
+            return strpos($input, $needle) !== false;
+        }
+    }
+
+    /**
      * Get map version of url if found
      *
      * @param   string   $args      Map arguments(comma seprated)
@@ -372,6 +393,18 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
             $string,
             $args
         );
+    }
+
+    /**
+     * Get the type of a variable
+     *
+     * @param   mixed   $input
+     *
+     * @return string
+     */
+    public static function type($input)
+    {
+        return gettype($input);
     }
 
     /**
