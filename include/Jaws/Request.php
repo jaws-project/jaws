@@ -303,45 +303,52 @@ class Jaws_Request
         }
         @list($all, $key, $valid_type, $cast_type) = $this->regexp->matches;
 
-        if (isset($this->data[$method][$key])) {
-            $value = $json_decode? json_decode($this->data[$method][$key]) : $this->data[$method][$key];
-            // try unserialize value
-            if (is_string($value) && false !== $tvalue = @unserialize($value)) {
-                $value = $tvalue;
-                unset($tvalue);
-            }
-
-            // filter not allowed html tags/attributes
-            if ($xss_strip) {
-                $value = $this->strip_tags_attributes($value);
-            }
-
-            if ($filters === true) {
-                $filters = $this->_filtersPriority;
-            } elseif (!empty($filters)) {
-                $filters = array('strip_null', $filters);
-            } else {
-                $filters = array('strip_null');
-            }
-
-            if (is_array($value)) {
-                array_walk_recursive($value, array(&$this, 'filter'), $filters);
-            } else {
-                $this->filter($value, $key, $filters);
-            }
-
-            // type check
-            if ($type_validate && $valid_type) {
-                $value = $this->func_type_check[$valid_type]($value)? $value : null;
-            }
-            // type cast
-            if (!is_null($value) && $cast_type) {
+        // if key not exists
+        if (!isset($this->data[$method][$key])) {
+            $value = null;
+            if ($cast_type) {
+                // type cast
                 settype($value, $cast_type);
             }
             return $value;
         }
 
-        return null;
+        $value = $json_decode? json_decode($this->data[$method][$key]) : $this->data[$method][$key];
+        // try unserialize value
+        if (is_string($value) && false !== $tvalue = @unserialize($value)) {
+            $value = $tvalue;
+            unset($tvalue);
+        }
+
+        // filter not allowed html tags/attributes
+        if ($xss_strip) {
+            $value = $this->strip_tags_attributes($value);
+        }
+
+        if ($filters === true) {
+            $filters = $this->_filtersPriority;
+        } elseif (!empty($filters)) {
+            $filters = array('strip_null', $filters);
+        } else {
+            $filters = array('strip_null');
+        }
+
+        if (is_array($value)) {
+            array_walk_recursive($value, array(&$this, 'filter'), $filters);
+        } else {
+            $this->filter($value, $key, $filters);
+        }
+
+        // type check
+        if ($type_validate && $valid_type) {
+            $value = $this->func_type_check[$valid_type]($value)? $value : null;
+        }
+        // type cast
+        if (!is_null($value) && $cast_type) {
+            settype($value, $cast_type);
+        }
+
+        return $value;
     }
 
     /**
