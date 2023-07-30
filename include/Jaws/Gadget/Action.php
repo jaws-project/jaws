@@ -402,17 +402,4 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
         return isset($this->gadget->actions[$script][$action]);
     }
 
-
-    /**
-     * Filter non validate character
-     *
-     * @access  public
-     * @param   string  $action     Action name
-     * @return  string  Filtered action name
-     */
-    public static function filter($action)
-    {
-        return preg_replace('/[^[:alnum:]_]/', '', @(string)$action);
-    }
-
 }
