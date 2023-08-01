@@ -201,7 +201,7 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
                         $elem = $elem[$key];
                     }
                 }
-                if (is_null($val)? !empty($elem) : (is_array($val)? in_array($elem, $val) : $elem == $val)) {
+                if (is_null($val)? !empty($elem) : (is_array($val)? in_array($elem, $val) : (is_array($elem)? in_array($val, $elem) : $elem == $val))) {
                     return $logic;
                 }
 
