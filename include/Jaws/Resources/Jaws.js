@@ -15,6 +15,33 @@
  * Extra plugins for jquery
  */
 jQuery.extend({
+    formArray: function($elements, removeBlanks = false) {
+        let result = {};
+        $.each($elements.serializeArray(), function (i, input) {
+            if (removeBlanks && (input.value === undefined || input.value === null || input.value === '')) {
+                return;
+            }
+
+            if (input.name.indexOf('[]') >=0) {
+                input.name = input.name.replace('[]', '');
+                result[input.name] = (result[input.name] || []);
+                result[input.name].push(input.value);
+            } else {
+                if (result.hasOwnProperty(input.name)) {
+                    if (Array.isArray(result[input.name])) {
+                        result[input.name].push(input.value);
+                    } else {
+                        result[input.name] = [result[input.name], input.value];
+                    }
+                } else {
+                    result[input.name] = input.value;
+                }
+            }
+        });
+
+        return result;
+    },
+
     unserialize: function(str) {
         let result = {};
         str = decodeURIComponent((str || document.location.search).replace(/\+/gi, " ")).replace(/(^\?)/,'');
