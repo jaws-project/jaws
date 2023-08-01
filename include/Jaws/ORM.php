@@ -951,6 +951,10 @@ class Jaws_ORM
         $sql.= $this->_build_having();
         $sql.= $this->_build_orderBy();
 
+        if ($error_level == JAWS_ERROR_DEBUG) {
+            _log_var_dump($sql);
+        }
+
         switch ($style) {
             // Fetch the values from the first row of the result set
             case 'raw':
