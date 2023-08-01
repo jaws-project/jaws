@@ -1,4 +1,5 @@
 <?php
+define('JAWS_ERROR_DEBUG',   8); //LOG_DEBUG   = 8
 define('JAWS_ERROR_INFO',    7); //LOG_INFO    = 7
 define('JAWS_ERROR_NOTICE',  6); //LOG_NOTICE  = 6
 define('JAWS_ERROR_WARNING', 5); //LOG_WARNING = 5
