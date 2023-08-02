@@ -281,10 +281,9 @@ class Jaws_Request
      * @param   bool    $type_validate  Data type check
      * @return  mixed   Null if there is no data else an string|array with the processed data
      */
-    private function _fetch($keys, $method = '', $filters = true,
+    private function _fetch($keys, $method, $filters = true,
         $xss_strip = false, $json_decode = false, $type_validate = true
     ) {
-        $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
         if (is_array($keys)) {
             $result = array();
             foreach ($keys as $key) {
