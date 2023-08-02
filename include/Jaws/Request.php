@@ -412,17 +412,7 @@ class Jaws_Request
         $keys = array_keys($this->data[$method]);
         $keys = preg_replace('/[^[:alnum:]_\.\-]/', '', $keys);
 
-        $values = array_map(
-            array($this, '_fetch'),
-            $keys,
-            array_fill(0, count($keys), $method),
-            array_fill(0, count($keys), $filter),
-            array_fill(0, count($keys), $xss_strip),
-            array_fill(0, count($keys), false),
-            array_fill(0, count($keys), $type_validate)
-        );
-
-        return array_combine($keys, $values);
+        return $this->_fetch($keys, $method, $filter, $xss_strip, false, $type_validate);
     }
 
     /** Creates a new key or updates an old one
