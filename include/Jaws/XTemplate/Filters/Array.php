@@ -161,6 +161,32 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
         }, $input);
     }
 
+
+    /**
+     * Group array bygiven property
+     *
+     * @param array|\Traversable $input
+     * @param string $property
+     *
+     * @return string
+     */
+    public static function groupby($input, $property)
+    {
+        if ($input instanceof \Traversable) {
+            $input = iterator_to_array($input);
+        }
+        if (!is_array($input)) {
+            return $input;
+        }
+
+        $result = array();
+        foreach ($input as $element) {
+            $result[$element[$property]][] = $element;
+        }
+
+        return $result;
+    }
+
     /**
      * Filter array by specific property value
      *
