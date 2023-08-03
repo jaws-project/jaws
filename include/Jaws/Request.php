@@ -70,20 +70,40 @@ class Jaws_Request
     private $_allowedMethods = array('get', 'post', 'cookie');
 
     /**
-     * variable type check functions
+     * variable types check functions
      *
      * @var     array
      * @access  private
      */
-    private $func_type_check = array(
+    private $func_types_check = array(
         '0'       => 'is_scalar',
         'int'     => 'is_numeric',
         'integer' => 'is_numeric',
         'float'   => 'is_float',
+        'text'    => 'is_string',
         'string'  => 'is_string',
         'array'   => 'is_array',
         'bool'    => 'is_bool',
         'boolean' => 'is_bool',
+    );
+
+    /**
+     * mapping types cast 
+     *
+     * @var     array
+     * @access  private
+     */
+    private $map_types_cast = array(
+        'int'     => 'integer',
+        'integer' => 'integer',
+        'float'   => 'float',
+        'double'  => 'float',
+        'text'    => 'string',
+        'string'  => 'string',
+        'array'   => 'array',
+        'bool'    => 'boolean',
+        'boolean' => 'boolean',
+        'mixed'   => 'array',
     );
 
     /**
@@ -307,7 +327,7 @@ class Jaws_Request
             $value = null;
             if ($cast_type) {
                 // type cast
-                settype($value, $cast_type);
+                settype($value, $this->map_types_cast[$cast_type]);
             }
             return $value;
         }
@@ -340,11 +360,21 @@ class Jaws_Request
 
         // type check
         if ($type_validate && $valid_type) {
-            $value = $this->func_type_check[$valid_type]($value)? $value : null;
+            $value = $this->func_types_check[$valid_type]($value)? $value : null;
         }
         // type cast
         if (!is_null($value) && $cast_type) {
-            settype($value, $cast_type);
+            if (is_array($value) && $cast_type != 'mixed') {
+                array_walk(
+                    $value,
+                    function (&$val, $key, $type) {
+                        settype($val, $type);
+                    },
+                    $this->map_types_cast[$cast_type]
+                );
+            } else {
+                settype($value, $this->map_types_cast[$cast_type]);
+            }
         }
 
         return $value;
