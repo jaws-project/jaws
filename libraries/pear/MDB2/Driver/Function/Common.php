@@ -281,6 +281,19 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
     }
 
     /**
+     * returns math sign of expression
+     *
+     * @param mixed $expression
+     *
+     * @return return string of math sign of an expression
+     * @access public
+     */
+    function sign($expression)
+    {
+        return "sign($expression)";
+    }
+
+    /**
      * return math floor of expression
      *
      * @param mixed $expression
