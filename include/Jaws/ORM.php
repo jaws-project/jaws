@@ -1323,6 +1323,7 @@ class Jaws_ORM
 
             case 'now':
             case 'abs':
+            case 'sign':
             case 'mod':
             case 'div':
             case 'quote':
@@ -1564,6 +1565,7 @@ class Jaws_ORM_Function
                 break;
 
             case 'abs':
+            case 'sign':
             case 'mod':
             case 'div':
             case 'ceil':
