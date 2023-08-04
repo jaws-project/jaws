@@ -1097,7 +1097,9 @@ if (typeof jQuery === 'undefined') {
     var that = this
     this.$element.hide()
     this.backdrop(function () {
-      that.$body.removeClass('modal-open')
+      if (!that.$element.hasClass('nested')) {
+        that.$body.removeClass('modal-open')
+      }
       that.resetAdjustments()
       that.resetScrollbar()
       that.$element.trigger('hidden.bs.modal')
