@@ -642,10 +642,14 @@ class Jaws_Layout
         array_unshift(
             $this->extraTags['scripts']['elements'],
             array(
-                'src'  => 'libraries/jquery/jquery.min.js?'. $this->attributes['buildnumber']
+                'src' => 'libraries/jquery/jquery.min.js?'. $this->attributes['buildnumber']
             ),
             array(
-                'src'  => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. $this->attributes['buildnumber']
+                'src' => JAWS_SCRIPT == 'index'?
+                    // switch to new version of bootstrap in index templates
+                    'libraries/bootstrap/js/bootstrap.bundle.min.js?'. $this->attributes['buildnumber'] :
+                    // we are using old bootstrap version(3.4.x) in admin templates
+                    'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. $this->attributes['buildnumber']
             ),
             array(
                 'src'  => 'include/Jaws/Resources/Jaws.js?' . $this->attributes['buildnumber']
