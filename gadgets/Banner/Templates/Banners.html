@@ -1,29 +1,25 @@
 <!-- BEGIN banners -->
 <!-- BEGIN title -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h3>{{title}}</h3></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
 <!-- END title -->
-<div class="gadget_container">
-  <div class="gadget_content">
+<div class="gadget-container">
+  <div class="gadget-content card-body">
     <!-- BEGIN banner -->{{template}}<!-- END banner -->
   </div>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <!-- END banners -->
 
 <!-- BEGIN banners_type_1 -->
 <!-- BEGIN title -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h3>{{title}}</h3></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
 <!-- END title -->
-<div class="gadget_container">
-  <div class="gadget_content">
+<div class="gadget-container">
+  <div class="gadget-content card-body">
     <div id="banners_{{gid}}">
       <!-- BEGIN banner -->
       <div class="item <!-- BEGIN first -->active<!-- END first -->">{{template}}</div>
@@ -31,7 +27,7 @@
     </div>
   </div>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <script type="text/javascript">
   function doVScroll(el)
   {
@@ -61,14 +57,12 @@
 
 <!-- BEGIN banners_type_2 -->
 <!-- BEGIN title -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h3>{{title}}</h3></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
 <!-- END title -->
-<div class="gadget_container">
-  <div class="gadget_content">
+<div class="gadget-container">
+  <div class="gadget-content card-body">
     <div id="banners_{{gid}}" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
         <!-- BEGIN indicator -->
@@ -89,5 +83,5 @@
     </a>
   </div>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <!-- END banners_type_2 -->
