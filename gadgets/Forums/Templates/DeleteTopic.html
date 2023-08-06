@@ -1,17 +1,9 @@
 <!-- BEGIN topic -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12">
-      <h3>
-        <a href="{{findex_url}}">{{findex_title}}</a> &rsaquo;
-        <a href="{{forum_url}}">{{forum_title}}</a> &rsaquo;
-        {{title}}
-      </h3>
-    </div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{findex_title}} &rsaquo; {{forum_title}}</h5>
 </div>
 
-<div class="gadget_container">
+<div class="gadget-container">
   <div class="gadget_response">
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
@@ -20,7 +12,7 @@
     <input type="hidden" name="reqAction" value="DeleteTopic" />
     <input type="hidden" name="fid" value="{{fid}}" />
     <input type="hidden" name="tid" value="{{tid}}" />
-    <div class="gadget_content">
+    <div class="gadget-content card-body">
       <div class="post_meta">
         {{postedby_lbl}}: <a href="{{user_url}}" title="{{username}}">{{nickname}}</a>
         &raquo; <abbr title="{{insert_time_iso}}">{{insert_time}}</abbr>
@@ -45,5 +37,5 @@
     </div>
   </form>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <!-- END topic -->
