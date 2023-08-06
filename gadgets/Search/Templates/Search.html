@@ -1,32 +1,28 @@
 <!-- BEGIN SimpleBox -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h2>{{title}}</h2></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
-<div class="gadget_container">
+<div class="gadget-container">
   <form name="search_form" method="get" action="{{base_script}}">
   <input type="hidden" name="reqGadget" value="Search" />
   <input type="hidden" name="reqAction" value="Results" />
-  <div class="gadget_content">
+  <div class="gadget-content card-body">
     <input class="form-control" type="text" name="all" value="{{all}}" title="{{ttl_all}}" placeholder="{{search}}">
     <button class="btn btn-primary" type="submit" value="search">{{search}}</button>
   </div>
   </form> 
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <!-- END SimpleBox -->
 <!-- BEGIN Box -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h2>{{title}}</h2></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
-<div class="gadget_container">
+<div class="gadget-container">
   <form name="search_form" method="get" action="{{base_script}}">
   <input type="hidden" name="reqGadget" value="Search" />
   <input type="hidden" name="reqAction" value="Results" />
-  <div class="gadget_content">
+  <div class="gadget-content card-body">
     <div>
       <label>{{lbl_all}}:</label>
       <input class="form-control" type="text" name="all" value="{{all}}" title="{{ttl_all}}">
@@ -45,19 +41,17 @@
   </div>
   </form> 
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <!-- END Box -->
 <!-- BEGIN AdvancedBox -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h2>{{title}}</h2></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
-<div class="gadget_container">
+<div class="gadget-container">
   <form name="search_form" method="get" action="{{base_script}}">
   <input type="hidden" name="reqGadget" value="Search" />
   <input type="hidden" name="reqAction" value="Results" />
-  <div class="gadget_content">
+  <div class="gadget-content card-body">
     <fieldset>
       <legend><span>{{lbl_word_filter}}</span></legend>
       <p><label>{{lbl_all}}</label>{{all}}</p>
@@ -73,5 +67,5 @@
   <div class="gadget_actions">{{btn_search}}</div>
   </form>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <!-- END AdvancedBox -->
