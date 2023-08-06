@@ -1,10 +1,9 @@
 <div class="gadget_section comments_form">
-  <div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h3>{{ "comments.comments" | t }}</h3></div>
+  <div class="gadget-header card-header d-flex align-items-center justify-content-between">
+    <h5 class="m-0 me-2 py-1">{{ "comments.comments" | t }}</h5>
   </div>
-  </div>
-  <div class="gadget_container">
+
+  <div class="gadget-container">
     <div class="gadget_response">
       <div class="alert {{comment_form.response.type}}" role="alert">
         <a class="alert-link" id="{{comment_form.gadget}}_{{comment_form.action}}"></a>
@@ -18,7 +17,7 @@
         <input type="hidden" name="requested_action" value="{{comment_form.action}}"/>
         <input type="hidden" name="reference" value="{{comment_form.reference}}"/>
 
-        <div class="gadget_content">
+        <div class="gadget-content card-body">
             {% unless "user.logged" | session %}
             <div><label for="name_comments{{comment_form.rand}}">{{ "global.name" | t }}:</label>
                 <input class="form-control" name="name" class="large name" id="name_comments{{comment_form.rand}}" type="text" maxlength="20" value="{{comment_form.namevalue}}"/>
@@ -59,5 +58,5 @@
       <div class="simple-response-msg">{{comment_form.msg_access_restricted}}</div>
       {% endunless %}
   </div>
-  <div class="gadget_footer"></div>
+  <div class="gadget-footer card-footer" hidden></div>
 </div>

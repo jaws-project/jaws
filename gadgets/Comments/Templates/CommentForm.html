@@ -1,11 +1,10 @@
 <!-- BEGIN comment_form -->
 <div class="gadget_section comments_form">
-  <div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h3>{{title}}</h3></div>
+  <div class="gadget-header card-header d-flex align-items-center justify-content-between">
+    <h5 class="m-0 me-2 py-1">{{title}}</h5>
   </div>
-  </div>
-  <div class="gadget_container">
+
+  <div class="gadget-container">
     <div class="gadget_response">
       <div class="alert {{response_type}}" role="alert">
         <a class="alert-link" id="{{bookmark}}"></a>
@@ -19,7 +18,7 @@
         <input type="hidden" name="requested_action" value="{{action}}"/>
         <input type="hidden" name="reference" value="{{reference}}"/>
 
-        <div class="gadget_content">
+        <div class="gadget-content card-body">
             <!-- BEGIN info-box -->
             <div><label for="name_comments{{rand}}">{{name}}:</label>
                 <input class="form-control" name="name" class="large name" id="name_comments{{rand}}" type="text" maxlength="20" value="{{namevalue}}"/>
@@ -57,6 +56,6 @@
     <div class="simple-response-msg">{{msg}}</div>
     <!-- END unregistered -->
   </div>
-  <div class="gadget_footer"></div>
+  <div class="gadget-footer card-footer" hidden></div>
 </div>
 <!-- END comment_form -->
