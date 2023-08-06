@@ -1,11 +1,9 @@
 <!-- BEGIN tags -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-9"><h3>{{title}}</h3></div>
-    <div class="col-xs-3"><!-- INCLUDE MenuNavigation.html include/Jaws/Resources --></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
+  <!-- INCLUDE MenuNavigation.html include/Jaws/Resources -->
 </div>
-<div class="gadget_container">
+<div class="gadget-container">
   <div class="gadget_response">
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
@@ -32,7 +30,7 @@
           </button>
       </div>
 
-      <div class="gadget_content">
+      <div class="gadget-content card-body">
           <table class="table table-hover table-bordered">
               <thead>
               <tr>
@@ -90,7 +88,7 @@
       </div>
   </form>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 
 <script type="text/javascript">
     function toggleCheckboxes(){
@@ -125,19 +123,17 @@
 <!-- END tags -->
 
 <!-- BEGIN edit_tag -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-9"><h3>{{title}}</h3></div>
-    <div class="col-xs-3"><!-- INCLUDE MenuNavigation.html include/Jaws/Resources --></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
+  <!-- INCLUDE MenuNavigation.html include/Jaws/Resources -->
 </div>
-<div class="gadget_container">
+<div class="gadget-container">
   <form name="groups" id="groups" action="{{base_script}}" method="post">
       <input type="hidden" name="reqGadget" value="Tags"/>
       <input type="hidden" name="reqAction" value="UpdateTag"/>
       <input type="hidden" name="tid" value="{{tid}}"/>
 
-      <div class="gadget_content">
+      <div class="gadget-content card-body">
           <fieldset>
               <div><label for="name">{{lbl_name}}:</label>
                   <input class="form-control" name="name" id="name" value="{{name}}" type="text"/>
@@ -155,5 +151,5 @@
       </div>
   </form>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <!-- END edit_tag -->
