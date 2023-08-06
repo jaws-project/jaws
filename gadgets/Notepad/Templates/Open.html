@@ -1,11 +1,9 @@
 <!-- BEGIN note -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h3>{{title}}</h3></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
-<div class="gadget_container">
-  <div class="gadget_content">
+<div class="gadget-container">
+  <div class="gadget-content card-body">
     <h5>{{note_title}}</h5>
     <div class="note-content">{{note_content}}</div>
     <div class="note-properties">
@@ -19,7 +17,7 @@
     <!-- END actions -->
   </div>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <script>
 var notepad_url = "{{notepad_url}}",
     confirmDelete = "{{confirmDelete}}";

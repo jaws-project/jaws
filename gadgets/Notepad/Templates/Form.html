@@ -1,14 +1,12 @@
 <!-- BEGIN form -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h3>{{title}}</h3></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
-<div class="gadget_container">
+<div class="gadget-container">
   <div class="gadget_response">
     <div id="notepad_{{action}}_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
-  <div class="gadget_content">
+  <div class="gadget-content card-body">
     <form id="frm_note" name="frm_note" action="{{base_script}}" method="post">
       <input type="hidden" name="reqGadget" value="Notepad" />
       <input type="hidden" name="reqAction" value="{{form_action}}" />
@@ -24,7 +22,7 @@
     </form>
   </div>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <script>
 var errorIncompleteData = "{{errorIncompleteData}}";
 $('#note_title')[0].focus();
