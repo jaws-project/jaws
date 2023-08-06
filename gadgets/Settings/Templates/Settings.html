@@ -1,16 +1,14 @@
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h3>{{ "settings.title" | t }}</h3></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{ "settings.title" | t }}</h5>
 </div>
-<div class="gadget_container">
+<div class="gadget-container">
   <div class="gadget_response">
     <div id="settings_settings_response" class="alert {{response.type}}" role="alert">{{response.text}}</div>
   </div>
   <form name="settings" action="{{base_script}}" method="post" onsubmit="return updateSettings();">
   <input type="hidden" name="reqGadget" value="Settings" />
   <input type="hidden" name="reqAction" value="UpdateSettings" />
-  <div class="gadget_content">
+  <div class="gadget-content card-body">
     <fieldset>
       <div>
         <label for="site_status">{{ "settings.site_status" | t }}:</label>
@@ -119,4 +117,4 @@
   </div>
   </form>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
