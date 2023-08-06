@@ -1,16 +1,14 @@
 <!-- BEGIN messages -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-9"><h3>{{title}}</h3></div>
-    <div class="col-xs-3"><!-- INCLUDE MenuNavigation.html include/Jaws/Resources --></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
+  <!-- INCLUDE MenuNavigation.html include/Jaws/Resources -->
 </div>
-<div class="gadget_container">
+<div class="gadget-container">
     <div class="gadget_response">
         <div id="privatemessage_messages_response" class="alert hide {{response_type}}" role="alert">{{response_text}}</div>
     </div>
 
-    <div class="gadget_content">
+    <div class="gadget-content card-body">
         <div class="repeater" id="messages-grid" data-staticheight="500">
               <div class="repeater-header">
                   <div class="datagrid-filters">
@@ -130,5 +128,5 @@
     </div>
 
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <!-- END messages -->
