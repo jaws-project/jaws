@@ -1,11 +1,9 @@
 <!-- BEGIN LoginLinks -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h3>{{title}}</h3></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
-<div class="gadget_container">
-  <div class="gadget_content">
+<div class="gadget-container">
+  <div class="gadget-content card-body">
     <ul>
       <li><a href="{{login_url}}" rel="nofollow">{{user_login}}</a></li>
       <!-- BEGIN registration -->
@@ -17,19 +15,17 @@
     </ul>
   </div>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <!-- END LoginLinks -->
 <!-- BEGIN UserLinks -->
-<div class="gadget_header">
-  <div class="row">
-    <div class="col-xs-12"><h3>{{title}}</h3></div>
-  </div>
+<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
-<div class="gadget_container">
+<div class="gadget-container">
   <div class="gadget_response">
     <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
   </div>
-  <div class="gadget_content">
+  <div class="gadget-content card-body">
     <ul>
       <li><a href="{{profile_url}}">{{profile}}</a></li>
       <!-- BEGIN groups -->
@@ -52,5 +48,5 @@
     </ul>
   </div>
 </div>
-<div class="gadget_footer"></div>
+<div class="gadget-footer card-footer" hidden></div>
 <!-- END UserLinks -->
