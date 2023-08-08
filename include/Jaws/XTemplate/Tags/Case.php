@@ -42,25 +42,25 @@ class Jaws_XTemplate_Tags_Case extends Jaws_XTemplate_TagConditional
     /**
      * Constructor
      *
+     * @param   object  $tpl    Jaws_XTemplate object
      * @param   array   $tokens
      * @param   string  $markup
      *
      * @throws  Exception
      */
-    public function __construct(array &$tokens, $markup)
+    public function __construct(&$tpl, array &$tokens, $markup)
     {
         $this->nodelists = array();
         $this->elseNodelist = array();
 
-        parent::__construct($tokens, $markup);
-
         $syntaxRegexp = new Jaws_Regexp('/' . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . '/');
-
         if ($syntaxRegexp->match($markup)) {
             $this->left = $syntaxRegexp->matches[0];
         } else {
             throw new Exception("Syntax Error in tag 'case' - Valid syntax: case [condition]"); // harry
         }
+
+        parent::__construct($tpl, $tokens, $markup);
     }
 
     /**

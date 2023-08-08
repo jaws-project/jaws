@@ -54,15 +54,15 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
     /**
      * Constructor
      *
+     * @param   object  $tpl    Jaws_XTemplate object
      * @param   array   $tokens
      * @param   string  $markup
      *
      * @throws  Exception
      */
-    public function __construct(array &$tokens, $markup)
+    public function __construct(&$tpl, array &$tokens, $markup)
     {
         $this->nodelists[] = array('for', $markup, &$this->nodelist);
-        parent::__construct($tokens, $markup);
 
         $syntaxRegexp = new Jaws_Regexp(
             '/(\w+)\s+in\s+\((\d+|' .
@@ -90,8 +90,16 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
             }
         }
 
+        parent::__construct($tpl, $tokens, $markup);
     }
 
+    /**
+     * Handler for unknown tags, handle else tag
+     *
+     * @param string $tag
+     * @param array $params
+     * @param array $tokens
+     */
     public function unknownTag($tag, $params, array $tokens)
     {
         if ($tag == 'else') {

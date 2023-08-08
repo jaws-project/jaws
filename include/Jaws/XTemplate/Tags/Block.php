@@ -22,13 +22,14 @@ class Jaws_XTemplate_Tags_Block extends Jaws_XTemplate_TagSegmental
     /**
      * Constructor
      *
+     * @param   object  $tpl    Jaws_XTemplate object
      * @param   array   $tokens
      * @param   string  $markup
      *
      * @throws  Exception
      * @return  Jaws_XTemplate_Tags_Block
      */
-    public function __construct(array &$tokens, $markup)
+    public function __construct(&$tpl, array &$tokens, $markup)
     {
         $syntaxRegexp = new Jaws_Regexp('/(\w+)/');
 
@@ -38,6 +39,8 @@ class Jaws_XTemplate_Tags_Block extends Jaws_XTemplate_TagSegmental
         } else {
             throw new Exception("Syntax Error in 'block' - Valid syntax: block [name]");
         }
+
+        parent::__construct($tpl, $tokens, $markup);
     }
 
 }

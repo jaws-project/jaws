@@ -24,12 +24,13 @@ class Jaws_XTemplate_Tags_Assign extends Jaws_XTemplate_Tag
     /**
      * Constructor
      *
-     * @param   array   $tokens
+     * @param   object  $tpl    Jaws_XTemplate object
      * @param   string  $markup
+     * @param   array   $tokens
      *
      * @throws  Exception
      */
-    public function __construct(array &$tokens, $markup)
+    public function __construct(&$tpl, array &$tokens, $markup = '')
     {
         $syntaxRegexp = new Jaws_Regexp('/\s*(.*[^\s])\s*=\s*(.*[^\s])\s*/');
 
@@ -39,6 +40,8 @@ class Jaws_XTemplate_Tags_Assign extends Jaws_XTemplate_Tag
         } else {
             throw new Exception("Syntax Error in 'assign' - Valid syntax: assign [var] = [source]");
         }
+
+        parent::__construct($tpl, $tokens, $markup);
     }
 
     /**

@@ -11,16 +11,6 @@
 class Jaws_XTemplate_Document extends Jaws_XTemplate_TagSegmental
 {
     /**
-     * Constructor.
-     *
-     * @param array $tokens
-     */
-    public function __construct(array &$tokens, $markup = '')
-    {
-        $this->parse($tokens);
-    }
-
-    /**
      * Check for cached includes; if there are - do not use cache
      *
      * @return bool if need to discard cache

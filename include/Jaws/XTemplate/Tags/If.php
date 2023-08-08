@@ -29,16 +29,18 @@ class Jaws_XTemplate_Tags_If extends Jaws_XTemplate_TagConditional
     /**
      * Constructor
      *
+     * @param   object  $tpl    Jaws_XTemplate object
      * @param   array   $tokens
      * @param   string  $markup
+     *
+     * @throws  Exception
      */
-    public function __construct(array &$tokens, $markup)
+    public function __construct(&$tpl, array &$tokens, $markup)
     {
         $this->nodelist = & $this->nodelistHolders[count($this->blocks)];
-
         array_push($this->blocks, array('if', $markup, &$this->nodelist));
 
-        parent::__construct($tokens, $markup);
+        parent::__construct($tpl, $tokens, $markup);
     }
 
     /**

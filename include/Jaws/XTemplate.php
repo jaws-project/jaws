@@ -23,35 +23,35 @@ class Jaws_XTemplate
      *
      * @var bool
      */
-    private static $loadFromTheme = false;
+    private $loadFromTheme = false;
 
     /**
      * load RTL template file id exists
      *
      * @var bool
      */
-    private static $loadRTLDirection = null;
+    private $loadRTLDirection = null;
 
     /**
      * theme information array
      *
      * @var array
      */
-    private static $theme = array();
+    private $theme = array();
 
     /**
      * theme layout name
      *
      * @var string
      */
-    private static $layout = '';
+    private $layout = '';
 
     /**
      * template root path
      *
      * @var string
      */
-    private static $tplRootPath = '';
+    private $tplRootPath = '';
 
     /**
      * @var engine parser object
@@ -71,24 +71,15 @@ class Jaws_XTemplate
     /**
      * Constructor
      *
-     * @param   bool    $loadFromTheme          Try to load template from theme
-     * @param   bool    $loadGlobalVariables    Fetch and set global variables 
-     *
      * @return Jaws_XTemplate
      */
-    public function __construct($loadFromTheme = false, $loadGlobalVariables = true)
+    public function __construct()
     {
         $this->app = Jaws::getInstance();
 
-        if ($loadGlobalVariables) {
-            self::$loadFromTheme = $loadFromTheme;
-            self::$theme = $this->app->GetTheme();
-            $layout = $this->app->layout->GetLayoutName();
-            self::$layout = @is_dir(self::$theme['path']. '/'. $layout)? $layout : '';
-        } else {
-            self::$loadFromTheme = false;
-        }
-
+        $this->theme = $this->app->GetTheme();
+        $layout = $this->app->layout->GetLayoutName();
+        $this->layout = @is_dir($this->theme['path']. '/'. $layout)? $layout : '';
     }
 
     /**
@@ -117,7 +108,7 @@ class Jaws_XTemplate
      *
      * @return  string  template file content
      */
-    public static function readTemplateFile($fname, $fpath = '')
+    public function readTemplateFile($fname, $fpath = '')
     {
         if (empty($fname)) {
             throw new Exception("Empty template name");
@@ -129,7 +120,7 @@ class Jaws_XTemplate
         }
 
         if (empty($fpath) || $fpath == '.') {
-            $fpath = self::$tplRootPath;
+            $fpath = $this->tplRootPath;
         }
 
         $filePath = rtrim($fpath, '/');
@@ -137,18 +128,18 @@ class Jaws_XTemplate
         $fileName = substr($fname, 0, -strlen($fileExtn));
 
         // load from theme?
-        if (self::$loadFromTheme) {
-            $layout = empty($filePath)? '' : self::$layout;
-            if (file_exists(self::$theme['path']. $layout. '/'. $filePath. '/'. $fname)) {
-                $filePath = self::$theme['path']. $layout. '/'. $filePath;
+        if ($this->loadFromTheme) {
+            $layout = empty($filePath)? '' : $this->layout;
+            if (file_exists($this->theme['path']. $layout. '/'. $filePath. '/'. $fname)) {
+                $filePath = $this->theme['path']. $layout. '/'. $filePath;
             } else {
                 $filePath = ROOT_JAWS_PATH . $filePath;
             }
         }
 
         $prefix  = '';
-        if (self::$loadRTLDirection ||
-           (is_null(self::$loadRTLDirection) && function_exists('_t') && Jaws::t('LANG_DIRECTION') == 'rtl')
+        if ($this->loadRTLDirection ||
+           (is_null($this->loadRTLDirection) && function_exists('_t') && Jaws::t('LANG_DIRECTION') == 'rtl')
         ) {
             $prefix = '.rtl';
         }
@@ -176,7 +167,7 @@ class Jaws_XTemplate
      */
     public function parse($source)
     {
-        $this->parser = new Jaws_XTemplate_Parser($source);
+        $this->parser = new Jaws_XTemplate_Parser($this, $source);
         return $this;
     }
 
@@ -185,13 +176,15 @@ class Jaws_XTemplate
      *
      * @param   string  $tplName
      * @param   string  $tplPath
+     * @param   bool    $loadFromTheme  Try to load template from theme
      *
      * @return  Jaws_XTemplate
      */
-    public function parseFile($tplName, $tplPath = '')
+    public function parseFile($tplName, $tplPath = '', $loadFromTheme = false)
     {
-        self::$tplRootPath = $tplPath;
-        return $this->parse(self::readTemplateFile($tplName, $tplPath));
+        $this->tplRootPath = $tplPath;
+        $this->loadFromTheme = $loadFromTheme;
+        return $this->parse($this->readTemplateFile($tplName, $tplPath));
     }
 
     /**

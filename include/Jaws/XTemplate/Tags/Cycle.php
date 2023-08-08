@@ -25,12 +25,13 @@ class Jaws_XTemplate_Tags_Cycle extends Jaws_XTemplate_Tag
     /**
      * Constructor
      *
+     * @param   object  $tpl    Jaws_XTemplate object
      * @param   string  $markup
      * @param   array   $tokens
      *
      * @throws  Exception
      */
-    public function __construct(array &$tokens, $markup)
+    public function __construct(&$tpl, array &$tokens, $markup)
     {
         $simpleSyntax = new Jaws_Regexp("/" . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . "/");
         $namedSyntax = new Jaws_Regexp("/(" . Jaws_XTemplate_Parser::get('QUOTED_FRAGMENT') . ")\s*\:\s*(.*)/");
@@ -44,6 +45,8 @@ class Jaws_XTemplate_Tags_Cycle extends Jaws_XTemplate_Tag
         } else {
             throw new Exception("Syntax Error in 'cycle' - Valid syntax: cycle [name :] var [, var2, var3 ...]");
         }
+
+        parent::__construct($tpl, $tokens, $markup);
     }
 
     /**
