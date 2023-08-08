@@ -1,16 +1,14 @@
-<div class="dropdown pull-right">
-  <button class="btn btn-default dropdown-toggle" type="button"
-    id="{{navigation.gadget}}-menu-options" data-toggle="dropdown">
-    {{navigation.label}}
-    <span class="caret"></span>
+<div class="gadget-menu dropdown">
+  <button class="btn btn-light dropdown py-1" type="button" data-bs-toggle="dropdown" title="{{navigation.label}}">
+    <i class="bi bi-menu-button-wide"></i>
   </button>
-  <ul class="dropdown-menu">
+  <ul class="dropdown-menu dropdown-menu-start">
     {%- for menu in navigation.menus %}
       {% if menu.separator %}
       <li role="separator" class="divider"></li>
       {% endif %}
       <li {{ menu.active | equal: true, 'class="active"' }}>
-        <a href="{{ menu.url }}">{{ menu.title }}</a>
+        <a class="dropdown-item" href="{{ menu.url }}">{{ menu.title }}</a>
       </li>
     {%- endfor %}
   </ul>
