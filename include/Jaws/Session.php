@@ -5,6 +5,7 @@
 define('RESPONSE_ERROR',   'alert-danger');
 define('RESPONSE_WARNING', 'alert-warning');
 define('RESPONSE_NOTICE',  'alert-success');
+define('RESPONSE_INFO',    'alert-info');
 
 /**
  * Session variable scope gadget/app/user
