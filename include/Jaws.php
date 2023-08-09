@@ -819,6 +819,10 @@ class Jaws
                 return $this->cache;
                 break;
 
+            case 'template':
+                return new Jaws_XTemplate();
+                break;
+
             default:
                 return Jaws_Error::raiseError("Property '$property' not exists!", __FUNCTION__);
         }
