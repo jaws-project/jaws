@@ -258,11 +258,14 @@ class Jaws_Session
 
             // salt
             if ($this->request['salt'] !== $this->session['salt']) {
+                throw new Exception('Session salt has been changed', JAWS_NOTICE);
+                /*
                 define('SESSION_INVALID', true);
                 // no permission for execution all actions
                 define('SESSION_RESTRICTED_GADGETS', '');
                 $this->reset();
                 $GLOBALS['log']->Log(JAWS_INFO, 'Session salt has been changed');
+                */
             }
 
             // checksum
