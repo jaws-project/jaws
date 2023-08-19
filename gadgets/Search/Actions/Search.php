@@ -23,7 +23,8 @@ class Search_Actions_Search extends Jaws_Gadget_Action
         $post = $this->gadget->request->fetch(
             array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'),
             'get',
-            false
+            false,
+            array('filter' => false)
         );
 
         if ($this->app->requestedActionMode === 'normal') {
@@ -102,7 +103,8 @@ class Search_Actions_Search extends Jaws_Gadget_Action
         $post = $this->gadget->request->fetch(
             array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'),
             'get',
-            false
+            false,
+            array('filter' => false)
         );
 
         if ($this->app->requestedActionMode === 'normal') {
