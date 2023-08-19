@@ -66,16 +66,11 @@ jQuery.extend({
         return result;
     },
 
-    formData: function(str) {
+    formData: function(formArray) {
         let result = new FormData();
-        str = decodeURIComponent((str || document.location.search).replace(/\+/gi, " ")).replace(/(^\?)/,'');
-        $.each(
-            str.split("&"),
-            function(index, n) {
-                n=n.split("=");
-                result.append(n[0], n[1]);
-            }
-        );
+        $.each(formArray, function(key, val) {
+            result.append(key, val);
+        });
 
         return result;
     },
@@ -642,9 +637,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 function JawsMessage(objOwner)
 {
     this.objOwner = objOwner;
-    this.default_container = $(
-        "#"+(Jaws.defines.mainGadget+'_'+ Jaws.defines.mainAction+'_'+'response').toLowerCase()
-    );
+    this.$default_container = $("#"+(Jaws.defines.mainGadget+'_'+ Jaws.defines.mainAction+'_'+'response').toLowerCase());
 
     /**
      * show response message
@@ -653,24 +646,26 @@ function JawsMessage(objOwner)
      * @param   object  container   jQuery DOM element message container
      * @return  void
      */
-    this.show = function (message, container) {
+    this.show = function (message, $container) {
         if (!message || !$.trim(message.text) || !message.type) {
             return;
         }
 
-        if (!container || !container.length) {
-            container =  this.default_container;
+        if (!$container || !$container.length) {
+            $container =  this.$default_container;
+            if (!$container.length) {
+                return;
+            }
         }
 
-        if (container.length) {
-            container.html(message.text).attr('class', message.type);
-            container.stop(true, true).fadeIn().delay(4000).fadeOut(
-                1000,
-                function() {
-                    //$(this).removeClass();
-                }
-            );
-        }
+        $container.html(message.text).attr('class', message.type);
+        $container.stop(true, true).fadeIn().delay(4000).fadeOut(
+            1000,
+            function() {
+                //$(this).removeClass();
+            }
+        );
+
     }
 
     /**
@@ -682,7 +677,7 @@ function JawsMessage(objOwner)
      */
     this.loading = function (show, container) {
         if (!container || !container.length) {
-            container =  this.default_container;
+            container =  this.$default_container;
         }
 
         if (container.length) {
