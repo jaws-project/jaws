@@ -66,16 +66,11 @@ jQuery.extend({
         return result;
     },
 
-    formData: function(str) {
+    formData: function(formArray) {
         let result = new FormData();
-        str = decodeURIComponent((str || document.location.search).replace(/\+/gi, " ")).replace(/(^\?)/,'');
-        $.each(
-            str.split("&"),
-            function(index, n) {
-                n=n.split("=");
-                result.append(n[0], n[1]);
-            }
-        );
+        $.each(formArray, function(key, val) {
+            result.append(key, val);
+        });
 
         return result;
     },
