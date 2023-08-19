@@ -30,7 +30,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageAlbums');
 
         $action      = $this->gadget->request->fetch('action', 'get');
-        $description = $this->gadget->request->fetch('description', 'post', false, array('filter' => 'strip_crlf'));
+        $description = $this->gadget->request->fetch('description', 'post', false, array('filters' => 'strip_crlf'));
 
         $tpl = $this->gadget->template->loadAdmin('EditAlbum.html');
         $tpl->SetBlock('edit_album');
@@ -116,7 +116,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
                  'published'), 'post');
 
         if (!empty($post['name'])) {
-            $description = $this->gadget->request->fetch('description', 'post', false, array('filter' => 'strip_crlf'));
+            $description = $this->gadget->request->fetch('description', 'post', false, array('filters' => 'strip_crlf'));
             $model = $this->gadget->model->loadAdmin('Albums');
             $album = $model->NewAlbum(
                 $post['name'],
@@ -246,7 +246,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
             'post'
         );
         if (!empty($post['name'])) {
-            $description = $this->gadget->request->fetch('description', 'post', false, array('filter' => 'strip_crlf'));
+            $description = $this->gadget->request->fetch('description', 'post', false, array('filters' => 'strip_crlf'));
             $id = (int)$post['album'];
             $model = $this->gadget->model->loadAdmin('Albums');
             $result = $model->UpdateAlbum(
