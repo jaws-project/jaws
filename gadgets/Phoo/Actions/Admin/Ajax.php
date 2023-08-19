@@ -48,7 +48,7 @@ class Phoo_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $title, $desc, $allow_comments, $published, $albums, $meta_keywords, $meta_description, $tags) =
             $this->gadget->request->fetchAll('post');
         $albums = $this->gadget->request->fetch('5:array', 'post');
-        $desc = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
+        $desc = $this->gadget->request->fetch(2, 'post', false, array('filter' => 'strip_crlf'));
         if (!$this->gadget->GetPermission('ManageAlbums')) {
             $albums    = null;
             $published = null;
