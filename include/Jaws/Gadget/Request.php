@@ -16,15 +16,14 @@ class Jaws_Gadget_Request extends Jaws_Gadget_Class
      * @access  public
      * @param   mixed   $key            The key being fetched
      * @param   mixed   $method         Which super global is being fetched from, it can be an array
-     * @param   bool    $filter         Returns filtered data or not
-     * @param   bool    $xss_strip      Returns stripped html data tags/attributes
-     * @param   bool    $json_decode    Decode JSON data or not
+     * @param   string  $branchName     data branch/part name (empty means root of data)
+     * @param   array   $options        Options(filters, xss_strip, json_decode, type_validate)
      * @return  mixed   Returns string or an array depending on the key, otherwise Null if key not exist
      */
-    function fetch($key, $method = '', $filter = true, $xss_strip = false, $json_decode = false)
+    function fetch($key, $method = '', $branchName = '', array $options = array())
     {
         if ($this->gadget->name == $this->app->mainRequest['gadget']) {
-            return $this->app->request->fetch($key, $method, $filter, $xss_strip, $json_decode);
+            return $this->app->request->fetch($key, $method, $branchName, $options);
         } else {
             return is_scalar($key)? null : array_fill_keys($key, null);
         }
@@ -35,14 +34,13 @@ class Jaws_Gadget_Request extends Jaws_Gadget_Class
      *
      * @access  public
      * @param   string  $method     Which super global is being fetched from
-     * @param   bool    $filter     Returns filtered data
-     * @param   bool    $xss_strip  Returns stripped html data tags/attributes
+     * @param   array   $options    Options(filters, xss_strip, json_decode, type_validate)
      * @return  array   Filtered Data array
      */
-    function fetchAll($method = '', $filter = true, $xss_strip = false, $type_validate = true)
+    function fetchAll($method = '', array $options = array())
     {
         if ($this->gadget->name == $this->app->mainRequest['gadget']) {
-            return $this->app->request->fetchAll($method, $filter, $xss_strip, $type_validate);
+            return $this->app->request->fetchAll($method, $options);
         } else {
             return array();
         }
