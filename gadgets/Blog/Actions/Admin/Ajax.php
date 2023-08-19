@@ -21,7 +21,7 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function ParseText()
     {
-        $text = $this->gadget->request->fetch(0, 'post', 'strip_crlf');
+        $text = $this->gadget->request->fetch(0, 'post', false, array('filter' => 'strip_crlf'));
         return $this->gadget->plugin->parse($text);
     }
 
@@ -321,8 +321,8 @@ class Blog_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('Posts');
 
         $categories = $this->gadget->request->fetch('1:array', 'post');
-        $summary = $this->gadget->request->fetch(4, 'post', 'strip_crlf');
-        $text    = $this->gadget->request->fetch(5, 'post', 'strip_crlf');
+        $summary = $this->gadget->request->fetch(4, 'post', false, array('filter' => 'strip_crlf'));
+        $text    = $this->gadget->request->fetch(5, 'post', false, array('filter' => 'strip_crlf'));
 
         if ($id == 'NEW') {
             $res = $model->NewEntry(
