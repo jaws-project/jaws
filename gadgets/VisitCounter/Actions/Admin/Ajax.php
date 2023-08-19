@@ -64,7 +64,7 @@ class VisitCounter_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('UpdateProperties');
         @list($counters, $numdays, $type, $mode, $custom_text) = $this->gadget->request->fetchAll('post');
-        $custom_text = $this->gadget->request->fetch(4, 'post', false, array('filter' => false));
+        $custom_text = $this->gadget->request->fetch(4, 'post', false, array('filters' => false));
         $model = $this->gadget->model->loadAdmin('Properties');
         $model->UpdateProperties($counters, $numdays, $type, $mode, $custom_text);
         return $this->gadget->session->pop();
