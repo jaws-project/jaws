@@ -44,7 +44,7 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($term, $fast_url, $contents) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Term');
 
-        $contents = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
+        $contents = $this->gadget->request->fetch(2, 'post', false, array('filter' => 'strip_crlf'));
         $id = $model->NewTerm($term, $fast_url, $contents);
         $response = $this->gadget->session->pop();
         $response['id'] = $id;
@@ -67,7 +67,7 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $term, $fast_url, $contents) = $this->gadget->request->fetchAll('post');
         $model = $this->gadget->model->loadAdmin('Term');
 
-        $contents = $this->gadget->request->fetch(3, 'post', 'strip_crlf');
+        $contents = $this->gadget->request->fetch(3, 'post', false, array('filter' => 'strip_crlf'));
         $model->UpdateTerm($id, $term, $fast_url, $contents);
         return $this->gadget->session->pop();
     }
@@ -97,7 +97,7 @@ class Glossary_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function ParseText()
     {
-        $text = $this->gadget->request->fetch(0, 'post', 'strip_crlf');
+        $text = $this->gadget->request->fetch(0, 'post', false, array('filter' => 'strip_crlf'));
         return $this->gadget->plugin->parseAdmin($text);
     }
 
