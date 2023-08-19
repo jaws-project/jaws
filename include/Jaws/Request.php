@@ -292,18 +292,13 @@ class Jaws_Request
      * Does the recursion on the data being fetched
      *
      * @access  private
-     * @param   mixed   $keys           The key being fetched, it can be an array with multiple keys in it to fetch and
-     *                                  then an array will be returned accourdingly.
-     * @param   string  $method         Which super global is being fetched from
-     * @param   bool    $filter         Returns filtered data or not
-     * @param   bool    $xss_strip      Returns stripped html data tags/attributes
-     * @param   bool    $json_decode    Decode JSON data or not
-     * @param   bool    $type_validate  Data type check
+     * @param   mixed   $keys       The key being fetched, it can be an array with multiple keys in it to fetch and
+     *                              then an array will be returned accourdingly.
+     * @param   string  $method     Which super global is being fetched from
+     * @param   array   $options    Options(filter, xss_strip, json_decode, type_validate)
      * @return  mixed   Null if there is no data else an string|array with the processed data
      */
-    private function _fetch($keys, $method, $filters = true,
-        $xss_strip = false, $json_decode = false, $type_validate = true
-    ) {
+    private function _fetch($keys, $method, $branchName = '', array $options = array()) {
         if (is_array($keys)) {
             $result = array();
             foreach ($keys as $key) {
@@ -311,7 +306,7 @@ class Jaws_Request
                     continue;
                 }
                 @list($all, $key, $valid_type, $cast_type) = $this->regexp->matches;
-                $result[$key] = $this->_fetch($all, $method, $filters, $xss_strip, $json_decode, $type_validate);
+                $result[$key] = $this->_fetch($all, $method, $branchName, $options);
             }
 
             return $result;
@@ -322,8 +317,17 @@ class Jaws_Request
         }
         @list($all, $key, $valid_type, $cast_type) = $this->regexp->matches;
 
+        if ($branchName !== '') {
+            if (!array_key_exists($branchName, $this->data[$method])) {
+                $this->data[$method][$branchName] = array();
+            }
+            $dataRepository = &$this->data[$method][$branchName];
+        } else {
+            $dataRepository = &$this->data[$method];
+        }
+
         // if key not exists
-        if (!isset($this->data[$method][$key])) {
+        if (!isset($dataRepository[$key])) {
             $value = null;
             if ($cast_type) {
                 // type cast
@@ -332,7 +336,7 @@ class Jaws_Request
             return $value;
         }
 
-        $value = $json_decode? json_decode($this->data[$method][$key]) : $this->data[$method][$key];
+        $value = $options['json_decode']? json_decode($dataRepository[$key]) : $dataRepository[$key];
         // try unserialize value
         if (is_string($value) && false !== $tvalue = @unserialize($value)) {
             $value = $tvalue;
@@ -340,26 +344,26 @@ class Jaws_Request
         }
 
         // filter not allowed html tags/attributes
-        if ($xss_strip) {
+        if ($options['xss_strip']) {
             $value = $this->strip_tags_attributes($value);
         }
 
-        if ($filters === true) {
-            $filters = $this->_filtersPriority;
-        } elseif (!empty($filters)) {
-            $filters = array('strip_null', $filters);
+        if ($options['filters'] === true) {
+            $options['filters'] = $this->_filtersPriority;
+        } elseif (!empty($options['filters'])) {
+            $options['filters'] = array('strip_null', $options['filters']);
         } else {
-            $filters = array('strip_null');
+            $options['filters'] = array('strip_null');
         }
 
         if (is_array($value)) {
-            array_walk_recursive($value, array(&$this, 'filter'), $filters);
+            array_walk_recursive($value, array(&$this, 'filter'), $options['filters']);
         } else {
-            $this->filter($value, $key, $filters);
+            $this->filter($value, $key, $options['filters']);
         }
 
         // type check
-        if ($type_validate && $valid_type) {
+        if ($options['type_validate'] && $valid_type) {
             $value = $this->func_types_check[$valid_type]($value)? $value : null;
         }
         // type cast
@@ -386,14 +390,21 @@ class Jaws_Request
      * @access  public
      * @param   mixed   $keys           The key(s) being fetched, it can be an array with multiple keys in it to fetch and then
      *                                  an array will be returned accordingly.
-     * @param   mixed   $methods        Which request type is being fetched from, it can be an array
-     * @param   bool    $filter         Returns filtered data or not
-     * @param   bool    $xss_strip      Returns stripped html data tags/attributes
-     * @param   bool    $json_decode    Decode JSON data or not
+     * @param   mixed   $methods        Which request type is being fetched from, it can be an array.
+     * @param   string  $branchName     data branch/part name (empty means root of data)
+     * @param   array   $options        Options(filters, xss_strip, json_decode, type_validate)
      * @return  mixed   Returns string or an array depending on the key, otherwise Null if key not exist
      */
-    function fetch($keys, $methods = '', $filter = true, $xss_strip = false, $json_decode = false)
+    function fetch($keys, $methods = '', $branchName = '', array $options = array())
     {
+        $defaultOptions = array(
+            'filters' => true,       // bool|array apply default filters? (can pass array of filters by name)
+            'xss_strip' => false,    // stripped html data tags/attributes
+            'json_decode' => false,  // decode JSON data
+            'type_validate' => true, // type validate?
+        );
+        $options = array_merge($defaultOptions, $options);
+
         $result = null;
         if (empty($methods)) {
             switch (strtolower($_SERVER['REQUEST_METHOD'])) {
@@ -413,7 +424,7 @@ class Jaws_Request
         }
 
         foreach ($methods as $method) {
-            $result = $this->_fetch($keys, $method, $filter, $xss_strip, $json_decode);
+            $result = $this->_fetch($keys, $method, $branchName, $options);
             if (!is_null($result)) {
                 break;
             }
@@ -427,12 +438,19 @@ class Jaws_Request
      *
      * @access  public
      * @param   string  $method     Request method type
-     * @param   bool    $filter     Returns filtered data
-     * @param   bool    $xss_strip  Returns stripped html data tags/attributes
+     * @param   array   $options    Options(filters, xss_strip, json_decode, type_validate)
      * @return  array   Filtered Data array
      */
-    function fetchAll($method = '', $filter = true, $xss_strip = false, $type_validate = true)
+    function fetchAll($method = '', $branchName = '', array $options = array())
     {
+        $defaultOptions = array(
+            'filters' => true,       // bool|array apply default filters? (can pass array of filters by name)
+            'xss_strip' => false,    // stripped html data tags/attributes
+            'json_decode' => false,  // decode JSON data
+            'type_validate' => true, // type validate?
+        );
+        $options = array_merge($defaultOptions, $options);
+
         $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
         if (!isset($this->data[$method]) || empty($this->data[$method])) {
             return array();
@@ -441,7 +459,7 @@ class Jaws_Request
         $keys = array_keys($this->data[$method]);
         $keys = preg_replace('/[^[:alnum:]_\.\-]/', '', $keys);
 
-        return $this->_fetch($keys, $method, $filter, $xss_strip, false, $type_validate);
+        return $this->_fetch($keys, $method, $branchName, $options);
     }
 
     /** Creates a new key or updates an old one
