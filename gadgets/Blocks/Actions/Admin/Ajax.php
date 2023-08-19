@@ -44,8 +44,8 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('AddBlock');
 
         @list($title, $contents, $displayTitle) = $this->gadget->request->fetchAll('post');
-        $summary = $this->gadget->request->fetch(1, 'post', 'strip_crlf');
-        $content = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
+        $summary = $this->gadget->request->fetch(1, 'post', false, array('filter' => 'strip_crlf'));
+        $content = $this->gadget->request->fetch(2, 'post', false, array('filter' => 'strip_crlf'));
         $model = $this->gadget->model->loadAdmin('Block');
         $res = $model->NewBlock($title, $summary, $content, $displayTitle);
         if (Jaws_Error::IsError($res)) {
@@ -74,8 +74,8 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $this->gadget->CheckPermission('EditBlock');
 
         @list($id, $title, $contents, $displayTitle) = $this->gadget->request->fetchAll('post');
-        $summary = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
-        $content = $this->gadget->request->fetch(3, 'post', 'strip_crlf');
+        $summary = $this->gadget->request->fetch(2, 'post', false, array('filter' => 'strip_crlf'));
+        $content = $this->gadget->request->fetch(3, 'post', false, array('filter' => 'strip_crlf'));
         $model = $this->gadget->model->loadAdmin('Block');
         $model->UpdateBlock($id, $title, $summary, $content, $displayTitle);
         return $this->gadget->session->pop();
@@ -106,7 +106,7 @@ class Blocks_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function ParseText()
     {
-        $text = $this->gadget->request->fetch(0, 'post', 'strip_crlf');
+        $text = $this->gadget->request->fetch(0, 'post', false, array('filter' => 'strip_crlf'));
         return $this->gadget->plugin->parseAdmin($text);
     }
 }
