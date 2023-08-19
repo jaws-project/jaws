@@ -27,7 +27,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
             array('gadgets', 'all', 'exact', 'least', 'exclude', 'date'),
             'get',
             false,
-            array('filter' => 'strip_crlf')
+            array('filter' => false)
         );
 
         $page = $this->gadget->request->fetch('page', 'get');
