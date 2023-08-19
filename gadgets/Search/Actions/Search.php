@@ -24,7 +24,7 @@ class Search_Actions_Search extends Jaws_Gadget_Action
             array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'),
             'get',
             false,
-            array('filter' => false)
+            array('filters' => false)
         );
 
         if ($this->app->requestedActionMode === 'normal') {
@@ -104,7 +104,7 @@ class Search_Actions_Search extends Jaws_Gadget_Action
             array('all', 'exact', 'least', 'exclude', 'gadgets', 'date'),
             'get',
             false,
-            array('filter' => false)
+            array('filters' => false)
         );
 
         if ($this->app->requestedActionMode === 'normal') {
