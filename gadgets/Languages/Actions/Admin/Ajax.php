@@ -49,7 +49,7 @@ class Languages_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function SetLangData()
     {
         @list($component, $langTo, $data) = $this->gadget->request->fetchAll('post');
-        $data = $this->gadget->request->fetch('2:array', 'post', false);
+        $data = $this->gadget->request->fetch('2:array', 'post', false, array('filter' => false));
         $component = explode('|', $component);
         $component[1] = preg_replace("/[^A-Za-z0-9]/", '', $component[1]);
         $model = $this->gadget->model->loadAdmin('Languages');
