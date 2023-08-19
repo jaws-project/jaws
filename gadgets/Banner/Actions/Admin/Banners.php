@@ -318,7 +318,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
                 'stop_time', 'random', 'published'
             ), 'post'
         );
-        $post['template'] = $this->gadget->request->fetch('template', 'post', false, array('filter' => 'strip_crlf'));
+        $post['template'] = $this->gadget->request->fetch('template', 'post', false, array('filters' => 'strip_crlf'));
 
         $model = $this->gadget->model->loadAdmin('Banners');
         $res = Jaws_FileManagement_File::uploadFiles(
