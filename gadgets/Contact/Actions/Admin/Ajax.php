@@ -251,7 +251,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('UpdateProperties');
         @list($use_antispam, $email_format, $enable_attachment, $comments) = $this->gadget->request->fetchAll('post');
-        $comments = $this->gadget->request->fetch(3, 'post', 'strip_crlf');
+        $comments = $this->gadget->request->fetch(3, 'post', false, array('filter' => 'strip_crlf'));
 
         $model = $this->gadget->model->loadAdmin('Properties');
         $model->UpdateProperties($use_antispam, $email_format, $enable_attachment, $comments);
@@ -325,7 +325,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function GetMessagePreview()
     {
         $this->gadget->CheckPermission('AccessToMailer');
-        $message = $this->gadget->request->fetch(0, 'post', 'strip_crlf');
+        $message = $this->gadget->request->fetch(0, 'post', false, array('filter' => 'strip_crlf'));
 
         $gadget = $this->gadget->action->loadAdmin('Mailer');
         return $gadget->PrepareMessage($message);
@@ -345,7 +345,7 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('AccessToMailer');
         @list($target, $subject, $message, $attachment) = $this->gadget->request->fetchAll('post');
-        $message = $this->gadget->request->fetch(2, 'post', 'strip_crlf');
+        $message = $this->gadget->request->fetch(2, 'post', false, array('filter' => 'strip_crlf'));
         $target = $this->gadget->request->fetch('0:array', 'post');
 
         $gadget = $this->gadget->action->loadAdmin('Mailer');
