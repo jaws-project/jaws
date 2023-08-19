@@ -78,7 +78,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
      */
     function ParseText()
     {
-        $text = $this->gadget->request->fetch(0, 'post', false, array('filter' => 'strip_crlf'));
+        $text = $this->gadget->request->fetch(0, 'post', false, array('filters' => 'strip_crlf'));
         return $this->gadget->plugin->parseAdmin($text);
     }
 
@@ -126,7 +126,7 @@ class StaticPage_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($id, $group, $showtitle, $title, $content, $language,
             $fast_url, $meta_keys, $meta_desc, $tags,  $published
         ) = $this->gadget->request->fetchAll('post');
-        $content = $this->gadget->request->fetch(4, 'post', false, array('filter' => 'strip_crlf'));
+        $content = $this->gadget->request->fetch(4, 'post', false, array('filters' => 'strip_crlf'));
         $model = $this->gadget->model->loadAdmin('Page');
 
         if ($id == 'NEW') {
