@@ -403,7 +403,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
             $published = false;
         }
 
-        $description = $this->gadget->request->fetch('description', 'post', false, array('filter' => 'strip_crlf'));
+        $description = $this->gadget->request->fetch('description', 'post', false, array('filters' => 'strip_crlf'));
         // Update photo
         $model = $this->gadget->model->loadAdmin('Photos');
         $res = $model->UpdateEntry(
