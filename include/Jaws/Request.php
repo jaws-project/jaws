@@ -441,7 +441,7 @@ class Jaws_Request
      * @param   array   $options    Options(filters, xss_strip, json_decode, type_validate)
      * @return  array   Filtered Data array
      */
-    function fetchAll($method = '', $branchName = '', array $options = array())
+    function fetchAll($method = '', array $options = array())
     {
         $defaultOptions = array(
             'filters' => true,       // bool|array apply default filters? (can pass array of filters by name)
@@ -459,7 +459,7 @@ class Jaws_Request
         $keys = array_keys($this->data[$method]);
         $keys = preg_replace('/[^[:alnum:]_\.\-]/', '', $keys);
 
-        return $this->_fetch($keys, $method, $branchName, $options);
+        return $this->_fetch($keys, $method, '', $options);
     }
 
     /** Creates a new key or updates an old one
