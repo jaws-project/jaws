@@ -114,7 +114,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($domain, $title, $url, $gid, $banner, $template, $views_limit,
             $clicks_limit, $start_time, $stop_time, $random, $published
         ) = $this->gadget->request->fetchAll('post');
-        $template = $this->gadget->request->fetch(5, 'post', 'strip_crlf');
+        $template = $this->gadget->request->fetch(5, 'post', false, array('filter' => 'strip_crlf'));
         if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
             $domain = 0;
         }
@@ -141,7 +141,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         @list($bid, $domain, $title, $url, $gid, $banner, $template, $views_limit,
             $clicks_limit, $start_time, $stop_time, $random, $published
         ) = $this->gadget->request->fetchAll('post');
-        $template = $this->gadget->request->fetch(6, 'post', 'strip_crlf');
+        $template = $this->gadget->request->fetch(6, 'post', false, array('filter' => 'strip_crlf'));
         if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
             $domain = 0;
         }
