@@ -249,7 +249,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                          'fasturl', 'allow_comments:array', 'published', 'favorite:array', 'type',
                          'trackback_to', 'meta_keywords', 'meta_desc', 'tags');
         $post    = $this->gadget->request->fetch($names, 'post');
-        $content = $this->gadget->request->fetch(array('summary_block', 'text_block'), 'post', false, array('filter' => 'strip_crlf'));
+        $content = $this->gadget->request->fetch(array('summary_block', 'text_block'), 'post', false, array('filters' => 'strip_crlf'));
         $post['trackback_to'] = str_replace("\r\n", "\n", $post['trackback_to']);
 
         $pubdate = null;
@@ -602,7 +602,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
                          'fasturl', 'meta_keywords', 'meta_desc', 'tags', 'deleteImage', 'favorite:array', 'type',
                          'allow_comments:array', 'published', 'trackback_to');
         $post    = $this->gadget->request->fetch($names, 'post');
-        $content = $this->gadget->request->fetch(array('summary_block', 'text_block'), 'post', false, array('filter' => 'strip_crlf'));
+        $content = $this->gadget->request->fetch(array('summary_block', 'text_block'), 'post', false, array('filters' => 'strip_crlf'));
 
         $post['trackback_to'] = str_replace("\r\n", "\n", $post['trackback_to']);
 
