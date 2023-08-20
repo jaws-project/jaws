@@ -2117,6 +2117,37 @@ Jaws.filters = {
     },
 
     /**
+     * Convert special characters to HTML entities
+     */
+    ent_encode: function(input, noquotes = false) {
+        input = input.toString();
+        // Put this first to avoid double-encoding
+        input = input.replace(/&/g, '&amp;');
+
+        input = input.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        if (!noquotes) {
+            input = input.replace(/"/g, '&quot;');
+        }
+
+        return input;
+    },
+
+    /**
+     * Convert special HTML entities back to characters
+     */
+    ent_decode: function(input, noquotes = false) {
+        input = input.toString().replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+        if (!noquotes) {
+            input = input.replace(/&quot;/g, '"');
+        }
+
+        // Put this in last place to avoid escape being double-decoded
+        input = input.replace(/&amp;/g, '&');
+
+        return input;
+    },
+
+    /**
      * Javascript format number prototype
      */
     format: function(input, unit = '') {
@@ -2176,4 +2207,4 @@ Jaws.filters = {
         return input;
     },
 
-};
+}
