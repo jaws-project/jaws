@@ -1202,6 +1202,10 @@ class Jaws_ORM
                 // trigger an error
         }
 
+        if ($error_level == JAWS_ERROR_DEBUG) {
+            _log_var_dump($sql);
+        }
+
         if (MDB2::isError($result)) {
             // auto rollback
             if (!empty(self::$transactions) && end(self::$transactions)) {
