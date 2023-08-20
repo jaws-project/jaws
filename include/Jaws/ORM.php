@@ -256,8 +256,8 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    private $separators = array(' ', '(', ')', ',', '+', '-', '/', '*', '?', '<', '>', '<>');
-    private $regexp_separators = '@([\s\(\)\,\+\-\/\*\?\<\>\<\>])@';
+    private $separators = array(' ', '(', ')', ',', '+', '-', '/', '*', '=', '?', '<', '>', '<>');
+    private $regexp_separators = '@([\s\(\)\,\+\-\/\*\=\?\<\>\<\>])@';
 
     /**
      * Not quoted by quoteIdentifier
