@@ -327,6 +327,32 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Convert special characters to HTML entities
+     *
+     * @access  public
+     * @param   string  $input      The string being converted
+     * @param   bool    $noquotes   Will leave both double and single quotes unconverted
+     * @return  string  The converted string
+     */
+    public static function ent_encode($input, $noquotes = false)
+    {
+        return htmlspecialchars($input, $noquotes? ENT_NOQUOTES : ENT_QUOTES, 'UTF-8');
+    }
+
+    /**
+     * Convert special HTML entities back to characters
+     *
+     * @access  public
+     * @param   string  $input      The string to decode
+     * @param   bool    $noquotes   Will leave both double and single quotes unconverted
+     * @return  string  Returns the decoded string
+     */
+    static function ent_decode($input, $noquotes = false)
+    {
+        return htmlspecialchars_decode($input, $noquotes? ENT_NOQUOTES : ENT_QUOTES);
+    }
+
+    /**
      * URL encodes a string
      *
      * @param string $input
