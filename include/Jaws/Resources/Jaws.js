@@ -66,13 +66,35 @@ jQuery.extend({
         return result;
     },
 
-    formData: function(formArray) {
-        let result = new FormData();
-        $.each(formArray, function(key, val) {
-            result.append(key, val);
-        });
+    /**
+     * Takes an object and returns a FormData object
+     *
+     * @return  object  FormData
+     */
+    formData: function(data, objFormData, parentKey) {
+        if (!(objFormData instanceof FormData)) {
+            objFormData = new FormData();
+        }
 
-        return result;
+        if (data && typeof data === 'object' &&
+            !(data instanceof Date) &&
+            !(data instanceof File) &&
+            !(data instanceof Blob)
+        ) {
+            $.each(Object.keys(data),
+                $.proxy(
+                    function(index, key) {
+                        $.formData(data[key], objFormData, parentKey? `${parentKey}[${key}]` : key);
+                    },
+                    this
+                )
+            );
+        } else {
+            data = (data == null)? '' : data;
+            objFormData.append(parentKey || 0, data);
+        }
+
+        return objFormData;
     },
 
     viewport: function() {
@@ -415,37 +437,6 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
     }
 
     /**
-     * Takes an object and returns a FormData object
-     *
-     * @return  object  FormData
-     */
-    this.formData = function(data, objFormData, parentKey) {
-        if (!(objFormData instanceof FormData)) {
-            objFormData = new FormData();
-        }
-
-        if (data && typeof data === 'object' &&
-            !(data instanceof Date) &&
-            !(data instanceof File) &&
-            !(data instanceof Blob)
-        ) {
-            $.each(Object.keys(data),
-                $.proxy(
-                    function(index, key) {
-                        this.formData(data[key], objFormData, parentKey? `${parentKey}[${key}]` : key);
-                    },
-                    this
-                )
-            );
-        } else {
-            data = (data == null)? '' : data;
-            objFormData.append(parentKey || 0, data);
-        }
-
-        return objFormData;
-    };
-
-    /**
      * Performs Ajax request
      *
      * @param   string      action      Gadget action name
@@ -517,15 +508,14 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             return xhr;
         }
 
-        if (data instanceof FormData) {
-            options.dataType = 'text';
-            options.processData = false;
-            options.contentType = false;
-            options.data = data;
-        } else {
-            options.contentType = 'application/json; charset=utf-8';
-            options.data = JSON.stringify((/boolean|number|string/).test(typeof data)? [data] : data);
+        if (!(data instanceof FormData)) {
+            // convert to FormData
+            data = $.formData(data);
         }
+        options.dataType = 'text';
+        options.processData = false;
+        options.contentType = false;
+        options.data = data;
 
         options.beforeSend = this.onSend.bind(this, options);
         options.success = this.onSuccess.bind(this, options);
