@@ -165,12 +165,12 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
     /**
      * Group array bygiven property
      *
-     * @param array|\Traversable $input
-     * @param string $property
+     * @param   array|\Traversable  $input
+     * @param   string|array        $properties
      *
      * @return string
      */
-    public static function groupby($input, $property)
+    public static function groupby($input, $properties)
     {
         if ($input instanceof \Traversable) {
             $input = iterator_to_array($input);
@@ -180,8 +180,10 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
         }
 
         $result = array();
+        if (!is_array($properties)) $properties = array($properties);
         foreach ($input as $element) {
-            $result[$element[$property]][] = $element;
+            $groupkey = json_encode(array_map(function($property) use ($element) { return $element[$property]; }, $properties));
+            $result[$groupkey][] = $element;
         }
 
         return $result;
