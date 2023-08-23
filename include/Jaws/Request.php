@@ -317,13 +317,13 @@ class Jaws_Request
         }
         @list($all, $key, $valid_type, $cast_type) = $this->regexp->matches;
 
-        if ($branchName !== '') {
+        if ($branchName === '' || $branchName === false) {
+            $dataRepository = &$this->data[$method];
+        } else {
             if (!array_key_exists($branchName, $this->data[$method])) {
                 $this->data[$method][$branchName] = array();
             }
             $dataRepository = &$this->data[$method][$branchName];
-        } else {
-            $dataRepository = &$this->data[$method];
         }
 
         // if key not exists
