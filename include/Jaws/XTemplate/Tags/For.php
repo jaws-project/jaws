@@ -159,24 +159,63 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
 
         foreach ($collection as $key => $item) {
             $context->set($this->variableName, $item);
-            $context->set(
-                'forloop', array(
-                    'key'     => $key,
+            $forloop = array(
+                'key'     => $key,
+                'name'    => $this->name,
+                'length'  => $length,
+                'index'   => $index + 1,
+                'index0'  => $index,
+                'rindex'  => $length - $index,
+                'rindex0' => $length - $index - 1,
+                'first'   => (int)($index == 0),
+                'last'    => (int)($index == $length - 1),
+                'parent'  => $context->parentContext()
+            );
+            // previous
+            if (false !== prev($collection)) {
+                $forloop['prev'] = array(
+                    'key'     => key($collection),
                     'name'    => $this->name,
                     'length'  => $length,
-                    'index'   => $index + 1,
-                    'index0'  => $index,
-                    'rindex'  => $length - $index,
-                    'rindex0' => $length - $index - 1,
-                    'first'   => (int)($index == 0),
-                    'last'    => (int)($index == $length - 1),
-                    'parent'  => $context->parentContext()
-                )
-            );
+                    'index'   => $index,
+                    'index0'  => $index - 1,
+                    'rindex'  => $length - $index - 1,
+                    'rindex0' => $length - $index - 2,
+                    'first'   => (int)(($index - 1) == 0),
+                    'last'    => (int)($index == $length),
+                    'parent'  => &$forloop['parent']
+                );
+                next($collection);
+            } else {
+                $forloop['prev'] = null;
+                reset($collection);
+            }
+            // next
+            if (false !== next($collection)) {
+                $forloop['next'] = array(
+                    'key'     => key($collection),
+                    'name'    => $this->name,
+                    'length'  => $length,
+                    'index'   => $index + 2,
+                    'index0'  => $index + 1,
+                    'rindex'  => $length - $index + 1,
+                    'rindex0' => $length - $index,
+                    'first'   => (int)(($index + 1) == 0),
+                    'last'    => (int)(($index + 1) == $length - 1),
+                    'parent'  => &$forloop['parent']
+                );
+                prev($collection);
+            } else {
+                $forloop['next'] = null;
+                end($collection);
+            }
+            // forloop
+            $context->set('forloop', $forloop);
 
             $result .= $this->renderAll($nodelist, $context);
 
             $index++;
+            next($collection);
 
             if (isset($context->registers['break'])) {
                 unset($context->registers['break']);
@@ -213,20 +252,54 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
 
         for ($i = $range[0]; $i <= $range[1]; $i++) {
             $context->set($this->variableName, $i);
-            $context->set(
-                'forloop', array(
-                    'key'     => $index,
+            $forloop = array(
+                'key'     => $index,
+                'name'    => $this->name,
+                'length'  => $length,
+                'index'   => $index + 1,
+                'index0'  => $index,
+                'rindex'  => $length - $index,
+                'rindex0' => $length - $index - 1,
+                'first'   => (int)($index == 0),
+                'last'    => (int)($index == $length - 1),
+                'parent'  => $context->parentContext()
+            );
+            // previous
+            if (($i - 1) >= $range[0]) {
+                $forloop['prev'] = array(
+                    'key'     => $index - 1,
                     'name'    => $this->name,
                     'length'  => $length,
-                    'index'   => $index + 1,
-                    'index0'  => $index,
-                    'rindex'  => $length - $index,
-                    'rindex0' => $length - $index - 1,
-                    'first'   => (int)($index == 0),
-                    'last'    => (int)($index == $length - 1),
-                    'parent'  => $context->parentContext()
-                )
-            );
+                    'index'   => $index,
+                    'index0'  => $index - 1,
+                    'rindex'  => $length - $index - 1,
+                    'rindex0' => $length - $index - 2,
+                    'first'   => (int)(($index - 1) == 0),
+                    'last'    => (int)($index == $length),
+                    'parent'  => &$forloop['parent']
+                );
+            } else {
+                $forloop['prev'] = null;
+            }
+            // next
+            if (($i + 1) > $range[1]) {
+                $forloop['next'] = array(
+                    'key'     => $index + 1,
+                    'name'    => $this->name,
+                    'length'  => $length,
+                    'index'   => $index + 2,
+                    'index0'  => $index + 1,
+                    'rindex'  => $length - $index + 1,
+                    'rindex0' => $length - $index,
+                    'first'   => (int)(($index + 1) == 0),
+                    'last'    => (int)(($index + 1) == $length - 1),
+                    'parent'  => &$forloop['parent']
+                );
+            } else {
+                $forloop['next'] = null;
+            }
+            // forloop
+            $context->set('forloop', $forloop);
 
             $result .= $this->renderAll($nodelist, $context);
 
