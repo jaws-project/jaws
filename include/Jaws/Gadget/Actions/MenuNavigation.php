@@ -138,7 +138,7 @@ class Jaws_Gadget_Actions_MenuNavigation extends Jaws_Gadget_Class
                 }
                 // separator
                 if (isset($action['navigation']['separator'])) {
-                    $menu['separator'] = true;
+                    $menu['separator'] = (int)$action['navigation']['separator'];
                 }
                 // set order
                 $order = isset($action['navigation']['order'])? $action['navigation']['order'] : null;
