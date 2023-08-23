@@ -4,12 +4,20 @@
   </button>
   <ul class="dropdown-menu dropdown-menu-start">
     {%- for menu in navigation.menus %}
-      {% if menu.separator %}
+      {%- if forloop.first | false and menu.separator < 0 %}
+
+      {%- assign prevmenu = navigation.menus | index: forloop.prev.key %}
+      {%- if prevmenu.separator <= 0 %}
       <li role="separator" class="divider"></li>
-      {% endif %}
+      {%- endif %}
+
+      {%- endif %}
       <li {{ menu.active | equal: true, 'class="active"' }}>
         <a class="dropdown-item" href="{{ menu.url }}">{{ menu.title }}</a>
       </li>
+      {%- if forloop.last | false and menu.separator > 0 %}
+      <li role="separator" class="divider"></li>
+      {%- endif %}
     {%- endfor %}
   </ul>
 </div>
