@@ -720,8 +720,21 @@ function JawsLoading($owner)
                 'action': Jaws.defines.mainAction
             }
         }
-        $container = $('#' + ($interface.gadget + '-' + $interface.action + '-response-loading').toLowerCase());
-        $container.stop(true, true).fadeIn();
+        $container = $('[data-loading-container="' + ($interface.gadget + '.' + $interface.action).toLowerCase() + '"]');
+        if (!$container.length) {
+            return;
+        }
+
+        if (!$container.find('[role="loading"]').length) {
+            // clone loading html template
+            $container.append(
+                $('body').find('#loading-template').html()
+            ).find('[role="loading.text"]').html(
+                this.owner.gadget.defines.loadingMessage || Jaws.defines.loadingMessage || 'Loading...'
+            );
+        }
+
+        $container.find('[role="loading"]').stop(true, true).css('display', 'flex').hide().fadeIn();
     }
 
     /**
@@ -738,8 +751,12 @@ function JawsLoading($owner)
                 'action': Jaws.defines.mainAction
             }
         }
-        $container = $('#' + ($interface.gadget + '-' + $interface.action + '-response-loading').toLowerCase());
-        $container.hide();
+        $container = $('[data-loading-container="' + ($interface.gadget + '.' + $interface.action).toLowerCase() + '"]');
+        if (!$container.find('[role="loading"]').length) {
+            return;
+        }
+
+        $container.find('[role="loading"]').hide();
     }
 
 }
