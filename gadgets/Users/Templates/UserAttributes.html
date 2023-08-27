@@ -3,10 +3,7 @@
   <h5 class="m-0 me-2 py-1">{{title}}</h5>
   <!-- INCLUDE MenuNavigation.html include/Jaws/Resources -->
 </div>
-<div class="gadget-container">
-  <div class="gadget_response">
-    <div id="users_preferences_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
-  </div>
+<div class="gadget-container" data-loading-container="users.preferences">
   <div class="gadget-content card-body">
     <form name="preferencesBox" method="post" onsubmit="return updateUserAttributes(this);">
       <input type="hidden" name="reqGadget" value="Users" />
