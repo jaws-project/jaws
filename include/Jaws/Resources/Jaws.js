@@ -664,8 +664,8 @@ function JawsMessage($owner)
             $container = $('#' + $interface.id);
             if (!$container.length) {
                 // clone toast html elements
-                $('#toast-container').append(
-                    $('#toast-container').find('#toast-template').html()
+                $('#jaws-response-container').append(
+                    $('#jaws-response-container').find('#jaws-response-template').html()
                 ).find('.toast').last().attr('id', $interface.id);
                 $container = $('#' + $interface.id);
             }
@@ -728,7 +728,7 @@ function JawsLoading($owner)
         if (!$container.find('[role="loading"]').length) {
             // clone loading html template
             $container.append(
-                $('body').find('#loading-template').html()
+                $('body').find('#jaws-loading-template').html()
             ).find('[role="loading.text"]').html(
                 this.owner.gadget.defines.loadingMessage || Jaws.defines.loadingMessage || 'Loading...'
             );
