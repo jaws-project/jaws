@@ -2,10 +2,7 @@
 <div class="gadget-header card-header d-flex align-items-center justify-content-between">
   <h5 class="m-0 me-2 py-1">{{findex_title}} &rsaquo; {{forum_title}}</h5>
 </div>
-<div class="gadget-container">
-  <div class="gadget_response">
-    <div id="forums_edittopic_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
-  </div>
+<div class="gadget-container" data-loading-container="forums.edittopic">
   <form name="edittopic" action="{{requested_url}}" method="post" enctype="multipart/form-data">
     <input type="hidden" name="reqGadget" value="Forums" />
     <input type="hidden" name="reqAction" value="UpdateTopic" />

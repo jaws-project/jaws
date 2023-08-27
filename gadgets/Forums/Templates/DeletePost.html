@@ -5,10 +5,7 @@
   </h5>
 </div>
 
-<div class="gadget-container">
-  <div class="gadget_response">
-    <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
-  </div>
+<div class="gadget-container" data-loading-container="forums.deletepost">
   <form name="deletepost" action="{{requested_url}}" method="post">
     <input type="hidden" name="reqGadget" value="Forums" />
     <input type="hidden" name="reqAction" value="DeletePost" />
