@@ -626,16 +626,16 @@ function JawsMessage($owner)
 {
     this.alerts = {
         'alert-danger': {
-            'type' : 'error', 'icon': 'bi bi-x-circle-fill'
+            'class' : 'alert-danger', 'type' : 'error', 'icon': 'bi bi-x-circle-fill'
         },
         'alert-warning': {
-            'type' : 'warning', 'icon': 'bi bi-exclamation-triangle-fill'
+            'class' : 'alert-warning', 'type' : 'warning', 'icon': 'bi bi-exclamation-triangle-fill'
         },
         'alert-success': {
-            'type' : 'success', 'icon': 'bi bi-check-circle-fill'
+            'class' : 'alert-success', 'type' : 'success', 'icon': 'bi bi-check-circle-fill'
         },
         'alert-info': {
-            'type' : 'info', 'icon': 'bi bi-info-circle-fill'
+            'class' : 'alert-info', 'type' : 'info', 'icon': 'bi bi-info-circle-fill'
         }
     };
     this.owner = $owner;
