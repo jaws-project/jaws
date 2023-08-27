@@ -5,10 +5,7 @@
     <div class="col-xs-3"><!-- INCLUDE MenuNavigation.html include/Jaws/Resources --></div>
   </div>
 </div>
-<div class="gadget_container">
-  <div class="gadget_response">
-    <div id="eventscalendar_{{action}}_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
-  </div>
+<div class="gadget_container" data-loading-container="eventscalendar.{{action}}">
   <div class="gadget_content">
     <form id="frm_event" name="frm_event" action="{{base_script}}" method="post">
       <input type="hidden" name="reqGadget" value="EventsCalendar" />
