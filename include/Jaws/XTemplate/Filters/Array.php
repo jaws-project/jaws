@@ -135,12 +135,37 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Merge one or more arrays
+     *
+     * @param array|\Traversable $input
+     * @param array|\Traversable $property
+     *
+     * @return array
+     */
+    public static function merge(...$inputs)
+    {
+        $result = array();
+        foreach ($inputs as &$input) {
+            if ($input instanceof \Traversable) {
+                $input = iterator_to_array($input);
+            }
+            if (!is_array($input)) {
+                break;
+            }
+
+            $result = array_merge($result, $input);
+        }
+
+        return $result;
+    }
+
+    /**
      * Map/collect on a given property
      *
      * @param array|\Traversable $input
      * @param string $property
      *
-     * @return string
+     * @return array
      */
     public static function map($input, $property)
     {
@@ -168,7 +193,7 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
      * @param   array|\Traversable  $input
      * @param   string|array        $properties
      *
-     * @return string
+     * @return array
      */
     public static function groupby($input, $properties)
     {
