@@ -698,14 +698,14 @@ class Jaws_Layout
             $this->PutDescription();
             $this->PutMetaKeywords();
             $this->PutMetaLanguages();
-            // appendix
-            $this->_Template->SetBlock('layout/appendix');
-            $this->_Template->SetVariable(
-                'appendix',
-                $this->app->template->parseFile('Appendix.html', 'include/Jaws/Resources', true)->render()
-            );
-            $this->_Template->ParseBlock('layout/appendix');
         }
+        // appendix
+        $this->_Template->SetBlock('layout/appendix');
+        $this->_Template->SetVariable(
+            'appendix',
+            $this->app->template->parseFile('Appendix.html', 'include/Jaws/Resources', JAWS_SCRIPT == 'index')->render()
+        );
+        $this->_Template->ParseBlock('layout/appendix');
 
         // parse template an show the HTML
         $this->_Template->ParseBlock('layout');
