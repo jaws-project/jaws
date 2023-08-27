@@ -26,6 +26,6 @@ $maps[] = array(
 );
 $maps[] = array(
     'getTranslates',
-    'settings/translates/{modules}[/restype/{restype}]',
+    'settings/translates/{modules}[/language/{language}][/restype/{restype}]',
     array('modules' => '[\p{L}[:digit:]\-_\.\:]+',)
 );
