@@ -626,16 +626,16 @@ function JawsMessage($owner)
 {
     this.alerts = {
         'alert-danger': {
-            'class' : 'alert-danger', 'icon': 'bi bi-x-circle-fill'
+            'class' : 'alert-danger', 'type' : 'error', 'icon': 'bi bi-x-circle-fill'
         },
         'alert-warning': {
-            'class' : 'alert-warning', 'icon': 'bi bi-exclamation-triangle-fill'
+            'class' : 'alert-warning', 'type' : 'warning', 'icon': 'bi bi-exclamation-triangle-fill'
         },
         'alert-success': {
-            'class' : 'alert-success', 'icon': 'bi bi-check-circle-fill'
+            'class' : 'alert-success', 'type' : 'success', 'icon': 'bi bi-check-circle-fill'
         },
         'alert-info': {
-            'class' : 'alert-info', 'icon': 'bi bi-info-circle-fill'
+            'class' : 'alert-info', 'type' : 'info', 'icon': 'bi bi-info-circle-fill'
         }
     };
     this.owner = $owner;
@@ -683,14 +683,14 @@ function JawsMessage($owner)
             $container.find('[role="response.icon"]').addClass(this.alerts[message.type].icon)
             bootstrap.Toast.getOrCreateInstance($container).show();
         } else {
-            $container = $('#' + $interface.id);
-            $container.addClass(['gadget-response-message', message.type]).html(message.text);
-            $container.stop(true, true).fadeIn().delay(4000).fadeOut(
-                1000,
-                function() {
-                    $(this).removeClass(['gadget-response-message', message.type]);
-                }
-            );
+            toastr.options = {
+                closeButton: true,
+                newestOnTop: true,
+                positionClass: 'toast-top-end',
+                preventDuplicates: true,
+                onclick: null
+            };
+            toastr[this.alerts[message.type].type](message.text, this.owner.gadget.t('title'));
         }
     }
 
@@ -1891,7 +1891,10 @@ Jaws = {
             modules+= ',1:'+ gadget;
         });
 
-        let urlTranslates  = 'index.php?reqGadget=Settings&reqAction=getTranslates&modules='+modules+'&restype=gzjson';
+        let urlTranslates  = 'index.php?reqGadget=Settings' +
+            '&reqAction=getTranslates&modules=' + modules +
+            '&language='+ Jaws.defines.language +
+            '&restype=gzjson';
         $.getJSON(urlTranslates, $.proxy(
             function(data) {
                 this.translations = data;
