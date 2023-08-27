@@ -3,11 +3,7 @@
   <h5 class="m-0 me-2 py-1">{{title}}</h5>
   <!-- INCLUDE MenuNavigation.html include/Jaws/Resources -->
 </div>
-<div class="gadget-container">
-  <div class="gadget_response">
-    <div class="alert {{response_type}}" role="alert">{{response_text}}</div>
-  </div>
-
+<div class="gadget-container" data-loading-container="tags.managetags">
   <form name="tags" id="tags" action="{{requested_url}}" method="post">
       <input type="hidden" name="reqGadget" value="Tags"/>
       <input type="hidden" name="reqAction" value="ManageTags"/>
