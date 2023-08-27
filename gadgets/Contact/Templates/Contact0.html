@@ -1,10 +1,7 @@
 <div class="gadget-header card-header d-flex align-items-center justify-content-between">
   <h5 class="m-0 me-2 py-1">{{ "contact.us" | t }}</h5>
 </div>
-<div class="gadget-container">
-  <div class="gadget_response">
-    <div class="alert {{response.type}}" role="alert">{{response.text}}</div>
-  </div>
+<div class="gadget-container" data-loading-container="contact.contact">
   <form name="contact" action="{{base_script}}"
     method="post"
     onsubmit="return submitContactForm(this);"
