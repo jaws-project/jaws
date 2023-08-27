@@ -1867,7 +1867,10 @@ Jaws = {
             modules+= ',1:'+ gadget;
         });
 
-        let urlTranslates  = 'index.php?reqGadget=Settings&reqAction=getTranslates&modules='+modules+'&restype=gzjson';
+        let urlTranslates  = 'index.php?reqGadget=Settings' +
+            '&reqAction=getTranslates&modules=' + modules +
+            '&language='+ Jaws.defines.language +
+            '&restype=gzjson';
         $.getJSON(urlTranslates, $.proxy(
             function(data) {
                 this.translations = data;
