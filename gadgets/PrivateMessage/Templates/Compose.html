@@ -3,12 +3,7 @@
   <h5 class="m-0 me-2 py-1">{{title}}</h5>
   <!-- INCLUDE MenuNavigation.html include/Jaws/Resources -->
 </div>
-<div class="gadget-container">
-
-  <div class="gadget_response">
-    <div id="privatemessage_compose_response" class="alert {{response_type}}" role="alert">{{response_text}}</div>
-  </div>
-
+<div class="gadget-container" data-loading-container="privatemessage.compose">
   <form id="compose" name="compose" action="{{base_script}}" method="post" enctype="multipart/form-data">
       <input type="hidden" value="15000000" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE">
       <input type="hidden" name="reqGadget" value="PrivateMessage"/>
