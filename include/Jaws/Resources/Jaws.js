@@ -436,41 +436,6 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         this.defaultOptions.showMessage = true;
     }
 
-    this.default_message_container = $(
-        "#"+(this.mainRequest['gadget']+'_'+ this.mainRequest['action']+'_'+'response').toLowerCase()
-    );
-
-    /**
-     * Takes an object and returns a FormData object
-     *
-     * @return  object  FormData
-     */
-    this.formData = function(data, objFormData, parentKey) {
-        if (!(objFormData instanceof FormData)) {
-            objFormData = new FormData();
-        }
-
-        if (data && typeof data === 'object' &&
-            !(data instanceof Date) &&
-            !(data instanceof File) &&
-            !(data instanceof Blob)
-        ) {
-            $.each(Object.keys(data),
-                $.proxy(
-                    function(index, key) {
-                        this.formData(data[key], objFormData, parentKey? `${parentKey}[${key}]` : key);
-                    },
-                    this
-                )
-            );
-        } else {
-            data = (data == null)? '' : data;
-            objFormData.append(parentKey || 0, data);
-        }
-
-        return objFormData;
-    };
-
     /**
      * Performs Ajax request
      *
@@ -486,12 +451,15 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         var gadget, baseScript;
 
         callOptions = callOptions || {};
-        // response message/loading container
-        if (!callOptions.hasOwnProperty('message_container')) {
-            var rc_gadget, rc_action;
-            rc_gadget = this.baseGadget? this.baseGadget : this.mainRequest['gadget'];
-            rc_action = this.baseAction? this.baseAction : this.mainRequest['action'];
-            callOptions.message_container = $("#"+(rc_gadget+'_'+ rc_action+'_'+'response').toLowerCase());
+        // response message container
+        options.interface = {
+            'gadget': this.baseGadget? this.baseGadget : this.mainRequest['gadget'],
+            'action': this.baseAction? this.baseAction : this.mainRequest['action']
+        }
+
+        // loading container
+        if (!callOptions.hasOwnProperty('loading_container')) {
+            callOptions.loading_container = $("#"+(options.interface.gadget+'_'+ options.interface.action+'_'+'loading').toLowerCase());
         }
 
         gadget = callOptions.hasOwnProperty('gadget')? callOptions.gadget : this.gadget;
@@ -508,7 +476,6 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.type = 'POST';
         options.async  = callOptions.hasOwnProperty('async')? callOptions.async : true;
         options.timeout = 10 * 60 * 1000; /* 10 minutes */
-        options.action = action;
         options.callOptions = callOptions;
         // prevent auto redirect, we handle it manually if required
         options.headers = {'Auto-Redirects': '0'}
@@ -567,7 +534,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 
     this.onSend = function (reqOptions) {
         // start show loading indicator
-        this.callbackObject.gadget.message.loading(true, reqOptions.callOptions.message_container);
+        this.callbackObject.gadget.loading.show(reqOptions.interface);
     };
 
     this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
@@ -610,7 +577,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 
     this.onComplete = function (reqOptions, jqXHR, textStatus) {
         // hide loading
-        this.callbackObject.gadget.message.loading(false, reqOptions.callOptions.message_container);
+        this.callbackObject.gadget.loading.hide(reqOptions.interface);
 
         let response = jqXHR.responseText;
         if (reqOptions.callOptions.restype == 'json') {
@@ -638,10 +605,10 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 
         if (reqOptions.callOptions.hasOwnProperty('showMessage')) {
             if (reqOptions.callOptions.showMessage) {
-                this.callbackObject.gadget.message.show(response, reqOptions.callOptions.message_container);
+                this.callbackObject.gadget.message.show(response, reqOptions.interface);
             }
         } else if (this.defaultOptions.showMessage) {
-            this.callbackObject.gadget.message.show(response, reqOptions.callOptions.message_container);
+            this.callbackObject.gadget.message.show(response, reqOptions.interface);
         }
 
         return response;
@@ -655,63 +622,100 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
  * @param   object  objOwner    Owner object(gadget or action object)
  * @return  void
  */
-function JawsMessage(objOwner)
+function JawsMessage($owner)
 {
-    this.objOwner = objOwner;
-    this.$default_container = $("#"+(Jaws.defines.mainGadget+'_'+ Jaws.defines.mainAction+'_'+'response').toLowerCase());
+    this.alerts = {
+        'alert-danger': {
+            'type' : 'error', 'icon': 'bi bi-x-circle-fill'
+        },
+        'alert-warning': {
+            'type' : 'warning', 'icon': 'bi bi-exclamation-triangle-fill'
+        },
+        'alert-success': {
+            'type' : 'success', 'icon': 'bi bi-check-circle-fill'
+        },
+        'alert-info': {
+            'type' : 'info', 'icon': 'bi bi-info-circle-fill'
+        }
+    };
+    this.owner = $owner;
 
     /**
      * show response message
      *
      * @param   object  message     Jaws Response message
-     * @param   object  container   jQuery DOM element message container
+     * @param   object  $interface  Include (gadget, asction, ...)
      * @return  void
      */
-    this.show = function (message, $container) {
+    this.show = function (message, $interface = {}) {
         if (!message || !$.trim(message.text) || !message.type) {
             return;
         }
-
-        if (!$container || !$container.length) {
-            $container =  this.$default_container;
-            if (!$container.length) {
-                return;
+        // if $interface is empty
+        if (!Object.keys($interface).length) {
+            $interface = {
+                'gadget': Jaws.defines.mainGadget,
+                'action': Jaws.defines.mainAction
             }
         }
+        $interface.id = ($interface.gadget + '-' + $interface.action + '-response-message').toLowerCase();
 
-        $container.html(message.text).attr('class', message.type);
-        $container.stop(true, true).fadeIn().delay(4000).fadeOut(
-            1000,
-            function() {
-                //$(this).removeClass();
-            }
-        );
-
+        toastr.options = {
+            closeButton: true,
+            newestOnTop: true,
+            positionClass: 'toast-top-end',
+            preventDuplicates: true,
+            onclick: null
+        };
+        toastr[this.alerts[message.type].type](message.text, this.owner.gadget.t('title'));
     }
 
+}
+
+/**
+ * Loading base class
+ *
+ * @param   object  $owner  Owner object(gadget or action object)
+ * @return  void
+ */
+function JawsLoading($owner)
+{
+    this.owner = $owner;
+
     /**
-     * show response message
+     * show loading
      *
-     * @param   bool    show        show/hide loading
      * @param   object  container   jQuery DOM element message container
      * @return  void
      */
-    this.loading = function (show, container) {
-        if (!container || !container.length) {
-            container =  this.$default_container;
-        }
-
-        if (container.length) {
-            if (show) {
-                let loadingMessage = this.objOwner.gadget.defines.loadingMessage ||
-                    Jaws.defines.loadingMessage ||
-                    '...';
-                container.html(loadingMessage).attr('class', 'response_loading alert-info');
-                container.stop(true, true).fadeIn();
-            } else {
-                container.fadeOut(0, function() {$(this).removeClass();});
+    this.show = function ($interface = {}) {
+        // if $interface is empty
+        if (!Object.keys($interface).length) {
+            $interface = {
+                'gadget': Jaws.defines.mainGadget,
+                'action': Jaws.defines.mainAction
             }
         }
+        $container = $('#' + ($interface.gadget + '-' + $interface.action + '-response-loading').toLowerCase());
+        $container.stop(true, true).fadeIn();
+    }
+
+    /**
+     * hide loading
+     *
+     * @param   object  container   jQuery DOM object message container
+     * @return  void
+     */
+    this.hide = function ($interface = {}) {
+        // if $interface is empty
+        if (!Object.keys($interface).length) {
+            $interface = {
+                'gadget': Jaws.defines.mainGadget,
+                'action': Jaws.defines.mainAction
+            }
+        }
+        $container = $('#' + ($interface.gadget + '-' + $interface.action + '-response-loading').toLowerCase());
+        $container.hide();
     }
 
 }
@@ -1522,8 +1526,10 @@ var Jaws_Gadget = (function () {
                 objGadget.ajax = new JawsAjax(gadget, objGadget.AjaxCallback, objGadget);
                 // local storage interface
                 objGadget.storage = new JawsStorage(gadget);
-                // show/hide message interface 
+                // show/hide message interface
                 objGadget.message = new JawsMessage(objGadget);
+                // show/hide loading interface
+                objGadget.loading = new JawsLoading(objGadget);
 
                 // load gadget initialize method if exist
                 if (objGadget.init) {
@@ -1556,8 +1562,10 @@ function Jaws_Gadget_Action() { return {
             objAction.ajax.baseGadget = this.gadget.name;
             objAction.ajax.baseAction = action;
 
-            // show/hide message interface 
+            // show/hide message interface
             objAction.message = new JawsMessage(objAction);
+            // show/hide loading interface
+            objAction.loading = new JawsLoading(objAction);
 
             objAction.t = function(string, params) {
                 return Jaws.t(string, params, this.gadget.name);
@@ -1760,6 +1768,14 @@ $(document).ready(function() {
             $(this).find('i').toggleClass('glyphicon-eye-open glyphicon-eye-close');
         }
     );
+
+    $('[data-bs-toggle="popover"], [data-bs-toggle="tooltip"]').map(function() {
+        if ($(this).data('bs-toggle') == 'tooltip') {
+            return new bootstrap.Tooltip(this, {});
+        } else {
+            return new bootstrap.Popover(this, {});
+        }
+    });
 
     // initializing
     Jaws.init();
