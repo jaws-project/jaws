@@ -34,7 +34,7 @@
   <div class="clearfix" style="margin-bottom:20px;"></div>
 
   <div id="container" class="clearfix">
-    <div id="main-section" class="clearfix">
+    <div id="main-section" class="clearfix" data-loading-container="{{main_gadget}}.{{main_action}}">
       <!-- BEGIN cptitle -->
       <div id="control-panel-title">
         <img alt="{{title-gadget}}" style="vertical-align: middle;" src="{{icon-gadget}}" />
@@ -45,11 +45,6 @@
         <!-- END documentation -->
       </div>
       <!-- END cptitle -->
-      <div class="gadget_response">
-        <div id="{{main_gadget}}_{{main_action}}_response" class="alert {{response_type}}" role="alert">
-          {{response_text}}
-        </div>
-      </div>
       <!-- BEGIN main -->{{ELEMENT}}<!-- END main -->
     </div>
 
@@ -58,6 +53,12 @@
       <p>Powered by the <a href="http://jaws-project.com" rel="external">Jaws Project</a></p>
     </div>
   </div>
+  <template id="jaws-loading-template">
+    <div role="loading" class="overlay text-bg-secondary justify-content-center align-items-center">
+      <div class="spinner-border"></div>
+      <span class="visually-hidden" role="loading.text">Loading...</span>
+    </div>
+  </template>
   <!-- BEGIN scripts -->
   {{elements}}
   <!-- END scripts -->
