@@ -487,10 +487,12 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
                 case 'text':
                 case 'print':
                     xhr.responseType = '';
+                    options.dataType = 'text';
                     break;
 
                 default:
                     xhr.responseType = 'blob';
+                    options.dataType = 'binary';
             }
 
             if (progress) {
@@ -512,7 +514,6 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
             // convert to FormData
             data = $.formData(data);
         }
-        options.dataType = 'text';
         options.processData = false;
         options.contentType = false;
         options.data = data;
