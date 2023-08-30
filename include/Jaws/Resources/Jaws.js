@@ -1936,7 +1936,8 @@ Jaws.filters = {
      *
      */
     split: function(input, pattern = ',') {
-        return String(input).split(pattern);
+        input = [null, undefined].includes(input)? '' : input;
+        return input.toString().split(pattern);
     },
 
     /**
@@ -2131,7 +2132,7 @@ Jaws.filters = {
      * Convert special characters to HTML entities
      */
     ent_encode: function(input, noquotes = false) {
-        input = input.toString();
+        input = [null, undefined].includes(input)? '' : input.toString();
         // Put this first to avoid double-encoding
         input = input.replace(/&/g, '&amp;');
 
@@ -2147,7 +2148,8 @@ Jaws.filters = {
      * Convert special HTML entities back to characters
      */
     ent_decode: function(input, noquotes = false) {
-        input = input.toString().replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+        input = [null, undefined].includes(input)? '' : input.toString();
+        input = input.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
         if (!noquotes) {
             input = input.replace(/&quot;/g, '"');
         }
