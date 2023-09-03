@@ -62,7 +62,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $this->_ReqURL = str_replace(BASE_SCRIPT, '', $this->_ReqURL);
 
         $tpl = $this->gadget->template->load(
-            $group['view_type'] == 2? 'Menu2.html' : 'Menu.html',
+            'Menu'. $group['view_type'].'.html',
             array('rawStore' => true)
         );
         $tpl_str = $tpl->GetContent();
