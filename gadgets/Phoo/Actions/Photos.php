@@ -61,11 +61,11 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             // display album info
             if ($req_album == 0) {
                 $tpl->SetVariable('title', $this::t('UNKNOW_ALBUM'));
-                $this->SetTitle($this::t('UNKNOW_ALBUM'));
+                $this->title = $this::t('UNKNOW_ALBUM');
                 $tpl->SetVariable('description', '');
             } else {
                 $tpl->SetVariable('title', $album['name']);
-                $this->SetTitle($album['name']);
+                $this->title = $album['name'];
                 $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($album['description']));
             }
 
@@ -146,7 +146,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(404);
         }
 
-        $this->SetTitle($image['name']);
+        $this->title = $image['name'];
         $tpl->SetBlock('ViewImage');
         $tpl->SetVariable('title',       $image['name']);
         $tpl->SetVariable('posted_by',   $this::t('POSTED_BY'));
@@ -327,7 +327,7 @@ class Phoo_Actions_Photos extends Jaws_Gadget_Action
             $tpl->SetVariable('response_text', $response['text']);
         }
 
-        $this->SetTitle($this::t('UPLOAD_PHOTO'));
+        $this->title = $this::t('UPLOAD_PHOTO');
         $tpl->SetVariable('title', $this::t('UPLOAD_PHOTO'));
 
         $tpl->SetVariable('lbl_file', Jaws::t('FILE'));
