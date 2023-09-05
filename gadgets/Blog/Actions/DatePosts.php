@@ -69,7 +69,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
                     $title = $objDate->MonthString($month).' '.$day.', '.$year;
                 }
             }
-            $this->SetTitle($title);
+            $this->title = $title;
             $tpl->SetVariable('title', $title);
 
             $total  = $dpModel->GetDateNumberOfPages($min_date, $max_date);

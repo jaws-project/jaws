@@ -52,7 +52,7 @@ class Blog_Actions_AuthorPosts extends Blog_Actions_Default
 
             // set author nickname
             $firstEntry = reset($entries);
-            $this->SetTitle($firstEntry['nickname']);
+            $this->title = $firstEntry['nickname'];
             $tpl->SetVariable('title', $firstEntry['nickname']);
 
             $total  = $aModel->GetAuthorNumberOfPages($user);

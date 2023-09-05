@@ -74,9 +74,9 @@ class Blog_Actions_Categories extends Blog_Actions_Default
             )
         );
 
-        $this->SetTitle($name);
+        $this->title = $name;
+        $this->description = $catInfo['meta_description'];
         $this->AddToMetaKeywords($catInfo['meta_keywords']);
-        $this->SetDescription($catInfo['meta_description']);
         $tpl->SetBlock('view_category');
         $tpl->SetVariable('title', $name);
 

@@ -81,9 +81,9 @@ class Blog_Actions_Post extends Blog_Actions_Default
                 $pback->showHeaders($this->gadget->urlMap('Pingback', array(), true));
             }
 
-            $this->SetTitle($entry['title']);
+            $this->title = $entry['title'];
+            $this->description = $entry['meta_description'];
             $this->AddToMetaKeywords($entry['meta_keywords']);
-            $this->SetDescription($entry['meta_description']);
             $tpl = $this->gadget->template->load('Post.html');
             $tpl->SetBlock('single_view');
             $this->ShowEntry($tpl, 'single_view', $entry, false);

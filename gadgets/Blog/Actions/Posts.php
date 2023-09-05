@@ -58,7 +58,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
         }
         */
 
-        $this->setTitle($this::t('RECENT_POSTS'));
+        $this->title = $this::t('RECENT_POSTS');
 
         if ($this->app->requestedActionMode === 'normal') {
             $tFilename = 'Posts.html';
@@ -244,7 +244,7 @@ class Blog_Actions_Posts extends Blog_Actions_Default
      */
     function FavoritePosts($limit = 0)
     {
-        $this->SetTitle($this::t('FAVORITE_POSTS'));
+        $this->title = $this::t('FAVORITE_POSTS');
 
         $posts = $this->gadget->model->load('Posts')->GetFavoritePosts((int)$limit);
         if (Jaws_Error::IsError($posts) || empty($posts)) {
