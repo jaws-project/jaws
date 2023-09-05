@@ -17,7 +17,7 @@ class Settings_Actions_Settings extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('BasicSettings');
         $this->AjaxMe('index.js');
-        $this->SetTitle($this::t('TITLE'));
+        $this->title = $this::t('TITLE');
 
         $assigns = array(
             'response' => $this->gadget->session->pop('Settings'),
