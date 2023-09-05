@@ -28,7 +28,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Question');
         $q = $model->GetQuestion($qid);
         if (!Jaws_Error::IsError($q) && !empty($q)) {
-            $this->SetTitle($q['question']);
+            $this->title = $q['question'];
             $tpl->SetVariable('title', $q['question']);
             $tpl->SetVariable('answer', $this->gadget->plugin->parseAdmin($q['answer']));
         }
@@ -48,7 +48,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('ViewFaq.html');
         $tpl->SetBlock('faq');
         $tpl->SetVariable('title', $this::t('TITLE'));
-        $this->SetTitle($this::t('TITLE'));
+        $this->title = $this::t('TITLE');
         $view_answers = $tpl->BlockExists('faq/answers');
 
         $model = $this->gadget->model->load('Question');
