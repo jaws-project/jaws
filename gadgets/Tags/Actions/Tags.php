@@ -289,9 +289,9 @@ class Tags_Actions_Tags extends Jaws_Gadget_Action
             // Menu navigation
             $this->gadget->action->load('MenuNavigation')->navigation($tpl);
         }
-        $this->SetTitle($this::t('VIEW_TAG', $tag));
+        $this->title = $this::t('VIEW_TAG', $tag);
+        $this->description = $tagInfo['meta_description'];
         $this->AddToMetaKeywords($tagInfo['meta_keywords']);
-        $this->SetDescription($tagInfo['meta_description']);
 
         // pagination
         $this->gadget->action->load('PageNavigation')->pagination(
