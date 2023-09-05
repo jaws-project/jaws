@@ -30,7 +30,7 @@ class Users_Actions_Groups extends Users_Actions_Default
         $tpl = $this->gadget->template->load('ManageGroups.html');
         $tpl->SetBlock('Groups');
 
-        $this->SetTitle($this::t('GROUPS'));
+        $this->title = $this::t('GROUPS');
         $tpl->SetVariable('title', $this::t('GROUPS'));
 
         // Menu navigation

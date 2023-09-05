@@ -31,7 +31,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $tpl = $this->gadget->template->load('Users.html');
         $tpl->SetBlock('Users');
 
-        $this->SetTitle($this::t('USERS'));
+        $this->title = $this::t('USERS');
         $tpl->SetVariable('title', $this::t('USERS'));
 
         // Menu navigation
