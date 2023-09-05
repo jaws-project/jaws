@@ -12,6 +12,14 @@
 class Jaws_Gadget_Action extends Jaws_Gadget_Class
 {
     /**
+     * Name of the action
+     *
+     * @var     string
+     * @access  private
+     */
+    var $name = '';
+
+    /**
      * Constructor
      *
      * @access  public
@@ -274,8 +282,9 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
         }
 
         if (method_exists($objAction, $action)) {
-            $objAction->setAttribute($action, 'title', $this->gadget::t('ACTIONS_'.$action.'_TITLE'));
-            $objAction->setAttribute($action, 'description', $this->gadget::t('ACTIONS_'.$action.'_DESC'));
+            $objAction->name = $action;
+            $objAction->title = $this->gadget::t('ACTIONS_'.$action.'_TITLE');
+            $objAction->description = $this->gadget::t('ACTIONS_'.$action.'_DESC');
 
             if ($privateAccess &&
                 !$this->app->session->user->logged &&
@@ -400,6 +409,48 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
     public function IsValidAction($action, $script = JAWS_SCRIPT)
     {
         return isset($this->gadget->actions[$script][$action]);
+    }
+
+
+    /**
+     * Overloading __get magic method
+     *
+     * @access  public
+     * @param   string  $property   Property name
+     * @return  mixed   Requested property otherwise Jaws_Error
+     */
+    function __get($property)
+    {
+        return $this->getAttribute($this->name, $property);
+    }
+
+
+    /**
+     * Overloading __set magic method
+     *
+     * @access  public
+     * @param   string  $property   Property name
+     * @param   mixed   $value      Property value
+     * @return  void
+     */
+    function __set($property, $value)
+    {
+        $this->gadget->actions[JAWS_SCRIPT][$this->name][$property] = $value;
+        return;
+    }
+
+
+    /**
+     * Overloading __isset magic method
+     * Triggered by calling isset() or empty()on inaccessible (protected or private) or non-existing properties
+     *
+     * @access  public
+     * @param   string  $property   Property name
+     * @return  bool    Requested property otherwise Jaws_Error
+     */
+    function __isset($property)
+    {
+        return array_key_exists($property, $this->gadget->actions[JAWS_SCRIPT][$this->name]);
     }
 
 }
