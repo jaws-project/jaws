@@ -48,7 +48,7 @@ class Subscription_Actions_Subscription extends Jaws_Gadget_Action
 
         $tpl->SetVariable('title', $this::t('SUBSCRIPTION'));
         $tpl->SetVariable('web_push_subscription', $this::t('SUBSCRIBE_BY_WEB_PUSH'));
-        $this->SetTitle($this::t('SUBSCRIPTION'));
+        $this->title = $this::t('SUBSCRIPTION');
 
         if (empty($currentUser)) {
             $tpl->SetBlock('subscription/email');
