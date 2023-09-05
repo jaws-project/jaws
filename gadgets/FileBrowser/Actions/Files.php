@@ -52,7 +52,7 @@ class FileBrowser_Actions_Files extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('FileBrowser.html');
         $tpl->SetBlock('filebrowser');
         $tpl->SetVariable('title', $this->gadget->title);
-        $this->SetTitle($this->gadget->title);
+        $this->title = $this->gadget->title;
 
         $parentPath = '';
         $tpl->SetVariable('location', $this::t('LOCATION'));
