@@ -195,7 +195,7 @@ class Quotes_Actions_Quotes extends Jaws_Gadget_Action
             return Jaws_HTTPError::Get(403);
         }
 
-        $this->SetDescription($quote['meta_description']);
+        $this->description = $quote['meta_description'];
 
         $assigns = array();
         // Menu navigation
