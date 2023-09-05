@@ -84,7 +84,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         $info = $jDate->GetDateInfo($year, $month, $day);
         $date = $jDate->ToBaseDate($year, $month, $day);
         $today = $jDate->Format($date['timestamp'], 'DN d MN Y');
-        $this->SetTitle($today . ' - ' . $this::t('EVENTS'));
+        $this->title = $today . ' - ' . $this::t('EVENTS');
         $tpl->SetVariable('year', $info['year']);
         $tpl->SetVariable('month', $info['month']);
         $tpl->SetVariable('day', $info['mday']);

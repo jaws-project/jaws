@@ -58,7 +58,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         $now = time();
         $today = $jDate->Format($now, 'DN d MN Y');
 
-        $this->SetTitle($today . ' - ' . $this::t('EVENTS'));
+        $this->title = $today . ' - ' . $this::t('EVENTS');
         $tpl->SetVariable('today', $today);
         if ($user === 'public') {
             $tpl->SetVariable('title', $this::t('PUBLIC_EVENTS'));

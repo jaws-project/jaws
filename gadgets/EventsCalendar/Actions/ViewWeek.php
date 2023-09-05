@@ -90,7 +90,7 @@ class EventsCalendar_Actions_ViewWeek extends Jaws_Gadget_Action
         $from = $jDate->Format($start, 'Y MN d');
         $to = $jDate->Format($stop, 'Y MN d');
         $current = $from . ' - ' . $to;
-        $this->SetTitle($current . ' - ' . $this::t('EVENTS'));
+        $this->title = $current . ' - ' . $this::t('EVENTS');
         $tpl->SetVariable('title', $current);
 
         // Fetch events
