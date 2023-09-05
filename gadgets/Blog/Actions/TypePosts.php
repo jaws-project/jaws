@@ -141,7 +141,7 @@ class Blog_Actions_TypePosts extends Blog_Actions_Default
 
         $tpl->SetBlock("types");
         $tpl->SetVariable('title', $this::t('ACTIONS_TYPES'));
-        $this->SetTitle($this::t('ACTIONS_TYPES'));
+        $this->title = $this::t('ACTIONS_TYPES');
 
 
         $cModel = Jaws_Gadget::getInstance('Categories')->model->load('Categories');

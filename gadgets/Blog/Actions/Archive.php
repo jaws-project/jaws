@@ -24,7 +24,7 @@ class Blog_Actions_Archive extends Blog_Actions_Default
         $model = $this->gadget->model->load('Posts');
         $archiveEntries = $model->GetEntriesAsArchive();
         $auxMonth = '';
-        $this->SetTitle($this::t('ARCHIVE'));
+        $this->title = $this::t('ARCHIVE');
         $tpl->SetBlock('archive');
         $tpl->SetVariable('title', $this::t('ARCHIVE'));
         if (!Jaws_Error::IsError($archiveEntries)) {
