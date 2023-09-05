@@ -48,7 +48,7 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
 
         // summary
         $tpl->SetVariable('title', $event['summary']);
-        $this->SetTitle($event['summary']);
+        $this->title = $event['summary'];
 
         // Location
         $tpl->SetVariable('location', $event['location']);

@@ -42,7 +42,7 @@ class EventsCalendar_Actions_Reminder extends Jaws_Gadget_Action
             return '';
         }
 
-        $this->SetTitle($this::t('EVENTS'));
+        $this->title = $this::t('EVENTS');
 
         $assigns = array();
 

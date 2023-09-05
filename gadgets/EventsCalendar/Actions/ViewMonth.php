@@ -58,7 +58,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
 
         $current = $jDate->Format($start, 'Y MN');
         $tpl->SetVariable('title', $current);
-        $this->SetTitle($current . ' - ' . $this::t('EVENTS'));
+        $this->title = $current . ' - ' . $this::t('EVENTS');
 
         // Next month
         $next = $jDate->ToBaseDate($year, $month + 1, 1);
