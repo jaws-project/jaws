@@ -23,7 +23,7 @@ class Glossary_Actions_Terms extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('AlphabeticList.html');
         $tpl->SetBlock('list');
         $tpl->SetVariable('title', $this->gadget->title);
-        $this->SetTitle($this->gadget->title);
+        $this->title = $this->gadget->title;
 
         $model = $this->gadget->model->load('Term');
         $terms = $model->GetTerms();
@@ -80,7 +80,7 @@ class Glossary_Actions_Terms extends Jaws_Gadget_Action
         $model = $this->gadget->model->load('Term');
         $term = $model->GetTerm($term);
         if (!Jaws_Error::IsError($term) && isset($term['term'])) {
-            $this->SetTitle($term['term']);
+            $this->title = $term['term'];
 
             $tpl = $this->gadget->template->load('ViewTerm.html');
             $tpl->SetBlock('definition');
