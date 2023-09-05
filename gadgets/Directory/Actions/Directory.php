@@ -79,7 +79,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('response_text', $response['text']);
         }
 
-        $this->SetTitle($this::t('ACTIONS_DIRECTORY'));
+        $this->title = $this::t('ACTIONS_DIRECTORY');
         $tpl->SetVariable('title', $this::t('ACTIONS_DIRECTORY'));
 
         // parse files, filters, pagination
