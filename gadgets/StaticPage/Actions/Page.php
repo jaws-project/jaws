@@ -98,15 +98,15 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
             !$this->app->session->user->superadmin &&
             $page['user'] !== (int)$this->app->session->user->id)
         {
-            $this->SetTitle($this::t('TITLE_NOT_FOUND'));
+            $this->title = $this::t('TITLE_NOT_FOUND');
             $tpl->SetVariable('content', $this::t('CONTENT_NOT_FOUND'));
             $tpl->SetBlock('page/title');
             $tpl->SetVariable('title', $this::t('TITLE_NOT_FOUND'));
             $tpl->ParseBlock('page/title');
         } else {
-            $this->SetTitle($page['title']);
+            $this->title = $page['title'];
+            $this->description = $page['meta_description'];
             $this->AddToMetaKeywords($page['meta_keywords']);
-            $this->SetDescription($page['meta_description']);
             $text = $this->gadget->plugin->parseAdmin($page['content']);
             $tpl->SetVariable('content', $text, false);
             if ($page['show_title']) {
