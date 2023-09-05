@@ -19,7 +19,7 @@ class Activities_Actions_Activities extends Jaws_Gadget_Action
         $tpl = $this->gadget->template->load('Activities.html');
         $tpl->SetBlock('Activities');
         $tpl->SetVariable('title', $this::t('ACTIONS_ACTIVITIES'));
-        $this->SetTitle($this::t('ACTIONS_ACTIVITIES'));
+        $this->title = $this::t('ACTIONS_ACTIVITIES');
 
         $model = $this->gadget->model->load('Activities');
 
