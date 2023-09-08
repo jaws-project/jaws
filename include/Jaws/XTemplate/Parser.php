@@ -86,11 +86,12 @@ class Jaws_XTemplate_Parser
     /**
      * Constructor
      *
+     * @param   object  $tpl    Jaws_XTemplate object
      * @param   string  $source
      *
      * @return Jaws_XTemplate_Parser
      */
-    public function __construct($source)
+    public function __construct(&$tpl, $source)
     {
         /*
         $hash = Jaws_Cache::key($source);
@@ -100,7 +101,7 @@ class Jaws_XTemplate_Parser
         // if no cached version exists
         //if ($this->document === false || $this->document->hasIncludes() == true) {
             $tokens = self::tokenize($source);
-            $this->document = new Jaws_XTemplate_Document($tokens);
+            $this->document = new Jaws_XTemplate_Document($tpl, $tokens);
             /*
             $this->app->cache->set(
                 $hash,

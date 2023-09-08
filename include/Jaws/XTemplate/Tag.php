@@ -20,6 +20,14 @@ abstract class Jaws_XTemplate_Tag
     public $app = null;
 
     /**
+     * Jaws_XTemplate object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $tpl = null;
+
+    /**
      * The markup for the tag
      *
      * @var string
@@ -36,11 +44,13 @@ abstract class Jaws_XTemplate_Tag
     /**
      * Constructor
      *
+     * @param   object  $tpl    Jaws_XTemplate object
      * @param   string  $markup
      * @param   array   $tokens
      */
-    public function __construct(array &$tokens, $markup)
+    public function __construct(&$tpl, array &$tokens, $markup = '')
     {
+        $this->tpl = $tpl;
         $this->app = Jaws::getInstance();
 
         $this->markup = $markup;

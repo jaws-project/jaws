@@ -49,12 +49,13 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     /**
      * Constructor
      *
+     * @param   object  $tpl    Jaws_XTemplate object
      * @param   array   $tokens
      * @param   string  $markup
      *
      * @throws  Exception
      */
-    public function __construct(array &$tokens, $markup)
+    public function __construct(&$tpl, array &$tokens, $markup)
     {
         $regex = new Jaws_Regexp(
             '/' .
@@ -87,7 +88,7 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
 
         $this->extractAttributes($markup);
 
-        parent::__construct($tokens, $markup);
+        parent::__construct($tpl, $tokens, $markup);
     }
 
     /**
@@ -100,7 +101,7 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
     public function parse(array &$tokens)
     {
         // read the source of the template and create a new sub document
-        $source = Jaws_XTemplate::readTemplateFile(
+        $source = $this->tpl->readTemplateFile(
             $this->templateName,
             $this->templatePath
         );
@@ -112,7 +113,7 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
 
         //if ($this->document == false || $this->document->hasIncludes() == true) {
             $templateTokens = Jaws_XTemplate_Parser::tokenize($source);
-            $this->document = new Jaws_XTemplate_Document($templateTokens);
+            $this->document = new Jaws_XTemplate_Document($this->tpl, $templateTokens);
             /*
             $this->app->cache->set(
                 $this->hash,
@@ -135,7 +136,7 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
             return true;
         }
 
-        $source = Jaws_XTemplate::readTemplateFile(
+        $source = $this->tpl->readTemplateFile(
             $this->templateName,
             $this->templatePath
         );
