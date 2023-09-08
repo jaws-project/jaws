@@ -1,0 +1,15 @@
+{%- for menu in menus %}
+  <li class="dropdown {{class}}">
+    <a class="dropdown-toggle" href="{{menu.url}}" target="{{target}}" data-toggle="dropdown" role="button" aria-expanded="false">
+      <i class="{{menu.symbol}}"></i>{{menu.image}}<span>{{menu.title}}</span>
+      {%- if menu.items | size %}
+      <span class="caret"></span>
+      {%- endif %}
+    </a>
+    {%- if menu.items | size %}
+    <ul class="dropdown-menu">
+      {%- include 'MenuLevels.html' with menu.items as menus %}
+    </ul>
+    {%- endif %}
+  </li>
+{%- endfor %}
