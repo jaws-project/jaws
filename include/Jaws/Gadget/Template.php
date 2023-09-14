@@ -30,7 +30,7 @@ class Jaws_Gadget_Template extends Jaws_Gadget_Class
 
         unset($options['loadFromTheme']);
         $tpl = new Jaws_XTemplate();
-        $tpl->parseFile($filename, $basePath, $loadFromTheme);
+        $tpl->parse($filename, $basePath, $loadFromTheme);
         return $tpl;
     }
 
