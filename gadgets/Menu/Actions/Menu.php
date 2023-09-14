@@ -50,8 +50,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
      */
     function Menu($gid = 0)
     {
-        $gModel = $this->gadget->model->load('Group');
-        $group = $gModel->GetGroups($gid);
+        $group = $this->gadget->model->load('Group')->GetGroups($gid);
         if (Jaws_Error::IsError($group) || empty($group) || !$group['published']) {
             return false;
         }
@@ -61,13 +60,9 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         $this->_ReqURL = Jaws_Utils::getRequestURL();
         $this->_ReqURL = str_replace(BASE_SCRIPT, '', $this->_ReqURL);
 
-        $tpl = $this->gadget->template->load(
-            'Menu'. $group['view_type'].'.html',
-            array('rawStore' => true)
-        );
-        $tpl_str = $tpl->GetContent();
-        $tpl->SetBlock('menu');
-        $tpl->SetVariable('gid', $group['id']);
+        $assigns = array();
+        $assigns['group'] = $group;
+        $assigns['home'] = array();
 
         // home/brand menu
         if ($group['title_view'] == 1) {
@@ -83,96 +78,44 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                 $homeMenu['title']  = $this::t('HOME');
             }
 
-            if (!empty($homeMenu)) {
-                $tpl->SetBlock('menu/home');
-                $tpl->SetVariable('symbol', $homeMenu['symbol']);
-                $tpl->SetVariable('url',    $homeMenu['url']);
-                $tpl->SetVariable('title',  $homeMenu['title']);
-                $tpl->ParseBlock('menu/home');
-            }
+            $assigns['home'] = $homeMenu;
         }
 
-        $tpl->SetVariable('menus_tree', $this->GetNextLevel($tpl_str, $group['id'], 0, -1));
-        $tpl->ParseBlock('menu');
-        return $tpl->Get();
+        $assigns['levels'] = array();
+        $this->GetNextLevel($assigns['levels'], $group['id'], 0);
+        return $this->gadget->template->xLoad('Menu'. $group['view_type'].'.html',)->render($assigns);
     }
 
     /**
-     * Displays the next level of parent menu
+     * Gets next level of parent menu
      *
      * @access  public
-     * @param   string  $tpl_str    XHTML template content passed by reference
-     * @param   int     $gid        Group ID
-     * @param   int     $pid        Parent Menu
-     * @param   int     $level      Menu level
-     * @return  string  XHTML template content with sub menu items
+     * @param   array   $levels Menu levels
+     * @param   int     $gid    Group ID
+     * @param   int     $pid    Parent Menu
+     * @return  void
      */
-    function GetNextLevel(&$tpl_str, $gid, $pid, $level)
+    private function GetNextLevel(&$levels, $gid, $pid)
     {
-        $level++;
         $menus = $this->gadget->model->load('Menu')->GetLevelsMenus($pid, $gid, true);
         if (Jaws_Error::IsError($menus) || empty($menus)) {
-            return '';
+            return array();
         }
 
-        $tpl = new Jaws_Template();
-        $tpl->LoadFromString($tpl_str);
-        $block = empty($pid)? 'mainmenu' : 'submenu';
-        $tpl->SetBlock("$block");
-
-        $len = count($menus);
         $logged = $this->app->session->user->logged;
         foreach ($menus as $i => $menu) {
             // parse menu
             if (!$this->ParseMenu($menu)) {
                 continue;
             }
-
-            //get sub level menus
-            $submenu = $this->GetNextLevel($tpl_str, $gid, $menu['id'], $level);
-            $innerBlock = empty($submenu)? 'simple' : 'complex';
-            $tpl->SetBlock("$block/items");
-            $tpl->SetBlock("$block/items/$innerBlock");
-
-            $menu['url'] = $menu['url']?: 'javascript:void(0);';
-            $tpl->SetVariable('level', $level);
-            $tpl->SetVariable('mid', $menu['id']);
-            $tpl->SetVariable('title', $menu['title']);
-            $tpl->SetVariable('url', $menu['url']);
-            $tpl->SetVariable('target', ($menu['target']==0)? '_self': '_blank');
-            $tpl->SetVariable('symbol', $menu['symbol']);
-
-            if (!empty($menu['image'])) {
-                $src = $this->gadget->urlMap('LoadImage', array('id' => $menu['id']));
-                $image =& Piwi::CreateWidget('Image', $src, $menu['title']);
-                $image->SetID('');
-                $tpl->SetVariable('image', $image->get());
-            } else {
-                $tpl->SetVariable('image', '');
-            }
-
+            $levels[$menu['id']] = $menu;
             //menu selected?
-            $selected = str_replace(BASE_SCRIPT, '', urldecode($menu['url'])) == $this->_ReqURL;
-
-            $className = '';
-            if ($i == 0) {
-                $className.= ' menu_first';
-            }
-            if ($i == $len - 1) {
-                $className.= ' menu_last';
-            }
-            if ($selected) {
-                $className.= ' active';
-            }
-            $tpl->SetVariable('class', trim($className));
-
-            $tpl->SetVariable('submenu', $submenu);
-            $tpl->ParseBlock("$block/items/$innerBlock");
-            $tpl->ParseBlock("$block/items");
+            $levels[$menu['id']]['selected'] = str_replace(BASE_SCRIPT, '', urldecode($menu['url'])) == $this->_ReqURL;
+            
+            $levels[$menu['id']]['items'] = array();
+            //get sub level menus
+            $this->GetNextLevel($levels[$menu['id']]['items'], $gid, $menu['id']);
         }
-
-        $tpl->ParseBlock("$block");
-        return $tpl->Get();
     }
 
     /**
@@ -182,7 +125,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
      * @param   array   $menu   Menu attributes
      * @return  bool    True if parsed otherwise False
      */
-    function ParseMenu(&$menu)
+    private function ParseMenu(&$menu)
     {
         $logged = $this->app->session->user->logged;
 
