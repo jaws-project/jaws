@@ -100,53 +100,7 @@ class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
      */
     public function parse(array &$tokens)
     {
-        // read the source of the template and create a new sub document
-        $source = $this->tpl->readTemplateFile(
-            $this->templateName,
-            $this->templatePath
-        );
-
-        /*
-        $this->hash = Jaws_Cache::key($source);
-        $this->document = $this->app->cache->get($this->hash, true);
-        */
-
-        //if ($this->document == false || $this->document->hasIncludes() == true) {
-            $templateTokens = Jaws_XTemplate_Parser::tokenize($source);
-            $this->document = new Jaws_XTemplate_Document($this->tpl, $templateTokens);
-            /*
-            $this->app->cache->set(
-                $this->hash,
-                $this->document,
-                true
-            );
-            */
-        //}
-    }
-
-    /**
-     * Check for cached includes; if there are - do not use cache
-     *
-     * @see Document::hasIncludes()
-     * @return boolean
-     */
-    public function hasIncludes()
-    {
-        if ($this->document->hasIncludes() == true) {
-            return true;
-        }
-
-        $source = $this->tpl->readTemplateFile(
-            $this->templateName,
-            $this->templatePath
-        );
-        if ($this->app->cache->exists(Jaws_Cache::key($source)) &&
-            $this->hash === Jaws_Cache::key($source)
-        ) {
-            return false;
-        }
-
-        return true;
+        $this->document = $this->tpl->parser->getDocument($this->templateName, $this->templatePath);
     }
 
     /**

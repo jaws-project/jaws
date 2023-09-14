@@ -33,13 +33,11 @@ class Jaws_XTemplate_Tags_Block extends Jaws_XTemplate_TagSegmental
     {
         $syntaxRegexp = new Jaws_Regexp('/(\w+)/');
 
-        if ($syntaxRegexp->match($markup)) {
-            $this->block = $syntaxRegexp->matches[1];
-            parent::__construct($tokens, $markup);
-        } else {
+        if (!$syntaxRegexp->match($markup)) {
             throw new Exception("Syntax Error in 'block' - Valid syntax: block [name]");
         }
 
+        $this->block = $syntaxRegexp->matches[1];
         parent::__construct($tpl, $tokens, $markup);
     }
 
