@@ -179,46 +179,7 @@ class Jaws_XTemplate_Tags_Extends extends Jaws_XTemplate_Tag
             }
         }
 
-        /*
-        $this->hash = Jaws_Cache::key($source);
-        $this->document = $this->app->cache->get($this->hash, true);
-        */
-
-        //if ($this->document == false || $this->document->hasIncludes() == true) {
-            $this->document = new Jaws_XTemplate_Document($rest);
-            /*
-            $this->app->cache->set(
-                $this->hash,
-                $this->document,
-                true
-            );
-            */
-        //}
-    }
-
-    /**
-     * Check for cached includes; if there are - do not use cache
-     *
-     * @see Document::hasIncludes()
-     * @return boolean
-     */
-    public function hasIncludes()
-    {
-        if ($this->document->hasIncludes() == true) {
-            return true;
-        }
-
-        $source = $this->tpl->readTemplateFile(
-            $this->templateName,
-            $this->templatePath
-        );
-        if ($this->app->cache->exists(Jaws_Cache::key($source)) &&
-            $this->hash === Jaws_Cache::key($source)
-        ) {
-            return false;
-        }
-
-        return true;
+        $this->document = new Jaws_XTemplate_Document($this->tpl, $rest);
     }
 
     /**

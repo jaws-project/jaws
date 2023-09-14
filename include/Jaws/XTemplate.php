@@ -54,14 +54,19 @@ class Jaws_XTemplate
     private $tplRootPath = '';
 
     /**
-     * @var engine parser object
-     */
-    private $parser;
-
-    /**
      * @var context object
      */
     private $context;
+
+    /**
+     * @var engine parser object
+     */
+    public $parser;
+
+    /**
+     * @var The Document that represents the template
+     */
+    private $document;
 
     /**
      * @var array Globally included filters
@@ -76,6 +81,7 @@ class Jaws_XTemplate
     public function __construct()
     {
         $this->app = Jaws::getInstance();
+        $this->parser = new Jaws_XTemplate_Parser($this);
 
         $this->theme = $this->app->GetTheme();
         $layout = $this->app->layout->GetLayoutName();
@@ -159,19 +165,6 @@ class Jaws_XTemplate
     }
 
     /**
-     * Parses the given source string
-     *
-     * @param   string  $source
-     *
-     * @return  Jaws_XTemplate
-     */
-    public function parse($source)
-    {
-        $this->parser = new Jaws_XTemplate_Parser($this, $source);
-        return $this;
-    }
-
-    /**
      * Parses the given template file
      *
      * @param   string  $tplName
@@ -180,11 +173,12 @@ class Jaws_XTemplate
      *
      * @return  Jaws_XTemplate
      */
-    public function parseFile($tplName, $tplPath = '', $loadFromTheme = false)
+    public function parse($tplName, $tplPath = '', $loadFromTheme = false)
     {
         $this->tplRootPath = $tplPath;
         $this->loadFromTheme = $loadFromTheme;
-        return $this->parse($this->readTemplateFile($tplName, $tplPath));
+        $this->document = $this->parser->getDocument($tplName, $tplPath);
+        return $this;
     }
 
     /**
@@ -212,7 +206,7 @@ class Jaws_XTemplate
             }
         }
 
-        return $this->parser->render($this->context);
+        return $this->document->render($this->context);
     }
 
 }

@@ -243,7 +243,7 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
 
     /**
      * This method is called at the end of parsing, and will throw an error unless
-     * this method is subclassed, like it is for Document
+     * this method is subclass-ed, like it is for Document
      *
      * @throws  Exception
      * @return  bool

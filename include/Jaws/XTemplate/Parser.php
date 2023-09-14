@@ -14,6 +14,22 @@
 class Jaws_XTemplate_Parser
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
+     * Jaws_XTemplate object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $tpl = null;
+
+    /**
      *
      * @var array configuration array
      */
@@ -77,40 +93,37 @@ class Jaws_XTemplate_Parser
         // The name of the context key used to denote the current page number
         'PAGINATION_CONTEXT_KEY' => 'page',
     );
-
-    /**
-     * @var Document The Document that represents the template
-     */
-    private $document;
  
-    /**
+     /**
      * Constructor
      *
      * @param   object  $tpl    Jaws_XTemplate object
-     * @param   string  $source
      *
      * @return Jaws_XTemplate_Parser
      */
-    public function __construct(&$tpl, $source)
+    public function __construct(&$tpl)
     {
-        /*
-        $hash = Jaws_Cache::key($source);
-        $this->document = $this->app->cache->get($hash, true);
-        */
+        $this->tpl = $tpl;
+        $this->app = Jaws::getInstance();
+    }
 
-        // if no cached version exists
-        //if ($this->document === false || $this->document->hasIncludes() == true) {
-            $tokens = self::tokenize($source);
-            $this->document = new Jaws_XTemplate_Document($tpl, $tokens);
-            /*
-            $this->app->cache->set(
-                $hash,
-                $this->document,
-                true
-            );
-            */
-        //}
+    /**
+     * Constructor
+     *
+     * @param   object  $tpl        Jaws_XTemplate object
+     * @param   string  $tplName    File name
+     * @param   string  $tplPath    File path
+     */
+    public function getDocument($tplName, $tplPath)
+    {
+        // read the source of the template and create a new sub document
+        $source = $this->tpl->readTemplateFile(
+            $tplName,
+            $tplPath
+        );
 
+        $templateTokens = Jaws_XTemplate_Parser::tokenize($source);
+        return new Jaws_XTemplate_Document($this->tpl, $templateTokens);
     }
 
     /**
@@ -194,20 +207,6 @@ class Jaws_XTemplate_Parser
                 0,
                 PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
             );
-    }
-
-    /**
-     * Renders the current template
-     *
-     * @param   array   $assigns    an array of values for the template
-     * @param   array   $filters    additional filters for the template
-     *
-     * @return string
-     */
-    public function render($context)
-    {
-
-        return $this->document->render($context);
     }
 
 }
