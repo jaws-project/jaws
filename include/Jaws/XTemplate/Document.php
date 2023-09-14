@@ -11,6 +11,19 @@
 class Jaws_XTemplate_Document extends Jaws_XTemplate_TagSegmental
 {
     /**
+     * Parse the given tokens.
+     *
+     * @param   array   $tokens
+     */
+    public function parse(array &$tokens, $process = false)
+    {
+        if ($process) {
+            parent::parse($tokens);
+        }
+        // Do nothing by default
+    }
+
+    /**
      * There isn't a real delimiter
      *
      * @return string
