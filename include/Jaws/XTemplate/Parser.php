@@ -30,6 +30,14 @@ class Jaws_XTemplate_Parser
     public $tpl = null;
 
     /**
+     * array of Jaws_XTemplate_Document objects
+     *
+     * @var     object
+     * @access  private
+     */
+    private $documents = array();
+
+    /**
      *
      * @var array configuration array
      */
@@ -122,8 +130,21 @@ class Jaws_XTemplate_Parser
             $tplPath
         );
 
-        $templateTokens = Jaws_XTemplate_Parser::tokenize($source);
-        return new Jaws_XTemplate_Document($this->tpl, $templateTokens);
+        $hash = Jaws_Cache::key($source);
+        if (!array_key_exists($hash, $this->documents)) {
+            // get cache if exists
+            //$this->documents[$hash] = $this->app->cache->get($hash, true);
+            //if ($this->documents[$hash] === false ) {
+                // if no cached version exists
+                $templateTokens = Jaws_XTemplate_Parser::tokenize($source);
+                $this->documents[$hash] = new Jaws_XTemplate_Document($this->tpl, $templateTokens);
+                $this->documents[$hash]->parse($templateTokens, true);
+                // set cache
+                //$this->app->cache->set($hash, $this->documents[$hash], true);
+            //}
+        }
+
+        return $this->documents[$hash];
     }
 
     /**
