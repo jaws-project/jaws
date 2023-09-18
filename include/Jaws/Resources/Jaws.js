@@ -1852,6 +1852,70 @@ Jaws = {
     },
 
     initGadgets: function() {
+        // initialize date/time pickers
+        $('[role="datepicker"]').each(function(index, el) {
+            // picker type (date & time, date, time)
+            let $picker = {};
+            let $pickerType = $(el).data('picker-type') || 'date';
+            if ($pickerType == 'datetime') {
+                $picker = {
+                    timepicker : true
+                };
+            } else if ($pickerType == 'time') {
+                $picker = {
+                    timepicker : true,
+                    onlyTimepicker: true
+                };
+            }
+
+            // calendar type
+            let $calendar = $(el).data('calendar') || Jaws.defines.calendar;
+            // date format
+            let $dateFormat = $(el).data('date-format') || 'yyyy/MM/dd';
+            // time format
+            let $timeFormat = $(el).data('time-format') || 'HH:mm';
+            // months string name
+            let $months = [];
+            let $monthsShort = [];
+            for (let i = 0; i <= 11; i++) {
+                $months.push(Jaws.t($calendar + '_month_' + i));
+                $monthsShort.push(Jaws.t($calendar + '_month_short_' + i));
+            }
+            // days string name
+            let $days = [];
+            let $daysShort = [];
+            for (let i = 0; i <= 6; i++) {
+                $days.push(Jaws.t('day_' + i));
+                $daysShort.push(Jaws.t('day_short_' + i));
+            }
+            // picker direction
+            let $direction = Jaws.t('lang_direction');
+            // picker position
+            let $position = 'bottom ' + ($direction == 'ltr'? 'left' : 'right');
+
+            new AirDatepicker(el, Object.assign({
+                //inline: true,
+                calendar: $calendar,
+                //startDate: '',
+                //multipleDates: true,
+                //selectedDates: [],
+                direction: $direction,
+                position: $position,
+                locale: {
+                    days: $days,
+                    daysShort: $daysShort,
+                    daysMin: $daysShort,
+                    months: $months,
+                    monthsShort: $monthsShort,
+                    today: Jaws.t('today'),
+                    clear: Jaws.t('clear'),
+                    dateFormat: $dateFormat,
+                    timeFormat: $timeFormat,
+                    firstDay: ($calendar == 'gregorian')? 1 : 6
+                }
+            }, $picker));
+        });
+
         // initialize gadgets
         $.each(this.gadgets, function(gadget) {
             Jaws_Gadget.getInstance(gadget);
