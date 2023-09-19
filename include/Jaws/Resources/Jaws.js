@@ -1869,7 +1869,9 @@ Jaws = {
             }
 
             // calendar type
-            let $calendar = $(el).data('calendar') || Jaws.defines.calendar;
+            let $calendar = ($(el).data('calendar') || Jaws.defines.calendar).toLowerCase();
+            // inline view
+            let $inline = ($(el).data('picker-view') || '') == 'inline';
             // date format
             let $dateFormat = $(el).data('date-format') || 'yyyy/MM/dd';
             // time format
@@ -1894,13 +1896,14 @@ Jaws = {
             let $position = 'bottom ' + ($direction == 'ltr'? 'left' : 'right');
 
             new AirDatepicker(el, Object.assign({
-                //inline: true,
+                inline: $inline,
                 calendar: $calendar,
                 //startDate: '',
                 //multipleDates: true,
                 //selectedDates: [],
                 direction: $direction,
                 position: $position,
+                parent: $(el).closest('div.modal-body, body').get(0),
                 locale: {
                     days: $days,
                     daysShort: $daysShort,
