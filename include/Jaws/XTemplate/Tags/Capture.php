@@ -32,13 +32,11 @@ class Jaws_XTemplate_Tags_Capture extends Jaws_XTemplate_TagSegmental
     {
         $syntaxRegexp = new Jaws_Regexp('/(\w+)/');
 
-        if ($syntaxRegexp->match($markup)) {
-            $this->to = $syntaxRegexp->matches[1];
-            parent::__construct($tokens, $markup);
-        } else {
+        if (!$syntaxRegexp->match($markup)) {
             throw new Exception("Syntax Error in 'capture' - Valid syntax: capture [var] [value]");
         }
 
+        $this->to = $syntaxRegexp->matches[1];
         parent::__construct($tpl, $tokens, $markup);
     }
 
