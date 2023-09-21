@@ -1914,7 +1914,8 @@ Jaws = {
             // inline view
             let $inline = ($(el).data('picker-view') || '') == 'inline';
             // date format
-            let $dateFormat = $(el).data('date-format') || 'yyyy/MM/dd';
+            let $dateFormat = $(el).data('date-format');
+            $dateFormat = ($dateFormat === null || $dateFormat === undefined)? 'yyyy/MM/dd' : $dateFormat;
             // time format
             let $timeFormat = $(el).data('time-format') || 'HH:mm';
             // months string name
@@ -1945,6 +1946,26 @@ Jaws = {
                 direction: $direction,
                 position: $position,
                 parent: $(el).closest('div.modal-body, body').get(0),
+                onBeforeShow: function(dpInstance) {
+                    let _startDate = new Date();
+                    let _selectedDates = [];
+                    if (!$(dpInstance.$el).val().blank()) {
+                        _selectedDates = $.map($(dpInstance.$el).val().toString().split(','), $.trim);
+                        if (dpInstance.opts.onlyTimepicker) {
+                            let _time = _selectedDates[0].match(/([0-9]+):([0-9]+)\s*([ap]m)?/) || [0,0,''];
+                            if (_time[3] == 'pm' && _time[1] != 12) {
+                                _time[1] = parseFloat(_time[1]) + 12;
+                            }
+                            _startDate.setHours(_time[1], _time[2]);
+                            _selectedDates = [_startDate];
+                        } else {
+                            _startDate = _selectedDates[0];
+                        }
+                    }
+                    dpInstance.clear(true);
+                    dpInstance.setViewDate(_startDate);
+                    dpInstance.selectDate(_selectedDates, {updateTime: true});
+                },
                 locale: {
                     days: $days,
                     daysShort: $daysShort,
