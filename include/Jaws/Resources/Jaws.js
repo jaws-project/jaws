@@ -2298,6 +2298,43 @@ Jaws.filters = {
     },
 
     /**
+     * UTC timestamp to string
+     */
+    datetostr: function(input, format = '', calendar = '') {
+        // if input is numeric, multiple by 1000 for convert second to millisecond
+        input = parseFloat(input) == input? input*1000 : input;
+
+        format = format || 'yyyy/MM/dd';
+        calendar = (calendar || Jaws.defines.calendar).toLowerCase();
+        let _months = [];
+        let _monthsShort = [];
+        for (let i = 0; i <= 11; i++) {
+            _months.push(Jaws.t(calendar + '_month_' + i));
+            _monthsShort.push(Jaws.t(calendar + '_month_short_' + i));
+        }
+        // days string name
+        let _days = [];
+        let _daysShort = [];
+        for (let i = 0; i <= 6; i++) {
+            _days.push(Jaws.t('day_' + i));
+            _daysShort.push(Jaws.t('day_short_' + i));
+        }
+
+        let locale = {
+            days: _days,
+            daysShort: _daysShort,
+            daysMin: _daysShort,
+            months: _months,
+            monthsShort: _monthsShort,
+            dateFormat: format,
+            timeFormat: 'HH:mm',
+            firstDay: (calendar == 'gregorian')? 1 : 6
+        };
+
+        return AirDatepicker.formatDate(input, format, locale, calendar);
+    },
+
+    /**
      * call filter(s) indirect as variable
      */
     apply: function($filter, input) {
