@@ -1873,7 +1873,8 @@ Jaws = {
             // inline view
             let $inline = ($(el).data('picker-view') || '') == 'inline';
             // date format
-            let $dateFormat = $(el).data('date-format') || 'yyyy/MM/dd';
+            let $dateFormat = $(el).data('date-format');
+            $dateFormat = ($dateFormat === null || $dateFormat === undefined)? 'yyyy/MM/dd' : $dateFormat;
             // time format
             let $timeFormat = $(el).data('time-format') || 'HH:mm';
             // months string name
@@ -1904,6 +1905,26 @@ Jaws = {
                 direction: $direction,
                 position: $position,
                 parent: $(el).closest('div.modal-body, body').get(0),
+                onBeforeShow: function(dpInstance) {
+                    let _startDate = new Date();
+                    let _selectedDates = [];
+                    if (!$(dpInstance.$el).val().blank()) {
+                        _selectedDates = $.map($(dpInstance.$el).val().toString().split(','), $.trim);
+                        if (dpInstance.opts.onlyTimepicker) {
+                            let _time = _selectedDates[0].match(/([0-9]+):([0-9]+)\s*([ap]m)?/) || [0,0,''];
+                            if (_time[3] == 'pm' && _time[1] != 12) {
+                                _time[1] = parseFloat(_time[1]) + 12;
+                            }
+                            _startDate.setHours(_time[1], _time[2]);
+                            _selectedDates = [_startDate];
+                        } else {
+                            _startDate = _selectedDates[0];
+                        }
+                    }
+                    dpInstance.clear(true);
+                    dpInstance.setViewDate(_startDate);
+                    dpInstance.selectDate(_selectedDates, {updateTime: true});
+                },
                 locale: {
                     days: $days,
                     daysShort: $daysShort,
@@ -2233,6 +2254,43 @@ Jaws.filters = {
         args.shift()
         num = num.toFixed(args.shift());
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + symbol;
+    },
+
+    /**
+     * UTC timestamp to string
+     */
+    datetostr: function(input, format = '', calendar = '') {
+        // if input is numeric, multiple by 1000 for convert second to millisecond
+        input = parseFloat(input) == input? input*1000 : input;
+
+        format = format || 'yyyy/MM/dd';
+        calendar = (calendar || Jaws.defines.calendar).toLowerCase();
+        let _months = [];
+        let _monthsShort = [];
+        for (let i = 0; i <= 11; i++) {
+            _months.push(Jaws.t(calendar + '_month_' + i));
+            _monthsShort.push(Jaws.t(calendar + '_month_short_' + i));
+        }
+        // days string name
+        let _days = [];
+        let _daysShort = [];
+        for (let i = 0; i <= 6; i++) {
+            _days.push(Jaws.t('day_' + i));
+            _daysShort.push(Jaws.t('day_short_' + i));
+        }
+
+        let locale = {
+            days: _days,
+            daysShort: _daysShort,
+            daysMin: _daysShort,
+            months: _months,
+            monthsShort: _monthsShort,
+            dateFormat: format,
+            timeFormat: 'HH:mm',
+            firstDay: (calendar == 'gregorian')? 1 : 6
+        };
+
+        return AirDatepicker.formatDate(input, format, locale, calendar);
     },
 
     /**
