@@ -2341,7 +2341,16 @@ Jaws.filters = {
     apply: function($filter, input) {
         $filters = Array.isArray($filter)? $filter : [$filter];
         for (let i = 0; i < $filters.length; i++) {
-            input = Jaws.filters[$filters[i]].call(this, input);
+            // split filter and parameters (for example: function: param1, param2, ...)
+            let params = [];
+            let filter = $filters[i];
+            let indexColon = $filters[i].indexOf(':');
+            if (indexColon != -1) {
+                filter = $filters[i].slice(0, indexColon);
+                params = $.map(($filters[i].slice(indexColon + 1) || '').split(','), $.trim);
+            }
+
+            input = Jaws.filters[filter].call(this, input, ...params);
         }
         return input;
     },
