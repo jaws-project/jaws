@@ -2307,32 +2307,37 @@ Jaws.filters = {
 
         format = format || 'yyyy/MM/dd';
         calendar = (calendar || Jaws.defines.calendar).toLowerCase();
-        let _months = [];
-        let _monthsShort = [];
-        for (let i = 0; i <= 11; i++) {
-            _months.push(Jaws.t(calendar + '_month_' + i));
-            _monthsShort.push(Jaws.t(calendar + '_month_short_' + i));
-        }
-        // days string name
-        let _days = [];
-        let _daysShort = [];
-        for (let i = 0; i <= 6; i++) {
-            _days.push(Jaws.t('day_' + i));
-            _daysShort.push(Jaws.t('day_short_' + i));
+        // make "locale" static
+        if (typeof this.datetostr.locale == 'undefined' ) {
+            this.datetostr.locale = {};
         }
 
-        let locale = {
-            days: _days,
-            daysShort: _daysShort,
-            daysMin: _daysShort,
-            months: _months,
-            monthsShort: _monthsShort,
-            dateFormat: format,
-            timeFormat: 'HH:mm',
-            firstDay: (calendar == 'gregorian')? 1 : 6
-        };
+        if (!this.datetostr.locale.hasOwnProperty(calendar)) {
+            let _months = [];
+            let _monthsShort = [];
+            for (let i = 0; i <= 11; i++) {
+                _months.push(Jaws.t(calendar + '_month_' + i));
+                _monthsShort.push(Jaws.t(calendar + '_month_short_' + i));
+            }
+            // days string name
+            let _days = [];
+            let _daysShort = [];
+            for (let i = 0; i <= 6; i++) {
+                _days.push(Jaws.t('day_' + i));
+                _daysShort.push(Jaws.t('day_short_' + i));
+            }
 
-        return AirDatepicker.formatDate(input, format, locale, calendar);
+            this.datetostr.locale[calendar] = {
+                days: _days,
+                daysShort: _daysShort,
+                daysMin: _daysShort,
+                months: _months,
+                monthsShort: _monthsShort,
+                firstDay: (calendar == 'gregorian')? 1 : 6
+            };
+        }
+
+        return AirDatepicker.formatDate(input, format, this.datetostr.locale[calendar], calendar);
     },
 
     /**
