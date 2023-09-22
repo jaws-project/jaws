@@ -2266,32 +2266,37 @@ Jaws.filters = {
 
         format = format || 'yyyy/MM/dd';
         calendar = (calendar || Jaws.defines.calendar).toLowerCase();
-        let _months = [];
-        let _monthsShort = [];
-        for (let i = 0; i <= 11; i++) {
-            _months.push(Jaws.t(calendar + '_month_' + i));
-            _monthsShort.push(Jaws.t(calendar + '_month_short_' + i));
-        }
-        // days string name
-        let _days = [];
-        let _daysShort = [];
-        for (let i = 0; i <= 6; i++) {
-            _days.push(Jaws.t('day_' + i));
-            _daysShort.push(Jaws.t('day_short_' + i));
+        // make "locale" static
+        if (typeof this.datetostr.locale == 'undefined' ) {
+            this.datetostr.locale = {};
         }
 
-        let locale = {
-            days: _days,
-            daysShort: _daysShort,
-            daysMin: _daysShort,
-            months: _months,
-            monthsShort: _monthsShort,
-            dateFormat: format,
-            timeFormat: 'HH:mm',
-            firstDay: (calendar == 'gregorian')? 1 : 6
-        };
+        if (!this.datetostr.locale.hasOwnProperty(calendar)) {
+            let _months = [];
+            let _monthsShort = [];
+            for (let i = 0; i <= 11; i++) {
+                _months.push(Jaws.t(calendar + '_month_' + i));
+                _monthsShort.push(Jaws.t(calendar + '_month_short_' + i));
+            }
+            // days string name
+            let _days = [];
+            let _daysShort = [];
+            for (let i = 0; i <= 6; i++) {
+                _days.push(Jaws.t('day_' + i));
+                _daysShort.push(Jaws.t('day_short_' + i));
+            }
 
-        return AirDatepicker.formatDate(input, format, locale, calendar);
+            this.datetostr.locale[calendar] = {
+                days: _days,
+                daysShort: _daysShort,
+                daysMin: _daysShort,
+                months: _months,
+                monthsShort: _monthsShort,
+                firstDay: (calendar == 'gregorian')? 1 : 6
+            };
+        }
+
+        return AirDatepicker.formatDate(input, format, this.datetostr.locale[calendar], calendar);
     },
 
     /**
@@ -2300,7 +2305,16 @@ Jaws.filters = {
     apply: function($filter, input) {
         $filters = Array.isArray($filter)? $filter : [$filter];
         for (let i = 0; i < $filters.length; i++) {
-            input = Jaws.filters[$filters[i]].call(this, input);
+            // split filter and parameters (for example: function: param1, param2, ...)
+            let params = [];
+            let filter = $filters[i];
+            let indexColon = $filters[i].indexOf(':');
+            if (indexColon != -1) {
+                filter = $filters[i].slice(0, indexColon);
+                params = $.map(($filters[i].slice(indexColon + 1) || '').split(','), $.trim);
+            }
+
+            input = Jaws.filters[filter].call(this, input, ...params);
         }
         return input;
     },
