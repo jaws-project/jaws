@@ -109,7 +109,7 @@ class Jaws_Date_Jalali extends Jaws_Date
     public function jd_to_persian($jd)
     {
         $jd = floor($jd) + 0.5;
-        $jwday = floor($jd + 1.5 + 1) % 7;
+        $jwday = floor($jd + 1.5) % 7;
 
         $depoch = $jd - $this->persian_to_jd(475, 1, 1);
         $cycle = floor($depoch / 1029983);
@@ -267,21 +267,22 @@ class Jaws_Date_Jalali extends Jaws_Date
         return empty($month)? $result : $result[$month-1];
     }
 
-   /**
-    * Format the input date.
-    *
-    * @access  public
-    * @param   string   $date   Date string
-    * @param   string   $format Format to use
-    * @return  string   The original date with a new format
-    */
-    function Format($date, $format = null)
+    /**
+     * Format the input date.
+     *
+     * @access  public
+     * @param   string  $date       Date string
+     * @param   string  $format     Format to use
+     * @param   bool    $utc2local  UTC to user local time
+     * @return  string  The original date with a new format
+     */
+    function Format($date, $format = null, $utc2local = true)
     {
         if (empty($date)) {
             return '';
         }
 
-        $date = Jaws::getInstance()->UTC2UserTime($date);
+        $date = $utc2local? Jaws::getInstance()->UTC2UserTime($date) : $date;
         $grdate = explode('-', date('Y-m-d-H-i-s', $date));
 
         $prdate = $this->gregorian_to_persian($grdate[0], $grdate[1], $grdate[2]);
@@ -424,64 +425,6 @@ class Jaws_Date_Jalali extends Jaws_Date
     }
 
     /**
-     * Return the day number in string
-     *
-     * @param   int    $d   Numeric day (0..6)
-     * @return  string      The day in string not in number
-     * @access  public
-     */
-    function DayString($d = '')
-    {
-        if (!isset($this->_Days['long'])) {
-            $days = array(
-                Jaws::t('DAY_SATURDAY'),
-                Jaws::t('DAY_SUNDAY'),
-                Jaws::t('DAY_MONDAY'),
-                Jaws::t('DAY_TUESDAY'),
-                Jaws::t('DAY_WEDNESDAY'),
-                Jaws::t('DAY_THURSDAY'),
-                Jaws::t('DAY_FRIDAY'),
-            );
-            $this->_Days['long'] =& $days;
-        }
-
-        if (is_numeric($d)) {
-            return $this->_Days['long'][$d];
-        }
-
-        return $this->_Days['long'];
-    }
-
-    /**
-     * Return the day number in string
-     *
-     * @param   int    $d   Numeric day (0..6)
-     * @return  string      The day in string not in number
-     * @access  public
-     */
-    function DayShortString($d)
-    {
-        if (!isset($this->_Days['short'])) {
-            $days = array(
-                Jaws::t('DAY_SHORT_SATURDAY'),
-                Jaws::t('DAY_SHORT_SUNDAY'),
-                Jaws::t('DAY_SHORT_MONDAY'),
-                Jaws::t('DAY_SHORT_TUESDAY'),
-                Jaws::t('DAY_SHORT_WEDNESDAY'),
-                Jaws::t('DAY_SHORT_THURSDAY'),
-                Jaws::t('DAY_SHORT_FRIDAY'),
-            );
-            $this->_Days['short'] =& $days;
-        }
-
-        if (is_numeric($d)) {
-            return $this->_Days['short'][$d];
-        }
-
-        return $this->_Days['short'];
-    }
-
-    /**
      * Return the month number in string
      *
      * @param  int    $m  Numeric month(1..12)
@@ -492,18 +435,18 @@ class Jaws_Date_Jalali extends Jaws_Date
     {
         if (!isset($this->_Months['long'])) {
             $months = array(
-                Jaws::t('JALALI_MONTH_FIRST'),
-                Jaws::t('JALALI_MONTH_SECOND'),
-                Jaws::t('JALALI_MONTH_THIRD'),
-                Jaws::t('JALALI_MONTH_FOURTH'),
-                Jaws::t('JALALI_MONTH_FIFTH'),
-                Jaws::t('JALALI_MONTH_SIXTH'),
-                Jaws::t('JALALI_MONTH_SEVENTH'),
-                Jaws::t('JALALI_MONTH_EIGHTH'),
-                Jaws::t('JALALI_MONTH_NINTH'),
-                Jaws::t('JALALI_MONTH_TENTH'),
-                Jaws::t('JALALI_MONTH_ELEVENTH'),
-                Jaws::t('JALALI_MONTH_TWELFTH'),
+                Jaws::t('JALALI_MONTH_0'),
+                Jaws::t('JALALI_MONTH_1'),
+                Jaws::t('JALALI_MONTH_2'),
+                Jaws::t('JALALI_MONTH_3'),
+                Jaws::t('JALALI_MONTH_4'),
+                Jaws::t('JALALI_MONTH_5'),
+                Jaws::t('JALALI_MONTH_6'),
+                Jaws::t('JALALI_MONTH_7'),
+                Jaws::t('JALALI_MONTH_8'),
+                Jaws::t('JALALI_MONTH_9'),
+                Jaws::t('JALALI_MONTH_10'),
+                Jaws::t('JALALI_MONTH_11'),
             );
             $this->_Months['long'] =& $months;
         }
@@ -527,18 +470,18 @@ class Jaws_Date_Jalali extends Jaws_Date
     {
         if (!isset($this->_Months['short'])) {
             $months = array(
-                Jaws::t('JALALI_MONTH_SHORT_FIRST'),
-                Jaws::t('JALALI_MONTH_SHORT_SECOND'),
-                Jaws::t('JALALI_MONTH_SHORT_THIRD'),
-                Jaws::t('JALALI_MONTH_SHORT_FOURTH'),
-                Jaws::t('JALALI_MONTH_SHORT_FIFTH'),
-                Jaws::t('JALALI_MONTH_SHORT_SIXTH'),
-                Jaws::t('JALALI_MONTH_SHORT_SEVENTH'),
-                Jaws::t('JALALI_MONTH_SHORT_EIGHTH'),
-                Jaws::t('JALALI_MONTH_SHORT_NINTH'),
-                Jaws::t('JALALI_MONTH_SHORT_TENTH'),
-                Jaws::t('JALALI_MONTH_SHORT_ELEVENTH'),
-                Jaws::t('JALALI_MONTH_SHORT_TWELFTH'),
+                Jaws::t('JALALI_MONTH_SHORT_0'),
+                Jaws::t('JALALI_MONTH_SHORT_1'),
+                Jaws::t('JALALI_MONTH_SHORT_2'),
+                Jaws::t('JALALI_MONTH_SHORT_3'),
+                Jaws::t('JALALI_MONTH_SHORT_4'),
+                Jaws::t('JALALI_MONTH_SHORT_5'),
+                Jaws::t('JALALI_MONTH_SHORT_6'),
+                Jaws::t('JALALI_MONTH_SHORT_7'),
+                Jaws::t('JALALI_MONTH_SHORT_8'),
+                Jaws::t('JALALI_MONTH_SHORT_9'),
+                Jaws::t('JALALI_MONTH_SHORT_10'),
+                Jaws::t('JALALI_MONTH_SHORT_11'),
             );
             $this->_Months['short'] =& $months;
         }
