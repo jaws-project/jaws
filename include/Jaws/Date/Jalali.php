@@ -267,21 +267,22 @@ class Jaws_Date_Jalali extends Jaws_Date
         return empty($month)? $result : $result[$month-1];
     }
 
-   /**
-    * Format the input date.
-    *
-    * @access  public
-    * @param   string   $date   Date string
-    * @param   string   $format Format to use
-    * @return  string   The original date with a new format
-    */
-    function Format($date, $format = null)
+    /**
+     * Format the input date.
+     *
+     * @access  public
+     * @param   string  $date       Date string
+     * @param   string  $format     Format to use
+     * @param   bool    $utc2local  UTC to user local time
+     * @return  string  The original date with a new format
+     */
+    function Format($date, $format = null, $utc2local = true)
     {
         if (empty($date)) {
             return '';
         }
 
-        $date = Jaws::getInstance()->UTC2UserTime($date);
+        $date = $utc2local? Jaws::getInstance()->UTC2UserTime($date) : $date;
         $grdate = explode('-', date('Y-m-d-H-i-s', $date));
 
         $prdate = $this->gregorian_to_persian($grdate[0], $grdate[1], $grdate[2]);

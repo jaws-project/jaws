@@ -104,17 +104,18 @@ class Jaws_Date_Gregorian extends Jaws_Date
      * Format the input date.
      *
      * @access  public
-     * @param   string  $date   Date string
-     * @param   string  $format Format to use
+     * @param   string  $date       Date string
+     * @param   string  $format     Format to use
+     * @param   bool    $utc2local  UTC to user local time
      * @return  string  The original date with a new format
      */
-    function Format($date, $format = null)
+    function Format($date, $format = null, $utc2local = true)
     {
         if (empty($date)) {
             return '';
         }
 
-        $date = Jaws::getInstance()->UTC2UserTime($date);
+        $date = $utc2local? Jaws::getInstance()->UTC2UserTime($date) : $date;
 
         if (empty($format)) {
             $format = Jaws::getInstance()->registry->fetch('date_format', 'Settings');

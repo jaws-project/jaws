@@ -150,9 +150,10 @@ class Jaws_Date
      *
      * @param   string  $date   Date string
      * @param   string  $format Format to use
+     * @param   bool    $utc2local  UTC to user local time
      * @return The original date with a new format
      */
-    function Format($date, $format = null)
+    function Format($date, $format = null, $utc2local = true)
     {
     }
 
