@@ -185,18 +185,18 @@ class Jaws_Date_Gregorian extends Jaws_Date
     {
         if (!isset($this->_Months['long'])) {
             $months = array(
-                Jaws::t('GREGORIAN_MONTH_FIRST'),
-                Jaws::t('GREGORIAN_MONTH_SECOND'),
-                Jaws::t('GREGORIAN_MONTH_THIRD'),
-                Jaws::t('GREGORIAN_MONTH_FOURTH'),
-                Jaws::t('GREGORIAN_MONTH_FIFTH'),
-                Jaws::t('GREGORIAN_MONTH_SIXTH'),
-                Jaws::t('GREGORIAN_MONTH_SEVENTH'),
-                Jaws::t('GREGORIAN_MONTH_EIGHTH'),
-                Jaws::t('GREGORIAN_MONTH_NINTH'),
-                Jaws::t('GREGORIAN_MONTH_TENTH'),
-                Jaws::t('GREGORIAN_MONTH_ELEVENTH'),
-                Jaws::t('GREGORIAN_MONTH_TWELFTH'),
+                Jaws::t('GREGORIAN_MONTH_0'),
+                Jaws::t('GREGORIAN_MONTH_1'),
+                Jaws::t('GREGORIAN_MONTH_2'),
+                Jaws::t('GREGORIAN_MONTH_3'),
+                Jaws::t('GREGORIAN_MONTH_4'),
+                Jaws::t('GREGORIAN_MONTH_5'),
+                Jaws::t('GREGORIAN_MONTH_6'),
+                Jaws::t('GREGORIAN_MONTH_7'),
+                Jaws::t('GREGORIAN_MONTH_8'),
+                Jaws::t('GREGORIAN_MONTH_9'),
+                Jaws::t('GREGORIAN_MONTH_10'),
+                Jaws::t('GREGORIAN_MONTH_11'),
             );
             $this->_Months['long'] =& $months;
         }
@@ -220,18 +220,18 @@ class Jaws_Date_Gregorian extends Jaws_Date
     {
         if (!isset($this->_Months['short'])) {
             $months = array(
-                Jaws::t('GREGORIAN_MONTH_SHORT_FIRST'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_SECOND'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_THIRD'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_FOURTH'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_FIFTH'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_SIXTH'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_SEVENTH'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_EIGHTH'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_NINTH'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_TENTH'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_ELEVENTH'),
-                Jaws::t('GREGORIAN_MONTH_SHORT_TWELFTH'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_0'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_1'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_2'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_3'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_4'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_5'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_6'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_7'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_8'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_9'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_10'),
+                Jaws::t('GREGORIAN_MONTH_SHORT_11'),
             );
             $this->_Months['short'] =& $months;
         }

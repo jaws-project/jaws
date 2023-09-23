@@ -191,13 +191,13 @@ class Jaws_Date
     {
         if (!isset($this->_Days['long'])) {
             $days = array(
-                Jaws::t('DAY_SUNDAY'),
-                Jaws::t('DAY_MONDAY'),
-                Jaws::t('DAY_TUESDAY'),
-                Jaws::t('DAY_WEDNESDAY'),
-                Jaws::t('DAY_THURSDAY'),
-                Jaws::t('DAY_FRIDAY'),
-                Jaws::t('DAY_SATURDAY'),
+                Jaws::t('DAY_0'),
+                Jaws::t('DAY_1'),
+                Jaws::t('DAY_2'),
+                Jaws::t('DAY_3'),
+                Jaws::t('DAY_4'),
+                Jaws::t('DAY_5'),
+                Jaws::t('DAY_6'),
             );
             $this->_Days['long'] =& $days;
         }
@@ -220,13 +220,13 @@ class Jaws_Date
     {
         if (!isset($this->_Days['short'])) {
             $days = array(
-                Jaws::t('DAY_SHORT_SUNDAY'),
-                Jaws::t('DAY_SHORT_MONDAY'),
-                Jaws::t('DAY_SHORT_TUESDAY'),
-                Jaws::t('DAY_SHORT_WEDNESDAY'),
-                Jaws::t('DAY_SHORT_THURSDAY'),
-                Jaws::t('DAY_SHORT_FRIDAY'),
-                Jaws::t('DAY_SHORT_SATURDAY'),
+                Jaws::t('DAY_SHORT_0'),
+                Jaws::t('DAY_SHORT_1'),
+                Jaws::t('DAY_SHORT_2'),
+                Jaws::t('DAY_SHORT_3'),
+                Jaws::t('DAY_SHORT_4'),
+                Jaws::t('DAY_SHORT_5'),
+                Jaws::t('DAY_SHORT_6'),
             );
             $this->_Days['short'] =& $days;
         }
