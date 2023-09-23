@@ -12,7 +12,7 @@
  */
 
 /*!
- * Extra plugins for jquery
+ * Extra plugins for jQuery
  */
 jQuery.extend({
     formArray: function($elements, removeBlanks = false) {
@@ -2297,6 +2297,17 @@ Jaws.filters = {
         }
 
         return AirDatepicker.formatDate(input, format, this.datetostr.locale[calendar], calendar);
+    },
+
+    /**
+     * Time(seconds since midnight) to string
+     */
+    timetostr: function(input, format = '') {
+        format = format || 'HH:mm';
+        let d = new Date();
+        // no need multiple by 1000 here because in datetostr we do it
+        input = Math.floor(d.getTime() / 86400000) * 86400 + input + d.getTimezoneOffset()*60;
+        return this.datetostr(input, format);
     },
 
     /**
