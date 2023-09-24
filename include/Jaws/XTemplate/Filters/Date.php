@@ -76,4 +76,28 @@ class Jaws_XTemplate_Filters_Date extends Jaws_XTemplate_Filters
         return $hours*3600 + $minutes*60 + $seconds;
     }
 
+    /**
+     * UTC to local date/time
+     *
+     * @param   int $input  time timestamp
+     *
+     * @return int
+     */
+    public static function utc2local($input)
+    {
+        return Jaws_Date::getInstance()->utc2local($input);
+    }
+
+    /**
+     * local date/time to UTC 
+     *
+     * @param   int $input  time timestamp
+     *
+     * @return int
+     */
+    public static function local2utc($input)
+    {
+        return Jaws_Date::getInstance()->local2utc($input);
+    }
+
 }
