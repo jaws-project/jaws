@@ -21,7 +21,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         // FIXME: temporary solution
         if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
             $postedData = $this->gadget->request->fetch(
-                array('interface:array|array', 'options:array|array'),
+                array('interface:array', 'options:array'),
                 'post'
             );
             list($interface, $options) = array_values($postedData);
@@ -160,7 +160,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         // FIXME: temporary solution
         if (@$_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
             $postedData = $this->gadget->request->fetch(
-                array('interface:array|array', 'options:array|array'),
+                array('interface:array', 'options:array'),
                 'post'
             );
             list($interface, $options) = array_values($postedData);
@@ -499,7 +499,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
     function files()
     {
         $postedData = $this->gadget->request->fetch(
-            array('interface:array|array', 'options:array|array'),
+            array('interface:array', 'options:array'),
             'post'
         );
         list($interface, $options) = array_values($postedData);
