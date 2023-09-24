@@ -2260,18 +2260,18 @@ Jaws.filters = {
     /**
      * UTC timestamp to string
      */
-    datetostr: function(input, format = '', calendar = '') {
+    date2str: function(input, format = '', calendar = '') {
         // if input is numeric, multiple by 1000 for convert second to millisecond
         input = parseFloat(input) == input? input*1000 : input;
 
         format = format || 'yyyy/MM/dd';
         calendar = (calendar || Jaws.defines.calendar).toLowerCase();
         // make "locale" static
-        if (typeof this.datetostr.locale == 'undefined' ) {
-            this.datetostr.locale = {};
+        if (typeof this.date2str.locale == 'undefined' ) {
+            this.date2str.locale = {};
         }
 
-        if (!this.datetostr.locale.hasOwnProperty(calendar)) {
+        if (!this.date2str.locale.hasOwnProperty(calendar)) {
             let _months = [];
             let _monthsShort = [];
             for (let i = 0; i <= 11; i++) {
@@ -2286,7 +2286,7 @@ Jaws.filters = {
                 _daysShort.push(Jaws.t('day_short_' + i));
             }
 
-            this.datetostr.locale[calendar] = {
+            this.date2str.locale[calendar] = {
                 days: _days,
                 daysShort: _daysShort,
                 daysMin: _daysShort,
@@ -2296,18 +2296,29 @@ Jaws.filters = {
             };
         }
 
-        return AirDatepicker.formatDate(input, format, this.datetostr.locale[calendar], calendar);
+        return AirDatepicker.formatDate(input, format, this.date2str.locale[calendar], calendar);
     },
 
     /**
      * Time(seconds since midnight) to string
      */
-    timetostr: function(input, format = '') {
+    time2str: function(input, format = '') {
         format = format || 'HH:mm';
-        let d = new Date();
-        // no need multiple by 1000 here because in datetostr we do it
-        input = Math.floor(d.getTime() / 86400000) * 86400 + input + d.getTimezoneOffset()*60;
-        return this.datetostr(input, format);
+        return this.date2str(this.utc2local(input), format);
+    },
+
+    /**
+     * UTC to local date/time timestamp
+     */
+    utc2local: function(input) {
+        return input + (new Date()).getTimezoneOffset()*60;
+    },
+
+    /**
+     * local date/time timestamp to UTC
+     */
+    local2utc: function(input) {
+        return input - (new Date()).getTimezoneOffset()*60;
     },
 
     /**
