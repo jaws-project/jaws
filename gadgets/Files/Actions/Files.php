@@ -553,6 +553,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         if (!empty($file) && $file['filekey'] == $get['key']) {
             $filePath = strtolower('files/'. $file['gadget']. '/'. $file['action']. '/');
             if ($this->gadget->fileManagement::file_exists(ROOT_DATA_PATH. $filePath . $file['filename'])) {
+                // set response type to raw  because HTTP headers managed by fileManagement::download method
+                $this->app->request->update('restype', 'raw');
                 // increase file hits
                 $this->gadget->model->load('Files')->hitDownload($file['id']);
                 // download
