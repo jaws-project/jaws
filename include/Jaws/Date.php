@@ -42,6 +42,14 @@ class Jaws_Date
     var $_GregorianDaysInMonthes = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
     /**
+     * default/user calendar/timezone
+     *
+     * @var     array
+     * @access  static
+     */
+    static protected $options = array();
+
+    /**
      * Creates an available Jaws_Date driver instance calendar
      *
      * @return  object returns the instance
@@ -49,15 +57,17 @@ class Jaws_Date
      */
     static function getInstance($calendar = '')
     {
-        static $dbCalendar;
-        if (!isset($dbCalendar)) {
-            $dbCalendar = Jaws::getInstance()->registry->fetchByUser(
-                Jaws::getInstance()->session->user->id,
-                'calendar',
-                'Settings'
+        if (empty(self::$options)) {
+            $thisApp = Jaws::getInstance();
+            self::$options = array(
+                'calendar' => $thisApp->registry->fetchByUser($thisApp->session->user->id, 'calendar', 'Settings'),
+                'site_calendar' => $thisApp->registry->fetch('calendar', 'Settings'),
+                'timezone' => $thisApp->registry->fetchByUser($thisApp->session->user->id, 'timezone', 'Settings'),
+                'site_timezone' => $thisApp->registry->fetch('timezone', 'Settings'),
             );
         }
-        $calendar = preg_replace('/[^[:alnum:]_]/', '', empty($calendar)? $dbCalendar : $calendar);
+
+        $calendar = preg_replace('/[^[:alnum:]_]/', '', empty($calendar)? self::$options['calendar'] : $calendar);
         if (!file_exists(ROOT_JAWS_PATH . 'include/Jaws/Date/'. $calendar .'.php')) {
             $GLOBALS['log']->Log(JAWS_DEBUG,
                                  'Loading calendar '.$calendar.' failed, Attempting to load default calendar');
@@ -71,6 +81,73 @@ class Jaws_Date
         }
 
         return $instances[$calendar];
+    }
+
+    /**
+     * Get local time
+     *
+     * @access  private
+     * @param   mixed   $time   timestamp
+     * @param   bool    $default_timezone   use default timezone instead of user timezone
+     * @return  int     Unix timestamp
+     */
+    function utc2local($time = '', $default_timezone = false)
+    {
+        $time = empty($time)? time() : $time;
+        if (is_array($time)) {
+            $time = mktime(isset($time[5])? $time[5] : 0,
+                           isset($time[4])? $time[4] : 0,
+                           isset($time[3])? $time[3] : 0,
+                           isset($time[1])? $time[1] : 0,
+                           isset($time[2])? $time[2] : 0,
+                           $time[0]);
+        }
+        $time = is_numeric($time)? (int)$time : strtotime($time);
+
+        // timezone offset
+        $timezone = $default_timezone? self::$options['timezone'] : self::$options['site_timezone'];
+        if (is_numeric($timezone)) {
+            $gmt_offset = $timezone * 3600;
+        } else {
+            @date_default_timezone_set($timezone);
+            $gmt_offset = date('Z', $time);
+            date_default_timezone_set('UTC');
+        }
+
+        return $time + $gmt_offset;
+    }
+
+    /**
+     * Get UTC time
+     *
+     * @access  private
+     * @param   mixed   $time   timestamp
+     * @param   bool    $default_timezone   use default timezone instead of user timezone
+     * @return  int     Unix timestamp
+     */
+    function local2utc($time, $default_timezone = false)
+    {
+        if (is_array($time)) {
+            $time = mktime(isset($time[5])? $time[5] : 0,
+                           isset($time[4])? $time[4] : 0,
+                           isset($time[3])? $time[3] : 0,
+                           isset($time[1])? $time[1] : 0,
+                           isset($time[2])? $time[2] : 0,
+                           $time[0]);
+        }
+        $time = is_numeric($time)? $time : strtotime($time);
+
+        // timezone offset
+        $timezone = $default_timezone? self::$options['timezone'] : self::$options['site_timezone'];
+        if (is_numeric($timezone)) {
+            $gmt_offset = $timezone * 3600;
+        } else {
+            @date_default_timezone_set($timezone);
+            $gmt_offset = date('Z', $time);
+            date_default_timezone_set('UTC');
+        }
+
+        return $time - $gmt_offset;
     }
 
     /**
