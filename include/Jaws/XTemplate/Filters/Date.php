@@ -27,8 +27,8 @@ class Jaws_XTemplate_Filters_Date extends Jaws_XTemplate_Filters
     /**
      * Convert datetime string to UTC timestamp
      *
-     * @param   string  $input
-     * @param   string  $calendar
+     * @param   string|array    $input
+     * @param   string          $calendar
      *
      * @return int
      */
@@ -36,7 +36,12 @@ class Jaws_XTemplate_Filters_Date extends Jaws_XTemplate_Filters
     {
         $result = 0;
         if (!empty($input)) {
-            $result = (int)Jaws_Date::getInstance($calendar)->ToBaseDate(preg_split('/[\/\- \:]/', $input), 'U');
+            $result = is_array($input)? $input : [$input];
+            foreach ($result as $key => $val) {
+                $result[$key] = (int)Jaws_Date::getInstance($calendar)->ToBaseDate(preg_split('/[\/\- \:]/', $val), 'U');
+            }
+
+            $result = is_array($input)? $result : $result[0];
         }
 
         return $result;
@@ -58,22 +63,33 @@ class Jaws_XTemplate_Filters_Date extends Jaws_XTemplate_Filters
     /**
      * Convert time string to seconds since midnight
      *
-     * @param   string  $input  time string (for example: 13:45)
+     * @param   string|array    $input  time string (for example: 13:45)
      *
      * @return int
      */
     public static function str2time($input)
     {
-        $time = new Jaws_Regexp('/([0-9]+)\:([0-9]+)(?:\:([0-9]+))?\s*([ap]m)?/i');
-        if (false === $time->match($input)) {
-            return 0;
-        }
-        @list($all, $hours, $minutes, $seconds, $meridiem) = $time->matches;
-        if (isset($meridiem) && $meridiem == 'pm' && $hours != 12) {
-            $hours = $hours + 12;
+        $result = 0;
+        if (!empty($input)) {
+            $result = is_array($input)? $input : [$input];
+            $time = new Jaws_Regexp('/([0-9]+)\:([0-9]+)(?:\:([0-9]+))?\s*([ap]m)?/i');
+            foreach ($result as $key => $val) {
+                if (false === $time->match($val)) {
+                    $result[$key] = 0;
+                    continue;
+                }
+
+                @list($all, $hours, $minutes, $seconds, $meridiem) = $time->matches;
+                if (isset($meridiem) && $meridiem == 'pm' && $hours != 12) {
+                    $hours = $hours + 12;
+                }
+                $result[$key] = $hours*3600 + $minutes*60 + $seconds;
+            }
+
+            $result = is_array($input)? $result : $result[0];
         }
 
-        return $hours*3600 + $minutes*60 + $seconds;
+        return $result;
     }
 
     /**
