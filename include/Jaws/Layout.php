@@ -119,6 +119,7 @@ class Jaws_Layout
 
         // set default site language
         $this->_Languages[] = $this->app->GetLanguage();
+        $this->app->define('', 'buildnumber', $this->attributes['buildnumber']);
         $this->app->define('', 'direction', Jaws::t('LANG_DIRECTION'));
         $this->app->define('', 'loadingMessage', Jaws::t('LOADING'));
         $this->app->define('', 'reloadMessage', Jaws::t('RELOAD_MESSAGE'));
@@ -738,7 +739,7 @@ class Jaws_Layout
             case 'addScript':
                 if (is_string($params[0])) {
                     $params[0] = array(
-                        'src'  => $params[0]. '?'. $this->attributes['buildnumber'],
+                        'src'  => $params[0]. '?'. $this->attributes['buildnumber']
                     );
                 }
                 $this->extraTags['scripts']['elements'][md5(serialize($params))] = $params[0];
