@@ -136,7 +136,7 @@ class Jaws_Request
         $this->_filters  = array();
         $this->_params   = array();
         $this->_includes = array();
-        $this->regexp = new Jaws_Regexp('/^(\w+)(?>\:(\w+))?(?>\|(\w+))?/');
+        $this->regexp = new Jaws_Regexp('/^(\w+)(?>\:(\w+))?(?>\|(\w+))?(?>\?(\w+)?)?/');
 
         $this->data['get']    = $_GET;
         $this->data['cookie'] = $_COOKIE;
@@ -293,7 +293,7 @@ class Jaws_Request
      *
      * @access  private
      * @param   mixed   $keys       The key being fetched, it can be an array with multiple keys in it to fetch and
-     *                              then an array will be returned accourdingly.
+     *                              then an array will be returned accordingly.
      * @param   string  $method     Which super global is being fetched from
      * @param   array   $options    Options(filter, xss_strip, json_decode, type_validate)
      * @return  mixed   Null if there is no data else an string|array with the processed data
@@ -305,7 +305,7 @@ class Jaws_Request
                 if (false === $this->regexp->match($key)) {
                     continue;
                 }
-                @list($all, $key, $valid_type, $cast_type) = $this->regexp->matches;
+                @list($all, $key, $valid_type, $cast_type, $null_type) = $this->regexp->matches;
                 $result[$key] = $this->_fetch($all, $method, $branchName, $options);
             }
 
@@ -315,7 +315,7 @@ class Jaws_Request
         if (false === $this->regexp->match($keys)) {
             return null;
         }
-        @list($all, $key, $valid_type, $cast_type) = $this->regexp->matches;
+        @list($all, $key, $valid_type, $cast_type, $null_type) = $this->regexp->matches;
 
         if ($branchName === '' || $branchName === false) {
             $dataRepository = &$this->data[$method];
@@ -329,9 +329,9 @@ class Jaws_Request
         // if key not exists
         if (!isset($dataRepository[$key])) {
             $value = null;
-            if ($cast_type) {
+            if (!empty($null_type)) {
                 // type cast
-                settype($value, $this->map_types_cast[$cast_type]);
+                settype($value, $this->map_types_cast[$null_type]);
             }
             return $value;
         }
