@@ -36,13 +36,12 @@
   />
   </template>
 
-  <label data-label="title">{{ files.labels.title }}:</label>
   <div class="row gy-3 files-interface-items">
     {%- for file in files.files %}
     {%- assign file.url = 'Files' | urlmap: 'file', 'id', file.id, 'key', file.filekey %}
     <div class="col-6 col-md-4 col-lg-3 files-interface-item" data-input-file-uid="">
       <div class="card position-relative">
-        {% if files.preview and file.mimetype contains "image/" %}
+        {% if file.preview and file.mimetype contains "image/" %}
         <img class="card-img-top" src="{{ file.url }}" alt="" data-type="image"/>
         {%- else %}
         <img class="card-img-top" src="images/image.svg" alt="" data-type="image"/>

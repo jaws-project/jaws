@@ -12,7 +12,7 @@ function Jaws_Gadget_Files() { return {
     AjaxCallback : {
     },
 
-    async resizeImage(file, { quality = 1, type = file.type, dimension = {}})
+    async resizeImage(file, { quality = 1, type = file.type, dimension = false})
     {
         // Get as image data
         const imageBitmap = await createImageBitmap(file);
@@ -112,7 +112,7 @@ function Jaws_Gadget_Files() { return {
                 height: Number(dimension[1])
             };
         } else {
-            dimension = {};
+            dimension = false;
         }
 
         // max files count
