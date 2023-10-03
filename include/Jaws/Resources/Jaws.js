@@ -22,20 +22,27 @@ jQuery.extend({
                 return;
             }
 
-            if (input.name.indexOf('[]') >=0) {
-                input.name = input.name.replace('[]', '');
-                result[input.name] = (result[input.name] || []);
-                result[input.name].push(input.value);
-            } else {
-                if (result.hasOwnProperty(input.name)) {
-                    if (Array.isArray(result[input.name])) {
-                        result[input.name].push(input.value);
-                    } else {
-                        result[input.name] = [result[input.name], input.value];
-                    }
+            let way = (input.name.match(/(\w+)|(\[(\w+)?\])/g) || []).map(x=>x.replace(/^\[+|\]+$/g, ''));
+            let last = way.pop();
+
+            let property = way.reduce(function (obj, k, i, kk) {
+                return obj[k] = obj[k] || [];
+            }, result);
+
+            if (last === '') {
+                if (Array.isArray(property)) {
+                    property.push(input.value);
                 } else {
-                    result[input.name] = input.value;
+                    property = [input.value];
                 }
+            } else if (property.hasOwnProperty(last)) {
+                if (Array.isArray(property[last])) {
+                    property[last].push(input.value);
+                } else {
+                    property[last] = [property[last], input.value];
+                }
+            } else {
+                property[last] = input.value;
             }
         });
 
