@@ -1586,7 +1586,69 @@ mark,
 .min-vh-100 {
   min-height: 100vh !important;
 }
+.font-monospace {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
 
+.fs-1 {
+  font-size: calc(1.375rem + 1.5vw) !important;
+}
+
+.fs-2 {
+  font-size: calc(1.325rem + 0.9vw) !important;
+}
+
+.fs-3 {
+  font-size: calc(1.3rem + 0.6vw) !important;
+}
+
+.fs-4 {
+  font-size: calc(1.275rem + 0.3vw) !important;
+}
+
+.fs-5 {
+  font-size: 1.25rem !important;
+}
+
+.fs-6 {
+  font-size: 1rem !important;
+}
+
+.fst-italic {
+  font-style: italic !important;
+}
+
+.fst-normal {
+  font-style: normal !important;
+}
+
+.fw-lighter {
+  font-weight: lighter !important;
+}
+
+.fw-light {
+  font-weight: 300 !important;
+}
+
+.fw-normal {
+  font-weight: 400 !important;
+}
+
+.fw-medium {
+  font-weight: 500 !important;
+}
+
+.fw-semibold {
+  font-weight: 600 !important;
+}
+
+.fw-bold {
+  font-weight: 700 !important;
+}
+
+.fw-bolder {
+  font-weight: bolder !important;
+}
 .text-justify {
   text-align: justify !important;
 }
@@ -1666,6 +1728,70 @@ mark,
 .mr-2 { margin-right: 0.5rem !important; }
 .mr-3 { margin-right: 1rem !important; }
 .mr-4 { margin-right: 1.5rem !important; }
+.mx-0 {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.mx-1 {
+  margin-right: 0.25rem !important;
+  margin-left: 0.25rem !important;
+}
+
+.mx-2 {
+  margin-right: 0.5rem !important;
+  margin-left: 0.5rem !important;
+}
+
+.mx-3 {
+  margin-right: 1rem !important;
+  margin-left: 1rem !important;
+}
+
+.mx-4 {
+  margin-right: 1.5rem !important;
+  margin-left: 1.5rem !important;
+}
+
+.mx-5 {
+  margin-right: 3rem !important;
+  margin-left: 3rem !important;
+}
+
+.mx-auto {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.my-0 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.my-1 {
+  margin-top: 0.25rem !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.my-2 {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.my-3 {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.my-4 {
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.my-5 {
+  margin-top: 3rem !important;
+  margin-bottom: 3rem !important;
+}
 .mr-auto, .mx-auto { margin-right: auto !important; }
 .mt-xs-0 { margin-top: 0 !important; }
 .mt-xs-1 { margin-top: 0.25rem !important; }
@@ -1792,6 +1918,65 @@ mark,
 .pr-2 { padding-right: 0.5rem !important; }
 .pr-3 { padding-right: 1rem !important; }
 .pr-4 { padding-right: 1.5rem !important; }
+.px-0 {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.px-1 {
+  padding-right: 0.25rem !important;
+  padding-left: 0.25rem !important;
+}
+
+.px-2 {
+  padding-right: 0.5rem !important;
+  padding-left: 0.5rem !important;
+}
+
+.px-3 {
+  padding-right: 1rem !important;
+  padding-left: 1rem !important;
+}
+
+.px-4 {
+  padding-right: 1.5rem !important;
+  padding-left: 1.5rem !important;
+}
+
+.px-5 {
+  padding-right: 3rem !important;
+  padding-left: 3rem !important;
+}
+
+.py-0 {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.py-1 {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+.py-2 {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.py-3 {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+.py-4 {
+  padding-top: 1.5rem !important;
+  padding-bottom: 1.5rem !important;
+}
+
+.py-5 {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
 .pr-auto, .px-auto { padding-right: auto !important; }
 .pt-xs-0 { padding-top: 0 !important; }
 .pt-xs-1 { padding-top: 0.25rem !important; }
@@ -2258,6 +2443,222 @@ a.bg-danger:focus {
     display: inline-flex !important;
   }
 }
+.text-center {
+  text-align: center !important;
+}
+
+.text-decoration-none {
+  text-decoration: none !important;
+}
+
+.text-decoration-underline {
+  text-decoration: underline !important;
+}
+
+.text-decoration-line-through {
+  text-decoration: line-through !important;
+}
+
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.text-capitalize {
+  text-transform: capitalize !important;
+}
+
+.text-wrap {
+  white-space: normal !important;
+}
+
+.text-nowrap {
+  white-space: nowrap !important;
+}
+
+.text-break {
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+.text-primary {
+  opacity: 1;
+  color: #0d6efd !important;
+}
+
+.text-secondary {
+  opacity: 1;
+  color: #6c757d !important;
+}
+
+.text-success {
+  opacity: 1;
+  color: #198754 !important;
+}
+
+.text-info {
+  opacity: 1;
+  color: #0dcaf0 !important;
+}
+
+.text-warning {
+  opacity: 1;
+  color: #ffc107 !important;
+}
+
+.text-danger {
+  opacity: 1;
+  color: #dc3545 !important;
+}
+
+.text-light {
+  opacity: 1;
+  color: #f8f9fa !important;
+}
+
+.text-dark {
+  opacity: 1;
+  color: #212529 !important;
+}
+
+.text-black {
+  opacity: 1;
+  color: #000 !important;
+}
+
+.text-white {
+  opacity: 1;
+  color: #fff !important;
+}
+
+.text-bg-primary {
+  color: #fff !important;
+  background-color: #0d6efd !important;
+}
+
+.text-bg-secondary {
+  color: #fff !important;
+  background-color: #6c757d !important;
+}
+
+.text-bg-success {
+  color: #fff !important;
+  background-color: #198754 !important;
+}
+
+.text-bg-info {
+  color: #000 !important;
+  background-color: #0dcaf0 !important;
+}
+
+.text-bg-warning {
+  color: #000 !important;
+  background-color: #ffc107 !important;
+}
+
+.text-bg-danger {
+  color: #fff !important;
+  background-color: #dc3545 !important;
+}
+
+.text-bg-light {
+  color: #000 !important;
+  background-color: #f8f9fa !important;
+}
+
+.text-bg-dark {
+  color: #fff !important;
+  background-color: #212529 !important;
+}
+
+.bg-primary {
+  opacity: 1;
+  background-color: #0d6efd !important;
+}
+
+.bg-secondary {
+  opacity: 1;
+  background-color: #6c757d !important;
+}
+
+.bg-success {
+  opacity: 1;
+  background-color: #198754 !important;
+}
+
+.bg-info {
+  opacity: 1;
+  background-color: #0dcaf0 !important;
+}
+
+.bg-warning {
+  opacity: 1;
+  background-color: #ffc107 !important;
+}
+
+.bg-danger {
+  opacity: 1;
+  background-color: #dc3545 !important;
+}
+
+.bg-light {
+  opacity: 1;
+  background-color: #f8f9fa !important;
+}
+
+.bg-dark {
+  opacity: 1;
+  background-color: #212529 !important;
+}
+
+.bg-black {
+  opacity: 1;
+  background-color: #000 !important;
+}
+
+.bg-white {
+  opacity: 1;
+  background-color: #fff !important;
+}
+
+.bg-transparent {
+  opacity: 1;
+  background-color: transparent !important;
+}
+
+.bg-body-secondary {
+  opacity: 1;
+  background-color: #6c757d !important;
+}
+
+.bg-body-tertiary {
+  opacity: 1;
+  background-color: #f8f9fa !important;
+}
+
+.bg-opacity-10 {
+  opacity: 0.1;
+}
+
+.bg-opacity-25 {
+  opacity: 0.25;
+}
+
+.bg-opacity-50 {
+  opacity: 0.5;
+}
+
+.bg-opacity-75 {
+  opacity: 0.75;
+}
+
+.bg-opacity-100 {
+  opacity: 1;
+}
+
 .page-header {
   padding-bottom: 9px;
   margin: 40px 0 20px;
@@ -4106,6 +4507,43 @@ fieldset[disabled] .btn-primary.focus {
   color: #337ab7;
   background-color: #fff;
 }
+.btn-secondary {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  color: #fff;
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.btn-secondary:focus, .btn-secondary.focus {
+  color: #fff;
+  background-color: #5a6268;
+  border-color: #545b62;
+  box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
+}
+
+.btn-secondary.disabled, .btn-secondary:disabled {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active, .btn-secondary:not(:disabled):not(.disabled).active,
+.show > .btn-secondary.dropdown-toggle {
+  color: #fff;
+  background-color: #545b62;
+  border-color: #4e555b;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active:focus, .btn-secondary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-secondary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
+}
+
 .btn-success {
   color: #fff;
   background-color: #5cb85c;
