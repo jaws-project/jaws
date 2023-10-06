@@ -119,6 +119,27 @@ jQuery.extend({
 
 (function($) {
     /*
+     * wait until condition met
+    */
+    $.until = function(condition, interval = 100, timeout = 5000) {
+        const startTime = Date.now();
+        return new Promise(function(resolve, reject) {
+            const timer  = setInterval(
+                function () {
+                    if (condition()) {
+                        clearInterval(timer);
+                        resolve(true);
+                    } else if ((Date.now() - startTime) > timeout) {
+                        clearInterval(timer);
+                        reject(false);
+                    }
+                },
+                interval
+            );
+        });
+    };
+
+    /*
      * https://github.com/farhadi/html5sortable
     */
     var dragging, placeholders = $();
