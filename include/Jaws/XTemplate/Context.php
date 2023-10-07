@@ -267,7 +267,8 @@ class Jaws_XTemplate_Context
         }
 
         if (preg_match('/^\[(.*)\]$/', $key, $matches)) {
-            $array = array_map('trim', explode(',', $matches[1]));
+            $matches[1] = trim($matches[1]);
+            $array = ($matches[1] === '')? array() : array_map('trim', explode(',', $matches[1]));
             foreach ($array as $index => $expr) {
                 $array[$index] = $this->resolve($expr);
             }
