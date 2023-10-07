@@ -135,6 +135,41 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Push one or more elements onto the end of array
+     *
+     * @param   array|\Traversable  $input
+     * @param   mixed   $values
+     *
+     * @return array
+     */
+    public static function push($input, ...$values)
+    {
+        if ($input instanceof \Traversable) {
+            $input = iterator_to_array($input);
+        }
+
+        array_push($input, ...$values);
+        return $input;
+    }
+
+    /**
+     * Pop the element off the end of array
+     *
+     * @param   array|\Traversable  $input
+     *
+     * @return array
+     */
+    public static function pop($input)
+    {
+        if ($input instanceof \Traversable) {
+            $input = iterator_to_array($input);
+        }
+
+        array_pop($input);
+        return $input;
+    }
+
+    /**
      * Merge one or more arrays
      *
      * @param array|\Traversable $input
