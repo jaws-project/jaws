@@ -219,7 +219,7 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
     /**
      * Get map version of url if found
      *
-     * @param   string   $args      Map arguments(comma seprated)
+     * @param   string   $args      Map arguments(comma separated)
      * @param   string   $gadget    Gadget name
      * @param   string   $action    Action name
      * @param   array    $params    Map parameters
