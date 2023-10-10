@@ -187,12 +187,24 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
         if (!isset($input)) {
             return false;
         }
+        $needles = is_array($needle)? $needle : [$needle];
 
         if (is_array($input)) {
-            return in_array($needle, is_null($column_key)? $input : array_column($input, $column_key));
+            $input = is_null($column_key)? $input : array_column($input, $column_key);
+            foreach ($needles as $needle) {
+                if (in_array($needle, $input)) {
+                    return true;
+                }
+            }
         } else {
-            return strpos($input, $needle) !== false;
+            foreach ($needles as $needle) {
+                if (strpos($input, $needle) !== false) {
+                    return true;
+                }
+            }
         }
+
+        return false;
     }
 
     /**
