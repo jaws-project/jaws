@@ -937,10 +937,16 @@ class Jaws_ORM
      * @param   string  $result_type    Result type (all/row/col/one)
      * @param   mixed   $argument       Extra parameters
      * @param   int     $error_level    Sets this error level if errors occurred
+     * @param   bool    $execute        execute query and return result?
      * @return  mixed   Fetched data or Jaws_Error on failure
      */
-    function fetch($style = 'row', $argument = null, $error_level = JAWS_ERROR_ERROR)
+    function fetch($style = 'row', $argument = null, $error_level = JAWS_ERROR_ERROR, $execute = true)
     {
+        if ($execute === false) {
+            // don't execute query, just return Jaws_ORM object
+            return $this;
+        }
+
         if (!$this->_passed_types) {
             $this->_types = array();
         }
