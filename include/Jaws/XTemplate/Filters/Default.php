@@ -397,13 +397,19 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
     /**
      * Get the type of a variable
      *
-     * @param   mixed   $input
+     * @param   mixed       $input
+     * @param   null|string $type
      *
-     * @return string
+     * @return mixed
      */
-    public static function type($input)
+    public static function type($input, $type = null)
     {
-        return gettype($input);
+        if (empty($type)) {
+            return gettype($input);
+        } else {
+            settype($input, $type);
+            return $input;
+        }
     }
 
     /**
