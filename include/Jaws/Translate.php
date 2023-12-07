@@ -225,11 +225,9 @@ class Jaws_Translate
                 }
                 $module = self::$real_gadgets_module[$module];
 
-                if ($lang == 'en') {
-                    $orig_i18n = ROOT_JAWS_PATH . "gadgets/$module/Resources/translates.ini";
-                } else {
-                    $orig_i18n = ROOT_JAWS_PATH . "languages/$lang/gadgets/$module.ini";
-                }
+                $orig_base_i18n = ROOT_JAWS_PATH . "gadgets/$module/Resources/translates.ini";
+                $orig_lang_i18n = ROOT_JAWS_PATH . "gadgets/$module/Resources/translates.$lang.ini";
+                $lang_i18n = ROOT_JAWS_PATH . "languages/$lang/gadgets/$module.ini";
                 $data_i18n = ROOT_DATA_PATH . "languages/$lang/gadgets/$module.ini";
                 break;
 
@@ -239,59 +237,63 @@ class Jaws_Translate
                 }
                 $module = self::$real_plugins_module[$module];
 
-                if ($lang == 'en') {
-                    $orig_i18n = ROOT_JAWS_PATH . "plugins/$module/Resources/translates.ini";
-                } else {
-                    $orig_i18n = ROOT_JAWS_PATH . "languages/$lang/plugins/$module.ini";
-                }
+                $orig_base_i18n = ROOT_JAWS_PATH . "plugins/$module/Resources/translates.ini";
+                $orig_lang_i18n = ROOT_JAWS_PATH . "plugins/$module/Resources/translates.$lang.ini";
+                $lang_i18n = ROOT_JAWS_PATH . "languages/$lang/plugins/$module.ini";
                 $data_i18n = ROOT_DATA_PATH . "languages/$lang/plugins/$module.ini";
                 break;
 
             case self::TRANSLATE_INSTALL:
                 $module = 'Installer';
-                if ($lang == 'en') {
-                    $orig_i18n = ROOT_JAWS_PATH . "install/Resources/translates.ini";
-                } else {
-                    $orig_i18n = ROOT_JAWS_PATH . "languages/$lang/Install.ini";
-                }
+                $orig_lang_i18n = false;
+                $orig_base_i18n = ROOT_JAWS_PATH . "install/Resources/translates.ini";
+                $lang_i18n = ROOT_JAWS_PATH . "languages/$lang/Install.ini";
                 $data_i18n = ROOT_DATA_PATH . "languages/$lang/Install.ini";
                 break;
 
             case self::TRANSLATE_UPGRADE:
                 $module = 'Upgrader';
-                if ($lang == 'en') {
-                    $orig_i18n = ROOT_JAWS_PATH . "upgrade/Resources/translates.ini";
-                } else {
-                    $orig_i18n = ROOT_JAWS_PATH . "languages/$lang/Upgrade.ini";
+                $orig_lang_i18n = false;
+                $orig_base_i18n = ROOT_JAWS_PATH . "upgrade/Resources/translates.ini";
+                if ($lang != 'en') {
+                    $lang_i18n = ROOT_JAWS_PATH . "languages/$lang/Upgrade.ini";
                 }
                 $data_i18n = ROOT_DATA_PATH . "languages/$lang/Upgrade.ini";
                 break;
 
             default:
                 $module = '';
-                if ($lang == 'en') {
-                    $orig_i18n = ROOT_JAWS_PATH . "include/Jaws/Resources/translates.ini";
-                } else {
-                    $orig_i18n = ROOT_JAWS_PATH . "languages/$lang/Global.ini";
+                $orig_lang_i18n = false;
+                $orig_base_i18n = ROOT_JAWS_PATH . "include/Jaws/Resources/translates.ini";
+                if ($lang != 'en') {
+                    $lang_i18n = ROOT_JAWS_PATH . "languages/$lang/Global.ini";
                 }
                 $data_i18n = ROOT_DATA_PATH . "languages/$lang/Global.ini";
         }
 
-        $tmp_orig = array();
-        if (file_exists($orig_i18n)) {
-            $tmp_orig = parse_ini_file($orig_i18n, false, INI_SCANNER_RAW);
-            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded translation for $module, language $lang");
-        } else {
-            $GLOBALS['log']->Log(JAWS_DEBUG, "No translation could be found for $module for language $lang");
+        if (!file_exists($orig_base_i18n)) {
+            return Jaws_Error::raiseError(
+                "Default translation file not found for $module",
+                __FUNCTION__
+            );
+        }
+        $tmp_base = parse_ini_file($orig_base_i18n, false, INI_SCANNER_RAW);
+
+        $tmp_lang = array();
+        if ($orig_lang_i18n && file_exists($orig_lang_i18n)) {
+            $tmp_lang = parse_ini_file($orig_lang_i18n, false, INI_SCANNER_RAW);
+        }
+
+        if (file_exists($lang_i18n)) {
+            $tmp_lang = parse_ini_file($lang_i18n, false, INI_SCANNER_RAW) + $tmp_lang;
         }
 
         $tmp_data = array();
         if ($this->_load_user_translated && Jaws_FileManagement_File::file_exists($data_i18n)) {
             $tmp_data = Jaws_FileManagement_File::parse_ini_file($data_i18n, false, INI_SCANNER_RAW);
-            $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded data translation for $module, language $lang");
         }
 
-        return $this->translates[$lang][$type][strtoupper($module)] = $tmp_data + $tmp_orig;;
+        return $this->translates[$lang][$type][strtoupper($module)] = $tmp_data + $tmp_lang + $tmp_base;
     }
 
     /**
