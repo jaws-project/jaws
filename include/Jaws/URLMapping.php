@@ -275,7 +275,7 @@ class Jaws_URLMapping
                         $url = substr($url, 0, - strlen($ext));
                     }
 
-                    if (preg_match($regexp, $url, $matches) == 1) {
+                    if (preg_match($regexp, $url, $matches, PREG_UNMATCHED_AS_NULL) == 1) {
                         if ($this->_restrict_multimap) {
                             if ($this->_custom_precedence && $has_custom && !$custom) {
                                 $matched_but_ignored = true;
@@ -306,7 +306,9 @@ class Jaws_URLMapping
                         if (is_array($matches_vars)) {
                             array_shift($matches);
                             foreach ($matches as $key => $value) {
-                                $request->update($matches_vars[1][$key], rawurldecode($value), 'get');
+                                if (!is_null($value)) {
+                                    $request->update($matches_vars[1][$key], rawurldecode($value), 'get');
+                                }
                             }
                         }
 
