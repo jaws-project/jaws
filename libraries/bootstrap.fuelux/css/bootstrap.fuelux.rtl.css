@@ -5606,7 +5606,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding: 6px 12px;
   font-size: 14px;
   font-weight: 400;
-  line-height: 1;
   color: #555555;
   text-align: center;
   background-color: #eeeeee;
@@ -7735,7 +7734,8 @@ button.close {
   word-spacing: normal;
   word-wrap: normal;
   white-space: normal;
-  font-size: 12px;
+  font-size: 0.9rem;
+  line-height: 1.5rem;
   filter: alpha(opacity=0);
   opacity: 0;
 }
@@ -7816,8 +7816,8 @@ button.close {
   border-bottom-color: #000;
 }
 .tooltip-inner {
-  max-width: 200px;
-  padding: 3px 8px;
+  max-width: 224px;
+  padding: 4px 10px;
   color: #fff;
   text-align: center;
   background-color: #000;
