@@ -84,7 +84,7 @@ class Jaws_XTemplate_TagSegmental extends Jaws_XTemplate_Tag
                         $this->unknownTag($tagRegexp->matches[1], $tagRegexp->matches[2], $tokens);
                     }
                 } else {
-                    throw new Exception("Tag $token was not properly terminated (won't match $tagRegexp)");
+                    throw new Exception("Tag $token was not properly terminated (won't match regexp)");
                 }
             } elseif ($variableStartRegexp->match($token)) {
                 $this->whitespaceHandler($token);
