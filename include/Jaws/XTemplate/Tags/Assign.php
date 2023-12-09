@@ -32,7 +32,7 @@ class Jaws_XTemplate_Tags_Assign extends Jaws_XTemplate_Tag
      */
     public function __construct(&$tpl, array &$tokens, $markup = '')
     {
-        $syntaxRegexp = new Jaws_Regexp('/\s*(.*[^\s])\s*=\s*(.*[^\s])\s*/');
+        $syntaxRegexp = new Jaws_Regexp('/\s*([^\s]+)\s*=\s*(.*)\s*/');
 
         if ($syntaxRegexp->match($markup)) {
             $this->to = $syntaxRegexp->matches[1];

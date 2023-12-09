@@ -223,7 +223,7 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
 
 
     /**
-     * Group array bygiven property
+     * Group array by given property
      *
      * @param   array|\Traversable  $input
      * @param   string|array        $properties
