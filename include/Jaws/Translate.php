@@ -255,9 +255,7 @@ class Jaws_Translate
                 $module = 'Upgrader';
                 $orig_lang_i18n = false;
                 $orig_base_i18n = ROOT_JAWS_PATH . "upgrade/Resources/translates.ini";
-                if ($lang != 'en') {
-                    $lang_i18n = ROOT_JAWS_PATH . "languages/$lang/Upgrade.ini";
-                }
+                $lang_i18n = ROOT_JAWS_PATH . "languages/$lang/Upgrade.ini";
                 $data_i18n = ROOT_DATA_PATH . "languages/$lang/Upgrade.ini";
                 break;
 
@@ -265,9 +263,7 @@ class Jaws_Translate
                 $module = '';
                 $orig_lang_i18n = false;
                 $orig_base_i18n = ROOT_JAWS_PATH . "include/Jaws/Resources/translates.ini";
-                if ($lang != 'en') {
-                    $lang_i18n = ROOT_JAWS_PATH . "languages/$lang/Global.ini";
-                }
+                $lang_i18n = ROOT_JAWS_PATH . "languages/$lang/Global.ini";
                 $data_i18n = ROOT_DATA_PATH . "languages/$lang/Global.ini";
         }
 
