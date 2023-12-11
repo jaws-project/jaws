@@ -384,10 +384,36 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      *
      * @return  string
      */
-    public static function format($input, ...$args)
+    public static function formatNumber($input, ...$args)
     {
         array_unshift($args, (float)$input);
         return call_user_func_array(array('Jaws_Utils', 'formatNumber'), $args);
+    }
+
+    /**
+     * Format a string
+     *
+     * @param   string  $input
+     * @param   string  $format
+     * @param   array   $args   Variable-length argument lists
+     *
+     * @return  string
+     */
+    public static function formatString($input, $format, ...$args)
+    {
+        if (!$input || !$format) {
+            return '';
+        }
+        // inject $input as first element of arguments
+        array_unshift($args, $input);
+        $input = preg_replace_callback(
+            '/\{(\d+)\}/', function ($matches) use ($args) {
+                return isset($args[$matches[1]])? $args[$matches[1]] : '';
+            },
+            $format
+        );
+
+        return $input;
     }
 
     /**
