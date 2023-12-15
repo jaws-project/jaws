@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- BEGIN layout -->
-<html lang="{{site-languages}}">
+<html lang="{{site-languages}}" dir="{{dir}}">
 <head>
   <base href="{{base_url}}" />
   <title>{{site-title}}</title>
@@ -9,7 +9,8 @@
   <meta name="description" content="{{site-description}}" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, maximum-scale=2.0, initial-scale=1.0"/>
-  <link rel="stylesheet" type="text/css" href="libraries/bootstrap.fuelux/css/bootstrap.fuelux.min{{.dir}}.css" />
+  <link rel="stylesheet" type="text/css" href="libraries/bootstrap/css/bootstrap{{.dir}}.min.css?{{site-buildnumber}}" />
+  <link rel="stylesheet" type="text/css" href="libraries/bootstrap/css/bootstrap-icons.min.css?{{site-buildnumber}}" />
   <link rel="stylesheet" type="text/css" href="{{theme_url}}style{{.dir}}.css" media="screen" />
   <!-- BEGIN metas -->{{elements}}<!-- END metas -->
   <!-- BEGIN links -->{{elements}}<!-- END links -->
