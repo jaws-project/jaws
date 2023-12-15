@@ -257,14 +257,14 @@ class Jaws_Layout
         $this->_Template->SetBlock('layout');
 
         $direction = Jaws::t('LANG_DIRECTION');
-        $dir  = $direction == 'rtl' ? ".$direction" : '';
         $browser  = $this->app->GetBrowserFlag();
         $browser  = empty($browser)? '' : ".$browser";
         $base_url = $this->app->GetSiteURL('/');
 
         $this->_Template->SetVariable('base_url', $base_url);
         $this->_Template->SetVariable('skip_to_content', Jaws::t('SKIP_TO_CONTENT'));
-        $this->_Template->SetVariable('.dir', $dir);
+        $this->_Template->SetVariable('dir', $direction == 'rtl' ? 'rtl' : 'ltr');
+        $this->_Template->SetVariable('.dir', $direction == 'rtl' ? '.rtl' : '');
         $this->_Template->SetVariable('.browser', $browser);
         $this->_Template->SetVariable('site-url', $base_url);
         $this->_Template->SetVariable('site-direction', $direction);
@@ -704,7 +704,7 @@ class Jaws_Layout
         $this->_Template->SetBlock('layout/appendix');
         $this->_Template->SetVariable(
             'appendix',
-            $this->app->template->parseFile('Appendix.html', 'include/Jaws/Resources', JAWS_SCRIPT == 'index')->render()
+            $this->app->template->parse('Appendix.html', 'include/Jaws/Resources', JAWS_SCRIPT == 'index')->render()
         );
         $this->_Template->ParseBlock('layout/appendix');
 

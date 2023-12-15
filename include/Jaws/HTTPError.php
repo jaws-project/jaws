@@ -100,6 +100,7 @@ class Jaws_HTTPError
             $brow = Jaws::getInstance()->getBrowserFlag();
             $brow = empty($brow)? '' : '.'.$brow;
 
+            $tpl->SetVariable('dir', $direction == 'rtl'? 'rtl' : 'ltr');
             $tpl->SetVariable('.dir', $dir);
             $tpl->SetVariable('.browser', $brow);
             $tpl->SetVariable('site-name',   $site_name);
