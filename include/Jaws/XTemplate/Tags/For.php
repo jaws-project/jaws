@@ -29,7 +29,7 @@ class Jaws_XTemplate_Tags_For extends Jaws_XTemplate_TagSegmental
     /**
      * @var array The collection to loop over
      */
-    private $collectionName;
+    private $collection;
 
     /**
      * @var string The variable name to assign collection elements to
