@@ -141,15 +141,12 @@ class Users_Account_Default_Account extends Users_Account_Default
                     throw new Exception($result->getMessage(), 404);
                 }
 
-                throw new Exception($this::t('MYACCOUNT_UPDATED'), 201);
-
-//            } elseif () {
+                return true;
             }
         } catch (Exception $error) {
-            unset($postData['password'], $postData['password_check']);
             $this->gadget->session->push(
                 $error->getMessage(),
-                ($error->getCode() == 201)? RESPONSE_NOTICE : RESPONSE_ERROR,
+                RESPONSE_ERROR,
                 'Account.Response',
                 $postData
             );
@@ -180,7 +177,7 @@ class Users_Account_Default_Account extends Users_Account_Default
         // load js file
         $this->AjaxMe('index.js');
 
-        $response = $this->gadget->session->pop('Password');
+        $response = $this->gadget->session->pop('Password.Response');
         if (!isset($response['data'])) {
             $reqpost = array(
                 'pubkey'   => '',
@@ -194,6 +191,7 @@ class Users_Account_Default_Account extends Users_Account_Default
         $assigns['base_script'] = BASE_SCRIPT;
         $assigns['username']    = $this->app->session->user->username;
         $assigns['response']    = $response;
+        $assigns['avatar']      = $this->gadget->urlMap('Avatar', array('user' => $assigns['username']));
         // Menu navigation
         $assigns['navigation']  = $this->gadget->action->load('MenuNavigation')->xnavigation();
 
@@ -215,16 +213,6 @@ class Users_Account_Default_Account extends Users_Account_Default
      */
     function UpdatePassword()
     {
-        if (!$this->app->session->user->logged) {
-            return Jaws_Header::Location(
-                $this->gadget->urlMap(
-                    'Login',
-                    array('referrer'  => bin2hex(Jaws_Utils::getRequestURL(true)))
-                )
-            );
-        }
-
-        $this->gadget->CheckPermission('EditUserPassword');
         $postedData = $this->gadget->request->fetch(
             array('password', 'old_password', 'usecrypt', 'pubkey'),
             'post'
@@ -240,39 +228,32 @@ class Users_Account_Default_Account extends Users_Account_Default
         }
         unset($postedData['password'], $postedData['old_password']);
 
-        // compare old/new passwords
-        if ($new_password === $old_password) {
-            $this->gadget->session->push(
-                $this::t('USERS_PASSWORDS_OLD_EQUAL'),
-                RESPONSE_ERROR,
-                'Password',
-                $postedData
-            );
-        } else {
+        try {
+            // compare old/new passwords
+            if ($new_password === $old_password) {
+                throw new Exception($this::t('USERS_PASSWORDS_OLD_EQUAL'));
+            }
+
             // trying change password
             $result = $this->gadget->model->load('User')->updatePassword(
                 $this->app->session->user->id,
                 $new_password,
                 $old_password
             );
-            if (!Jaws_Error::IsError($result)) {
-                $this->gadget->session->push(
-                    $this::t('USERS_PASSWORD_UPDATED'),
-                    RESPONSE_NOTICE,
-                    'Password',
-                    $postedData
-                );
-            } else {
-                $this->gadget->session->push(
-                    $result->GetMessage(),
-                    RESPONSE_ERROR,
-                    'Password',
-                    $postedData
-                );
+            if (Jaws_Error::IsError($result)) {
+                throw new Exception($result->getMessage());
             }
-        }
 
-        return Jaws_Header::Location($this->gadget->urlMap('Password'));
+            return true;
+        } catch (Exception $error) {
+            $this->gadget->session->push(
+                $error->getMessage(),
+                RESPONSE_ERROR,
+                'Password.Response'
+            );
+
+            return Jaws_Error::raiseError($error->getMessage(), 400);
+        }
     }
 
     /**

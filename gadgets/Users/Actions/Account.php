@@ -76,23 +76,18 @@ class Users_Actions_Account extends Users_Actions_Default
         $objAccount = new $classname($this->gadget);
         $result = $objAccount->UpdateAccount();
         if (!Jaws_Error::IsError($result)) {
-            // add required attributes for auto login into jaws
-            $recoveryData['auth'] = $authtype;
+            $this->gadget->session->push(
+                $this::t('MYACCOUNT_UPDATED'),
+                RESPONSE_NOTICE,
+                'Account.Response'
+            );
         }
 
-        $default_authtype = $this->gadget->registry->fetch('authtype');
-        return $objAccount->LoginRecoveryError(
-            $recoveryData,
-            ($authtype != $default_authtype)? $authtype : '',
-            $referrer
+        return Jaws_Header::Location(
+            $this->gadget->urlMap('Account'),
+            'Account.Response'
         );
-
-
-
-
-        return Jaws_Header::Location($this->gadget->urlMap('Account'));
     }
-
 
     /**
      * Builds a simple form to update user password
@@ -113,34 +108,16 @@ class Users_Actions_Account extends Users_Actions_Default
 
         // Check Permission
         $this->gadget->CheckPermission('EditUserPassword');
-        // load js file
-        $this->AjaxMe('index.js');
-
-        $response = $this->gadget->session->pop('Password');
-        if (!isset($response['data'])) {
-            $reqpost = array(
-                'pubkey'   => '',
-                'usecrypt' => false,
-            );
-        } else {
-            $reqpost = $response['data'];
+        $authtype = $this->app->session->auth;
+        $classfile = ROOT_JAWS_PATH . "gadgets/Users/Account/$authtype/Account.php";
+        if (!file_exists($classfile)) {
+            Jaws_Error::Fatal($authtype. ' account class doesn\'t exists');
         }
 
-        $assigns = array();
-        $assigns['base_script'] = BASE_SCRIPT;
-        $assigns['username']    = $this->app->session->user->username;
-        $assigns['response']    = $response;
-        // Menu navigation
-        $assigns['navigation']  = $this->gadget->action->load('MenuNavigation')->xnavigation();
-
-        // usecrypt
-        $JCrypt = Jaws_Crypt::getInstance();
-        if (!Jaws_Error::IsError($JCrypt)) {
-            $assigns['pubkey'] = $JCrypt->getPublic();
-            $assigns['usecrypt_selected'] = empty($reqpost['pubkey']) || !empty($reqpost['usecrypt']);
-        }
-
-        return $this->gadget->template->xLoad('Password.html')->render($assigns);
+        // load logout method of account driver
+        $classname = "Users_Account_{$authtype}_Account";
+        $objAccount = new $classname($this->gadget);
+        return $objAccount->Password();
     }
 
     /**
@@ -161,54 +138,28 @@ class Users_Actions_Account extends Users_Actions_Default
         }
 
         $this->gadget->CheckPermission('EditUserPassword');
-        $postedData = $this->gadget->request->fetch(
-            array('password', 'old_password', 'usecrypt', 'pubkey'),
-            'post'
-        );
-
-        $JCrypt = Jaws_Crypt::getInstance();
-        if ($postedData['usecrypt'] && !Jaws_Error::IsError($JCrypt)) {
-            $new_password = $JCrypt->decrypt($postedData['password']);
-            $old_password = $JCrypt->decrypt($postedData['old_password']);
-        } else {
-            $new_password = Jaws_XSS::defilter($postedData['password']);
-            $old_password = Jaws_XSS::defilter($postedData['old_password']);
+        $authtype = $this->app->session->auth;
+        $classfile = ROOT_JAWS_PATH . "gadgets/Users/Account/$authtype/Account.php";
+        if (!file_exists($classfile)) {
+            Jaws_Error::Fatal($authtype. ' account class doesn\'t exists');
         }
-        unset($postedData['password'], $postedData['old_password']);
 
-        // compare old/new passwords
-        if ($new_password === $old_password) {
+        // load logout method of account driver
+        $classname = "Users_Account_{$authtype}_Account";
+        $objAccount = new $classname($this->gadget);
+        $result = $objAccount->UpdatePassword();
+        if (!Jaws_Error::IsError($result)) {
             $this->gadget->session->push(
-                $this::t('USERS_PASSWORDS_OLD_EQUAL'),
-                RESPONSE_ERROR,
-                'Password',
-                $postedData
+                $this::t('USERS_PASSWORD_UPDATED'),
+                RESPONSE_NOTICE,
+                'Password.Response'
             );
-        } else {
-            // trying change password
-            $result = $this->gadget->model->load('User')->updatePassword(
-                $this->app->session->user->id,
-                $new_password,
-                $old_password
-            );
-            if (!Jaws_Error::IsError($result)) {
-                $this->gadget->session->push(
-                    $this::t('USERS_PASSWORD_UPDATED'),
-                    RESPONSE_NOTICE,
-                    'Password',
-                    $postedData
-                );
-            } else {
-                $this->gadget->session->push(
-                    $result->GetMessage(),
-                    RESPONSE_ERROR,
-                    'Password',
-                    $postedData
-                );
-            }
         }
 
-        return Jaws_Header::Location($this->gadget->urlMap('Password'));
+        return Jaws_Header::Location(
+            $this->gadget->urlMap('Password'),
+            'Password.Response'
+        );
     }
 
     /**
