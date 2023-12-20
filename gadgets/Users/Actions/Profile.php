@@ -458,7 +458,8 @@ class Users_Actions_Profile extends Users_Actions_Default
             }
 
             $tpl->SetBlock('profile/activity/gadget');
-            $tpl->SetVariable('gadget', $this::t('USER_ACTIVITIES_IN_GADGET', $gInfo['title']));
+            $tpl->SetVariable('gadget', $gadget);
+            $tpl->SetVariable('lbl_gadget', $this::t('USER_ACTIVITIES_IN_GADGET', $gInfo['title']));
             foreach ($activities as $activity) {
                 $tpl->SetBlock('profile/activity/gadget/item');
                 if (isset($activity['count'])) {
