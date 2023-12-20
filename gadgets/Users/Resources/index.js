@@ -170,7 +170,7 @@ function Jaws_Gadget_Users() { return {
             case 'FriendsGroups':
                 this.selectedFriendGroup = 0;
                 $('form#friends-form')[0].reset();
-                $('#friendModalLabel').html(Jaws.gadgets.Users.defines.lbl_addFriend);
+                $('#friendModalLabel').html(this.t('lbl_addFriend'));
                 $('#friendsGrid').repeater('render');
                 break;
         }
@@ -210,7 +210,7 @@ function Jaws_Gadget_Users() { return {
      */
     deleteContacts: function(ids)
     {
-        var confirmation = confirm(Jaws.gadgets.Users.defines.confirmDelete);
+        var confirmation = confirm(this.t('confirmDelete'));
         if (confirmation) {
             this.ajax.call('DeleteContacts', {'ids': ids});
         }
@@ -222,7 +222,7 @@ function Jaws_Gadget_Users() { return {
     editContact: function(cid)
     {
         this.selectedContact = cid;
-        $('#contactModalLabel').html(Jaws.gadgets.Users.defines.lbl_editContact);
+        $('#contactModalLabel').html(this.t('lbl_editContact'));
         var cInfo = this.ajax.call('GetContact', {'id': this.selectedContact}, false, {'async': false});
         if (cInfo) {
             this.initContactForm(cInfo);
@@ -285,7 +285,7 @@ function Jaws_Gadget_Users() { return {
     {
         this.currentAction = "UserAccount";
         this.selectedUser = id;
-        $('#userModalLabel').html(Jaws.gadgets.Users.defines.editUser_title);
+        $('#userModalLabel').html(this.t('editUser_title'));
         var userInfo = this.ajax.call('GetUser', {'id': this.selectedUser, 'account': true}, false, {'async': false});
         if (userInfo) {
             $('#users-form input, #users-form select, #users-form textarea').each(
@@ -315,7 +315,7 @@ function Jaws_Gadget_Users() { return {
     {
         this.currentAction = "UserPassword";
         this.selectedUser = id;
-        $('#passModalLabel').html(Jaws.gadgets.Users.defines.updatePassword_title);
+        $('#passModalLabel').html(this.t('updatePassword_title'));
         $('#password-form #username').prop('disabled', true).val(username);
 
         $('#passModal').modal('show');
@@ -359,7 +359,7 @@ function Jaws_Gadget_Users() { return {
 
         $('#users-groups-form input[type=checkbox]').prop('checked', false);
 
-        $('#userGroupsModalLabel').html(Jaws.gadgets.Users.defines.editUser_title);
+        $('#userGroupsModalLabel').html(this.t('editUser_title'));
         var uGroups = this.ajax.call('GetUserGroups', {'uid': this.selectedUser}, false, {'async': false});
         if (uGroups) {
             $.each(uGroups, function(index, gid) {
@@ -404,13 +404,13 @@ function Jaws_Gadget_Users() { return {
                     !$('#users-form #nickname').val() ||
                     (!$('#users-form #email').val() && !$('#users-form #mobile').val())
                 ) {
-                    alert(Jaws.gadgets.Users.defines.incompleteUserFields);
+                    alert(this.t('incompleteUserFields'));
                     return false;
                 }
 
                 if (this.selectedUser == null) {
                     if ($('#users-form #password').val().blank()) {
-                        alert(Jaws.gadgets.Users.defines.wrongPassword);
+                        alert(this.t('wrongPassword'));
                         return false;
                     }
 
@@ -466,7 +466,7 @@ function Jaws_Gadget_Users() { return {
     updatePassword: function()
     {
         if ($('#password-form #password').val().blank()) {
-            alert(Jaws.gadgets.Users.defines.wrongPassword);
+            alert(this.t('wrongPassword'));
             return false;
         }
 
@@ -498,7 +498,7 @@ function Jaws_Gadget_Users() { return {
         switch (this.currentAction) {
             case 'Group':
                 if (!$('#groups-form #name').val() || !$('#groups-form #title').val()) {
-                    alert(Jaws.gadgets.Users.defines.incompleteGroupFields);
+                    alert(this.t('incompleteGroupFields'));
                     return false;
                 }
                 if (this.selectedGroup == null) {
@@ -570,7 +570,7 @@ function Jaws_Gadget_Users() { return {
      */
     deleteUser: function(id)
     {
-        if (confirm(Jaws.gadgets.Users.defines.confirmDelete)) {
+        if (confirm(this.t('confirmDelete'))) {
             this.ajax.call('DeleteUser', {'id': id});
         }
     },
@@ -580,7 +580,7 @@ function Jaws_Gadget_Users() { return {
      */
     deleteGroup: function(id)
     {
-        if (confirm(Jaws.gadgets.Users.defines.confirmDelete)) {
+        if (confirm(this.t('confirmDelete'))) {
             this.ajax.call('DeleteGlobalGroup', {'id': id});
         }
     },
@@ -591,12 +591,12 @@ function Jaws_Gadget_Users() { return {
     usersDataSource: function(options, callback) {
         var columns = {
             'nickname': {
-                'label': Jaws.gadgets.Users.defines.lbl_nickname,
+                'label': this.t('lbl_nickname'),
                 'property': 'nickname',
                 'sortable': true
             },
             'username': {
-                'label': Jaws.gadgets.Users.defines.lbl_username,
+                'label': this.t('lbl_username'),
                 'property': 'username',
                 'sortable': true
             }
@@ -665,7 +665,7 @@ function Jaws_Gadget_Users() { return {
                 'common': [
                     {
                         name: 'delete',
-                        html: '<span class="glyphicon glyphicon-trash"></span> ' + Jaws.gadgets.Users.defines.deleteUser_title,
+                        html: '<span class="glyphicon glyphicon-trash"></span> ' + this.t('deleteUser_title'),
                         clickAction: function (helpers, callback, e) {
                             e.preventDefault();
                             this.deleteUser(helpers.rowData.id);
@@ -674,7 +674,7 @@ function Jaws_Gadget_Users() { return {
                     },
                     {
                         name: 'userGroup',
-                        html: '<span class="glyphicon glyphicon-user"></span> ' + Jaws.gadgets.Users.defines.editUserGroups_title,
+                        html: '<span class="glyphicon glyphicon-user"></span> ' + this.t('editUserGroups_title'),
                         clickAction: function (helpers, callback, e) {
                             e.preventDefault();
                             editUserGroups(helpers.rowData.id);
@@ -685,7 +685,7 @@ function Jaws_Gadget_Users() { return {
                 'default': [
                     {
                         name: 'editUser',
-                        html: '<span class="glyphicon glyphicon-pencil"></span> ' + Jaws.gadgets.Users.defines.editUser_title,
+                        html: '<span class="glyphicon glyphicon-pencil"></span> ' + this.t('editUser_title'),
                         clickAction: function (helpers, callback, e) {
                             e.preventDefault();
                             editUser(helpers.rowData.id);
@@ -695,7 +695,7 @@ function Jaws_Gadget_Users() { return {
                     },
                     {
                         name: 'editPassword',
-                        html: '<span class="glyphicon glyphicon-lock"></span> ' + Jaws.gadgets.Users.defines.updatePassword_title,
+                        html: '<span class="glyphicon glyphicon-lock"></span> ' + this.t('updatePassword_title'),
                         clickAction: function (helpers, callback, e) {
                             e.preventDefault();
                             editPassword(helpers.rowData.id, helpers.rowData.username);
@@ -704,7 +704,7 @@ function Jaws_Gadget_Users() { return {
                     },
                     {
                         name: 'delete',
-                        html: '<span class="glyphicon glyphicon-trash"></span> ' + Jaws.gadgets.Users.defines.deleteUser_title,
+                        html: '<span class="glyphicon glyphicon-trash"></span> ' + this.t('deleteUser_title'),
                         clickAction: function (helpers, callback, e) {
                             e.preventDefault();
                             this.deleteUser(helpers.rowData.id);
@@ -713,7 +713,7 @@ function Jaws_Gadget_Users() { return {
                     },
                     {
                         name: 'userGroup',
-                        html: '<span class="glyphicon glyphicon-user"></span> ' + Jaws.gadgets.Users.defines.editUserGroups_title,
+                        html: '<span class="glyphicon glyphicon-user"></span> ' + this.t('editUserGroups_title'),
                         clickAction: function (helpers, callback, e) {
                             e.preventDefault();
                             editUserGroups(helpers.rowData.id);
@@ -769,12 +769,12 @@ function Jaws_Gadget_Users() { return {
         // define the columns for the grid
         var columns = [
             {
-                'label': Jaws.gadgets.Users.defines.lbl_title,
+                'label': this.t('lbl_title'),
                 'property': 'title',
                 'sortable': true
             },
             {
-                'label': Jaws.gadgets.Users.defines.lbl_name,
+                'label': this.t('lbl_name'),
                 'property': 'name',
                 'sortable': true
             }
@@ -825,7 +825,7 @@ function Jaws_Gadget_Users() { return {
             items: [
                 {
                     name: 'editUser',
-                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + Jaws.gadgets.Users.defines.editGroup_title,
+                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + this.t('editGroup_title'),
                     clickAction: function (helpers, callback, e) {
                         e.preventDefault();
                         editGroup(helpers.rowData.id);
@@ -835,7 +835,7 @@ function Jaws_Gadget_Users() { return {
                 },
                 {
                     name: 'delete',
-                    html: '<span class="glyphicon glyphicon-trash"></span> ' + Jaws.gadgets.Users.defines.lbl_delete,
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.t('lbl_delete'),
                     clickAction: function (helpers, callback, e) {
                         e.preventDefault();
                         this.deleteGroup(helpers.rowData.id);
@@ -844,7 +844,7 @@ function Jaws_Gadget_Users() { return {
                 },
                 {
                     name: 'userGroup',
-                    html: '<span class="glyphicon glyphicon-user"></span> ' + Jaws.gadgets.Users.defines.editGroupUsers_title,
+                    html: '<span class="glyphicon glyphicon-user"></span> ' + this.t('editGroupUsers_title'),
                     clickAction: function (helpers, callback, e) {
                         e.preventDefault();
                         editGroupUsers(helpers.rowData.id);
@@ -894,12 +894,12 @@ function Jaws_Gadget_Users() { return {
     contactsDataSource: function(options, callback) {
         var columns = {
             'title': {
-                'label': Jaws.gadgets.Users.defines.lbl_title,
+                'label': this.t('lbl_title'),
                 'property': 'title',
                 'sortable': false
             },
             'name': {
-                'label': Jaws.gadgets.Users.defines.lbl_name,
+                'label': this.t('lbl_name'),
                 'property': 'name',
                 'sortable': false
             }
@@ -972,7 +972,7 @@ function Jaws_Gadget_Users() { return {
             items: [
                 {
                     name: 'edit',
-                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + Jaws.gadgets.Users.defines.lbl_edit,
+                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + this.t('lbl_edit'),
                     clickAction: function (helpers, callback, e) {
                         e.preventDefault();
                         editContact(helpers.rowData.id);
@@ -982,7 +982,7 @@ function Jaws_Gadget_Users() { return {
                 },
                 {
                     name: 'delete',
-                    html: '<span class="glyphicon glyphicon-trash"></span> ' + Jaws.gadgets.Users.defines.lbl_delete ,
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.t('lbl_delete') ,
                     clickAction: function (helpers, callback, e) {
                         e.preventDefault();
 
@@ -1024,12 +1024,12 @@ function Jaws_Gadget_Users() { return {
         // define the columns for the grid
         var columns = [
             {
-                'label': Jaws.gadgets.Users.defines.lbl_name,
+                'label': this.t('lbl_name'),
                 'property': 'name',
                 'sortable': true
             },
             {
-                'label': Jaws.gadgets.Users.defines.lbl_title,
+                'label': this.t('lbl_title'),
                 'property': 'title',
                 'sortable': true
             }
@@ -1083,7 +1083,7 @@ function Jaws_Gadget_Users() { return {
             items: [
                 {
                     name: 'edit',
-                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + Jaws.gadgets.Users.defines.lbl_edit,
+                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + this.t('lbl_edit'),
                     clickAction: function (helpers, callback, e) {
                         e.preventDefault();
                         this.editFriendGroup(helpers.rowData.id);
@@ -1093,7 +1093,7 @@ function Jaws_Gadget_Users() { return {
                 },
                 {
                     name: 'delete',
-                    html: '<span class="glyphicon glyphicon-trash"></span> ' + Jaws.gadgets.Users.defines.lbl_delete ,
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.t('lbl_delete') ,
                     clickAction: function (helpers, callback, e) {
                         e.preventDefault();
 
@@ -1114,7 +1114,7 @@ function Jaws_Gadget_Users() { return {
                 },
                 {
                     name: 'editFriendMembers',
-                    html: '<span class="glyphicon glyphicon-user"></span> ' + Jaws.gadgets.Users.defines.lbl_manageFriends,
+                    html: '<span class="glyphicon glyphicon-user"></span> ' + this.t('lbl_manageFriends'),
                     clickAction: function (helpers, callback, e) {
                         e.preventDefault();
                         this.editFriendMembers(helpers.rowData.id);
@@ -1159,7 +1159,7 @@ function Jaws_Gadget_Users() { return {
     editFriendGroup: function(id)
     {
         this.selectedFriendGroup = id;
-        $('#friendModalLabel').html(Jaws.gadgets.Users.defines.lbl_editFriend);
+        $('#friendModalLabel').html(this.t('lbl_editFriend'));
         var gInfo = this.ajax.call('GetFriendGroup', {'id': this.selectedFriendGroup}, false, {'async': false});
         if (gInfo) {
             $('#friends-form #name').val(gInfo.name);
@@ -1174,7 +1174,7 @@ function Jaws_Gadget_Users() { return {
      */
     deleteFriendGroups: function(ids)
     {
-        if (confirm(Jaws.gadgets.Users.defines.confirmDelete)) {
+        if (confirm(this.t('confirmDelete'))) {
             this.ajax.call('DeleteFriendGroups', {'ids': ids});
         }
     },
@@ -1228,17 +1228,17 @@ function Jaws_Gadget_Users() { return {
         // define the columns for the grid
         var columns = [
             {
-                'label': Jaws.gadgets.Users.defines.lbl_gadget,
+                'label': this.t('lbl_gadget'),
                 'property': 'gadget',
                 'sortable': true
             },
             {
-                'label': Jaws.gadgets.Users.defines.lbl_action,
+                'label': this.t('lbl_action'),
                 'property': 'action',
                 'sortable': true
             },
             {
-                'label': Jaws.gadgets.Users.defines.lbl_title,
+                'label': this.t('lbl_title'),
                 'property': 'title',
                 'sortable': true
             }
@@ -1294,7 +1294,7 @@ function Jaws_Gadget_Users() { return {
             items: [
                 {
                     name: 'edit',
-                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + Jaws.gadgets.Users.defines.lbl_edit,
+                    html: '<span class="glyphicon glyphicon-pencil"></span> ' + this.t('lbl_edit'),
                     clickAction: function (helpers, callback, e) {
                         e.preventDefault();
                         this.editBookmark(helpers.rowData.id);
@@ -1304,7 +1304,7 @@ function Jaws_Gadget_Users() { return {
                 },
                 {
                     name: 'delete',
-                    html: '<span class="glyphicon glyphicon-trash"></span> ' + Jaws.gadgets.Users.defines.lbl_delete,
+                    html: '<span class="glyphicon glyphicon-trash"></span> ' + this.t('lbl_delete'),
                     clickAction: function (helpers, callback, e) {
                         e.preventDefault();
                         this.deleteBookmark(helpers.rowData.id);
@@ -1344,7 +1344,7 @@ function Jaws_Gadget_Users() { return {
      */
     editBookmark: function(id) {
         this.selectedBookmark = id;
-        $('#bookmarkModalLabel').html(Jaws.gadgets.Users.defines.lbl_edit);
+        $('#bookmarkModalLabel').html(this.t('lbl_edit'));
         var bInfo = this.ajax.call('GetBookmark', {'id': this.selectedBookmark}, false, {'async': false});
         if (bInfo) {
             $('#bookmark-form input, #bookmark-form select, #bookmark-form textarea').each(
@@ -1362,7 +1362,7 @@ function Jaws_Gadget_Users() { return {
      * Delete a bookmark
      */
     deleteBookmark: function(id) {
-        if (confirm(Jaws.gadgets.Users.defines.confirmDelete)) {
+        if (confirm(this.t('confirmDelete'))) {
             this.ajax.call('DeleteBookmark', {'id': id});
         }
     },
@@ -1467,7 +1467,7 @@ function Jaws_Gadget_Users() { return {
         // init Contact action
         if (this.gadget.actions.hasOwnProperty('Contact')) {
             this.currentAction = "UserContact";
-            this.initContactForm(Jaws.gadgets.Users.defines.contact);
+            this.initContactForm(this.t('contact'));
         }
         // init Contacts action
         if (this.gadget.actions.hasOwnProperty('Contacts')) {
