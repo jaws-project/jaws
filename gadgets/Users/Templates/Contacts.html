@@ -22,7 +22,7 @@
         <a href="{{export_url}}" class="btn btn-primary btn-m">
           <span class="glyphicon glyphicon-save-file"></span> {{lbl_export_vcard}}
         </a>
-        <a href="javascript:void(0)" onclick="uploadVCardFile();" class="btn btn-primary btn-m">
+        <a href="void(0)" onclick="Jaws_Gadget.getInstance('Users').uploadVCardFile();" class="btn btn-primary btn-m">
           <span class="glyphicon glyphicon-open-file"></span> {{lbl_import_vcard}}
         </a>
         <button type="button" class="btn btn-success btn-m" data-toggle="modal" data-target="#contactModal">
@@ -96,8 +96,10 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="javascript:stopAction()">{{lbl_cancel}}</button>
-        <button type="button" class="btn btn-primary" onclick="javascript:saveContact()">{{lbl_save}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="Jaws_Gadget.getInstance('Users').stopAction()">
+          {{lbl_cancel}}
+        </button>
+        <button type="button" class="btn btn-primary" onclick="Jaws_Gadget.getInstance('Users').saveContact()">{{lbl_save}}</button>
       </div>
     </div>
   </div>

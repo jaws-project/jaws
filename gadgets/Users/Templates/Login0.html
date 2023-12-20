@@ -5,7 +5,7 @@
 <div class="gadget-container" data-loading-container="users.login">
 <!-- BEGIN login_step_1 -->
   <form name="loginBox" method="post"
-    onsubmit="return encryptFormSubmit(this, ['password']);" >
+    onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password']);" >
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="Authenticate" />
     <input type="hidden" name="referrer" value="{{referrer}}" />
@@ -112,7 +112,7 @@
 
 <!-- BEGIN login_step_3 -->
   <form name="loginBox" action="{{base_script}}" method="post"
-    onsubmit="return encryptFormSubmit(this, ['password', 'old_password']);" >
+    onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password', 'old_password']);" >
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="Authenticate" />
     <input type="hidden" name="referrer" value="{{referrer}}" />

@@ -77,7 +77,7 @@
 
 <!-- BEGIN forgot_step_3 -->
   <form name="forgotBox" action="{{base_script}}" method="post"
-    onsubmit="return encryptFormSubmit(this, ['password']);">
+    onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password']);">
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="LoginRecovery" />
     <input type="hidden" name="rcvstep" value="3" />
