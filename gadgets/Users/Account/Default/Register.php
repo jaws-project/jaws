@@ -17,7 +17,7 @@ class Users_Account_Default_Register extends Users_Account_Default
     {
         $rgstrData = $this->gadget->request->fetch(
             array(
-                'domain', 'username', 'email', 'mobile', 'nickname', 'password', 'password_check',
+                'domain', 'username', 'email', 'mobile', 'nickname', 'password',
                 'fname', 'lname', 'gender', 'ssn', 'dob', 'regstep', 'resend', 'regkey', 'usecrypt',
                 'remember', 'defaults:array'
             ),
@@ -66,9 +66,6 @@ class Users_Account_Default_Register extends Users_Account_Default
 
             } else {
                 $rgstrData['regstep'] = 1;
-                if ($rgstrData['password'] !== $rgstrData['password_check']) {
-                    throw new Exception($this::t('USERS_PASSWORDS_DONT_MATCH'), 401);
-                }
 
                 if (empty($rgstrData['password'])) {
                     throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
@@ -138,7 +135,7 @@ class Users_Account_Default_Register extends Users_Account_Default
             throw new Exception($this::t('REGISTRATION_REGISTERED'), 201);
 
         } catch (Exception $error) {
-            unset($rgstrData['password'], $rgstrData['password_check']);
+            unset($rgstrData['password']);
             $this->gadget->session->push(
                 $error->getMessage(),
                 ($error->getCode() == 201)? RESPONSE_NOTICE : RESPONSE_ERROR,
