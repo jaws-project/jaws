@@ -94,12 +94,19 @@ class Users_Actions_Statistics extends Jaws_Gadget_Action
         $limit = (int)$this->gadget->registry->fetch('latest_limit');
         $limit = empty($limit)? 10 : $limit;
 
+        $sort = array();
+        if (isset($post['sortBy'])) {
+            $sort = array(array('name' => $post['sortBy'], 'order'=> 'asc'));
+        }
+
         $users = $this->gadget->model->load('User')->list(
-            0, 0,
-            array('status' => 1),
-            array(),
-            array('id' => false), // order by id desc
-            $limit
+            array(
+                'status' => 1
+            ),
+            array(
+                'sort' => array(array('name' => 'id', 'order'=> 'desc'))
+                'limit' => $limit,
+            ),
         );
         foreach($users as $user) {
             $tpl->SetBlock('LatestRegistered/user');

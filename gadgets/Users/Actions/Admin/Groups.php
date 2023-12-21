@@ -186,22 +186,29 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
             'post'
         );
 
+        $sort = array();
+        if (isset($post['sortBy'])) {
+            $sort = array(array('name' => $post['sortBy'], 'order'=> 'asc'));
+        }
+
         $users = $this->gadget->model->load('User')->list(
-            0,
-            (int)$post['filters']['gid'],
-            array(),
-            array(),
-            $post['sortBy'],
-            $post['limit'],
-            $post['offset']
+            array(
+                'group' => (int)$post['filters']['gid']
+            ),
+            array(
+                'sort' => $sort,
+                'limit' => $post['limit'],
+                'offset' => $post['offset']
+            )
         );
         if (Jaws_Error::IsError($users)) {
             return $this->gadget->session->response($users->getMessage(), RESPONSE_ERROR);
         }
 
-        $usersCount = $this->gadget->model->load('User')->listCount(
-            0,
-            (int)$post['filters']['gid']
+        $usersCount = $this->gadget->model->load('User')->listFunction(
+            array(
+                'group' => (int)$post['filters']['gid']
+            )
         );
         if (Jaws_Error::IsError($usersCount)) {
             return $this->gadget->session->response($usersCount->getMessage(), RESPONSE_ERROR);

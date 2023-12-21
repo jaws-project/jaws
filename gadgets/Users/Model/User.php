@@ -84,159 +84,237 @@ class Users_Model_User extends Jaws_Gadget_Model
     /**
      * Get list of users
      *
-     * @access  public
-     * @param   int     $domain     Domain ID // 0: all domains
-     * @param   int     $group      Group ID  // 0: all groups
-     * @param   array   $filters    Users filters // status, superadmin, term
+     * @param   array   $filters    Users filters // donain, group, status, superadmin, term
      *                  ex: array(
      *                      'status'  => 1,
      *                      'term' => 'smith'
      *                  )
-     * @param   array   $fieldsets  Users fields sets // default, account, personal, password
-     *                  ex: array('account'  => true)
-     * @param   array   $orderBy    Field to order by
-     *                  ex: array(
-     *                      'id'       => true  // ascending,
-     *                      'username' => false // descending
-     *                  )
-     * @param   int     $limit
-     * @param   int     $offset
-     * @return  array|Jaws_Error    Returns an array of the available users or Jaws_Error on error
+     * @param   array   $options    List options (sort, limit, offset, fetchmode)
+     * @param   array   $fieldsets  Array of columns list set (e.g. default, account, personal, password)
+     * @return  array|Jaws_Error    Returns an array of users or Jaws_Error on error
      */
-    function list(
-        $domain = 0, $group = 0,
-        $filters = array(), $fieldsets = array(),
-        $orderBy = array(), $limit = 0, $offset = null
-    ) {
+    function list(array $filters = array(), array $options = array(), array $fieldsets = array())
+    {
+        $defaultOptions = array(
+            'sort'   => array(array('name' => 'id', 'order'=> 'asc')),
+            'limit'  => 0,
+            'offset' => null,
+            'fetchmode' => null,
+        );
+        $options = array_merge($defaultOptions, array_filter($options));
+        // validate sort/order fields
+        foreach ($options['sort'] as $idx => $sort) {
+            $sort['order'] = in_array($sort['order'], ['asc', 'desc'])? $sort['order'] : ($sort['order']? 'desc' : 'asc');
+            if (in_array($sort['name'], ['id'])) {
+                $options['sort'][$idx] = 'user.'. $sort['name']. ' '. $sort['order'];
+            } else {
+                $options['sort'][$idx] = null;
+            }
+        }
+        $options['sort'] = array_filter($options['sort']);
+
+        //
+        $defaultFilters = array(
+            'domain' => null,
+            'term' => null,
+            'superadmin' => null,
+            'status' => null,
+            'group' => null,
+        );
+        $filters = array_merge($defaultFilters, $filters);
+
+        // defined columns set
         $columns = array(
             'default'  => array(
-                'users.domain:integer', 'users.id:integer', 'username', 'users.email', 'users.mobile',
-                'nickname', 'contact:integer', 'avatar:boolean', 'status:integer'
+                'user.domain:integer', 'user.id:integer', 'user.username', 'user.email', 'user.mobile',
+                'user.nickname', 'user.contact:integer', 'user.avatar:boolean', 'user.status:integer'
             ),
             'account'  => array(
-                'superadmin:boolean', 'concurrents:integer', 'logon_hours',
-                'expiry_date:integer', 'registered_date:integer', 'bad_password_count:integer', 
-                'last_update:integer', 'last_password_update:integer',
-                'last_access:integer'
+                'user.superadmin:boolean', 'user.concurrents:integer', 'user.logon_hours',
+                'user.expiry_date:integer', 'user.registered_date:integer', 'user.bad_password_count:integer', 
+                'user.last_update:integer', 'user.last_password_update:integer',
+                'user.last_access:integer'
             ),
             'personal' => array(
-                'fname', 'lname', 'gender', 'ssn', 'dob', 'extra', 'public:boolean', 'privacy:boolean',
-                'pgpkey', 'signature', 'about', 'experiences', 'occupations', 'interests'
+                'user.fname', 'user.lname', 'user.gender', 'user.ssn', 'user.dob', 'user.extra', 'user.public:boolean', 'user.privacy:boolean',
+                'user.pgpkey', 'user.signature', 'user.about', 'user.experiences', 'user.occupations', 'user.interests'
             ),
-            'password' => array('password'),
+            'password' => array('user.password'),
         );
-        $fieldsets['default'] = true;
+
+        array_unshift($fieldsets, 'default');
+        $fieldsets = array_unique($fieldsets);
 
         $selectedColumns = array();
-        foreach ($fieldsets as $key => $keyValue) {
-            if ($keyValue) {
-                $selectedColumns = array_merge($selectedColumns, $columns[$key]);
+        // selected columns by given fieldsets
+        foreach ($fieldsets as $fieldset) {
+            if (array_key_exists($fieldset, $columns)) {
+                $selectedColumns = array_merge($selectedColumns, $columns[$fieldset]);
             }
         }
 
-        $objORM = Jaws_ORM::getInstance()
-            ->table('users')
+        return Jaws_ORM::getInstance()
+            ->table('users', 'user')
             ->select($selectedColumns)
-            ->where('domain', (int)$domain, '=', empty($domain));
-        // group
-        if (!empty($group)) {
-            $objORM->join('users_groups', 'users_groups.user', 'users.id');
-            $objORM->and()->where('group', (int)$group);
-        }
-
-        // filters
-        $baseFilters = array(
-            'term'       => '',
-            'status'     => 0,
-            'superadmin' => null,
-        );
-        // remove invalid filters keys
-        $filters = array_intersect_key($filters, $baseFilters);
-        // set undefined keys by default values
-        $filters = array_merge($baseFilters, $filters);
-        // status
-        $objORM->and()->where('status', (int)$filters['status'], '=', empty($filters['status']));
-        // superadmin
-        $objORM->and()->where('superadmin', (bool)$filters['superadmin'], '=', is_null($filters['superadmin']));
-        // term
-        if (!empty($filters['term'])) {
-            $term = Jaws_UTF8::strtolower($filters['term']);
-            $objORM->and()
-                ->openWhere('username', $term, 'like')
-                ->or()
-                ->where('lower(nickname)', $term, 'like')
-                ->or()
-                ->where('mobile', $term, 'like')
-                ->or()
-                ->closeWhere('email', $term, 'like');
-        }
-
-        // Order by
-        $orders = array();
-        if (empty($orderBy)) {
-            $orderBy = array('id' => true);
-        }
-        foreach ($orderBy as $field => $ascending) {
-            $orders[] = 'users.'. $field . ' '. ($ascending? 'asc' : 'desc');
-        }
-        call_user_func_array(array($objORM, 'orderBy'), $orders);
-
-        return $objORM->limit($limit, $offset)->fetchAll();
+            ->join(
+                'domains as domain',
+                'user.domain',
+                'domain.id',
+                'left'
+            )
+            ->join(
+                'users_groups as usergroup',
+                'user.id',
+                'usergroup.user',
+                'inner',
+                '=',
+                is_null($filters['group']) // ignore join if $filters['group'] empty
+            )
+            ->where(
+                'user.domain',
+                $filters['domain'],
+                is_array($filters['domain'])? 'in' : '=',
+                is_null($filters['domain'])
+            )->and()
+            ->openWhere(
+                'user.username',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->or()
+            ->where(
+                'user.nickname',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->or()
+            ->where(
+                'user.email',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->or()
+            ->closeWhere(
+                'user.mobile',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->and()
+            ->where(
+                'user.superadmin',
+                $filters['superadmin'],
+                is_array($filters['superadmin'])? 'in' : '=',
+                is_null($filters['superadmin'])
+            )->and()
+            ->where(
+                'user.status',
+                $filters['status'],
+                is_array($filters['status'])? 'in' : '=',
+                is_null($filters['status'])
+            )->and()
+            ->where(
+                'usergroup.group',
+                $filters['group'],
+                is_array($filters['group'])? 'in' : '=',
+                is_null($filters['group'])
+            )
+            ->groupBy('user.id')
+            ->limit($options['limit'], $options['offset'])
+            ->orderBy($options['sort'])
+            ->fetchmode($options['fetchmode'])
+            ->fetchAll();
     }
 
     /**
-     * Get count of users list
      *
-     * @access  public
-     * @param   int     $domain     Domain ID // 0: all domains
-     * @param   int     $group      Group ID  // 0: all groups
-     * @param   array   $filters    Users filters // status, superadmin, term
-     *                  ex: array(
-     *                      'status'  => 1,
-     *                      'term' => 'smith'
-     *                  )
-     * @return  array|Jaws_Error    Returns an array of the available users or Jaws_Error on error
      */
-    function listCount($domain = 0, $group = 0, $filters = array())
+    function listFunction(array $filters = array(), $function = '', $execute = true)
     {
-        $objORM = Jaws_ORM::getInstance()
-            ->table('users')
-            ->select('count(users.id):integer')
-            ->where('domain', (int)$domain, '=', empty($domain));
-        // group
-        if (!empty($group)) {
-            $objORM->join('users_groups', 'users_groups.user', 'users.id');
-            $objORM->and()->where('group', (int)$group);
-        }
-
-        // filters
-        $baseFilters = array(
-            'term'       => '',
-            'status'     => 0,
+        //
+        $defaultFilters = array(
+            'id' => null,
+            'domain' => null,
+            'term' => null,
             'superadmin' => null,
+            'status' => null,
+            'group' => null,
         );
-        // remove invalid filters keys
-        $filters = array_intersect_key($filters, $baseFilters);
-        // set undefined keys by default values
-        $filters = array_merge($baseFilters, $filters);
-        // status
-        $objORM->and()->where('status', (int)$filters['status'], '=', empty($filters['status']));
-        // superadmin
-        $objORM->and()->where('superadmin', (bool)$filters['superadmin'], '=', is_null($filters['superadmin']));
-        // term
-        if (!empty($filters['term'])) {
-            $term = Jaws_UTF8::strtolower($filters['term']);
-            $objORM->and()
-                ->openWhere('username', $term, 'like')
-                ->or()
-                ->where('lower(nickname)', $term, 'like')
-                ->or()
-                ->where('mobile', $term, 'like')
-                ->or()
-                ->closeWhere('email', $term, 'like');
-        }
+        $filters = array_merge($defaultFilters, $filters);
 
-        return $objORM->fetchOne();
+        return Jaws_ORM::getInstance()
+            ->table('users', 'user')
+            ->select(
+                empty($function)? 'count(user.id):integer' : $function
+            )
+            ->join(
+                'domains as domain',
+                'user.domain',
+                'domain.id',
+                'left'
+            )
+            ->join(
+                'users_groups as usergroup',
+                'user.id',
+                'usergroup.user',
+                'inner',
+                '=',
+                is_null($filters['group']) // ignore join if $filters['group'] empty
+            )
+            ->where(
+                'user.id',
+                $filters['id'],
+                is_array($filters['id'])? 'in' : '=',
+                is_null($filters['id'])
+            )->and()
+            ->where(
+                'user.domain',
+                $filters['domain'],
+                is_array($filters['domain'])? 'in' : '=',
+                is_null($filters['domain'])
+            )->and()
+            ->openWhere(
+                'user.username',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->or()
+            ->where(
+                'user.nickname',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->or()
+            ->where(
+                'user.email',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->or()
+            ->closeWhere(
+                'user.mobile',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->and()
+            ->where(
+                'user.superadmin',
+                $filters['superadmin'],
+                is_array($filters['superadmin'])? 'in' : '=',
+                is_null($filters['superadmin'])
+            )->and()
+            ->where(
+                'user.status',
+                $filters['status'],
+                is_array($filters['status'])? 'in' : '=',
+                is_null($filters['status'])
+            )->and()
+            ->where(
+                'usergroup.group',
+                $filters['group'],
+                is_array($filters['group'])? 'in' : '=',
+                is_null($filters['group'])
+            )
+            ->fetchOne(null, JAWS_ERROR_ERROR, $execute);
     }
 
     /**

@@ -170,12 +170,12 @@ class Users_Actions_Users extends Users_Actions_Default
             'post'
         );
 
-        $orderBy = array();
+        $sort = array();
         if (isset($post['sortBy'])) {
-            $orderBy = array($post['sortBy'] => $post['sortDirection'] == 'asc');
+            $sort = array(array('name' => $post['sortBy'], 'order'=> 'asc'));
         }
 
-        $post['filters']['group'] = !empty($post['filters']['group']) ? (int)$post['filters']['group'] : false;
+        $post['filters']['group'] = !empty($post['filters']['group']) ? (int)$post['filters']['group'] : null;
         if ($this->app->session->user->superadmin) {
             $groupFilter = $post['filters']['group'];
         } else {
@@ -189,7 +189,7 @@ class Users_Actions_Users extends Users_Actions_Default
             }
             $groupFilter = $defaultGroup;
         }
-        $domain = !empty($post['filters']['domain']) ? $post['filters']['domain'] : false;
+        $domain = !empty($post['filters']['domain']) ? $post['filters']['domain'] : null;
         $status = isset($post['filters']['status']) &&
             $post['filters']['status'] >= 0 ? $post['filters']['status'] : null;
         $term = !empty($post['filters']['term']) ? $post['filters']['term'] : null;
@@ -203,18 +203,22 @@ class Users_Actions_Users extends Users_Actions_Default
         }
 
         $users = $this->gadget->model->load('User')->list(
-            $domain, $groupFilter,
             array(
+                'domain' => $domain,
+                'group' => $groupFilter,
                 'term' => $term,
                 'status' => $status,
                 'superadmin' => $superadmin,
             ),
+            array (
+                'sort'   => $sort,
+                'limit'  => $post['limit'],
+                'offset' => $post['offset'],
+            ),
             array(
                 'default' => true,
                 'account' => true,
-            ),
-            $orderBy,
-            $post['limit'], $post['offset']
+            )
         );
         if (Jaws_Error::IsError($users)) {
             return $this->gadget->session->response(
@@ -222,9 +226,10 @@ class Users_Actions_Users extends Users_Actions_Default
                 RESPONSE_ERROR
             );
         }
-        $total = $this->gadget->model->load('User')->listCount(
-            $domain, $groupFilter,
+        $total = $this->gadget->model->load('User')->listFunction(
             array(
+                'domain' => $domain,
+                'group' => $groupFilter,
                 'term' => $term,
                 'status' => $status,
                 'superadmin' => $superadmin,

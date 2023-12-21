@@ -51,7 +51,6 @@ class Users_Actions_Friends extends Users_Actions_Default
 
         // Users
         $users = $this->gadget->model->load('User')->list(
-            0, 0,
             array(
                 'superadmin' => $this->app->session->user->superadmin? null : false
             )

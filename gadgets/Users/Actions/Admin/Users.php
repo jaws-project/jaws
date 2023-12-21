@@ -77,6 +77,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         );
         $filters = array();
         $filters['term'] = @$post['filters']['filter_term'];
+        $filters['term'] = $filters['term']?: null;
         if (isset($post['filters']['filter_type'])) {
             if ((int)$post['filters']['filter_type'] === 0) {
                 $filters['superadmin'] = false;
@@ -101,22 +102,28 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $post['filters']['filter_group'] = $grantedGroup;
         }
 
+        $sort = array();
+        if (isset($post['sortBy'])) {
+            $sort = array(array('name' => $post['sortBy'], 'order'=> 'asc'));
+        }
+
+        $filters['domain'] = (int)@$post['filters']['filter_domain'];
+        $filters['group'] = (int)@$post['filters']['filter_group'];
+        $filters['domain'] = $filters['domain']?: null;
+        $filters['group'] = $filters['group']?: null;
         $users = $this->gadget->model->load('User')->list(
-            (int)@$post['filters']['filter_domain'],
-            (int)@$post['filters']['filter_group'],
             $filters,
-            array(),
-            $post['sortBy'],
-            $post['limit'],
-            $post['offset']
+            array (
+                'sort'   => $sort,
+                'limit'  => $post['limit'],
+                'offset' => $post['offset'],
+            )
         );
         if (Jaws_Error::IsError($users)) {
             return $this->gadget->session->response($users->GetMessage(), RESPONSE_ERROR);
         }
 
-        $usersCount = $this->gadget->model->load('User')->listCount(
-            (int)@$post['filters']['filter_domain'],
-            (int)@$post['filters']['filter_group'],
+        $usersCount = $this->gadget->model->load('User')->listFunction(
             $filters
         );
         if (Jaws_Error::IsError($usersCount)) {
