@@ -257,14 +257,14 @@ class Jaws_Layout
         $this->_Template->SetBlock('layout');
 
         $direction = Jaws::t('LANG_DIRECTION');
-        $dir  = $direction == 'rtl' ? ".$direction" : '';
         $browser  = $this->app->GetBrowserFlag();
         $browser  = empty($browser)? '' : ".$browser";
         $base_url = $this->app->GetSiteURL('/');
 
         $this->_Template->SetVariable('base_url', $base_url);
         $this->_Template->SetVariable('skip_to_content', Jaws::t('SKIP_TO_CONTENT'));
-        $this->_Template->SetVariable('.dir', $dir);
+        $this->_Template->SetVariable('dir', $direction == 'rtl' ? 'rtl' : 'ltr');
+        $this->_Template->SetVariable('.dir', $direction == 'rtl' ? '.rtl' : '');
         $this->_Template->SetVariable('.browser', $browser);
         $this->_Template->SetVariable('site-url', $base_url);
         $this->_Template->SetVariable('site-direction', $direction);
@@ -643,7 +643,7 @@ class Jaws_Layout
         array_unshift(
             $this->extraTags['scripts']['elements'],
             array(
-                'src'  => 'libraries/jquery/jquery.min.js?'. $this->attributes['buildnumber']
+                'src' => 'libraries/jquery/jquery.min.js?'. $this->attributes['buildnumber']
             ),
             array(
                 'src'  => 'libraries/bootstrap.fuelux/js/bootstrap.fuelux.min.js?'. $this->attributes['buildnumber']
@@ -739,7 +739,7 @@ class Jaws_Layout
             case 'addScript':
                 if (is_string($params[0])) {
                     $params[0] = array(
-                        'src'  => $params[0]. '?'. $this->attributes['buildnumber']
+                        'src'  => $params[0]. '?'. $this->attributes['buildnumber'],
                     );
                 }
                 $this->extraTags['scripts']['elements'][md5(serialize($params))] = $params[0];

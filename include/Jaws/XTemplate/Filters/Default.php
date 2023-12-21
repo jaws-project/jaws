@@ -337,6 +337,7 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
         static $globalVariables = array();
         if (empty($globalVariables)) {
             $thisApp = Jaws::getInstance();
+            $globalVariables['dir']      = Jaws::t('LANG_DIRECTION') == 'rtl'? 'rtl' : 'ltr';
             $globalVariables['.dir']     = Jaws::t('LANG_DIRECTION') == 'rtl'? '.rtl' : '';
             $globalVariables['site_url'] = Jaws_Utils::getBaseURL('/', false);
             $globalVariables['base_url'] = Jaws_Utils::getBaseURL('/');

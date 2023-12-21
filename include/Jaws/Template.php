@@ -88,6 +88,7 @@ class Jaws_Template
         $this->globalVariables['main_action'] = '';
         $this->globalVariables['main_layout'] = '';
 
+        $this->globalVariables['dir'] = Jaws::t('LANG_DIRECTION') == 'rtl'? 'rtl' : 'ltr';
         $this->globalVariables['.dir'] = Jaws::t('LANG_DIRECTION') == 'rtl'? '.rtl' : '';
         $this->globalVariables['base_url']      = Jaws_Utils::getBaseURL('/');
         $this->globalVariables['requested_url'] = Jaws_Utils::getRequestURL();
@@ -328,6 +329,7 @@ class Jaws_Template
         if (preg_match_all($this->VarsRegExp, $blockContent, $regs, PREG_SET_ORDER)) {
             foreach ($regs as $k => $match) {
                 switch (strtolower($match[1])) {
+                    case 'dir':
                     case '.dir':
                     case '.browser':
                     case 'theme_url':
