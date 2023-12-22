@@ -451,6 +451,54 @@ class Users_Installer extends Jaws_Gadget_Installer
             // do nothing!
         }
 
+        if (version_compare($old, '5.6.0', '<')) {
+            $result = $this->installSchema('5.6.0.xml', array(), '5.5.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+
+            $offset = 0;
+            date_default_timezone_set('UTC');
+            while (true) {
+                $tblUsers = Jaws_ORM::getInstance()->table('users');
+                $users = $tblUsers->select('id:integer', 'olddob')
+                    ->orderBy('id')
+                    ->limit(1000, $offset)
+                    ->fetchAll();
+                if (Jaws_Error::IsError($users)) {
+                    return $users;
+                }
+                $offset += 1000;
+
+                $tblUsers->beginTransaction(false);
+                foreach ($users as $user) {
+                    if (empty($user['olddob'])) {
+                        continue;
+                    }
+
+                    $res = $tblUsers->update(
+                            array('newdob' => strtotime($user['olddob']))
+                        )
+                        ->where('id', (int)$user['id'])
+                        ->exec();
+                    if (Jaws_Error::IsError($res)) {
+                        // do nothing
+                    }
+
+                }
+                $tblUsers->commit();
+
+                if (count($users) < 1000) {
+                    break;
+                }
+            }
+
+            $result = $this->installSchema('schema.xml', array(), '5.6.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
         return true;
     }
 

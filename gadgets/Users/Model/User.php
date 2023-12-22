@@ -524,13 +524,25 @@ class Users_Model_User extends Jaws_Gadget_Model
             (int)$this->app->registry->fetch('default_concurrents', 'Users');
         $uData['password'] = Jaws_Utils::HashedPassword($uData['password']);
         $uData['logon_hours'] = empty($uData['logon_hours'])? str_pad('', 42, 'F') : $uData['logon_hours'];
-        if (isset($uData['expiry_date'])) {
-            if (empty($uData['expiry_date'])) {
-                $uData['expiry_date'] = 0;
+        // dob
+        if (array_key_exists('dob', $uData)) {
+            if (empty($uData['dob'])) {
+                $uData['dob'] = null;
             } else {
-                $objDate = Jaws_Date::getInstance();
-                $uData['expiry_date'] = $this->app->UserTime2UTC(
-                    (int)$objDate->ToBaseDate(preg_split('/[\/\- \:]/', $uData['expiry_date']), 'U')
+                $uData['dob'] = (int)Jaws_Date::getInstance()->ToBaseDate(
+                    preg_split('/[\/\- \:]/', $uData['dob']),
+                    'U'
+                );
+            }
+        }
+        // expiry_date
+        if (array_key_exists('expiry_date', $uData)) {
+            if (empty($uData['expiry_date'])) {
+                $uData['expiry_date'] = null;
+            } else {
+                $uData['expiry_date'] = (int)Jaws_Date::getInstance()->ToBaseDate(
+                    preg_split('/[\/\- \:]/', $uData['expiry_date']),
+                    'U'
                 );
             }
         }
@@ -784,13 +796,26 @@ class Users_Model_User extends Jaws_Gadget_Model
         if (isset($uData['status'])) {
             $uData['status'] = (int)$uData['status'];
         }
-        if (isset($uData['expiry_date'])) {
-            if (empty($uData['expiry_date'])) {
-                $uData['expiry_date'] = 0;
+
+        // dob
+        if (array_key_exists('dob', $uData)) {
+            if (empty($uData['dob'])) {
+                $uData['dob'] = null;
             } else {
-                $objDate = Jaws_Date::getInstance();
-                $uData['expiry_date'] = $this->app->UserTime2UTC(
-                    (int)$objDate->ToBaseDate(preg_split('/[\/\- \:]/', $uData['expiry_date']), 'U')
+                $uData['dob'] = (int)Jaws_Date::getInstance()->ToBaseDate(
+                    preg_split('/[\/\- \:]/', $uData['dob']),
+                    'U'
+                );
+            }
+        }
+        // expiry_date
+        if (array_key_exists('expiry_date', $uData)) {
+            if (empty($uData['expiry_date'])) {
+                $uData['expiry_date'] = null;
+            } else {
+                $uData['expiry_date'] = (int)Jaws_Date::getInstance()->ToBaseDate(
+                    preg_split('/[\/\- \:]/', $uData['expiry_date']),
+                    'U'
                 );
             }
         }
@@ -900,6 +925,18 @@ class Users_Model_User extends Jaws_Gadget_Model
         }
 
         $pData['last_update'] = time();
+        // dob
+        if (array_key_exists('dob', $pData)) {
+            if (empty($pData['dob'])) {
+                $pData['dob'] = null;
+            } else {
+                $pData['dob'] = (int)Jaws_Date::getInstance()->ToBaseDate(
+                    preg_split('/[\/\- \:]/', $pData['dob']),
+                    'U'
+                );
+            }
+        }
+
         $result = Jaws_ORM::getInstance()->table('users')
             ->update($pData)
             ->where('id', (int)$id)

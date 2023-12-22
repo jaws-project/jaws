@@ -149,7 +149,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
      */
     function GetUser()
     {
-        $post = $this->gadget->request->fetch(array('id:integer', 'account:bool', 'personal:bool'), 'post');
+        $post = $this->gadget->request->fetch(array('id', 'account', 'personal') , 'post');
         $userInfo = $this->gadget->model->load('User')->get(
             (int)$post['id'],
             0,
@@ -236,6 +236,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageUsers');
         $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $uData = $post['data'];
+        $uData['concurrents'] = (int)$uData['concurrents'];
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
@@ -424,15 +425,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $post = $this->gadget->request->fetch(array('id', 'data:array'), 'post');
         $pData = $post['data'];
 
-        $pData['dob'] = empty($pData['dob'])? null : $pData['dob'];
-        if (!empty($pData['dob'])) {
-            $objDate = Jaws_Date::getInstance();
-            $pData['dob'] = $objDate->ToBaseDate(preg_split('/[- :]/', $pData['dob']), 'Y-m-d H:i:s');
-            $pData['dob'] = $this->app->UserTime2UTC($pData['dob'], 'Y-m-d H:i:s');
-        }
-
         // don't touch user's avatar
-        if ($pData['avatar'] == 'false') {
+        if (isset($pData['avatar']) && $pData['avatar'] == 'false') {
             unset($pData['avatar']);
         }
 

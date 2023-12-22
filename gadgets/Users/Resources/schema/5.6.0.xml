@@ -216,8 +216,13 @@
             </field>
 
             <field>
-                <name>dob</name>
-                <was>newdob</was>
+                <name>olddob</name>
+                <was>dob</was>
+                <type>timestamp</type>
+            </field>
+
+            <field>
+                <name>newdob</name>
                 <type>integer</type>
                 <length>8</length>
             </field>

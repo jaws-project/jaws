@@ -293,7 +293,7 @@ class Users_Actions_Users extends Users_Actions_Default
             }
 
             if (!empty($profile['dob'])) {
-                $profile['dob'] = $objDate->Format($profile['dob'], 'Y-m-d');
+                $profile['dob'] = $objDate->Format($profile['dob'], 'Y/m/d');
             } else {
                 $profile['dob'] = '';
             }
