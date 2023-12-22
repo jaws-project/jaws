@@ -708,8 +708,8 @@ function JawsMessage($owner)
             ));
             $container.find('[role="response.title"]').html(this.owner.gadget.t('title'));
             $container.find('[role="response.text"]').html(message.text);
-            $container.find('[role="response.type"]').addClass(['gadget-response-message', message.type])
-            $container.find('[role="response.icon"]').addClass(this.alerts[message.type].icon)
+            $container.find('[role="response.type"]').addClass(['gadget-response-message', message.type]);
+            $container.find('[role="response.icon"]').addClass(this.alerts[message.type].icon);
             bootstrap.Toast.getOrCreateInstance($container).show();
         } else {
             toastr.options = {
@@ -1828,14 +1828,14 @@ $(document).ready(function() {
     });
 
     // toggle password between hide and show
-    $("input[type='password']+span.input-group-addon").click(
+    $(".input-group input[type='password'] + .input-group-text").click(
         function() {
             if ($(this).prev().attr('type') == 'password') {
                 $(this).prev().attr('type', 'text');
             } else {
                 $(this).prev().attr('type', 'password');
             }
-            $(this).find('i').toggleClass('glyphicon-eye-open glyphicon-eye-close');
+            $(this).find('i').toggleClass('fa-eye fa-eye-slash');
         }
     );
 
