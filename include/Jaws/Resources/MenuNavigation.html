@@ -1,16 +1,15 @@
 <!-- BEGIN navigation -->
-<div class="dropdown pull-right">
-  <button class="btn btn-default dropdown-toggle" type="button" id="{{gadget}}-menu-options" data-toggle="dropdown">
-    {{label}}
-    <span class="caret"></span>
+<div class="gadget-menu dropdown">
+  <button class="btn btn-light dropdown-toggle py-1" type="button" data-bs-toggle="dropdown" title="{{label}}">
+    <i class="fas fa-bars"></i>
   </button>
-  <ul class="dropdown-menu">
+  <ul class="dropdown-menu dropdown-menu-end">
     <!-- BEGIN menu -->
     <!-- BEGIN separator -->
-    <li role="separator" class="divider"></li>
+    <li><hr class="dropdown-divider"></li>
     <!-- END separator -->
-    <li <!-- BEGIN active -->class="active" <!-- END active -->>
-      <a href="{{url}}">{{title}}</a>
+    <li>
+      <a class="dropdown-item<!-- BEGIN active --> active<!-- END active -->" href="{{url}}">{{title}}</a>
     </li>
     <!-- END menu -->
   </ul>

@@ -1,22 +1,22 @@
 <div class="gadget-menu dropdown">
-  <button class="btn btn-light dropdown py-1" type="button" data-bs-toggle="dropdown" title="{{navigation.label}}">
-    <i class="bi bi-menu-button-wide"></i>
+  <button class="btn btn-light dropdown-toggle py-1" type="button" data-bs-toggle="dropdown" title="{{navigation.label}}">
+    <i class="fas fa-bars"></i>
   </button>
-  <ul class="dropdown-menu dropdown-menu-start">
+  <ul class="dropdown-menu dropdown-menu-end">
     {%- for menu in navigation.menus %}
       {%- if forloop.first | false and menu.separator < 0 %}
 
       {%- assign prevmenu = navigation.menus | index: forloop.prev.key %}
       {%- if prevmenu.separator <= 0 %}
-      <li role="separator" class="divider"></li>
+      <li><hr class="dropdown-divider"></li>
       {%- endif %}
 
       {%- endif %}
-      <li {{ menu.active | equal: true, 'class="active"' }}>
-        <a class="dropdown-item" href="{{ menu.url }}">{{ menu.title }}</a>
+      <li>
+        <a class="dropdown-item {{ menu.active | equal: true, ' active' }}" href="{{ menu.url }}">{{ menu.title }}</a>
       </li>
       {%- if forloop.last | false and menu.separator > 0 %}
-      <li role="separator" class="divider"></li>
+      <li><hr class="dropdown-divider"></li>
       {%- endif %}
     {%- endfor %}
   </ul>
