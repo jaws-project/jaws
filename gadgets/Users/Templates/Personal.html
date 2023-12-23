@@ -1,5 +1,5 @@
 <!-- BEGIN personal -->
-<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+<div class="gadget-header d-flex align-items-center justify-content-between mb-2">
   <h5 class="m-0 me-2 py-1">{{title}}</h5>
   <!-- INCLUDE MenuNavigation.html include/Jaws/Resources -->
 </div>
@@ -8,106 +8,142 @@
   <input type="hidden" name="reqGadget" value="Users" />
   <input type="hidden" name="reqAction" value="UpdatePersonal" />
   <input type="hidden" name="delete_avatar" value="">
-  <div class="gadget-content card-body">
-    <fieldset>
-      <div class="user_avatar">
-        <img src="{{avatar}}" />
-        <input class="form-control-file" type="file"
-          data-maxsize="{{maxsize}}"
-          data-dimension="{{dimension}}"
-          name="avatar"
-          accept="image/*"
-          onchange="Jaws_Gadget.getInstance('Users').browseFile(this);"
-          style="opacity:0; height:0; width:0;"
-        />
-        <button class="btn" type="button" title="{{lbl_browse_avatar}}" onclick="browseImage(this);">
-          <img src="images/stock/up.png" alt="upload" />
-        </button>
-        <button class="btn" type="button" title="{{lbl_delete_avatar}}" onclick="removeImage(this);" >
-          <img src="images/stock/delete.png" alt="delete" />
-        </button>
-        <script type="text/javascript">
-        var original_avatar = document.getElementById('avatar').src;
-        function previewImage(fileElement) {
-            var fReader = new FileReader();
-            fReader.readAsDataURL(fileElement.files[0]);
-            fReader.onload = function (event) {
-                document.getElementById('avatar').src = event.target.result;
-            }
-        };
+  <div class="gadget-content">
+    <div class="row">
+      <div class="col-12 col-md-3 col-lg-2">
+        <div class="user_avatar">
+          <img src="{{avatar}}" />
+          <input class="form-control-file" type="file"
+            data-maxsize="{{maxsize}}"
+            data-dimension="{{dimension}}"
+            name="avatar"
+            accept="image/*"
+            onchange="Jaws_Gadget.getInstance('Users').browseFile(this);"
+            style="opacity:0; height:0; width:0;"
+          />
+          <button class="btn" type="button" title="{{lbl_browse_avatar}}" onclick="browseImage(this);">
+            <img src="images/stock/up.png" alt="upload" />
+          </button>
+          <button class="btn" type="button" title="{{lbl_delete_avatar}}" onclick="removeImage(this);" >
+            <img src="images/stock/delete.png" alt="delete" />
+          </button>
+          <script type="text/javascript">
+          var original_avatar = document.getElementById('avatar').src;
+          function previewImage(fileElement) {
+              var fReader = new FileReader();
+              fReader.readAsDataURL(fileElement.files[0]);
+              fReader.onload = function (event) {
+                  document.getElementById('avatar').src = event.target.result;
+              }
+          };
 
-        function browseImage(btnElement) {
-            btnElement.form.avatar.click();
-        };
+          function browseImage(btnElement) {
+              btnElement.form.avatar.click();
+          };
 
-        function removeImage(btnElement) {
-            btnElement.form.avatar.value = '';
-            btnElement.form.delete_avatar.value = 1;
-            document.getElementById('avatar').src = 'gadgets/Users/Resources/images/photo128px.png';
-        };
+          function removeImage(btnElement) {
+              btnElement.form.avatar.value = '';
+              btnElement.form.delete_avatar.value = 1;
+              document.getElementById('avatar').src = 'gadgets/Users/Resources/images/photo128px.png';
+          };
 
-        function reloadImage(btnElement) {
-            btnElement.form.avatar.value = '';
-            btnElement.form.delete_avatar.value = '';
-            document.getElementById('avatar').src = original_avatar;
-        };
-        </script>
+          function reloadImage(btnElement) {
+              btnElement.form.avatar.value = '';
+              btnElement.form.delete_avatar.value = '';
+              document.getElementById('avatar').src = original_avatar;
+          };
+          </script>
+        </div>
       </div>
-      <div>
-        <label for="personal_fname">{{lbl_fname}}:</label>
-        <input class="form-control" name="fname" class="large name" id="personal_fname" value="{{fname}}" type="text" />
+      <div class="col-12 col-md-9 col-lg-10">
+        <div class="row g-2">
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_fname}}:</span>
+              <input class="form-control" name="fname" value="{{fname}}" type="text" />
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_lname}}:</span>
+              <input class="form-control" name="lname"  value="{{lname}}" type="text" />
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_gender}}:</span>
+              <select class="form-control form-select" name="gender">
+                <option value="0" {{selected_gender_0}}>{{gender_0}}</option>
+                <option value="1" {{selected_gender_1}}>{{gender_1}}</option>
+                <option value="2" {{selected_gender_2}}>{{gender_2}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_ssn}}:</span>
+              <input class="form-control" name="ssn" value="{{ssn}}" type="text" dir="ltr"/>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_dob}}:</span>
+              <input type="text" class="form-control" role="datepicker" data-picker-type="date" data-date-format="yyyy/MM/dd"
+                name="dob" value="{{dob}}" title="{{dob_sample}}"
+                dir="ltr" placeholder="{{dob_sample}}" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" />
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_url}}:</span>
+              <input class="form-control" name="url" id="personal_url" value="{{url}}" type="text" dir="ltr"/>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_pgpkey}}</span>
+              <textarea class="form-control" name="pgpkey" id="personal_pgpkey" dir="ltr">{{pgpkey}}</textarea>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_signature}}:</span>
+              <textarea class="form-control" name="signature" id="personal_signature">{{signature}}</textarea>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_about}}:</span>
+              <textarea class="form-control" name="about" id="personal_about">{{about}}</textarea>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_experiences}}:</span>
+              <textarea class="form-control" name="experiences" id="personal_experiences">{{experiences}}</textarea>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_occupations}}:</span>
+              <textarea class="form-control" name="occupations" id="personal_occupations">{{occupations}}</textarea>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="input-group">
+              <span class="input-group-text min-w-12rem justify-content-center">{{lbl_interests}}:</span>
+              <textarea class="form-control" name="interests" id="personal_interests">{{interests}}</textarea>
+            </div>
+          </div>
+          <div class="gadget_actions text-end mt-3 w-100">
+            <button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button>
+          </div>
+        </div>
       </div>
-      <div>
-        <label for="personal_lname">{{lbl_lname}}:</label>
-        <input class="form-control" name="lname" class="large name" id="personal_lname" value="{{lname}}" type="text" />
-      </div>
-      <div>
-        <label for="user_gender">{{lbl_gender}}:</label>
-        <select class="form-control" name="gender" class="large" id="user_gender">
-          <option value="0" {{selected_gender_0}}>{{gender_0}}</option>
-          <option value="1" {{selected_gender_1}}>{{gender_1}}</option>
-          <option value="2" {{selected_gender_2}}>{{gender_2}}</option>
-        </select>
-      </div>
-      <div>
-        <label for="personal_ssn">{{lbl_ssn}}:</label>
-        <input class="form-control" name="ssn" class="large ltr" id="personal_ssn" value="{{ssn}}" type="text" />
-      </div>
-      <div><label for="personal_dob">{{lbl_dob}}: ({{dob_sample}})</label>
-        <input class="form-control" name="dob" class="large ltr" id="personal_dob" value="{{dob}}" type="text" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" title="{{dob_sample}}" />
-      </div>
-      <div>
-        <label for="personal_url">{{lbl_url}}:</label>
-        <input class="form-control" name="url" class="large url ltr" id="personal_url" value="{{url}}" type="text" />
-      </div>
-      <div>
-        <label for="personal_pgpkey">{{lbl_pgpkey}}:</label>
-        <textarea class="form-control" name="pgpkey" class="x-large" id="personal_pgpkey" cols="45" rows="3">{{pgpkey}}</textarea>
-      </div>
-      <div>
-        <label for="personal_signature">{{lbl_signature}}:</label>
-        <textarea class="form-control" name="signature" class="x-large" id="personal_signature" cols="45" rows="4">{{signature}}</textarea>
-      </div>
-      <div>
-        <label for="personal_about">{{lbl_about}}:</label>
-        <textarea class="form-control" name="about" class="x-large" id="personal_about" cols="45" rows="4">{{about}}</textarea>
-      </div>
-      <div>
-        <label for="personal_experiences">{{lbl_experiences}}:</label>
-        <textarea class="form-control" name="experiences" class="x-large" id="personal_experiences" cols="45" rows="4">{{experiences}}</textarea>
-      </div>
-      <div>
-        <label for="personal_occupations">{{lbl_occupations}}:</label>
-        <textarea class="form-control" name="occupations" class="x-large" id="personal_occupations" cols="45" rows="4">{{occupations}}</textarea>
-      </div>
-      <div>
-        <label for="personal_interests">{{lbl_interests}}:</label>
-        <textarea class="form-control" name="interests" class="x-large" id="personal_interests" cols="45" rows="4">{{interests}}</textarea>
-      </div>
-    </fieldset>
+    </div>
   </div>
-  <div class="gadget_actions"><button class="btn btn-primary" type="submit" value="{{update}}">{{update}}</button></div>
+
   </form>
 </div>
-<div class="gadget-footer card-footer" hidden></div>
+<div class="gadget-footer" hidden></div>
 <!-- END personal -->
