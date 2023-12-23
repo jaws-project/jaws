@@ -41,7 +41,7 @@
             <tr>
               {% for i in (0..6) %}
                 <th>
-                  {{ "global." | append: datepicker.calendar, "_DAY_SHORT_", i | t }}
+                  {{ "global." | append: "DAY_SHORT_", i | t }}
                 </th>
               {% endfor %}
             </tr>
