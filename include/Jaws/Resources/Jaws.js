@@ -2280,7 +2280,7 @@ Jaws.filters = {
     /**
      * Javascript format number prototype
      */
-    format: function(input, unit = '') {
+    formatNumber : function(input, unit = '') {
         let num = Number.parseFloat(input);
 
         let units = {
