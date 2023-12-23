@@ -79,7 +79,7 @@ class Jaws_Gadget_Actions_DatePicker extends Jaws_Gadget_Class
         for ($i = 0; $i < 7; $i++) {
             $tpl->SetBlock("$block/datepicker/week_days/day");
             $tpl->SetVariable('i', $i);
-            $tpl->SetVariable('name', Jaws::t("{$calendar}_DAY_SHORT_$i"));
+            $tpl->SetVariable('name', Jaws::t("DAY_SHORT_$i"));
             $tpl->ParseBlock("$block/datepicker/week_days/day");
         }
         $tpl->ParseBlock("$block/datepicker/week_days");
