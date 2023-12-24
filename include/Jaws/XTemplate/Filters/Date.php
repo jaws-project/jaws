@@ -34,7 +34,7 @@ class Jaws_XTemplate_Filters_Date extends Jaws_XTemplate_Filters
      */
     public static function str2date($input, $calendar = '')
     {
-        $result = 0;
+        $result = null;
         if (!empty($input)) {
             $result = is_array($input)? $input : [$input];
             foreach ($result as $key => $val) {
