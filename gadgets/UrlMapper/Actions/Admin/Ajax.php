@@ -256,7 +256,7 @@ class UrlMapper_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $model = $this->gadget->model->loadAdmin('ErrorMaps');
         $errorMaps = $model->GetErrorMap($id);
         $objDate = Jaws_Date::getInstance();
-        $errorMaps['insert_time'] = $objDate->Format($errorMaps['insert_time'], 'Y-m-d H:i:s');
+        $errorMaps['insert_time'] = $objDate->Format($errorMaps['insert_time'], 'yyyy-MM-dd HH:mm:ss');
         return $errorMaps;
     }
 
