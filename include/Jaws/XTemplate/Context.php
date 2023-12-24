@@ -104,10 +104,17 @@ class Jaws_XTemplate_Context
     public function invoke($filter, $value, array $args = array())
     {
         try {
-            array_unshift($args, $value);
-
             $filters = is_array($filter)? $filter : [$filter];
             foreach ($filters as $filter) {
+                // split filter and parameters (for example: function: param1, param2, ...)
+                if (strpos($filter, ':') !== false) {
+                    $args = explode(',', ltrim(strstr($filter, ':'), ':'));
+                    $filter = strstr($filter, ':', true);
+                }
+
+                // add $value as first parameter to call filter
+                array_unshift($args, $value);
+
                 // is filter name exists
                 if (!array_key_exists($filter, $this->filters)) {
                     break;
@@ -125,8 +132,7 @@ class Jaws_XTemplate_Context
 
                 // filter is part of a class/object
                 $value = call_user_func_array(array($mappedFunction, $filter), $args);
-                // reset value in arags for next iteration in loop
-                $args[0] = $value;
+                $args = array();
             }
 
             return $value;
