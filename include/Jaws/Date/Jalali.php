@@ -155,9 +155,9 @@ class Jaws_Date_Jalali extends Jaws_Date
     {
         $date = $this->jd_to_persian($this->gregorian_to_jd($year, $month, $day));
         return array(
-            'year'      => str_pad($date['year'], 4, '0', STR_PAD_LEFT),
-            'month'     => str_pad($date['month'], 2, '0', STR_PAD_LEFT),
-            'day'       => str_pad($date['day'], 2, '0', STR_PAD_LEFT),
+            'year'      => $date['year'],
+            'month'     => $date['month'],
+            'day'       => $date['day'],
             'weekDay'   => $date['weekDay'],
             'monthDays' => $date['monthDays'],
             'yearDay'   => $date['yearDay']
@@ -311,109 +311,110 @@ class Jaws_Date_Jalali extends Jaws_Date
         if (empty($date)) {
             return;
         }
-        $return = '';
 
         $i = 0;
+        $return = '';
         while ($i < strlen($format)) {
             switch($format[$i]) {
-                case 'A':
+                case 'T':
+                    $return.= $date['date'] * 1000;
+                    break;
+
+                case 's':
+                    if (substr($format, $i, 2) === 'ss') {
+                        $return.= str_pad($date['second'], 2, '0', STR_PAD_LEFT);
+                        $i++;
+                    } else {
+                        $return.= $date['second'];
+                    }
+                    break;
+
+                case 'm':
+                    if (substr($format, $i, 2) === 'mm') {
+                        $return.= str_pad($date['minute'], 2, '0', STR_PAD_LEFT);
+                        $i++;
+                    } else {
+                        $return.= $date['minute'];
+                    }
+                    break;
+
+                case 'h':
+                    if (substr($format, $i, 2) === 'hh') {
+                        $return.= str_pad(($date['hour']>=12)? ($date['hour']-12) : $date['hour'], 2, '0', STR_PAD_LEFT);
+                        $i++;
+                    } else {
+                        $return.= ($date['hour']>=12)? ($date['hour']-12) : $date['hour'];
+                    }
+                    break;
+
+                case 'H':
+                    if (substr($format, $i, 2) === 'HH') {
+                        $return.= str_pad($date['hour'], 2, '0', STR_PAD_LEFT);
+                        $i++;
+                    } else {
+                        $return.= $date['hour'];
+                    }
+                    break;
+
                 case 'a':
+                case 'A':
                     if (substr($format, $i, 3) == 'AGO') {
                         $return .= $this->SinceFormat($date['date']);
                         $i = $i + 2;
-                    } else {
-                        if (date('a', $date['date']) == 'pm') {
-                            $return .= Jaws::t('HOURS_PM');
-                        } else {
-                            $return .= Jaws::t('HOURS_AM');
-                        }
+                    } elseif (substr($format, $i, 2) == 'aa') {
+                        $return .= Jaws::t(($date['hour']>=12)? 'HOURS_PM' : 'HOURS_AM');
+                        $i++;
                     }
                     break;
-                case 'c':
-                    $return .= $this->DateFormat('Y-m-d H:i:s:P', $date);
+
+                case 'E':
+                    if (substr($format, $i, 4) === 'EEEE') {
+                        $return.= this->DayString($date['weekDay']);
+                        $i+=3;
+                    } else {
+                        $return.= $this->DayShortString($date['weekDay']);
+                    }
                     break;
+
                 case 'd':
-                    $return .= $date['day'];
-                    break;
-                case 'D':
-                    if (substr($format, $i, 2) == 'DN') {
-                        $return .= $this->DayString($date['weekDay']);
+                    if (substr($format, $i, 2) === 'dd') {
+                        $return.= str_pad($date['day'], 2, '0', STR_PAD_LEFT);
                         $i++;
                     } else {
-                        $return .= $this->DayShortString($date['weekDay']);
+                        $return.= $date['day'];
                     }
                     break;
-                case 'l':
-                    $return .= $this->DayString($date['weekDay']);
-                    break;
-                case 'e':
-                    $return .= date('e', $date['date']);
-                    break;
-                case 'F':
-                    $return .= $this->MonthString($date['month']);
-                    break;
+
                 case 'M':
-                    if (substr($format, $i, 2) == 'MN') {
-                        $return .= $this->MonthString($date['month']);
+                    if (substr($format, $i, 4) === 'MMMM') {
+                        $return.= this->MonthString($date['month']);
+                        $i+=3;
+                    } elseif (substr($format, $i, 3) === 'MMM') {
+                        $return.= $this->MonthShortString($date['month']);
+                        $i+=2;
+                    } elseif (substr($format, $i, 2) === 'MM') {
+                        $return.= str_pad($date['month'], 2, '0', STR_PAD_LEFT);
                         $i++;
                     } else {
-                        $return .= $this->MonthShortString($date['month']);
+                        $return.= $date['month'];
                     }
                     break;
-                case 'g':
-                    $return .= date('g', $date['date']);
-                    break;
-                case 'G':
-                case 'H':
-                    $return .= $date['hour'];
-                    break;
-                case 'h':
-                    $return .= date('h', $date['date']);
-                    break;
-                case 'i':
-                    $return .= $date['minute'];
-                    break;
-                case 'j':
-                    $return .= $date['day'];
-                    break;
-                case 'm':
-                case 'n':
-                    $return .= $date['month'];
-                    break;
-                case 'N':
-                    $return .= $date['weekDay'];
-                    break;
-                case 'O':
-                    $return .= date('O', $date['date']);
-                    break;
-                case 'P':
-                    $return .= date('P', $date['date']);
-                    break;
-                case 'o':
-                case 'Y':
-                    $return .= $date['year'];
-                    break;
-                case 'r':
-                    $return .= $this->DateFormat('D, d M Y H:i:s O', $date);
-                    break;
-                case 's':
-                    $return .= $date['second'];
-                    break;
-                case 'T':
-                    $return .= date('T', $date['date']);
-                    break;
-                case 't':
-                    $return .= $date['monthDays'];
-                    break;
-                case 'U':
-                    $return .= date('U', $date['date']);
-                    break;
+
                 case 'y':
-                    $return .= substr($date['year'], 2, 2);
+                    if (substr($format, $i, 4) === 'yyyy') {
+                        $return.= str_pad($date['year'], 4, '0', STR_PAD_LEFT);
+                        $i+=3;
+                    } elseif (substr($format, $i, 2) === 'yy') {
+                        $return.= str_pad($date['year'], 2, '0', STR_PAD_LEFT);
+                        $i++;
+                    }
                     break;
-                case 'z':
-                    $return .= $date['yearDay'];
+
+                case '\\':
+                    $return.= substr($format, $i, 2);
+                    $i++;
                     break;
+
                 default:
                     $return .= $format[$i];
                     break;

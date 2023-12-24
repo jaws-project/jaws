@@ -128,50 +128,122 @@ class Jaws_Date_Gregorian extends Jaws_Date
             $return = '';
             while ($i < strlen($format)) {
                 switch($format[$i]) {
-                case 'A':
-                    if (substr($format, $i, 3) == 'AGO') {
-                        $return .= $this->SinceFormat($date);
-                        $i = $i + 2;
-                    }
-                    break;
-                case 'F':
-                    $return .= $this->DayString(date('w', $date));
-                    break;
-                case 'D':
-                    if (substr($format, $i, 2) == 'DN') {
-                        $return .= $this->DayString(date('w', $date));
+                    case 'T':
+                        $return.= date('U', $date) * 1000;
+                        break;
+
+                    case 's':
+                        if (substr($format, $i, 2) === 'ss') {
+                            $return.= date('s', $date);
+                            $i++;
+                        } else {
+                            $return.= intval(date('s', $date));
+                        }
+                        break;
+
+                    case 'm':
+                        if (substr($format, $i, 2) === 'mm') {
+                            $return.= date('i', $date);
+                            $i++;
+                        } else {
+                            $return.= intval(date('i', $date));
+                        }
+                        break;
+
+                    case 'h':
+                        if (substr($format, $i, 2) === 'hh') {
+                            $return.= date('h', $date);
+                            $i++;
+                        } else {
+                            $return.= date('g', $date);
+                        }
+                        break;
+
+                    case 'H':
+                        if (substr($format, $i, 2) === 'HH') {
+                            $return.= date('H', $date);
+                            $i++;
+                        } else {
+                            $return.= date('G', $date);
+                        }
+                        break;
+
+                    case 'a':
+                        if (substr($format, $i, 3) == 'AGO') {
+                            $return .= $this->SinceFormat($date);
+                            $i = $i + 2;
+                        } elseif (substr($format, $i, 2) === 'aa') {
+                            $return.= date('A', $date);
+                            $i++;
+                        }
+                        break;
+
+                    case 'A':
+                        if (substr($format, $i, 3) == 'AGO') {
+                            $return .= $this->SinceFormat($date);
+                            $i = $i + 2;
+                        } elseif (substr($format, $i, 2) === 'AA') {
+                            $return.= date('a', $date);
+                            $i++;
+                        }
+                        break;
+
+                    case 'E':
+                        if (substr($format, $i, 4) === 'EEEE') {
+                            $return.= this->DayString(date('w', $date));
+                            $i+=3;
+                        } else {
+                            $return.= $this->DayShortString(date('w', $date));
+                        }
+                        break;
+
+                    case 'd':
+                        if (substr($format, $i, 2) === 'dd') {
+                            $return.= date('d', $date);
+                            $i++;
+                        } else {
+                            $return.= date('j', $date);
+                        }
+                        break;
+
+                    case 'M':
+                        if (substr($format, $i, 4) === 'MMMM') {
+                            $return.= this->MonthString(date('m', $date));
+                            $i+=3;
+                        } elseif (substr($format, $i, 3) === 'MMM') {
+                            $return.= $this->MonthShortString(date('m', $date));
+                            $i+=2;
+                        } elseif (substr($format, $i, 2) === 'MM') {
+                            $return.= date('m', $date);
+                            $i++;
+                        } else {
+                            $return.= date('n', $date);
+                        }
+                        break;
+
+                    case 'y':
+                        if (substr($format, $i, 4) === 'yyyy') {
+                            $return.= date('Y', $date);
+                            $i+=3;
+                        } elseif (substr($format, $i, 2) === 'yy') {
+                            $return.= date('y', $date);
+                            $i++;
+                        }
+                        break;
+
+                    case '\\':
+                        $return.= substr($format, $i, 2);
                         $i++;
-                    } else {
-                        $return .= $this->DayShortString(date('w', $date));
-                    }
-                    break;
-                case 'l':
-                    $return .= $this->DayString(date('w', $date));
-                    break;
-                case 'M':
-                    if (substr($format, $i, 2) == 'MN') {
-                        $return .= $this->MonthString(date('m', $date));
-                        $i++;
-                    } else {
-                        $return .= $this->MonthShortString(date('m', $date));
-                    }
-                    break;
-                case '\\':
-                    // Do nothing 
-                    break;
-                default:
-                    if (substr($format, $i - 1, 1) == '\\') {
+                        break;
+
+                    default:
                         $return .= $format[$i];
-                    } else {
-                        $return .= date($format[$i], $date);
-                    }
-                    break;
+                        break;
                 }
                 $i++;
             }
 
             return $return;
-                 
         }
     }
 
