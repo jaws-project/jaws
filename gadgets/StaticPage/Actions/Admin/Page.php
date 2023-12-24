@@ -99,7 +99,7 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
             } else {
                 $pageData['published'] = $this::t('DRAFT');
             }
-            $pageData['date']  = $date->Format($page['updated'], 'Y-m-d H:i:s');
+            $pageData['date']  = $date->Format($page['updated'], 'yyyy-MM-dd HH:mm:ss');
             $actions = '';
             if ($this->gadget->GetPermission('EditPage')) {
                 $link =& Piwi::CreateWidget('Link', Jaws::t('EDIT'),
