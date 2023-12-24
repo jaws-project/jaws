@@ -185,8 +185,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
                 array('user' => $file['username'])
             );
             $file['published_str'] = $file['published'] ? Jaws::t('YESS'): Jaws::t('NOO');
-            $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
-            $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
+            $file['created'] = $objDate->Format($file['create_time'], 'MM/dd/yyyy hh:mm aa');
+            $file['modified'] = $objDate->Format($file['update_time'], 'MM/dd/yyyy hh:mm aa');
             $file['thumbnail'] = $modelFiles->GetThumbnailURL($file['host_filename']);
 
             // Fetch tags
@@ -215,8 +215,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
             return array();
         }
         $objDate = Jaws_Date::getInstance();
-        $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
-        $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
+        $file['created'] = $objDate->Format($file['create_time'], 'MM/dd/yyyy hh:mm aa');
+        $file['modified'] = $objDate->Format($file['update_time'], 'MM/dd/yyyy hh:mm aa');
 
         return $file;
     }
@@ -480,8 +480,8 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
                 $file['url'] = BASE_SCRIPT . '?reqGadget=Directory&reqAction=Directory&id=' . $file['id'];
             }
             $file['published_str'] = $file['published'] ? Jaws::t('YESS'): Jaws::t('NOO');
-            $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
-            $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
+            $file['created'] = $objDate->Format($file['create_time'], 'MM/dd/yyyy hh:mm aa');
+            $file['modified'] = $objDate->Format($file['update_time'], 'MM/dd/yyyy hh:mm aa');
             $file['thumbnail'] = $model->GetThumbnailURL($file['host_filename']);
 
         }

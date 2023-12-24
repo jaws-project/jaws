@@ -43,8 +43,8 @@ class Directory_Actions_File extends Jaws_Gadget_Action
         $tpl->SetVariable('lbl_download', $this::t('DOWNLOAD'));
 
         $objDate = Jaws_Date::getInstance();
-        $file['created'] = $objDate->Format($file['create_time'], 'n/j/Y g:i a');
-        $file['modified'] = $objDate->Format($file['update_time'], 'n/j/Y g:i a');
+        $file['created'] = $objDate->Format($file['create_time'], 'MM/dd/yyyy hh:mm aa');
+        $file['modified'] = $objDate->Format($file['update_time'], 'MM/dd/yyyy hh:mm aa');
         $file['type'] = empty($file['mime_type'])? '-' : $file['mime_type'];
         $file['size'] = Jaws_Utils::FormatSize($file['file_size']);
         $file['download'] = $this->gadget->urlMap('Download', array('id' => $file['id']));

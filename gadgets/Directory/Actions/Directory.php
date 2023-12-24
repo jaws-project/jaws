@@ -369,8 +369,8 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
             $tpl->SetVariable('description', $file['description']);
             $tpl->SetVariable('type', empty($file['mime_type'])? '-' : $file['mime_type']);
             $tpl->SetVariable('size', Jaws_Utils::FormatSize($file['file_size']));
-            $tpl->SetVariable('created', $objDate->Format($file['create_time'], 'n/j/Y g:i a'));
-            $tpl->SetVariable('modified', $objDate->Format($file['update_time'], 'n/j/Y g:i a'));
+            $tpl->SetVariable('created', $objDate->Format($file['create_time'], 'MM/dd/yyyy hh:mm aa'));
+            $tpl->SetVariable('modified', $objDate->Format($file['update_time'], 'MM/dd/yyyy hh:mm aa'));
 
             if (!$file['public']) {
                 $tpl->SetBlock("$block/files/file/action");
