@@ -26,10 +26,10 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (isset($banner['id'])) {
             $objDate = Jaws_Date::getInstance();
             if (!empty($banner['start_time'])) {
-                $banner['start_time'] = $objDate->Format($banner['start_time'], 'Y/m/d');
+                $banner['start_time'] = $objDate->Format($banner['start_time'], 'yyyy/MM/dd');
             }
             if (!empty($banner['stop_time'])) {
-                $banner['stop_time'] = $objDate->Format($banner['stop_time'], 'Y/m/d');
+                $banner['stop_time'] = $objDate->Format($banner['stop_time'], 'yyyy/MM/dd');
             }
         }
 

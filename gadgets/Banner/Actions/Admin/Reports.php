@@ -36,10 +36,10 @@ class Banner_Actions_Admin_Reports extends Banner_Actions_Admin_Default
             $item['start']  = '-';
             $item['stop']   = '-';
             if (!empty($banner['start_time'])) {
-                $item['start'] = $objDate->Format($banner['start_time'], 'Y-m-d');
+                $item['start'] = $objDate->Format($banner['start_time'], 'yyyy-MM-dd');
             }
             if (!empty($banner['stop_time'])) {
-                $item['stop'] = $objDate->Format($banner['stop_time'], 'Y-m-d');
+                $item['stop'] = $objDate->Format($banner['stop_time'], 'yyyy-MM-dd');
             }
             $item['status'] = (($banner['random']==1)?
                 $this::t('REPORTS_BANNERS_STATUS_RANDOM'):
