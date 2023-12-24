@@ -38,14 +38,14 @@ class ServerTime_Actions_Admin_ServerTime extends Jaws_Gadget_Action
         $dFormat->SetID('date_format');
         $dFormat->SetTitle($this::t('FORMAT_TEXT'));
         $dFormat->SetStyle('width: 300px;');
-        $dFormat->AddOption($objDate->Format($now, 'MN j, g:i a'),     'MN j, g:i a');
-        $dFormat->AddOption($objDate->Format($now, 'j.m.y'),           'j.m.y');
-        $dFormat->AddOption($objDate->Format($now, 'j MN, g:i a'),     'j MN, g:i a');
-        $dFormat->AddOption($objDate->Format($now, 'y.m.d, g:i a'),    'y.m.d, g:i a');
-        $dFormat->AddOption($objDate->Format($now, 'd MN Y'),          'd MN Y');
-        $dFormat->AddOption($objDate->Format($now, 'DN d MN Y'),       'DN d MN Y');
-        $dFormat->AddOption($objDate->Format($now, 'DN d MN Y g:i a'), 'DN d MN Y g:i a');
-        $dFormat->AddOption($objDate->Format($now, 'j MN y'),          'j MN y');
+        $dFormat->AddOption($objDate->Format($now, 'MMMM d, h:mm aa'), 'MMMM d, h:mm aa');
+        $dFormat->AddOption($objDate->Format($now, 'd.m.yy'), 'd.m.yy');
+        $dFormat->AddOption($objDate->Format($now, 'd MMMM, h:mm aa'), 'd MMMM, h:mm aa');
+        $dFormat->AddOption($objDate->Format($now, 'yy.m.dd, h:mm aa'), 'yy.m.dd, h:mm aa');
+        $dFormat->AddOption($objDate->Format($now, 'dd MMMM yyyy'), 'dd MMMM yyyy');
+        $dFormat->AddOption($objDate->Format($now, 'EEEE dd MMMM yyyy'), 'EEEE dd MMMM yyyy');
+        $dFormat->AddOption($objDate->Format($now, 'EEEE dd MMMM yyyy h:mm aa'), 'EEEE dd MMMM yyyy h:mm aa');
+        $dFormat->AddOption($objDate->Format($now, 'd MMMM yy'), 'd MMMM yy');
         $dFormat->SetDefault($this->gadget->registry->fetch('date_format'));
         $fieldset->Add($dFormat);
 
