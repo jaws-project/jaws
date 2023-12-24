@@ -208,7 +208,7 @@ class Jaws_Date_Gregorian extends Jaws_Date
 
                     case 'M':
                         if (substr($format, $i, 4) === 'MMMM') {
-                            $return.= this->MonthString(date('m', $date));
+                            $return.= $this->MonthString(date('m', $date));
                             $i+=3;
                         } elseif (substr($format, $i, 3) === 'MMM') {
                             $return.= $this->MonthShortString(date('m', $date));
