@@ -92,16 +92,16 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
             $tpl->SetVariable('summary', $event['summary']);
             $tpl->SetVariable('public', $event['public']? $this::t('EVENT_PUBLIC') : '');
 
-            $startDate = $jDate->Format($event['start_time'], 'Y/m/d');
-            $stopDate = $jDate->Format($event['stop_time'], 'Y/m/d');
+            $startDate = $jDate->Format($event['start_time'], 'yyyy/MM/dd');
+            $stopDate = $jDate->Format($event['stop_time'], 'yyyy/MM/dd');
             $date = ($startDate == $stopDate)? $startDate :
                 $startDate . $this::t('TO') . $stopDate;
             $tpl->SetVariable('date', $date);
 
-            $start_time = $jDate->Format($event['start_time'], 'H:i');
+            $start_time = $jDate->Format($event['start_time'], 'HH:mm');
             $time = ($event['start_time'] == $event['stop_time'])?
                 $start_time : $start_time . $this::t('TO') .
-                $jDate->Format($event['stop_time'], 'H:i');
+                $jDate->Format($event['stop_time'], 'HH:mm');
             $tpl->SetVariable('time', $time);
 
             $url = $this->gadget->urlMap('ViewEvent', array('user' => $user, 'event' => $event['id']));

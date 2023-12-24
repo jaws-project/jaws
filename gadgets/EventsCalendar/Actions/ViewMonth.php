@@ -56,13 +56,13 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
             $this->gadget->urlMap('ViewYear', array('user' => $user, 'year' => $info['year'])) :
             $this->gadget->urlMap('ViewYear', array('year' => $info['year'])));
 
-        $current = $jDate->Format($start, 'Y MN');
+        $current = $jDate->Format($start, 'yyyy MMMM');
         $tpl->SetVariable('title', $current);
         $this->title = $current . ' - ' . $this::t('EVENTS');
 
         // Next month
         $next = $jDate->ToBaseDate($year, $month + 1, 1);
-        $next = $jDate->Format($next['timestamp'], 'Y MN');
+        $next = $jDate->Format($next['timestamp'], 'yyyy MMMM');
         $tpl->SetVariable('next', $next);
         $nextYear = $year;
         $nextMonth = $month + 1;
@@ -77,7 +77,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
 
         // Previous month
         $prev = $jDate->ToBaseDate($year, $month - 1, 1);
-        $prev = $jDate->Format($prev['timestamp'], 'Y MN');
+        $prev = $jDate->Format($prev['timestamp'], 'yyyy MMMM');
         $tpl->SetVariable('prev', $prev);
         $prevYear = $year;
         $prevMonth = $month - 1;
@@ -116,7 +116,7 @@ class EventsCalendar_Actions_ViewMonth extends Jaws_Gadget_Action
         // Display events
         for ($i = 1; $i <= $daysInMonth; $i++) {
             $date = $jDate->ToBaseDate($year, $month, $i);
-            $weekDay = $jDate->Format($date['timestamp'], 'DN');
+            $weekDay = $jDate->Format($date['timestamp'], 'EEEE');
             $tpl->SetBlock('month/day');
             $dayUrl = $user?
                 $this->gadget->urlMap('ViewDay', array('user' => $user, 'year' => $year, 'month' => $month, 'day' => $i)) :

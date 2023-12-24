@@ -349,8 +349,8 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         $jDate = Jaws_Date::getInstance();
         foreach ($events as &$event) {
             $event['shared'] = $event['shared']? $this::t('SHARED') : '';
-            $event['start_time'] = $jDate->Format($event['start_time'], 'Y/m/d H:i');
-            $event['stop_time'] = $jDate->Format($event['stop_time'], 'Y/m/d H:i');
+            $event['start_time'] = $jDate->Format($event['start_time'], 'yyyy/MM/dd HH:mm');
+            $event['stop_time'] = $jDate->Format($event['stop_time'], 'yyyy/MM/dd HH:mm');
         }
 
         return array(
@@ -376,10 +376,10 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         }
 
         $jDate = Jaws_Date::getInstance();
-        $event['start_date'] = $jDate->Format($event['start_time'], 'Y-m-d');
-        $event['start_time'] = $jDate->Format($event['start_time'], 'H:i');
-        $event['stop_date']  = $jDate->Format($event['stop_time'], 'Y-m-d');
-        $event['stop_time']  = $jDate->Format($event['stop_time'], 'H:i');
+        $event['start_date'] = $jDate->Format($event['start_time'], 'yyyy-MM-dd');
+        $event['start_time'] = $jDate->Format($event['start_time'], 'HH:mm');
+        $event['stop_date']  = $jDate->Format($event['stop_time'], 'yyyy-MM-dd');
+        $event['stop_time']  = $jDate->Format($event['stop_time'], 'HH:mm');
 
         $event['reminder']  = $event['reminder'] / 60;
 

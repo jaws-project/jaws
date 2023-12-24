@@ -56,7 +56,7 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
         // Today
         $jDate = Jaws_Date::getInstance();
         $now = time();
-        $today = $jDate->Format($now, 'DN d MN Y');
+        $today = $jDate->Format($now, 'EEEE dd MMMM yyyy');
 
         $this->title = $today . ' - ' . $this::t('EVENTS');
         $tpl->SetVariable('today', $today);
@@ -97,8 +97,8 @@ class EventsCalendar_Actions_Today extends Jaws_Gadget_Action
             $tpl->SetVariable('location', $event['location']);
             $tpl->SetVariable('priority', $this::t('EVENT_PRIORITY_' . $event['priority']));
 
-            $startHour = $jDate->Format($event['start_time'], 'H:i');
-            $stopHour = $jDate->Format($event['stop_time'], 'H:i');
+            $startHour = $jDate->Format($event['start_time'], 'HH:mm');
+            $stopHour = $jDate->Format($event['stop_time'], 'HH:mm');
             $tpl->SetVariable('time', $startHour . ' - ' . $stopHour);
 
             $url = $user?

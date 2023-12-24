@@ -64,13 +64,13 @@ class EventsCalendar_Actions_ViewEvent extends Jaws_Gadget_Action
 
         // Start Date/Time
         $start = $event['start_time'];
-        $tpl->SetVariable('start_date', $jDate->Format($start, 'Y-m-d'));
-        $tpl->SetVariable('start_time', $jDate->Format($start, 'H:i'));
+        $tpl->SetVariable('start_date', $jDate->Format($start, 'yyyy-MM-dd'));
+        $tpl->SetVariable('start_time', $jDate->Format($start, 'HH:mm'));
 
         // Stop Date/Time
         $stop = $event['stop_time'];
-        $tpl->SetVariable('stop_date', $jDate->Format($stop, 'Y-m-d'));
-        $tpl->SetVariable('stop_time', $jDate->Format($stop, 'H:i'));
+        $tpl->SetVariable('stop_date', $jDate->Format($stop, 'yyyy-MM-dd'));
+        $tpl->SetVariable('stop_time', $jDate->Format($stop, 'HH:mm'));
 
         $tpl->SetVariable('lbl_date', $this::t('DATE'));
         $tpl->SetVariable('lbl_time', $this::t('TIME'));

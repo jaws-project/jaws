@@ -71,11 +71,11 @@ class EventsCalendar_Actions_ManageEvent extends Jaws_Gadget_Action
                     return '';
                 }
                 $start = $event['start_time'];
-                $event['start_date'] = $jDate->Format($start, 'Y-m-d');
-                $event['start_time'] = $jDate->Format($start, 'H:i');
+                $event['start_date'] = $jDate->Format($start, 'yyyy-MM-dd');
+                $event['start_time'] = $jDate->Format($start, 'HH:mm');
                 $stop = $event['stop_time'];
-                $event['stop_date'] = $jDate->Format($stop, 'Y-m-d');
-                $event['stop_time'] = $jDate->Format($stop, 'H:i');
+                $event['stop_date'] = $jDate->Format($stop, 'yyyy-MM-dd');
+                $event['stop_time'] = $jDate->Format($stop, 'HH:mm');
                 $event['reminder'] /= 60;
             } else {
                 $event = array();

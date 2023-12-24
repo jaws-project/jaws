@@ -32,7 +32,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
 
         $jDate = Jaws_Date::getInstance();
         $year = (int)$this->gadget->request->fetch('year:int', 'get');
-        $year = empty($year)? (int)$jDate->Format(time(), 'Y') : $year;
+        $year = empty($year)? (int)$jDate->Format(time(), 'yyyy') : $year;
 
         $this->AjaxMe('index.js');
         $tpl = $this->gadget->template->load('ViewYear.html');
@@ -72,7 +72,7 @@ class EventsCalendar_Actions_ViewYear extends Jaws_Gadget_Action
             for ($i = 1; $i <= 3; $i++) {
                 $m = $i + ($s * 3);
                 $date = $jDate->ToBaseDate($year, $m);
-                $month = $jDate->Format($date['timestamp'], 'MN');
+                $month = $jDate->Format($date['timestamp'], 'MMMM');
                 $tpl->SetBlock('year/season/month');
                 $tpl->SetVariable('month', $month);
                 $url = $user?

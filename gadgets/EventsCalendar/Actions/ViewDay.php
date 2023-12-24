@@ -46,7 +46,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
 
         // Next day
         $date = $jDate->ToBaseDate($year, $month, $day + 1);
-        $tpl->SetVariable('next', $jDate->Format($date['timestamp'], 'DN d MN Y'));
+        $tpl->SetVariable('next', $jDate->Format($date['timestamp'], 'EEEE dd MMMM yyyy'));
         $info = $jDate->GetDateInfo($year, $month, $day + 1);
         $url = $user?
             $this->gadget->urlMap('ViewDay', array(
@@ -64,7 +64,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
 
         // Previous day
         $date = $jDate->ToBaseDate($year, $month, $day - 1);
-        $tpl->SetVariable('prev', $jDate->Format($date['timestamp'], 'DN d MN Y'));
+        $tpl->SetVariable('prev', $jDate->Format($date['timestamp'], 'EEEE dd MMMM yyyy'));
         $info = $jDate->GetDateInfo($year, $month, $day - 1);
         $url = $user?
             $this->gadget->urlMap('ViewDay', array(
@@ -83,7 +83,7 @@ class EventsCalendar_Actions_ViewDay extends Jaws_Gadget_Action
         // Today
         $info = $jDate->GetDateInfo($year, $month, $day);
         $date = $jDate->ToBaseDate($year, $month, $day);
-        $today = $jDate->Format($date['timestamp'], 'DN d MN Y');
+        $today = $jDate->Format($date['timestamp'], 'EEEE dd MMMM yyyy');
         $this->title = $today . ' - ' . $this::t('EVENTS');
         $tpl->SetVariable('year', $info['year']);
         $tpl->SetVariable('month', $info['month']);
