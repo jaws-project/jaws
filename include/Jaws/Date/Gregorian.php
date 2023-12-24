@@ -169,11 +169,11 @@ class Jaws_Date_Gregorian extends Jaws_Date
                         break;
 
                     case 'a':
-                        if (substr($format, $i, 3) == 'AGO') {
+                        if (substr($format, $i, 3) == 'ago') {
                             $return .= $this->SinceFormat($date);
                             $i = $i + 2;
                         } elseif (substr($format, $i, 2) === 'aa') {
-                            $return.= date('A', $date);
+                            $return.= date('a', $date);
                             $i++;
                         }
                         break;
@@ -183,7 +183,7 @@ class Jaws_Date_Gregorian extends Jaws_Date
                             $return .= $this->SinceFormat($date);
                             $i = $i + 2;
                         } elseif (substr($format, $i, 2) === 'AA') {
-                            $return.= date('a', $date);
+                            $return.= date('A', $date);
                             $i++;
                         }
                         break;
