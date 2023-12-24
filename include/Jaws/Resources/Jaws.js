@@ -2330,6 +2330,10 @@ Jaws.filters = {
      * UTC timestamp to string
      */
     date2str: function(input, format = '', calendar = '') {
+        if ([undefined, ''].indexOf(input) >= 0) {
+            return '';
+        }
+
         // if input is numeric, multiple by 1000 for convert second to millisecond
         input = parseFloat(input) == input? input*1000 : input;
 
