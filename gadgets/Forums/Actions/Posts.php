@@ -93,7 +93,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 'user_posts',
                 $this->gadget->urlMap('UserPosts', array('user' => $post['username']))
             );
-            $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'd MMMM yyyy'));
+            $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'dd MMMM yyyy'));
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
             $tpl->SetVariable('post_id',  $post['id']);
