@@ -434,7 +434,7 @@ class Users_Actions_Attributes extends Users_Actions_Default
                             'label' => $attrOptions['title'],
                             'name' => $attrName,
                             'value' => isset($defaultValue)?
-                                Jaws_Date::getInstance()->Format($defaultValue, 'Y/m/d') :
+                                Jaws_Date::getInstance()->Format($defaultValue, 'yyyy/MM/dd') :
                                 '',
                             'required' => isset($attrOptions['required'])? $attrOptions['required'] : false,
                             'readonly' => isset($attrOptions['readonly'])? $attrOptions['readonly'] : false,

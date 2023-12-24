@@ -67,7 +67,7 @@ class Users_Actions_Admin_OnlineUsers extends Users_Actions_Admin_Default
             if (!empty($session['username'])) {
                 $session['user_profile_url'] = $this->gadget->urlMap('Profile',  array('user' => $session['username']));
             }
-            $session['last_activetime'] =  $objDate->Format($session['update_time'], 'Y-m-d H:i');
+            $session['last_activetime'] =  $objDate->Format($session['update_time'], 'yyyy-MM-dd HH:mm');
         }
 
         $sessionsCount = $this->app->session->getSessionsCount(

@@ -62,7 +62,7 @@ class Users_Actions_Personal extends Users_Actions_Default
         $tpl->SetVariable('ssn',        $personal['ssn']);
 
         if (!empty($personal['dob'])) {
-            $personal['dob'] = Jaws_Date::getInstance()->Format($personal['dob'], 'Y-m-d');
+            $personal['dob'] = Jaws_Date::getInstance()->Format($personal['dob'], 'yyyy-MM-dd');
         }
 
         $tpl->SetVariable('lbl_dob', $this::t('USERS_BIRTHDAY'));
@@ -135,7 +135,7 @@ class Users_Actions_Personal extends Users_Actions_Default
         );
 
         if (!empty($post['dob'])) {
-            $post['dob'] = Jaws_Date::getInstance()->ToBaseDate(explode('-', $post['dob']), 'Y-m-d');
+            $post['dob'] = Jaws_Date::getInstance()->ToBaseDate(explode('-', $post['dob']), 'yyyy-MM-dd');
         } else {
             $post['dob'] = null;
         }

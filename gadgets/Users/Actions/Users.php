@@ -279,7 +279,7 @@ class Users_Actions_Users extends Users_Actions_Default
         $objDate = Jaws_Date::getInstance();
         if ($post['account']) {
             if (!empty($profile['expiry_date'])) {
-                $profile['expiry_date'] = $objDate->Format($profile['expiry_date'], 'Y/m/d');
+                $profile['expiry_date'] = $objDate->Format($profile['expiry_date'], 'yyyy/MM/dd');
             } else {
                 $profile['expiry_date'] = '';
             }
@@ -293,7 +293,7 @@ class Users_Actions_Users extends Users_Actions_Default
             }
 
             if (!empty($profile['dob'])) {
-                $profile['dob'] = $objDate->Format($profile['dob'], 'Y/m/d');
+                $profile['dob'] = $objDate->Format($profile['dob'], 'yyyy/MM/dd');
             } else {
                 $profile['dob'] = '';
             }

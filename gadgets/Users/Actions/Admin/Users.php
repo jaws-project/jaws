@@ -161,11 +161,11 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
 
         $objDate = Jaws_Date::getInstance();
         if (isset($userInfo['dob']) && !empty($userInfo['dob'])) {
-            $userInfo['dob'] = $objDate->Format($userInfo['dob'], 'Y/m/d');
+            $userInfo['dob'] = $objDate->Format($userInfo['dob'], 'yyyy/MM/dd');
         }
 
         if (!empty($userInfo['expiry_date'])) {
-            $userInfo['expiry_date'] = $objDate->Format($userInfo['expiry_date'], 'Y/m/d');
+            $userInfo['expiry_date'] = $objDate->Format($userInfo['expiry_date'], 'yyyy/MM/dd');
         }
 
         if (!isset($userInfo['avatar']) && empty($userInfo['avatar'])) {

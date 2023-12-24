@@ -70,10 +70,10 @@ class Users_Actions_Profile extends Users_Actions_Default
 
         // Date of birth
         $objDate = Jaws_Date::getInstance();
-        $user['dob'] = $objDate->Format($user['dob'], 'd MN Y');
+        $user['dob'] = $objDate->Format($user['dob'], 'd MMMM yyyy');
 
         if (!empty($user['registered_date'])) {
-            $user['registered_date'] = $objDate->Format($user['registered_date'], 'd MN Y');
+            $user['registered_date'] = $objDate->Format($user['registered_date'], 'd MMMM yyyy');
         } else {
             $user['registered_date'] = '';
         }
@@ -164,10 +164,10 @@ class Users_Actions_Profile extends Users_Actions_Default
 
         // Date of birth
         $objDate = Jaws_Date::getInstance();
-        $user['dob'] = $objDate->Format($user['dob'], 'd MN Y');
+        $user['dob'] = $objDate->Format($user['dob'], 'd MMMM yyyy');
 
         if (!empty($user['registered_date'])) {
-            $user['registered_date'] = $objDate->Format($user['registered_date'], 'd MN Y');
+            $user['registered_date'] = $objDate->Format($user['registered_date'], 'd MMMM yyyy');
         } else {
             $user['registered_date'] = '';
         }
@@ -347,7 +347,7 @@ class Users_Actions_Profile extends Users_Actions_Default
                         break;
 
                     case 'date':
-                        $defaultValue = Jaws_Date::getInstance()->Format($defaultValue, 'Y/m/d');
+                        $defaultValue = Jaws_Date::getInstance()->Format($defaultValue, 'yyyy/MM/dd');
                         break;
 
                     case 'country':
