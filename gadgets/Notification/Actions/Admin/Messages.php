@@ -61,7 +61,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $tpl->SetBlock('Messages/filter_from_date');
         $objDate = Jaws_Date::getInstance();
         $this->gadget->action->load('DatePicker')->calendar($tpl,
-            array('name' => 'filter_from_date', 'value' => $objDate->Format(time() - (24 * 3600), 'Y/m/d'))
+            array('name' => 'filter_from_date', 'value' => $objDate->Format(time() - (24 * 3600), 'yyyy/MM/dd'))
         );
         $tpl->ParseBlock('Messages/filter_from_date');
 
@@ -165,7 +165,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
             }
             $message['status'] = $sendStatus;
 
-            $message['time'] = $objDate->Format($message['time'], 'Y/m/d H:i:s');
+            $message['time'] = $objDate->Format($message['time'], 'yyyy/MM/dd HH:mm:ss');
         }
         $messagesCount = $model->GetMessagesCount($post['filters']);
 
@@ -225,8 +225,8 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
 
         $messageInfo['message_type'] = $messageType;
         $messageInfo['status'] = $sendStatus;
-        $messageInfo['time'] = $objDate->Format($messageInfo['time'], 'Y/m/d H:i:s');
-        $messageInfo['attempt_time'] = $objDate->Format($messageInfo['attempt_time'], 'Y/m/d H:i:s');
+        $messageInfo['time'] = $objDate->Format($messageInfo['time'], 'yyyy/MM/dd HH:mm:ss');
+        $messageInfo['attempt_time'] = $objDate->Format($messageInfo['attempt_time'], 'yyyy/MM/dd HH:mm:ss');
 
         return $this->gadget->session->response(
             '',
