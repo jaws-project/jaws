@@ -63,7 +63,7 @@ class Notepad_Actions_Notepad extends Jaws_Gadget_Action
                 $tpl->SetBlock('notepad/note');
                 $tpl->SetVariable('id', $note['id']);
                 $tpl->SetVariable('title', $note['title']);
-                $tpl->SetVariable('created', $objDate->Format($note['createtime'], 'n/j/Y g:i a'));
+                $tpl->SetVariable('created', $objDate->Format($note['createtime'], 'MM/dd/yyyy hh:mm aa'));
                 $tpl->SetVariable('url', $this->gadget->urlMap('OpenNote', array('id' => $note['id'])));
                 if ($note['user'] != $user) {
                     $tpl->SetVariable('shared', '');
