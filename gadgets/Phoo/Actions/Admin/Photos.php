@@ -79,7 +79,7 @@ class Phoo_Actions_Admin_Photos extends Phoo_Actions_Admin_Default
 
             $free_photos[] = array('id'         => 0,
                 'name'       => $this::t('WITHOUT_ALBUM'),
-                'createtime' => date('Y-m-d H:i:s'),
+                'createtime' => date('yyyy-MM-dd HH:mm:ss'),
                 'howmany'    => 0);
             $albums = array_merge($free_photos, $albums);
 

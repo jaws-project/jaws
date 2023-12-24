@@ -27,7 +27,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
         }
 
         $objDate = Jaws_Date::getInstance();
-        return $objDate->Format($max, 'm/d/Y');
+        return $objDate->Format($max, 'MM/dd/yyyy');
     }
 
     /**
@@ -45,7 +45,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
         }
 
         $objDate = Jaws_Date::getInstance();
-        return $objDate->Format($min, 'm/d/Y');
+        return $objDate->Format($min, 'MM/dd/yyyy');
     }
 
     /**
@@ -99,7 +99,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
             $album['id']          = '0';
             $album['name']        = $this::t('WITHOUT_ALBUM');
             $album['description'] = $this::t('WITHOUT_ALBUM_DESCRIPTION');
-            $album['createtime']  = date('Y-m-d H:i:s');
+            $album['createtime']  = date('yyyy-MM-dd HH:mm:ss');
             $album['published']   = true;
         } else {
             $album['id']          = $r['id'];
@@ -127,7 +127,7 @@ class Phoo_Model_Photos extends Phoo_Model_Common
                     $month = '0'.$month;
                 }
                 $start = $year.'-'.$month.'-'.$day;
-                $end = date('Y-m-d', mktime(0, 0, 0, $month, $day + 30, $year));
+                $end = date('yyyy-MM-dd', mktime(0, 0, 0, $month, $day + 30, $year));
                 $table->and()->where('phoo_image.createtime', array($start, $end), 'between');
             }
         }
