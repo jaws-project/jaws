@@ -220,7 +220,7 @@ class ControlPanel_Actions_Admin_ControlPanel extends Jaws_Gadget_Action
                     $tpl->SetVariable('status_code', $log['status']);
                     $tpl->SetVariable('status_title', Jaws::t('HTTP_ERROR_TITLE_'. $log['status']));
                     $tpl->SetVariable('icon', 'images/stock/'. ($log['status'] == 200 ?  'info.png' : 'stop.png'));
-                    $tpl->SetVariable('date', $date->Format($log['time'], 'd MN Y H:i'));
+                    $tpl->SetVariable('date', $date->Format($log['time'], 'dd MMMM yyyy HH:mm'));
                     $tpl->ParseBlock('login_history/item');
                 }
                 $tpl->ParseBlock('login_history');
