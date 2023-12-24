@@ -163,7 +163,7 @@ class Contact_Actions_Admin_Contacts extends Contact_Actions_Admin_Default
             }
 
             // Date
-            $label =& Piwi::CreateWidget('Label', $date->Format($contact['createtime'],'Y-m-d'));
+            $label =& Piwi::CreateWidget('Label', $date->Format($contact['createtime'],'yyyy-MM-dd'));
             $label->setTitle($date->Format($contact['createtime'],'H:i:s'));
             $contactData['time'] = $label->get();
 
