@@ -35,9 +35,9 @@ class Weather_Hooks_Preferences extends Jaws_Gadget_Hook
             'type' => 'select',
             'title' => $this::t('DATE_FORMAT'),
             'values' => array(
-                'DN'      => $objDate->Format($now, 'DN'),
-                'd MN'    => $objDate->Format($now, 'd MN'),
-                'DN d MN' => $objDate->Format($now, 'DN d MN'),
+                'EEEE'      => $objDate->Format($now, 'EEEE'),
+                'd EEEE'    => $objDate->Format($now, 'd EEEE'),
+                'EEEE d MMMM' => $objDate->Format($now, 'EEEE d MMMM'),
             ),
         );
 

@@ -53,9 +53,9 @@ class Weather_Actions_Admin_Properties extends Weather_Actions_Admin_Default
         $objDate = Jaws_Date::getInstance();
         $dFormat =& Piwi::CreateWidget('Combo', 'date_format');
         $dFormat->setStyle('width:208px;');
-        $dFormat->AddOption($objDate->Format($now, 'DN'), 'DN');
-        $dFormat->AddOption($objDate->Format($now, 'd MN'), 'd MN');
-        $dFormat->AddOption($objDate->Format($now, 'DN d MN'), 'DN d MN');
+        $dFormat->AddOption($objDate->Format($now, 'EEEE'), 'EEEE');
+        $dFormat->AddOption($objDate->Format($now, 'd EEEE'), 'd EEEE');
+        $dFormat->AddOption($objDate->Format($now, 'EEEE d MMMM'), 'EEEE d MMMM');
         $dFormat->SetDefault($this->gadget->registry->fetch('date_format'));
         $tpl->SetVariable('lbl_date_format', $this::t('DATE_FORMAT'));
         $tpl->SetVariable('date_format', $dFormat->Get());
