@@ -369,7 +369,7 @@ class Jaws_Date_Jalali extends Jaws_Date
 
                 case 'E':
                     if (substr($format, $i, 4) === 'EEEE') {
-                        $return.= this->DayString($date['weekDay']);
+                        $return.= $this->DayString($date['weekDay']);
                         $i+=3;
                     } else {
                         $return.= $this->DayShortString($date['weekDay']);
@@ -387,7 +387,7 @@ class Jaws_Date_Jalali extends Jaws_Date
 
                 case 'M':
                     if (substr($format, $i, 4) === 'MMMM') {
-                        $return.= this->MonthString($date['month']);
+                        $return.= $this->MonthString($date['month']);
                         $i+=3;
                     } elseif (substr($format, $i, 3) === 'MMM') {
                         $return.= $this->MonthShortString($date['month']);

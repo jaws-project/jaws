@@ -190,7 +190,7 @@ class Jaws_Date_Gregorian extends Jaws_Date
 
                     case 'E':
                         if (substr($format, $i, 4) === 'EEEE') {
-                            $return.= this->DayString(date('w', $date));
+                            $return.= $this->DayString(date('w', $date));
                             $i+=3;
                         } else {
                             $return.= $this->DayShortString(date('w', $date));
