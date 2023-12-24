@@ -30,10 +30,10 @@ class Poll_Actions_Admin_Ajax extends Jaws_Gadget_Action
         if (isset($poll['id'])) {
             $objDate = Jaws_Date::getInstance();
             if (!empty($poll['start_time'])) {
-                $poll['start_time'] = $objDate->Format($poll['start_time'], 'Y-m-d H:i:s');
+                $poll['start_time'] = $objDate->Format($poll['start_time'], 'yyyy-MM-dd HH:mm:ss');
             }
             if (!empty($poll['stop_time'])) {
-                $poll['stop_time'] = $objDate->Format($poll['stop_time'], 'Y-m-d H:i:s');
+                $poll['stop_time'] = $objDate->Format($poll['stop_time'], 'yyyy-MM-dd HH:mm:ss');
             }
         }
 
