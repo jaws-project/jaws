@@ -128,7 +128,7 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
         }
 
         $date = Jaws_Date::getInstance();
-        $comment['insert_time'] = $date->Format($comment['insert_time'], 'Y-m-d H:i:s');
+        $comment['insert_time'] = $date->Format($comment['insert_time'], 'yyyy-MM-dd HH:mm:ss');
 
         return $this->gadget->session->response(
             '',

@@ -265,7 +265,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 if ($entry['user_registered_date']) {
                     $tpl->SetBlock($block . '/entry/registered_date');
                     $tpl->SetVariable('registered_date_lbl', $this::t('USERS_REGISTERED_DATE'));
-                    $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MN Y'));
+                    $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MMMM yyyy'));
                     $tpl->ParseBlock($block . '/entry/registered_date');
                 }
 
@@ -469,7 +469,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 if ($entry['user_registered_date']) {
                     $tpl->SetBlock($block . '/entry/registered_date');
                     $tpl->SetVariable('registered_date_lbl', $this::t('USERS_REGISTERED_DATE'));
-                    $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MN Y'));
+                    $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MMMM yyyy'));
                     $tpl->ParseBlock($block . '/entry/registered_date');
                 }
 
@@ -630,7 +630,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
                 if ($entry['user_registered_date']) {
                     $tpl->SetBlock('comments/entry/registered_date');
                     $tpl->SetVariable('registered_date_lbl', $this::t('USERS_REGISTERED_DATE'));
-                    $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MN Y'));
+                    $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'd MMMM yyyy'));
                     $tpl->ParseBlock('comments/entry/registered_date');
                 }
 
