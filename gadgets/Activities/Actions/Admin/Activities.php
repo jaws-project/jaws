@@ -193,7 +193,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
             // Hits
             $activityData['hits'] = $activity['hits'];
             // Date
-            $activityData['date'] = $date->Format($activity['date'], 'Y-m-d');
+            $activityData['date'] = $date->Format($activity['date'], 'yyyy-MM-dd');
             $gridData[] = $activityData;
         }
         return $gridData;
