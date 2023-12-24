@@ -111,7 +111,7 @@ class Forums_Actions_Forums extends Jaws_Gadget_Action
 
         // date format
         $date_format = $this->gadget->registry->fetch('date_format');
-        $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+        $date_format = empty($date_format)? 'EEEE dd MMMM yyyy' : $date_format;
 
         // posts per page
         $posts_limit = $this->gadget->registry->fetch('posts_limit');

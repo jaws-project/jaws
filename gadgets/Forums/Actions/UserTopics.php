@@ -37,7 +37,7 @@ class Forums_Actions_UserTopics extends Jaws_Gadget_Action
         if (!Jaws_Error::IsError($topics)) {
             // date format
             $date_format = $this->gadget->registry->fetch('date_format');
-            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            $date_format = empty($date_format)? 'EEEE dd MMMM yyyy' : $date_format;
 
             $max_size = 128;
             $objDate = Jaws_Date::getInstance();

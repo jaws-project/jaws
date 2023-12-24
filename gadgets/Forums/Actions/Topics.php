@@ -78,7 +78,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
         // date format
         $date_format = $this->gadget->registry->fetch('date_format');
-        $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+        $date_format = empty($date_format)? 'EEEE dd MMMM yyyy' : $date_format;
 
         // posts per page
         $posts_limit = $this->gadget->registry->fetch('posts_limit');
@@ -250,7 +250,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
         if (!empty($topic['id'])) {
             // date format
             $date_format = $this->gadget->registry->fetch('date_format');
-            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            $date_format = empty($date_format)? 'EEEE dd MMMM yyyy' : $date_format;
             // post meta data
             $tpl->SetBlock('topic/post_meta');
             $tpl->SetVariable('postedby_lbl',$this::t('POSTEDBY'));
@@ -660,7 +660,7 @@ class Forums_Actions_Topics extends Jaws_Gadget_Action
 
             // date format
             $date_format = $this->gadget->registry->fetch('date_format');
-            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            $date_format = empty($date_format)? 'EEEE dd MMMM yyyy' : $date_format;
             // post meta data
             $tpl->SetVariable('postedby_lbl',$this::t('POSTEDBY'));
             $tpl->SetVariable('username', $topic['username']);

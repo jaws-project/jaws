@@ -65,7 +65,7 @@ class Forums_Actions_RecentTopics extends Jaws_Gadget_Action
         if (!Jaws_Error::IsError($topics)) {
             // date format
             $date_format = $this->gadget->registry->fetch('date_format');
-            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            $date_format = empty($date_format)? 'EEEE dd MMMM yyyy' : $date_format;
 
             // posts per page
             $posts_limit = $this->gadget->registry->fetch('posts_limit');

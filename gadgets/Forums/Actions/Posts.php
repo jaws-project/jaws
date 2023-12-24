@@ -71,7 +71,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
         // date format
         $date_format = $this->gadget->registry->fetch('date_format');
-        $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+        $date_format = empty($date_format)? 'EEEE dd MMMM yyyy' : $date_format;
 
         // edit max/min limit time
         $edit_max_limit_time = (int)$this->gadget->registry->fetch('edit_max_limit_time');
@@ -93,7 +93,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
                 'user_posts',
                 $this->gadget->urlMap('UserPosts', array('user' => $post['username']))
             );
-            $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'd MN Y'));
+            $tpl->SetVariable('registered_date', $objDate->Format($post['user_registered_date'], 'd MMMM yyyy'));
             $tpl->SetVariable('insert_time', $objDate->Format($post['insert_time'], $date_format));
             $tpl->SetVariable('insert_time_iso', $objDate->ToISO((int)$post['insert_time']));
             $tpl->SetVariable('post_id',  $post['id']);
@@ -331,7 +331,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
         if (!empty($post['id'])) {
             // date format
             $date_format = $this->gadget->registry->fetch('date_format');
-            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            $date_format = empty($date_format)? 'EEEE dd MMMM yyyy' : $date_format;
             // post meta data
             $tpl->SetBlock('post/post_meta');
             $tpl->SetVariable('postedby_lbl',$this::t('POSTEDBY'));
@@ -668,7 +668,7 @@ class Forums_Actions_Posts extends Jaws_Gadget_Action
 
             // date format
             $date_format = $this->gadget->registry->fetch('date_format');
-            $date_format = empty($date_format)? 'DN d MN Y' : $date_format;
+            $date_format = empty($date_format)? 'EEEE dd MMMM yyyy' : $date_format;
             // post meta data
             $tpl->SetVariable('postedby_lbl',$this::t('POSTEDBY'));
             $tpl->SetVariable('username', $post['username']);
