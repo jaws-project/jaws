@@ -184,7 +184,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
 
         // Maybe we need to get date from MDB2
         $objDate = Jaws_Date::getInstance();
-        $now = $objDate->Format(time(), 'Y-m-d H:i:s');
+        $now = $objDate->Format(time(), 'yyyy-MM-dd HH:mm:ss');
         $pubdate =& Piwi::CreateWidget('DatePicker', 'pubdate', $now);
         $pubdate->SetId('pubdate');
         $pubdate->setDateFormat('%Y-%m-%d %H:%M:%S');
@@ -526,7 +526,7 @@ class Blog_Actions_Admin_Entries extends Blog_Actions_Admin_Default
         $tpl->SetVariable('timestamp_check', $tsChk->Get());
 
         $objDate = Jaws_Date::getInstance();
-        $pubTime = $objDate->Format($entry['publishtime'], 'Y-m-d H:i:s');
+        $pubTime = $objDate->Format($entry['publishtime'], 'yyyy-MM-dd HH:mm:ss');
         $pubdate =& Piwi::CreateWidget('DatePicker', 'pubdate', $pubTime);
         $pubdate->SetId('pubdate');
         $pubdate->setDateFormat('%Y-%m-%d %H:%M:%S');

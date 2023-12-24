@@ -30,13 +30,13 @@ class Blog_Actions_Archive extends Blog_Actions_Default
         if (!Jaws_Error::IsError($archiveEntries)) {
             $date = Jaws_Date::getInstance();
             foreach ($archiveEntries as $entry) {
-                $currentMonth = $date->Format($entry['publishtime'], 'MN');
+                $currentMonth = $date->Format($entry['publishtime'], 'MMMM');
                 if ($currentMonth != $auxMonth) {
                     if ($auxMonth != '') {
                         $tpl->ParseBlock('archive/month');
                     }
                     $tpl->SetBlock('archive/month');
-                    $year = $date->Format($entry['publishtime'], 'Y');
+                    $year = $date->Format($entry['publishtime'], 'yyyy');
                     $tpl->SetVariable('month', $currentMonth);
                     $tpl->SetVariable('year', $year);
                     $auxMonth = $currentMonth;
@@ -45,10 +45,10 @@ class Blog_Actions_Archive extends Blog_Actions_Default
                 $tpl->SetVariable('id', $entry['id']);
                 $tpl->SetVariable('date',           $date->Format($entry['publishtime']));
                 $tpl->SetVariable('date-monthname', $currentMonth);
-                $tpl->SetVariable('date-month',     $date->Format($entry['publishtime'], 'm'));
+                $tpl->SetVariable('date-month',     $date->Format($entry['publishtime'], 'M'));
                 $tpl->SetVariable('date-day',       $date->Format($entry['publishtime'], 'd'));
                 $tpl->SetVariable('date-year',      $year);
-                $tpl->SetVariable('date-time',      $date->Format($entry['publishtime'], 'g:ia'));
+                $tpl->SetVariable('date-time',      $date->Format($entry['publishtime'], 'h:m aa'));
                 $tpl->SetVariable('title', $entry['title']);
 
 

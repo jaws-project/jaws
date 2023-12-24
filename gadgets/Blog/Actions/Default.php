@@ -32,7 +32,7 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
                 $dpModel = $this->gadget->model->load('DatePosts');
                 $dates = $dpModel->GetPostsDateLimitation(true);
                 $date = Jaws_Date::getInstance();
-                $mDate = $date->Format($dates['max_date'], 'Y-m');
+                $mDate = $date->Format($dates['max_date'], 'yyyy-MM');
                 $mDate = explode('-', $mDate);
                 $dateHTML = $this->gadget->action->load('DatePosts');
                 return $dateHTML->ViewDatePage($mDate[0], $mDate[1]);
@@ -105,14 +105,14 @@ class Blog_Actions_Default extends Jaws_Gadget_Action
         $date = Jaws_Date::getInstance();
         $tpl->SetVariable('createtime-iso',       $date->ToISO($entry['publishtime']));
         $tpl->SetVariable('createtime',           $date->Format($entry['publishtime']));
-        $tpl->SetVariable('createtime-monthname', $date->Format($entry['publishtime'], 'MN'));
-        $tpl->SetVariable('createtime-monthabbr', $date->Format($entry['publishtime'], 'M'));
-        $tpl->SetVariable('createtime-month',     $date->Format($entry['publishtime'], 'm'));
-        $tpl->SetVariable('createtime-dayname',   $date->Format($entry['publishtime'], 'DN'));
-        $tpl->SetVariable('createtime-dayabbr',   $date->Format($entry['publishtime'], 'D'));
+        $tpl->SetVariable('createtime-monthname', $date->Format($entry['publishtime'], 'MMMM'));
+        $tpl->SetVariable('createtime-monthabbr', $date->Format($entry['publishtime'], 'MM'));
+        $tpl->SetVariable('createtime-month',     $date->Format($entry['publishtime'], 'M'));
+        $tpl->SetVariable('createtime-dayname',   $date->Format($entry['publishtime'], 'EEEE'));
+        $tpl->SetVariable('createtime-dayabbr',   $date->Format($entry['publishtime'], 'dd'));
         $tpl->SetVariable('createtime-day',       $date->Format($entry['publishtime'], 'd'));
-        $tpl->SetVariable('createtime-year',      $date->Format($entry['publishtime'], 'Y'));
-        $tpl->SetVariable('createtime-time',      $date->Format($entry['publishtime'], 'g:ia'));
+        $tpl->SetVariable('createtime-year',      $date->Format($entry['publishtime'], 'yyyy'));
+        $tpl->SetVariable('createtime-time',      $date->Format($entry['publishtime'], 'h:m aa'));
         $tpl->SetVariable('entry-visits',         $this::t('ENTRY_VISITS', $entry['clicks']));
 
         if(empty($entry['image'])) {

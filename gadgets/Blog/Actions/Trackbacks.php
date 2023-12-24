@@ -90,14 +90,14 @@ class Blog_Actions_Trackbacks extends Blog_Actions_Default
                     $tpl->SetVariablesArray($tb);
                     $tpl->SetVariable('createtime-iso',       $tb['createtime']);
                     $tpl->SetVariable('createtime',           $date->Format($tb['createtime']));
-                    $tpl->SetVariable('createtime-monthname', $date->Format($tb['createtime'], 'MN'));
-                    $tpl->SetVariable('createtime-monthabbr', $date->Format($tb['createtime'], 'M'));
-                    $tpl->SetVariable('createtime-month',     $date->Format($tb['createtime'], 'm'));
-                    $tpl->SetVariable('createtime-dayname',   $date->Format($tb['createtime'], 'DN'));
-                    $tpl->SetVariable('createtime-dayabbr',   $date->Format($tb['createtime'], 'D'));
+                    $tpl->SetVariable('createtime-monthname', $date->Format($tb['createtime'], 'MMMM'));
+                    $tpl->SetVariable('createtime-monthabbr', $date->Format($tb['createtime'], 'MM'));
+                    $tpl->SetVariable('createtime-month',     $date->Format($tb['createtime'], 'M'));
+                    $tpl->SetVariable('createtime-dayname',   $date->Format($tb['createtime'], 'EEEE'));
+                    $tpl->SetVariable('createtime-dayabbr',   $date->Format($tb['createtime'], 'dd'));
                     $tpl->SetVariable('createtime-day',       $date->Format($tb['createtime'], 'd'));
-                    $tpl->SetVariable('createtime-year',      $date->Format($tb['createtime'], 'Y'));
-                    $tpl->SetVariable('createtime-time',      $date->Format($tb['createtime'], 'g:ia'));
+                    $tpl->SetVariable('createtime-year',      $date->Format($tb['createtime'], 'yyyy'));
+                    $tpl->SetVariable('createtime-time',      $date->Format($tb['createtime'], 'h:m aa'));
                     $tpl->ParseBlock('trackbacks/item');
                 }
             }

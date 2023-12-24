@@ -50,8 +50,8 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
             return false;
         }
 
-        $min_date = $this->app->UserTime2UTC($min_date['timestamp'], 'Y-m-d H:i:s');
-        $max_date = $this->app->UserTime2UTC($max_date['timestamp'], 'Y-m-d H:i:s');
+        $min_date = $this->app->UserTime2UTC($min_date['timestamp'], 'yyyy-MM-dd HH:mm:ss');
+        $max_date = $this->app->UserTime2UTC($max_date['timestamp'], 'yyyy-MM-dd HH:mm:ss');
 
         $pModel = $this->gadget->model->load('Posts');
         $dpModel = $this->gadget->model->load('DatePosts');
@@ -131,8 +131,8 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
         $dLimit  = $model->GetPostsDateLimitation(true);
         if ($dLimit['qty_posts'] != 0) {
             if (empty($month)) {
-                $dLimit['max_date'] = $objDate->Format($dLimit['max_date'], 'Y');
-                $dLimit['min_date'] = $objDate->Format($dLimit['min_date'], 'Y');
+                $dLimit['max_date'] = $objDate->Format($dLimit['max_date'], 'yyyy');
+                $dLimit['min_date'] = $objDate->Format($dLimit['min_date'], 'yyyy');
                 $pDate = $year - 1;
                 if ($pDate >= $dLimit['min_date']) {
                     $purl  = $this->gadget->urlMap('ViewDatePage', array('year'  => $pDate));
@@ -145,8 +145,8 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
                     $ntitle = $nDate;
                 }
             } elseif (empty($day)) {
-                $dLimit['max_date'] = $objDate->Format($dLimit['max_date'], 'Y-m');
-                $dLimit['min_date'] = $objDate->Format($dLimit['min_date'], 'Y-m');
+                $dLimit['max_date'] = $objDate->Format($dLimit['max_date'], 'yyyy-MM');
+                $dLimit['min_date'] = $objDate->Format($dLimit['min_date'], 'yyyy-MM');
                 $pDate = $objDate->GetDateInfo($year, $month - 1, 1);
                 $pDate = $pDate['year'].'-'.$pDate['mon'];
                 if ($pDate >= $dLimit['min_date']) {
@@ -169,8 +169,8 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
                     $ntitle = $objDate->MonthString($nDate[1]) . ' ' . $nDate[0];
                 }
             } else {
-                $dLimit['max_date'] = $objDate->Format($dLimit['max_date'], 'Y-m-d');
-                $dLimit['min_date'] = $objDate->Format($dLimit['min_date'], 'Y-m-d');
+                $dLimit['max_date'] = $objDate->Format($dLimit['max_date'], 'yyyy-MM-dd');
+                $dLimit['min_date'] = $objDate->Format($dLimit['min_date'], 'yyyy-MM-dd');
                 $pDate = $objDate->GetDateInfo($year, $month, $day - 1);
                 $pDate = $pDate['year'].'-'.$pDate['mon'].'-'.$pDate['mday'];
                 if ($pDate >= $dLimit['min_date']) {
@@ -264,7 +264,7 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
         $cal = new Jaws_Calendar('gadgets/Blog/Templates/');
         //By default.
         $objDate = Jaws_Date::getInstance();
-        $dt = explode('-', $objDate->Format(time(), 'Y-m-d'));
+        $dt = explode('-', $objDate->Format(time(), 'yyyy-MM-dd'));
         $year  = $dt[0];
         $month = $dt[1];
         $day   = $dt[2];
@@ -316,12 +316,12 @@ class Blog_Actions_DatePosts extends Blog_Actions_Default
         $cal->addArrow('right', $date->MonthString($rmonth) . '&raquo;', $url);
 
         $model = $this->gadget->model->load('DatePosts');
-        $bgnDate = $objDate->ToBaseDate($year, $month, 1, 0, 0, 0, 'Y-m-d H:i:s');
-        $endDate = $objDate->ToBaseDate($year, $month + 1, 1, 0, 0, 0, 'Y-m-d H:i:s');
+        $bgnDate = $objDate->ToBaseDate($year, $month, 1, 0, 0, 0, 'yyyy-MM-dd HH:mm:ss');
+        $endDate = $objDate->ToBaseDate($year, $month + 1, 1, 0, 0, 0, 'yyyy-MM-dd HH:mm:ss');
         $entries = $model->GetEntriesAsCalendar($bgnDate, $endDate);
         if (!Jaws_Error::IsError($entries)) {
             foreach ($entries as $e) {
-                $edt = explode('-', $objDate->Format($e['publishtime'], 'Y-m-d'));
+                $edt = explode('-', $objDate->Format($e['publishtime'], 'yyyy-MM-dd'));
                 $cal->AddItem(
                     $edt[0],
                     $edt[1],

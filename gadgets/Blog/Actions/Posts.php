@@ -197,11 +197,11 @@ class Blog_Actions_Posts extends Blog_Actions_Default
                 $this->gadget->urlMap('ViewAuthorPage', array('id' => $e['username']))
             );
             $tpl->SetVariable('createtime', $date->Format($e['publishtime']));
-            $tpl->SetVariable('createtime-monthname', $date->Format($e['publishtime'], 'MN'));
-            $tpl->SetVariable('createtime-month', $date->Format($e['publishtime'], 'm'));
+            $tpl->SetVariable('createtime-monthname', $date->Format($e['publishtime'], 'MMMM'));
+            $tpl->SetVariable('createtime-month', $date->Format($e['publishtime'], 'M'));
             $tpl->SetVariable('createtime-day', $date->Format($e['publishtime'], 'd'));
-            $tpl->SetVariable('createtime-year', $date->Format($e['publishtime'], 'Y'));
-            $tpl->SetVariable('createtime-time', $date->Format($e['publishtime'], 'g:ia'));
+            $tpl->SetVariable('createtime-year', $date->Format($e['publishtime'], 'yyyy'));
+            $tpl->SetVariable('createtime-time', $date->Format($e['publishtime'], 'h:m aa'));
 
             if(empty($e['image'])) {
                 $tpl->SetVariable('image', Jaws::t('NOIMAGE'));
