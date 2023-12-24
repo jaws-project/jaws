@@ -35,7 +35,7 @@ class VisitCounter_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         $this->gadget->CheckPermission('ResetCounter');
         $model = $this->gadget->model->loadAdmin('Visitors');
-        $model->SetStartDate(date('Y-m-d H:i:s'));
+        $model->SetStartDate(date('yyyy-MM-dd HH:mm:ss'));
         $model->ResetCounter();
         return $this->gadget->session->pop();
     }
