@@ -63,16 +63,16 @@ class Settings_Model_Admin_Settings extends Jaws_Gadget_Model
         $dt_formats = array();
         $time = time();
         $date = Jaws_Date::getInstance();
-        $dt_formats['MN j, g:i a']     = $date->Format($time, 'MN j, g:i a');
-        $dt_formats['j.m.y']           = $date->Format($time, 'j.m.y');
-        $dt_formats['j MN, g:i a']     = $date->Format($time, 'j MN, g:i a');
-        $dt_formats['y.m.d, g:i a']    = $date->Format($time, 'y.m.d, g:i a');
-        $dt_formats['d MN Y']          = $date->Format($time, 'd MN Y');
-        $dt_formats['DN d MN Y']       = $date->Format($time, 'DN d MN Y');
-        $dt_formats['DN d MN Y g:i a'] = $date->Format($time, 'DN d MN Y g:i a');
-        $dt_formats['j MN y']          = $date->Format($time, 'j MN y');
-        $dt_formats['j m Y - H:i']     = $date->Format($time, 'j m Y - H:i');
-        $dt_formats['AGO']             = $date->Format($time, 'since');
+        $dt_formats['MMMM d, h:mm aa']  = $date->Format($time, 'MMMM d, h:mm aa');
+        $dt_formats['dd.MM.yy']         = $date->Format($time, 'dd.MM.yy');
+        $dt_formats['d MMMM, h:mm aa']  = $date->Format($time, 'd MMMM, h:mm aa');
+        $dt_formats['yy.MM.d, h:mm aa'] = $date->Format($time, 'yy.MM.d, h:mm aa');
+        $dt_formats['dd MMMM yyyy']     = $date->Format($time, 'dd MMMM yyyy');
+        $dt_formats['EEEE d MMMM yyyy'] = $date->Format($time, 'EEEE d MMMM yyyy');
+        $dt_formats['EEEE d MMMM yyyy h:mm aa'] = $date->Format($time, 'EEEE d MMMM yyyy h:mm aa');
+        $dt_formats['d MMMM yy'] = $date->Format($time, 'd MMMM yy');
+        $dt_formats['d MM yyyy - H:mm'] = $date->Format($time, 'd MM yyyy - H:mm');
+        $dt_formats['AGO'] = $date->Format($time, 'since');
 
         return $dt_formats;
     }
