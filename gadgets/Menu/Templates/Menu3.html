@@ -1,28 +1,19 @@
-<div class="gadget_header"></div>
-  <div class="gadget_container">
-    <nav class="navbar">
-      <div class="gadget_content">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-            data-target="#navbar-{{group.id}}" aria-expanded="false"
-          >
-            <span class="sr-only"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          {%- if home %}
-          <a class="navbar-brand" href="{{home.url}}">
-            <i class="{{home.symbol}}"></i><span>{{home.title}}</span>
-          </a>
-          {%- endif %}
-        </div>
-        <div class="collapse navbar-collapse" id="navbar-{{group.id}}">
-          <ul class="nav nav-pills nav-stacked">
-            {%- include 'MenuLevels.html' with levels as menus %}
-          </ul>
-        </div>
+<div class="gadget_container w-100">
+  <nav class="navbar navbar-expand bg-body-tertiary">
+    <div class="gadget_content container-fluid flex-column align-items-start gx-0">
+      {%- if home %}
+      <a class="navbar-brand ms-2" href="{{home.url}}">
+        <i class="{{home.symbol}}"></i><span>{{home.title}}</span>
+      </a>
+      {%- endif %}
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-{{group.id}}">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse flex-column" id="navbar-{{group.id}}">
+        <ul class="navbar-nav flex-column me-auto mb-2 mb-lg-0">
+          {%- include 'Menu3Levels.html' with levels as menus %}
+        </ul>
       </div>
-    </nav>
-  </div>
-<div class="gadget_footer"></div>
+    </div>
+  </nav>
+</div>

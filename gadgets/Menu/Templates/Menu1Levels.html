@@ -1,0 +1,18 @@
+{%- for menu in menus %}
+  {%- if menu.items | size %}
+  <li class="nav-item dropdown {{class}} {{- nested | true: ' dropend'}}">
+    <a class="nav-link dropdown-toggle" href="{{menu.url}}" data-bs-toggle="dropdown" role="button">
+      <i class="{{menu.symbol}}"></i>{{menu.image}}<span>{{menu.title}}</span>
+    </a>
+    <ul class="dropdown-menu">
+      {%- include 'Menu1Levels.html' with menu.items as menus nested:true %}
+    </ul>
+  </li>
+  {%- else %}
+  <li class="nav-item {{class}}">
+    <a class="nav-link {{- nested | true: ' dropdown-item'}}" href="{{menu.url}}">
+      <i class="{{menu.symbol}}"></i>{{menu.image}}<span>{{menu.title}}</span>
+    </a>
+  </li>
+  {%- endif %}
+{%- endfor %}
