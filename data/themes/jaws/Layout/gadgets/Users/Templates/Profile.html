@@ -1,0 +1,164 @@
+<!-- BEGIN profile -->
+<div class="gadget-header d-flex align-items-center justify-content-between mb-2">
+  <h5 class="m-0 me-2 py-1">{{title}}</h5>
+  <!-- INCLUDE MenuNavigation.html include/Jaws/Resources -->
+</div>
+<div class="gadget-container">
+  <div class="gadget-content">
+    <div class="row">
+      <div class="col-12 col-md-3">
+        <img src="{{avatar}}" alt="{{username}}" title="{{nickname}}" />
+      </div>
+      <div class="col-12 col-md-9">
+        <div class="accordion" id="accordion-profile">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-profile-account" aria-expanded="true" aria-controls="collapseOne">
+                {{lbl_account}}
+              </button>
+            </h2>
+            <div id="accordion-profile-account" class="accordion-collapse collapse" data-bs-parent="#accordion-profile">
+              <div class="accordion-body">
+                <dl class="row gy-2">
+                  <dt class="col-4 col-md-2">{{lbl_username}}:</dt>
+                  <dd class="col-8 col-md-4">{{username}}</dd>
+                  <dt class="col-4 col-md-2">{{lbl_nickname}}:</dt>
+                  <dd class="col-8 col-md-4">{{nickname}}</dd>
+                  <dt class="col-4 col-md-2">{{lbl_email}}:</dt>
+                  <dd class="col-8 col-md-4">{{email}}</dd>
+                  <dt class="col-4 col-md-2">{{lbl_mobile}}:</dt>
+                  <dd class="col-8 col-md-4">{{mobile}}</dd>
+                  <dt class="col-4 col-md-2">{{lbl_registered_date}}:</dt>
+                  <dd class="col-8 col-md-4">{{registered_date}}</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <!-- BEGIN public -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-profile-private" aria-expanded="true" aria-controls="collapseOne">
+                {{lbl_private}}
+              </button>
+            </h2>
+            <div id="accordion-profile-private" class="accordion-collapse collapse" data-bs-parent="#accordion-profile">
+              <div class="accordion-body">
+                <dl class="row gy-2">
+                  <dt class="col-4 col-md-2">{{lbl_fname}}:</dt>
+                  <dd class="col-8 col-md-4">{{fname}}</dd>
+                  <dt class="col-4 col-md-2">{{lbl_lname}}:</dt>
+                  <dd class="col-8 col-md-4">{{lname}}</dd>
+                  <dt class="col-4 col-md-2">{{lbl_gender}}:</dt>
+                  <dd class="col-8 col-md-4">{{gender}}</dd>
+                  <dt class="col-4 col-md-2">{{lbl_ssn}}:</dt>
+                  <dd class="col-8 col-md-4">{{ssn}}</dd>
+                  <dt class="col-4 col-md-2">{{lbl_dob}}:</dt>
+                  <dd class="col-8 col-md-4">{{dob}}</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-profile-public" aria-expanded="true" aria-controls="collapseOne">
+                {{lbl_public}}
+              </button>
+            </h2>
+            <div id="accordion-profile-public" class="accordion-collapse collapse" data-bs-parent="#accordion-profile">
+              <div class="accordion-body">
+                <dl class="row gy-2">
+                    <dt class="col-sm-4">{{lbl_url}}:</dt>
+                    <dd class="col-sm-8">
+                      <!-- BEGIN website --><a href="{{url}}" target="_blank" rel="nofollow">{{url}}</a><!-- END website -->
+                    </dd>
+                    <dt class="col-4 col-md-2">{{lbl_about}}:</dt>
+                    <dd class="col-8 col-md-4">{{about}}</dd>
+                    <dt class="col-4 col-md-2">{{lbl_experiences}}:</dt>
+                    <dd class="col-8 col-md-4">{{experiences}}</dd>
+                    <dt class="col-4 col-md-2">{{lbl_occupations}}:</dt>
+                    <dd class="col-8 col-md-4">{{occupations}}</dd>
+                    <dt class="col-4 col-md-2">{{lbl_interests}}:</dt>
+                    <dd class="col-8 col-md-4">{{interests}}</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+          <!-- END public -->
+
+          <!-- BEGIN attributes -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-profile-attributes" aria-expanded="true" aria-controls="collapseOne">
+                tttttttttttttttttttttttttttttt
+              </button>
+            </h2>
+            <div id="accordion-profile-attributes" class="accordion-collapse collapse" data-bs-parent="#accordion-profile">
+              <div class="accordion-body">
+
+                <ul class="nav flex-column">
+                  <!-- BEGIN gadget -->
+                  <li class="nav-item">
+                    <div class="row">
+                      <div class="col-4 col-md-3">
+                        <a class="nav-link p-0" data-bs-toggle="collapse" href="#{{gadget}}-attributes">{{lbl_gadget}}:</a>
+                      </div>
+                      <div class="col-8 col-md-9 collapse" id="{{gadget}}-attributes">
+                        <dl class="row">
+                          <!-- BEGIN item -->
+                          <dt class="col-8 col-md-4">{{title}}:</dt>
+                          <dd class="col-4 col-md-2">{{value}}</dd>
+                          <!-- END item -->
+                        </dl>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- END gadget -->
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- END attributes -->
+
+          <!-- BEGIN activity -->
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-profile-activities" aria-expanded="true" aria-controls="collapseOne">
+                {{lbl_activities}}
+              </button>
+            </h2>
+            <div id="accordion-profile-activities" class="accordion-collapse collapse" data-bs-parent="#accordion-profile">
+              <div class="accordion-body">
+
+                <ul class="nav flex-column">
+                  <!-- BEGIN gadget -->
+                  <li class="nav-item">
+                    <div class="row">
+                      <div class="col-4 col-md-3">
+                        <a class="nav-link p-0" data-bs-toggle="collapse" href="#{{gadget}}-activities">{{lbl_gadget}}:</a>
+                      </div>
+                      <div class="col-8 col-md-9 collapse" id="{{gadget}}-activities">
+                        <dl class="row">
+                          <!-- BEGIN item -->
+                          <dt class="col-8 col-md-4">{{title}}</dt>
+                          <dd class="col-4 col-md-2"><a href="{{url}}"><!-- BEGIN count -->{{count}} <!-- END count --></a></dd>
+                          <!-- END item -->
+                        </dl>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- END gadget -->
+                </ul>
+
+              </div>
+            </div>
+          </div>
+          <!-- END activity -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="gadget-footer" hidden></div>
+<!-- END profile -->

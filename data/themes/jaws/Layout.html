@@ -1,75 +1,115 @@
 <!DOCTYPE html>
 <!-- BEGIN layout -->
-<html lang="{{site-languages}}" dir="{{dir}}">
+<html lang="{{site-languages}}" dir="{{dir}}" data-bs-theme="light">
 <head>
   <base href="{{base_url}}" />
   <title>{{site-title}}</title>
   <meta name="author" content="{{site-author}}" />
   <meta name="keywords" content="{{site-keywords}}" />
   <meta name="description" content="{{site-description}}" />
+  <meta charset="utf-8" />
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, maximum-scale=2.0, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.rtl.css" />
+  <link rel="stylesheet" type="text/css" href="css/style.rtl.css" />
   <link rel="stylesheet" type="text/css" href="libraries/bootstrap/css/bootstrap{{.dir}}.min.css?{{site-buildnumber}}" />
-  <link rel="stylesheet" type="text/css" href="libraries/bootstrap/css/bootstrap-icons.min.css?{{site-buildnumber}}" />
-  <link rel="stylesheet" type="text/css" href="{{theme_url}}style{{.dir}}.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="libraries/font/fontawesome.min.css?{{site-buildnumber}}" />
+  <link rel="stylesheet" type="text/css" href="libraries/table/bootstrap-table.min.css?{{site-buildnumber}}" />
+  <link rel="stylesheet" type="text/css" href="libraries/css/select2.min.css?{{site-buildnumber}}" />
+  <link rel="stylesheet" type="text/css" href="libraries/css/select2-bootstrap-5-theme{{.dir}}.min.css?{{site-buildnumber}}" />
+  <link rel="stylesheet" type="text/css" href="libraries/datepicker/air-datepicker.css?{{site-buildnumber}}" />
+  <link rel="stylesheet" type="text/css" href="{{theme_url}}css/style{{.dir}}.css" media="screen" />
   <!-- BEGIN metas -->{{elements}}<!-- END metas -->
   <!-- BEGIN links -->{{elements}}<!-- END links -->
 </head>
-<body id="main_gadget_{{main_gadget}}" class="fuelux main_layout_{{main_layout}}" data-loading-container="layout.layout">
-
-  <div id="container" class="wrapper">
-    <header>
-      <div class="row">
-        <div class="col-sm-5 site-header">
-          <h1><a href="{{site-url}}">{{site-name}}</a></h1>
-          <p>{{site-slogan}}</p>
+<body id="main_gadget_{{main_gadget}}" data-loading-container="layout.layout">
+  <div class="wrapper">
+    <!-- header -->
+    <section id="topbar" class="position-sticky d-flex align-items-center">
+      <div class="container d-flex align-items-center justify-content-between">
+        <div class="tobbar-brand d-flex align-items-center">
+          <a class="icon-link fs-3 text-decoration-none" href="{{site-url}}">
+            <img src="images/jaws48.png" alt="{{site-name}}" />
+            {{site-name}}
+          </a>
+          <span class="ms-2 fs-6 d-none d-md-block">{{site-slogan}}</span>
         </div>
-        <div class="col-sm-7" id="headbar">
-          <a class="accessibility" href="#mainbar"><img src="images/blank.gif" width="0" height="0" alt="{{skip_to_content}}" /></a>
+        <div class="topbar-navbar d-flex align-items-center">
           <!-- BEGIN header -->
-            <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
-            {{ELEMENT}}
-            </div>
+          {{ELEMENT}}
           <!-- END header -->
         </div>
       </div>
-    </header>
+    </section>
 
-    <div class="row" id="content">
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-7">
-        <!-- BEGIN main -->
-        <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}" data-action-mode="{{action_mode}}">
-          {{ELEMENT}}
-        </div>
-        <!-- END main -->
+    <!-- navigation -->
+    <section id="navigation" class="position-sticky">
+      <div class="container">
+        <!-- BEGIN navigation -->
+        {{ELEMENT}}
+        <!-- END navigation -->
       </div>
-      <div class="hidden-xs hidden-sm col-md-4 col-lg-3 sidebar">
-        <!-- BEGIN bar1 -->
-        <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
-          {{ELEMENT}}
+    </section>
+
+    <!-- main -->
+    <section>
+      <div class="container">
+        <div class="row">
+          <!-- sidebar -->
+          <div class="d-none d-md-flex col-md-3">
+            <!-- BEGIN sidebar -->
+            {{ELEMENT}}
+            <!-- END sidebar -->
+          </div>
+          <!-- mainbar -->
+          <div class="col-12 col-md-9">
+            <!-- main content -->
+            <div class="row">
+              <div class="col-12">
+                <!-- BEGIN main -->
+                {{ELEMENT}}
+                <!-- END main -->
+              </div>
+            </div>
+            <!-- buttom bars -->
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <!-- BEGIN bar1 -->
+                {{ELEMENT}}
+                <!-- END bar1 -->
+              </div>
+              <div class="col-12 col-md-6">
+                <!-- BEGIN bar2 -->
+                {{ELEMENT}}
+                <!-- END bar2 -->
+              </div>
+            </div>
+            <!-- footer -->
+            <div class="row">
+              <div class="col-12 d-flex align-items-center justify-content-between">
+                <p>{{site-copyright}}</p>
+                <div>
+                  <!-- BEGIN footer -->
+                  {{ELEMENT}}
+                  <!-- END footer -->
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- END bar1 -->
       </div>
-      <div class="hidden-xs hidden-sm hidden-md col-lg-2 sidebar">
-        <!-- BEGIN bar2 -->
-        <div class="gadget {{gadget}} {{gadget_action}} {{gadget_action_params}}">
-          {{ELEMENT}}
-        </div>
-        <!-- END bar2 -->
-      </div>
-    </div>
+    </section>
   </div>
 
-  <footer class="site-footer">
-    <div class="row">
-      <div class="wrapper">
-        {{site-copyright}} Powered by <a href="http://jaws-project.com" rel="external">Jaws Project</a>
-      </div>
-    </div>
-  </footer>
+  <!-- BEGIN appendix -->
+  {{appendix}}
+  <!-- END appendix -->
   <!-- BEGIN scripts -->
   {{elements}}
   <!-- END scripts -->
+  <script src="libraries/table/bootstrap-table.min.js?{{site-buildnumber}}"></script>
+  <script src="libraries/select/select2.full.min.js"></script>
+  <script src="libraries/datepicker/air-datepicker.js?{{site-buildnumber}}"></script>
 </body>
 </html>
 <!-- END layout -->

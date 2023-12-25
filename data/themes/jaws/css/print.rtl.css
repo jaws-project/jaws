@@ -1,0 +1,62 @@
+html {
+  border:0 none;
+  font-size:14px;
+  line-height:28px;
+  letter-spacing:0;
+  background: #fff;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+}
+
+* {
+  position: static !important;
+}
+.row {
+  margin: 0px;
+}
+
+.print-page-container {
+  margin: 8px;
+}
+
+header.print-page-header {
+  height: 100px;
+  position: fixed !important;
+  top: 0;
+  width: 100%;
+  border-bottom: 1px solid black;
+  background: #fff;
+}
+.print-page-header-space {
+  height: 100px;
+}
+
+footer.print-page-footer {
+  height: 50px;
+  position: fixed !important;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid black;
+  background: #fff;
+}
+.print-page-footer-space {
+  height: 50px;
+}
+
+.print-page-table {
+  width: 100%;
+}
+
+.main {
+  width: 100vw;
+  overflow-x: hidden;
+}
+.main table {
+  width: 100%
+}
+.main table td, .main table th {
+  border-bottom: 1px solid #000;
+}
