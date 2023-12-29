@@ -149,7 +149,7 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
         }
 
         // only plain values and string-able objects left at this point
-        return strlen($input);
+        return is_null($input)? 0 : strlen($input);
     }
 
     /**
