@@ -102,7 +102,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      */
     public static function newline_to_br($input)
     {
-        return is_string($input) ? nl2br($input) : $input;
+        return is_string($input)? Jaws_UTF8::str_replace("\n", '<br />', $input) : $input;
     }
 
     /**
@@ -154,11 +154,17 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      * @param string $input
      * @param string $string
      * @param string $replacement
+     * @param bool $stripcslashes
      *
      * @return string
      */
-    public static function replace($input, $string, $replacement = '')
+    public static function replace($input, $string, $replacement = '', $stripcslashes = false)
     {
+        if ($stripcslashes) {
+            $string = stripcslashes($string);
+            $replacement = stripcslashes($replacement);
+        }
+
         return str_replace($string, $replacement, $input);
     }
 
