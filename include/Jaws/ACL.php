@@ -478,9 +478,9 @@ class Jaws_ACL
 
         // session in restricted mode, only defined gadgets permission will be checked
         if (defined('SESSION_RESTRICTED_GADGETS')) {
-            static $authorized_gadgets;
-            if (!isset($authorized_gadgets)) {
-                $authorized_gadgets = array_filter(
+            static $restricteds;
+            if (!isset($restricteds)) {
+                $restricteds = array_filter(
                     array_map(
                         'trim',
                         explode(',', strtolower(SESSION_RESTRICTED_GADGETS))
@@ -488,7 +488,7 @@ class Jaws_ACL
                 );
             }
 
-            if (!in_array(strtolower($gadget), $authorized_gadgets)) {
+            if (!in_array(strtolower($gadget), $restricteds)) {
                 return 0;
             }
         }
@@ -532,6 +532,86 @@ class Jaws_ACL
         }
 
         return (int)$perm['default'];
+    }
+
+    /**
+     * Fetch all ACLs of current user and it's groups
+     *
+     * @access  public
+     * @return  array 
+     */
+    function fetchAllPermissions()
+    {
+        static $acls;
+        if (!isset($acls)) {
+            $acls = array(
+                'forbiddens' => array(),
+                'restricteds' => array(),
+                'components' => array(),
+            );
+            // is in forbidden acls?
+            if (defined('JAWS_FORBIDDEN_ACLS')) {
+                $forbidden_acls = array_filter(array_map('trim', explode(',', strtolower(JAWS_FORBIDDEN_ACLS))));
+                $acls['forbiddens'] = array_merge($acls['forbiddens'], $forbidden_acls);
+            }
+
+            if (defined('JAWS_GODUSER_ACLS') && defined('JAWS_GODUSER') && JAWS_GODUSER !== $user) {
+                $goduser_acls = array_filter(array_map('trim', explode(',', strtolower(JAWS_GODUSER_ACLS))));
+                $acls['forbiddens'] = array_merge($acls['forbiddens'], $goduser_acls);
+            }
+
+            // session in restricted mode, only defined gadgets permission will be checked
+            if (defined('SESSION_RESTRICTED_GADGETS')) {
+                $restricteds = array_filter(array_map('trim', explode(',', strtolower(SESSION_RESTRICTED_GADGETS))));
+                $acls['restricteds'] = $restricteds;
+            }
+
+            // default ACLs
+            foreach ($this->default_acls as $component => $keys) {
+                foreach ($keys as $key => $subkeys) {
+                    foreach ($subkeys as $subkey => $value) {
+                        $acls['components'][$component][$key][$subkey][] = array(
+                            'user'  => 0,
+                            'group' => 0,
+                            'value' => $value,
+                        );
+                    }
+                }
+            }
+
+            // users ACLs
+            foreach ($this->users_acls as $user => $user_acls) {
+                foreach ($user_acls as $component => $keys) {
+                    foreach ($keys as $key => $subkeys) {
+                        foreach ($subkeys as $subkey => $value) {
+                            $acls['components'][$component][$key][$subkey][] = array(
+                                'user'  => $user,
+                                'group' => 0,
+                                'value' => $value,
+                            );
+                        }
+                    }
+                }
+            }
+
+            // users ACLs
+            foreach ($this->groups_acls as $group => $group_acls) {
+                foreach ($group_acls as $component => $keys) {
+                    foreach ($keys as $key => $subkeys) {
+                        foreach ($subkeys as $subkey => $value) {
+                            $acls['components'][$component][$key][$subkey][] = array(
+                                'user'  => 0,
+                                'group' => $group,
+                                'value' => $value,
+                            );
+                        }
+                    }
+                }
+            }
+        }
+
+        return $acls;
+
     }
 
     /**
