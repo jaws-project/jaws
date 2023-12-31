@@ -162,7 +162,7 @@ class Jaws
         );
         $this->map->init();
         $this->session->init();
-        $this->acl->init($this->session->user->id, $this->session->user->groups);
+        $this->acl->init($this->session->user->id, array_keys($this->session->user->groups));
         $this->loadPreferences();
     }
 
