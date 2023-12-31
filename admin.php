@@ -4,11 +4,7 @@
  *
  * @category    Application
  * @package     Core
- * @author      Jonathan Hernandez <ion@suavizado.com>
- * @author      Pablo Fischer <pablo@pablo.com.mx>
- * @author      Helgi Þormar <dufuz@php.net>
- * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2005-2022 Jaws Development Group
+ * @copyright   2005-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 define('JAWS_SCRIPT', 'admin');
