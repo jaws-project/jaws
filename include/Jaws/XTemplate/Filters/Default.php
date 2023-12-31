@@ -326,6 +326,28 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
     }
 
     /**
+     * get permission on a gadget/task
+     *
+     * @param   string    $acl      ACL key name include gadget (ex. Users.EditUserName)
+     * @param   string    $subkey
+     *
+     * @return  integer
+     */
+    public static function permission($acl, $subkey = '')
+    {
+        if (Jaws::getInstance()->session->user->superadmin) {
+            return 0xff;
+        }
+
+        if (false === $gadget = strstr($acl, '.', true)) {
+            return 0;
+        }
+
+        $key = substr($acl, strlen($gadget) + 1);
+        return Jaws::getInstance()->session->getPermission($gadget, $key, $subkey);
+    }
+
+    /**
      * get global variables(theme_url, data_url, .dir, .browser, ...)
      *
      * @param   string    $var
