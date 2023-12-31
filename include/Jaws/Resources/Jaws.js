@@ -1566,6 +1566,7 @@ var Jaws_Gadget = (function () {
                 !Jaws.gadgets[gadget].hasOwnProperty('name')
             ) {
                 var objGadget = new (window['Jaws_Gadget_'+gadget] || Object);
+                objGadget.app = Jaws;
                 objGadget.name = gadget;
                 objGadget.gadget = objGadget;
 
@@ -1582,6 +1583,10 @@ var Jaws_Gadget = (function () {
                     dstGadget = typeof dstGadget !== 'undefined'? dstGadget : '';
                     broadcast = typeof broadcast !== 'undefined'? broadcast : true;
                     return Jaws.shout(objGadget, event, data, dstGadget, broadcast);
+                }
+
+                objGadget.permission = function(name, subkey = '') {
+                    return Jaws.permission(name, subkey, gadget);
                 }
 
                 objGadget.t = function(string, params) {
@@ -1625,6 +1630,7 @@ function Jaws_Gadget_Action() { return {
             !this.gadget.actions[action].hasOwnProperty('name')
         ) {
             var objAction = new (window['Jaws_Gadget_'+this.gadget.name+'_Action_'+action] || Object);
+            objAction.app = Jaws;
             objAction.name = action;
             objAction.gadget = this.gadget;
             // ajax interface
@@ -1871,8 +1877,62 @@ Jaws = {
     gadgets: [],
     actions: [],
     defines: {},
+    session: {},
+    permissions: {},
     filters: {},
     translations: {},
+
+    // define acl method for get permissions
+    permission: function(name, subkey, gadget) {
+        // is in forbidden acls?
+        if (Jaws.permissions.forbiddens.indexOf((gadget+':'+name).toLowerCase()) >= 0) {
+            return 0;
+        }
+        // session in restricted mode, only permissions of defined gadgets will be checked
+        if ((Jaws.permissions.restricteds.length > 0) &&
+            (Jaws.permissions.restricteds.indexOf(gadget.toLowerCase()) < 0)
+        ) {
+            return 0;
+        }
+        // don't check permissions for administrators
+        if (Jaws.session.user.superadmin) {
+            return 0xff;
+        }
+        // gadget
+        if (!Jaws.permissions.components.hasOwnProperty(gadget)) {
+            return 0;
+        }
+        // key name
+        if (!Jaws.permissions.components[gadget].hasOwnProperty(name)) {
+            return 0;
+        }
+        // subkey
+        if (!Jaws.permissions.components[gadget][name].hasOwnProperty(subkey) ||
+            Jaws.permissions.components[gadget][name][subkey].length == 0
+        ) {
+            return 0;
+        }
+        let perm = Jaws.permissions.components[gadget][name][subkey];
+        let perm_user = null;   // null is important
+        let perm_group = null;  // null is important
+        let perm_default = 0;
+        perm.forEach(function(item) {
+            // user permission
+            if (item.user) {
+                perm_user = item.value;
+            }
+            // combine group permissions
+            if (item.group) {
+                perm_group = perm_group | item.value;  // bitwise or
+            }
+            // default permission
+            if (!item.user && !item.group) {
+                perm_default = item.value;
+            }
+        });
+
+        return (perm_user !== null)? perm_user : (perm_group !== null? perm_group : perm_default);
+    },
 
     // define t method
     t: function(string, params, module) {
