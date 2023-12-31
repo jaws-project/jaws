@@ -123,7 +123,6 @@ class Jaws_Layout
         $this->app->define('', 'direction', Jaws::t('LANG_DIRECTION'));
         $this->app->define('', 'loadingMessage', Jaws::t('LOADING'));
         $this->app->define('', 'reloadMessage', Jaws::t('RELOAD_MESSAGE'));
-        $this->app->define('', 'logged', (bool)$this->app->session->user->logged);
         $this->app->define(
             '',
             'service_worker_enabled',
@@ -594,6 +593,25 @@ class Jaws_Layout
         $allDefines = $this->app->defines();
 
         $result.= "\tJaws.gadgets = {};\n";
+        $result.= "\tJaws.session = ". '$.parseJSON(\''. json_encode(
+            array(
+                'user' => array(
+                    'id'        => $this->app->session->user->id,
+                    'username'  => $this->app->session->user->username,
+                    'superadmin'=> $this->app->session->user->superadmin,
+                    'nickname'  => $this->app->session->user->nickname,
+                    'logged'    => $this->app->session->user->logged,
+                    'avatar'    => $this->app->session->user->avatar,
+                ),
+            ),
+            JSON_HEX_APOS
+        ). '\');'. "\n";
+
+        $result.= "\tJaws.permissions = ". '$.parseJSON(\''. json_encode(
+            $this->app->acl->fetchAllPermissions(),
+            JSON_HEX_APOS
+        ). '\');'. "\n";
+
         $result.= "\tJaws.defines = ". '$.parseJSON(\''. json_encode($allDefines[''], JSON_HEX_APOS). '\');'. "\n";
         unset($allDefines['']);
 
