@@ -15,8 +15,25 @@
  * Extra plugins for jQuery
  */
 jQuery.extend({
-    formArray: function($elements, removeBlanks = false) {
+    formArray: function($elements, removeBlanks = false, checkValidity = true) {
         let result = {};
+
+        if (checkValidity) {
+            let allElementsValidate = true;
+            $.each($elements, function(index, element) {
+                if (element.checkValidity()) {
+                    $(element).removeClass('is-invalid');
+                } else {
+                    allElementsValidate = false;
+                    $(element).addClass('is-invalid');
+                }
+            });
+            // return empty object if any element is invalidate
+            if (!allElementsValidate) {
+                return result;
+            }
+        }
+
         $.each($elements.serializeArray(), function (i, input) {
             if (removeBlanks && (input.value === undefined || input.value === null || input.value === '')) {
                 return;
@@ -1852,6 +1869,20 @@ $(document).ready(function() {
             return new bootstrap.Popover(this, {});
         }
     });
+
+    // check input, select, textarea validity
+    $('input,select,textarea').change(
+        function(event, initialize = false) {
+            if (initialize) {
+                return;
+            }
+            if (this.checkValidity()) {
+                $(this).removeClass('is-invalid');
+            } else {
+                $(this).addClass('is-invalid');
+            }
+        }
+    );
 
     // initializing
     Jaws.init();
