@@ -839,6 +839,17 @@ class Jaws_ORM
     }
 
     /**
+     * Builds from string
+     *
+     * @access  private
+     * @return  string  From string
+     */
+    private function _build_from()
+    {
+        return empty($this->_tablesIdentifier)? '' : ('from '. $this->_tablesIdentifier. "\n");
+    }
+
+    /**
      * Builds join string
      *
      * @access  private
@@ -952,7 +963,7 @@ class Jaws_ORM
         }
 
         $sql = 'select '. $this->_distinct. implode(', ', $this->_columns) . "\n";
-        $sql.= 'from '. $this->_tablesIdentifier. "\n";
+        $sql.= $this->_build_from();
         $sql.= $this->_build_join();
         $sql.= $this->_build_where();
         $sql.= $this->_build_groupBy();
