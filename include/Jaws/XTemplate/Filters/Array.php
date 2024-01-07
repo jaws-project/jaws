@@ -256,10 +256,11 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
      * @param string    $property
      * @param mixed     $value
      * @param bool      $logic
+     * @param bool      $strict case sensitive compare
      *
      * @return mixed    filtered array if success or given input on failure
      */
-    public static function filter($input, $property = null, $value = null, $logic = true)
+    public static function filter($input, $property = null, $value = null, $logic = true, $strict = true)
     {
         if ($input instanceof \Traversable) {
             $input = iterator_to_array($input);
@@ -268,19 +269,20 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
             return $input;
         }
 
-        $condition = array($property, $value, $logic);
+        $condition = array($property, $value, $logic, $strict);
         return array_filter(
             $input,
             function ($elem) use ($condition) {
                 $key = $condition[0];
                 $val = $condition[1];
                 $logic = $condition[2];
+                $strict = $condition[3];
                 // check key exist in sub-dimensions
                 if (!is_null($key)) {
                     $keys = explode('.', $key);
                     foreach ($keys as $level => $key) {
                         if ($key === '') {
-                            return !empty(self::filter($elem, implode('.', array_slice($keys, $level + 1)), $val, $logic));
+                            return !empty(self::filter($elem, implode('.', array_slice($keys, $level + 1)), $val, $logic, $strict));
                         }
 
                         if (!array_key_exists($key, $elem)) {
@@ -289,11 +291,26 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
                         $elem = $elem[$key];
                     }
                 }
-                if (is_null($val)? !empty($elem) : (is_array($val)? in_array($elem, $val) : (is_array($elem)? in_array($val, $elem) : $elem == $val))) {
-                    return $logic;
-                }
 
-                return !$logic;
+                if (is_null($val)) {
+                    return empty($elem)? !$logic : $logic;
+                }
+                if (is_array($val)) {
+                    if ($strict) {
+                        return in_array($elem, $val)? $logic : !$logic;
+                    }
+                    return in_array(Jaws_UTF8::strtolower($elem), array_map('strtolower', $val))? $logic : !$logic;
+                }
+                if (is_array($elem)) {
+                    if ($strict) {
+                        return in_array($val, $elem)? $logic : !$logic;
+                    }
+                    return in_array(Jaws_UTF8::strtolower($val), array_map('strtolower', $elem))? $logic : !$logic;
+                }
+                if ($strict) {
+                    return ($elem == $val)? $logic : !$logic;
+                }
+                return (Jaws_UTF8::strtolower($elem) == Jaws_UTF8::strtolower($val))? $logic : !$logic;
             }
         );
     }
