@@ -153,22 +153,24 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             // check permission
             if (!empty($menu['permission'])) {
                 $permission = unserialize($menu['permission']);
-                if (isset($permission['gadget'])) {
-                    if (!$this->app->session->getPermission($permission['gadget'], 'default')) {
+                if (!empty($permission)) {
+                    if (isset($permission['gadget'])) {
+                        if (!$this->app->session->getPermission($permission['gadget'], 'default')) {
+                            return false;
+                        }
+                    } else {
+                        $permission['gadget'] = $menu['gadget'];
+                    }
+
+                    if (!$this->app->session->getPermission(
+                            $permission['gadget'],
+                            $permission['key'],
+                            isset($permission['subkey'])? $permission['subkey'] : '',
+                            isset($permission['together'])? (bool)$permission['together'] : true
+                        )
+                    ) {
                         return false;
                     }
-                } else {
-                    $permission['gadget'] = $menu['gadget'];
-                }
-
-                if (!$this->app->session->getPermission(
-                        $permission['gadget'],
-                        $permission['key'],
-                        isset($permission['subkey'])? $permission['subkey'] : '',
-                        isset($permission['together'])? (bool)$permission['together'] : true
-                    )
-                ) {
-                    return false;
                 }
             }
         }

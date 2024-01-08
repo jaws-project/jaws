@@ -131,8 +131,9 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $url = Jaws_XSS::filterURL($url);
         }
 
-        if (is_null($permission)) {
-            $permission = serialize($this->gadget->request->fetch('3:array', 'post'));
+        $permission = $this->gadget->request->fetch('3:array', 'post');
+        if (!empty($permission)) {
+            $permission = serialize($permission);
         }
         if (is_null($variables)) {
             $variables = serialize($this->gadget->request->fetch('6:array', 'post'));
@@ -200,8 +201,9 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             $url = Jaws_XSS::filterURL($url);
         }
 
-        if (is_null($permission)) {
-            $permission = serialize($this->gadget->request->fetch('4:array', 'post'));
+        $permission = $this->gadget->request->fetch('4:array', 'post');
+        if (!empty($permission)) {
+            $permission = serialize($permission);
         }
         if (is_null($variables)) {
             $variables  = serialize($this->gadget->request->fetch('7:array', 'post'));
