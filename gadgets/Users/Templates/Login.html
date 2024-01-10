@@ -1,5 +1,5 @@
 <!-- BEGIN login -->
-<div class="gadget-header card-header d-flex align-items-center justify-content-between">
+<div class="gadget-header d-flex align-items-center justify-content-between mb-2">
   <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
 <div class="gadget-container" data-loading-container="users.login">
@@ -14,62 +14,71 @@
     <!-- BEGIN encryption -->
     <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
     <!-- END encryption -->
-    <div class="gadget-content card-body">
-      <!-- BEGIN multi_domain -->
-      <div>
-        <label for="domain">{{lbl_domain}}:</label>
-        <select class="form-control" name="domain" id="domain">
-          <!-- BEGIN domain -->
-          <option value="{{id}}" {{selected}}>{{title}}</option>
-          <!-- END domain -->
-        </select>
-      </div>
-      <!-- END multi_domain -->
-      <div class="form-group">
-        <label for="username">{{lbl_username}}:</label>
-        <input class="form-control ltr" name="username" id="username"
-               type="text"
-               value="{{username}}"
-               required
-        />
-      </div>
-      <div class="form-group">
-        <label for="password">{{lbl_password}}:</label>
-        <div class="input-group">
-          <input class="form-control ltr" type="password"
-            name="password" id="password"
-            autocomplete="off" data-toggle="password" required
-          />
-          <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
-            <i class="glyphicon glyphicon-eye-open"></i>
-          </span>
+    <div class="gadget-content">
+      <div class="row g-2">
+        <!-- BEGIN multi_domain -->
+        <div class="col-12 col-md-8 col-lg-6">
+          <label for="domain">{{lbl_domain}}:</label>
+          <select class="form-control" name="domain" id="domain">
+            <!-- BEGIN domain -->
+            <option value="{{id}}" {{selected}}>{{title}}</option>
+            <!-- END domain -->
+          </select>
+        </div>
+        <div class="w-100 m-0"></div>
+        <!-- END multi_domain -->
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_username}}:</span>
+            <input type="text" name="username" class="form-control" value="{{username}}" dir="ltr" required />
+          </div>
+        </div>
+        <div class="w-100 m-0"></div>
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_password}}:</span>
+            <input class="form-control" type="password" name="password" dir="ltr"
+              autocomplete="off" data-toggle="password" required
+            />
+            <span title="Click here to show/hide password" class="input-group-text" style="cursor: pointer;">
+              <i class="fas fa-eye"></i>
+            </span>
+          </div>
+        </div>
+        <div class="w-100 m-0"></div>
+        <!-- BEGIN remember -->
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_remember}}</span>
+            <input type="checkbox" name="remember" class="form-check-input fs-2 m-0 rounded align-self-center" value="true"
+              <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+            />
+          </div>
+        </div>
+        <div class="w-100 m-0"></div>
+        <!-- END remember -->
+        <!-- BEGIN usecrypt -->
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_usecrypt}}</span>
+            <input type="checkbox" name="usecrypt" class="form-check-input fs-2 m-0 rounded align-self-center" value="true"
+              <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+            />
+          </div>
+        </div>
+        <div class="w-100 m-0"></div>
+        <!-- END usecrypt -->
+        <div class="col-12 col-md-8 col-lg-6">
+        <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
+        </div>
+        <div class="w-100 m-0"></div>
+        <div class="gadget-actions col-12 col-md-8 col-lg-6 text-end mt-3">
+          <button class="btn btn-primary" type="submit">{{login}}</button>
+          <a class="d-block text-decoration-none mt-2" href="{{url_forgot}}" {{hidden_forgot}}>{{lbl_forgot}}</a>
+          <a class="d-block text-decoration-none mt-1" href="{{url_register}}" {{hidden_register}}>{{lbl_register}}</a>
+          <a class="d-block text-decoration-none mt-1"href="{{url_back}}">{{lbl_back}}</a>
         </div>
       </div>
-      <!-- BEGIN remember -->
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input"
-          id="remember" name="remember" value="true"
-          <!-- BEGIN selected -->checked="checked"<!-- END selected -->
-        />
-        <label class="form-check-label" for="remember">{{lbl_remember}}</label>
-      </div>
-      <!-- END remember -->
-      <!-- BEGIN usecrypt -->
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input"
-          id="usecrypt" name="usecrypt" value="true"
-          <!-- BEGIN selected -->checked="checked"<!-- END selected -->
-        />
-        <label class="form-check-label" for="usecrypt">{{lbl_usecrypt}}</label>
-      </div>
-      <!-- END usecrypt -->
-      <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
-    </div>
-    <div class="gadget_actions">
-      <button class="btn btn-primary" type="submit">{{login}}</button>
-      <div>{{forgot-password}}</div>
-      <div>{{user-register}}</div>
-      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
     </div>
   </form>
 <!-- END login_step_1 -->
@@ -123,7 +132,7 @@
     <!-- END encryption -->
     <div class="gadget-content card-body">
 
-      <div class="form-group">
+      <div class="input-group">
         <label for="username">{{lbl_username}}:</label>
         <input class="form-control ltr" type="text"
           name="username"
@@ -132,7 +141,7 @@
         />
       </div>
 
-      <div class="form-group">
+      <div class="input-group">
         <label for="old_password">{{lbl_old_password}}:</label>
         <div class="input-group">
           <input class="form-control ltr" type="password" name="old_password"
@@ -144,7 +153,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="input-group">
         <label for="password">{{lbl_password}}:</label>
         <div class="input-group">
           <input class="form-control ltr" type="password" name="password"
@@ -175,5 +184,5 @@
 <!-- END login_step_3 -->
 
 </div>
-<div class="gadget-footer card-footer" hidden></div>
+<div class="gadget-footer" hidden></div>
 <!-- END login -->

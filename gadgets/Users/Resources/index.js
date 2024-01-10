@@ -1429,7 +1429,7 @@ function Jaws_Gadget_Users() { return {
      */
     encryptFormSubmit: function(form, elements)
     {
-        if ($('#usecrypt').prop('checked') && (elements.length > 0) && form.pubkey) {
+        if ($(form).find('[name="usecrypt"]').prop('checked') && (elements.length > 0) && form.pubkey) {
             $.loadScript('libraries/js/jsencrypt.min.js', function() {
                 var objRSACrypt = new JSEncrypt();
                 objRSACrypt.setPublicKey(form.pubkey.value);
