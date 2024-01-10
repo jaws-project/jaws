@@ -1,17 +1,15 @@
 <!-- BEGIN image_captcha -->
-<div class="captcha captcha_image">
-  <input type="hidden" name="captcha_key" id="captcha_key_{{key}}" value="{{key}}" />
-  <label for="entry_value_{{key}}">{{lbl_captcha}}:</label>
-  <div class="captcha_value">
-    <img id="captcha_image_{{key}}" class="captcha" alt="" width="128" height="48" title="{{captcha_title}}" src="{{url}}" />
-    <button class="btn" type="button" onclick="javascript:document.getElementById('captcha_image_{{key}}').src = '{{url}}?'+ new Date().getTime();">
-      <img alt="reload" src="images/stock/reload.png"/>
-    </button>
-  </div>
-  <div>
-    <label>{{description}}:</label>
-    <input class="form-control" type="text" name="entry_value" id="entry_value_{{key}}" title="{{entry_title}}" dir="ltr" value="" autocomplete="off" class="large ltr"/>
-  </div>
+<div class="input-group">
+  <input type="hidden" name="captcha_key" value="{{key}}" />
+  <span class="input-group-text min-w-12rem justify-content-center">{{lbl_captcha}}:</span>
+  <span class="input-group-text w-icon px-2">
+    <i tabindex="-1" class="fas fa-circle-info align-middle fs-5" data-bs-toggle="tooltip"
+      data-bs-trigger="focus" data-bs-placement="top" title="{{description}}">
+    </i>
+  </span>
+  <input class="form-control" type="text" name="entry_value" dir="ltr" autocomplete="off" required />
+  <img id="captcha_image_{{key}}" class="input-group-text" alt="lbl_captcha" title="{{captcha_title}}" src="{{url}}"
+    onclick="this.src = '{{url}}?'+ Date.now()" />
 </div>
 <!-- END image_captcha -->
 <!-- BEGIN text_captcha -->

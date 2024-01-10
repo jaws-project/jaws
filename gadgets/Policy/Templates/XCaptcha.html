@@ -13,24 +13,17 @@
   </div>
 </div>
 {% elseif captcha.type == 2 %}
-<div class="captcha captcha_image">
-  <input type="hidden" name="captcha_key" id="captcha_key_{{captcha.key}}" value="{{captcha.key}}" />
-  <label for="entry_value_{{captcha.key}}">{{captcha.label}}:</label>
-  <div class="captcha_value">
-    <img id="captcha_image_{{captcha.key}}" class="captcha" alt=""
-      width="128" height="48" title="{{captcha.title}}" src="{{captcha.url}}"
-    />
-    <button class="btn" type="button"
-      onclick="$('#captcha_image_{{captcha.key}}').attr('src', '{{captcha.url}}?'+ new Date().getTime());" >
-      <img alt="reload" src="images/stock/reload.png"/>
-    </button>
-  </div>
-  <div>
-    <label>{{captcha.description}}:</label>
-    <input class="form-control ltr" type="text" name="entry_value" id="entry_value_{{captcha.key}}"
-      title="{{captcha.info}}" value="" autocomplete="off"
-    />
-  </div>
+<div class="input-group">
+  <input type="hidden" name="captcha_key" value="{{captcha.key}}" />
+  <span class="input-group-text min-w-12rem justify-content-center">{{captcha.label}}:</span>
+  <span class="input-group-text w-icon px-2">
+    <i tabindex="-1" class="fas fa-circle-info align-middle fs-5" data-bs-toggle="tooltip"
+      data-bs-trigger="focus" data-bs-placement="top" title="{{captcha.description}}">
+    </i>
+  </span>
+  <input class="form-control" type="text" name="entry_value" title="{{captcha.info}}" dir="ltr" autocomplete="off" required />
+  <img id="captcha_image_{{key}}" class="input-group-text" alt="lbl_captcha" title="{{captcha.title}}" src="{{captcha.url}}"
+    onclick="this.src = '{{captcha.url}}?'+ Date.now()" />
 </div>
 {% elseif captcha.type == 3 %}
 <div class="captcha captcha_block">
