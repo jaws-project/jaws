@@ -239,7 +239,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      */
     public static function split($input, $pattern = ',')
     {
-        return explode($pattern, $input);
+        return explode($pattern, isset($input)? $input : '');
     }
 
     /**
@@ -342,7 +342,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      */
     public static function ent_encode($input, $noquotes = false)
     {
-        return htmlspecialchars($input, $noquotes? ENT_NOQUOTES : ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars(isset($input)? $input : '', $noquotes? ENT_NOQUOTES : ENT_QUOTES, 'UTF-8');
     }
 
     /**
