@@ -297,6 +297,7 @@ function Jaws_Gadget_Files() { return {
 
         // empty items
         $tpl.find('.files-interface-item').remove();
+        $tpl.find('.files-interface input[type="file"]').remove();
         let $container = $tpl.find('.files-interface-items');
 
         // set label
