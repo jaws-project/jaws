@@ -40,12 +40,19 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
     /**
      * Convert an input to lowercase
      *
-     * @param string $input
+     * @param string|array $input
      *
-     * @return string
+     * @return string|array
      */
     public static function downcase($input)
     {
+        if ($input instanceof \Iterator) {
+            $input = iterator_to_array($input);
+        }
+        if (is_array($input)) {
+            return array_map('strtolower', $input);
+        }
+
         return is_string($input) ? strtolower($input) : $input;
     }
 
@@ -323,12 +330,19 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
     /**
      * Convert an input to uppercase
      *
-     * @param string $input
+     * @param string|array $input
      *
-     * @return string
+     * @return string|array
      */
     public static function upcase($input)
     {
+        if ($input instanceof \Iterator) {
+            $input = iterator_to_array($input);
+        }
+        if (is_array($input)) {
+            return array_map('strtoupper', $input);
+        }
+
         return is_string($input) ? strtoupper($input) : $input;
     }
 
