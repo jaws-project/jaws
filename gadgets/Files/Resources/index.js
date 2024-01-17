@@ -196,7 +196,7 @@ function Jaws_Gadget_Files() { return {
                             'dimension': dimension
                         });
 
-                        $item.find('[data-type="size"]').html(file.size);
+                        $item.find('[data-type="size"]').html(Jaws.filters.apply(['formatNumber:filesize'], file.size));
                         fReader.readAsDataURL(file);
                         break;
 
@@ -335,11 +335,11 @@ function Jaws_Gadget_Files() { return {
                             let $item = $container.children('.files-interface-item').last();
                             $item.find('input').attr('name', 'old_files_' + inputIndexName).val(file.id);
                             $item.find("[data-type='name']").html(
-                                '<a href="'+file.fileurl +
+                                '<a class="text-nowrap" href="'+file.fileurl +
                                 '" target="_blank">' + file.title +
                                 '</a>'
                             );
-                            $item.find("[data-type='size']").html(file.filesize);
+                            $item.find("[data-type='size']").html(Jaws.filters.apply(['formatNumber:filesize'], file.filesize));
                             // show preview
                             // FIXME! check file is an image
                             if ($options['preview']) {
