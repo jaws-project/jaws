@@ -627,7 +627,8 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 
         let response = jqXHR.responseText;
         if (reqOptions.callOptions.restype == 'json') {
-            response = eval('(' + response + ')');
+            // temporary fix json parse big numbers
+            response = eval('(' + response.replace (/:(\d{15,})([,\}])/g, ':"$1"$2') + ')');
         }
         // ajax redirect
         if ([301, 302].indexOf(jqXHR.status) != -1) {
