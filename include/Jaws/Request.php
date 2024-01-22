@@ -467,12 +467,18 @@ class Jaws_Request
      * @param   string  $key        Key name
      * @param   mixed   $value      Key value
      * @param   string  $method     Request method
+     * @param   string  $branchName data branch/part name (empty means root of data)
      * @return  bool    True
      */
-    function update($key, $value, $method = '')
+    function update($key, $value, $method = '', $branchName = '')
     {
         $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
-        $this->data[$method][$key] = $value;
+        if ($branchName === '' || $branchName === false) {
+            $this->data[$method][$key] = $value;
+        } else {
+            $this->data[$method][$branchName][$key] = $value;
+        }
+
         return true;
     }
 
@@ -480,12 +486,18 @@ class Jaws_Request
      *
      * @param   string  $key        Key name
      * @param   string  $method     Request method
+     * @param   string  $branchName data branch/part name (empty means root of data)
      * @return  bool    True
      */
-    function delete($key, $method = '')
+    function delete($key, $method = '', $branchName = '')
     {
         $method = empty($method)? strtolower($_SERVER['REQUEST_METHOD']) : $method;
-        unset($this->data[$method][$key]);
+        if ($branchName === '' || $branchName === false) {
+            unset($this->data[$method][$key]);
+        } else {
+            unset($this->data[$method][$branchName][$key]);
+        }
+
         return true;
     }
 
