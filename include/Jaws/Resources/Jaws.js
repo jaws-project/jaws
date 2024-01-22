@@ -123,12 +123,12 @@ jQuery.extend({
 
     viewport: function() {
         return {
-            get: function() {
-                let dWidth = $(document).innerWidth();
-                return (dWidth < 576) ? 'xs' : ((dWidth < 768) ? 'sm' : ((dWidth < 992) ? 'md' : ((dWidth < 1200)? 'lg' : 'xl')));
+            get: function(element) {
+                let width = $(element || document).innerWidth();
+                return (width < 576) ? 'xs' : ((width < 768) ? 'sm' : ((width < 992) ? 'md' : ((width < 1200)? 'lg' : 'xl')));
             },
-            is: function(breakPoint) {
-                return breakPoint == this.get();
+            is: function(breakPoint, element) {
+                return breakPoint == this.get(element);
             }
         };
     }()
