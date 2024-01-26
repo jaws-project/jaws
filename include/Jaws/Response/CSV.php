@@ -19,7 +19,7 @@ class Jaws_Response_CSV
      */
     static function get($data)
     {
-        $result = '';
+        $result = "\xEF\xBB\xBF";
         foreach ($data as $entry) {
             $result.= str_putcsv($entry). "\n";
         }
