@@ -2373,8 +2373,11 @@ Jaws.filters = {
      * Javascript format number prototype
      */
     formatNumber : function(input, unit = '') {
-        let num = Number.parseFloat(input);
+        if ([undefined, null, ''].indexOf(input) >= 0) {
+            return null;
+        }
 
+        let num = Number.parseFloat(input);
         let units = {
             'length': {
                 'step': 1000,
