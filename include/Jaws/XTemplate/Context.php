@@ -264,10 +264,12 @@ class Jaws_XTemplate_Context
             return false;
         }
 
+        // single quotation string
         if (preg_match('/^\'(.*)\'$/', $key, $matches)) {
             return $matches[1];
         }
 
+        //  double quotation string
         if (preg_match('/^"(.*)"$/', $key, $matches)) {
             return $matches[1];
         }
@@ -281,12 +283,23 @@ class Jaws_XTemplate_Context
             return $array;
         }
 
+        // integer
         if (preg_match('/^(-?\d+)$/', $key, $matches)) {
             return (int)$matches[1];
         }
 
         if (preg_match('/^(-?\d[\d\.]+)$/', $key, $matches)) {
             return $matches[1];
+        }
+
+        if (strpos($key, '$') !== false) {
+            $key = preg_replace_callback(
+                '/(^|\.)\$([^\.]+)/',
+                function($matches) {
+                    return '["'.$this->variable($matches[2]).'"]';
+                },
+                $key
+            );
         }
 
         return $this->variable($key);
@@ -467,6 +480,11 @@ class Jaws_XTemplate_Context
         $obj = &$objArr;
         for ($i = 0; $i < $len - 1; $i++) {
             $part = $parts[$i];
+            if (strpos($part, '$') === 0) {
+                $part = ltrim($part, '$');
+                $part = new Jaws_XTemplate_Variable($part);
+                $part = $part->render($this);
+            }
 
             switch (gettype($obj)) {
                 case 'object':
@@ -489,10 +507,16 @@ class Jaws_XTemplate_Context
 
         }
 
+        $part = $parts[$len - 1];
+        if (strpos($part, '$') === 0) {
+            $part = ltrim($part, '$');
+            $part = new Jaws_XTemplate_Variable($part);
+            $part = $part->render($this);
+        }
         if (is_object($obj)) {
-            $obj->{$parts[$len - 1]} = $value;
+            $obj->{$part} = $value;
         } else {
-            $obj[$parts[$len - 1]] = $value;
+            $obj[$part] = $value;
         }
 
     }
