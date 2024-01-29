@@ -93,7 +93,7 @@ class Jaws_FileManagement
         if (!static::mkdir($dest, 0, 2)) {
             return Jaws_Error::raiseError(
                 Jaws::t('ERROR_FAILED_CREATING_DIR'. $dest),
-                __FUNCTION__
+                500
             );
         }
 
@@ -130,7 +130,7 @@ class Jaws_FileManagement
                     if (isset($file['error']) && !empty($file['error']) && $file['error'] != 4) {
                         throw new Jaws_Exception(
                             Jaws::t('ERROR_UPLOAD_CORRUPTED', $host_filename),
-                            0,
+                            406,
                             JAWS_NOTICE
                         );
                     }
@@ -144,7 +144,7 @@ class Jaws_FileManagement
                         @unlink($file['tmp_name']);
                         throw new Jaws_Exception(
                             Jaws::t('ERROR_UPLOAD_CORRUPTED', $host_filename),
-                            0,
+                            406,
                             JAWS_NOTICE
                         );
                     }
@@ -156,10 +156,10 @@ class Jaws_FileManagement
                             $objImage->resize($dimension[0], $dimension[1]);
                         }
                         $objImage->save($file['tmp_name'], $format)->free();
-                        if (Jaws_Error::IsError($res)) {
+                        if (Jaws_Error::IsError($objImage)) {
                             throw new Jaws_Exception(
-                                $res->getMessage(),
-                                0,
+                                Jaws::t('HTTP_ERROR_CONTENT_500'),
+                                $objImage->getCode(),
                                 JAWS_NOTICE
                             );
                         }
@@ -190,7 +190,7 @@ class Jaws_FileManagement
                         @unlink($file['tmp_name']);
                         throw new Jaws_Exception(
                             Jaws::t('ERROR_UPLOAD_EXCEEDED_SIZE', $host_filename),
-                            0,
+                            406,
                             JAWS_NOTICE
                         );
                     }
@@ -200,7 +200,7 @@ class Jaws_FileManagement
                         if (!empty($allow_formats) && !in_array($fileinfo['extension'], $allow_formats)) {
                             throw new Jaws_Exception(
                                 Jaws::t('ERROR_UPLOAD_INVALID_FORMAT', $host_filename),
-                                0,
+                                406,
                                 JAWS_NOTICE
                             );
                         }
@@ -227,7 +227,7 @@ class Jaws_FileManagement
                     if (!$res) {
                         throw new Jaws_Exception(
                             Jaws::t('ERROR_UPLOAD', $host_filename),
-                            0,
+                            500,
                             JAWS_NOTICE
                         );
                     }
