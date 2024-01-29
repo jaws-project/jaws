@@ -20,8 +20,7 @@ class Jaws_Image_GD extends Jaws_Image
     function __construct()
     {
         if (!extension_loaded('gd')) {
-            return Jaws_Error::raiseError('GD library is not available.',
-                                          __FUNCTION__);
+            return Jaws_Error::raiseError('GD library is not available.', 500);
         }
 
         $types = imagetypes();
@@ -46,7 +45,7 @@ class Jaws_Image_GD extends Jaws_Image
         if (empty($this->_supported_image_types)) {
             return Jaws_Error::raiseError(
                 'No supported image types available.',
-                __FUNCTION__
+                415
             );
         }
 
@@ -126,7 +125,7 @@ class Jaws_Image_GD extends Jaws_Image
                 $this->_hImage = null;
                 return Jaws_Error::raiseError(
                     'Error while loading image file.',
-                    __FUNCTION__
+                    500
                 );
             }
         }
@@ -155,7 +154,7 @@ class Jaws_Image_GD extends Jaws_Image
                 $this->_hImage = null;
                 return Jaws_Error::raiseError(
                     'Error while loading image from string.',
-                    __FUNCTION__
+                    500
                 );
             }
         }
@@ -232,7 +231,7 @@ class Jaws_Image_GD extends Jaws_Image
         if (!$this->_intersects($width, $height, $x, $y)) {
             return Jaws_Error::raiseError(
                 'Nothing to crop.',
-                __FUNCTION__
+                406
             );
         }
 
@@ -246,7 +245,7 @@ class Jaws_Image_GD extends Jaws_Image
             imagedestroy($new_img);
             return Jaws_Error::raiseError(
                 'Failed transformation: crop().',
-                __FUNCTION__
+                500
             );
         }
 
@@ -292,7 +291,7 @@ class Jaws_Image_GD extends Jaws_Image
         if (false === $this->_hImage) {
             return Jaws_Error::raiseError(
                 'Failed transformation: rotate().',
-                __FUNCTION__
+                500
             );
         }
 
@@ -303,7 +302,7 @@ class Jaws_Image_GD extends Jaws_Image
             imagedestroy($new_img);
             return Jaws_Error::raiseError(
                 'Failed transformation: rotate().',
-                __FUNCTION__
+                500
             );
         }
 
@@ -326,7 +325,7 @@ class Jaws_Image_GD extends Jaws_Image
         if (false === $res) {
             return Jaws_Error::raiseError(
                 'Failed transformation: gamma().',
-                __FUNCTION__
+                500
             );
         }
 
@@ -389,7 +388,7 @@ class Jaws_Image_GD extends Jaws_Image
         if (false === $res) {
             return Jaws_Error::raiseError(
                 'Failed transformation: grayscale().',
-                __FUNCTION__
+                500
             );
         }
 
@@ -418,7 +417,7 @@ class Jaws_Image_GD extends Jaws_Image
         if (!$this->_typeSupported($type, 'w')) {
             return Jaws_Error::raiseError(
                 'Image type not supported for output.',
-                __FUNCTION__
+                415
             );
         }
         
@@ -435,7 +434,7 @@ class Jaws_Image_GD extends Jaws_Image
         if (!$result) {
             return Jaws_Error::raiseError(
                 'Couldn\'t save image to file',
-                __FUNCTION__
+                500
             );
         }
 
@@ -471,7 +470,7 @@ class Jaws_Image_GD extends Jaws_Image
         if (!$this->_typeSupported($type, 'w')) {
             return Jaws_Error::raiseError(
                 'Image type not supported for output.',
-                __FUNCTION__
+                415
             );
         }
 
@@ -504,7 +503,7 @@ class Jaws_Image_GD extends Jaws_Image
         if (!$result) {
             return Jaws_Error::raiseError(
                 'Couldn\'t display image',
-                __FUNCTION__
+                500
             );
         }
 
