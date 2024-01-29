@@ -58,4 +58,41 @@ class Jaws_Gadget_Request extends Jaws_Gadget_Class
         return $this->app->request->method();
     }
 
+    /**
+     * Creates a new key or updates an old one
+     *
+     * @access  public
+     * @param   mixed   $key            The key being fetched
+     * @param   mixed   $value          Key value
+     * @param   mixed   $method         Which super global is being fetched from, it can be an array
+     * @param   string  $branchName     data branch/part name (empty means root of data)
+     * @return  bool    True
+     */
+    function update($key, $value, $method = '', $branchName = '')
+    {
+        if ($this->gadget->name == $this->app->mainRequest['gadget']) {
+            return $this->app->request->update($key, $value, $method, $branchName);
+        }
+
+        return true;
+    }
+
+    /**
+     * Delete input data by key
+     *
+     * @access  public
+     * @param   mixed   $key            The key being fetched
+     * @param   mixed   $method         Which super global is being fetched from, it can be an array
+     * @param   string  $branchName     data branch/part name (empty means root of data)
+     * @return  bool    True
+     */
+    function delete($key, $method = '', $branchName = '')
+    {
+        if ($this->gadget->name == $this->app->mainRequest['gadget']) {
+            return $this->app->request->delete($key, $method, $branchName);
+        }
+
+        return true;
+    }
+
 }
