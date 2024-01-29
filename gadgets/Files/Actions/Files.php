@@ -34,7 +34,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                     if (Jaws_Error::IsError($allowed) || !$allowed) {
                         return $this->gadget->session->response(
                             Jaws::t('HTTP_ERROR_TITLE_403'),
-                            RESPONSE_ERROR
+                            RESPONSE_ERROR,
+                            null,
+                            403
                         );
                     }
                 }
@@ -68,7 +70,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
 
             return $this->gadget->session->response(
                 'reference is empty',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                null,
+                404
             );
         }
 
@@ -173,7 +177,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                     if (Jaws_Error::IsError($allowed) || !$allowed) {
                         return $this->gadget->session->response(
                             Jaws::t('HTTP_ERROR_TITLE_403'),
-                            RESPONSE_ERROR
+                            RESPONSE_ERROR,
+                            null,
+                            403
                         );
                     }
                 }
@@ -201,7 +207,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
 
             return $this->gadget->session->response(
                 'reference is empty',
-                RESPONSE_ERROR
+                RESPONSE_ERROR,
+                null,
+                404
             );
         }
 
@@ -438,7 +446,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         ) {
             return Jaws_Error::raiseError(
                 Jaws::t('ERROR_UPLOAD_EXCEEDED_COUNT'),
-                __FUNCTION__,
+                406,
                 JAWS_ERROR_NOTICE
             );
         }
@@ -504,6 +512,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         );
         list($interface, $options) = array_values($postedData);
 
+        $error_code = 404;
         $error_message = Jaws::t('HTTP_ERROR_TITLE_404');
         if (!empty($interface['reference'])) {
             try {
@@ -525,13 +534,16 @@ class Files_Actions_Files extends Jaws_Gadget_Action
                     );
                 }
             } catch (Exception $error) {
+                $error_code = $error->getCode();
                 $error_message = $error->getMessage();
             }
         }
 
         return $this->gadget->session->response(
             $error_message,
-            RESPONSE_ERROR
+            RESPONSE_ERROR,
+            null,
+            $error_code
         );
     }
 
