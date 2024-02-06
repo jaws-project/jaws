@@ -11,6 +11,14 @@
 class Jaws_Cache
 {
     /**
+     * Jaws app object
+     *
+     * @var     object
+     * @access  public
+     */
+    public $app = null;
+
+    /**
      * Constructor
      *
      * @access  protected
