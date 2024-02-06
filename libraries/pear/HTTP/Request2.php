@@ -714,7 +714,7 @@ class HTTP_Request2 implements SplSubject
      *
      * @param SplObserver $observer any object implementing SplObserver
      */
-    public function attach(SplObserver $observer)
+    public function attach(SplObserver $observer): void
     {
         foreach ($this->observers as $attached) {
             if ($attached === $observer) {
@@ -729,7 +729,7 @@ class HTTP_Request2 implements SplSubject
      *
      * @param SplObserver $observer any object implementing SplObserver
      */
-    public function detach(SplObserver $observer)
+    public function detach(SplObserver $observer): void
     {
         foreach ($this->observers as $key => $attached) {
             if ($attached === $observer) {
@@ -742,7 +742,7 @@ class HTTP_Request2 implements SplSubject
     /**
      * Notifies all observers
      */
-    public function notify()
+    public function notify(): void
     {
         foreach ($this->observers as $observer) {
             $observer->update($this);
