@@ -216,7 +216,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         // FIXME:: add registry key for set maximum upload file size
         $defaultOptions = array(
             'maxsize'    => 33554432, // 32MB
-            'maxcount'   => 0,        // unlimited
+            'mincount'   => 0,
+            'maxcount'   => 8,
             'dimension'  => '',
             'filetype'   => 0,
             'extensions' => '',
@@ -249,6 +250,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('input_reference', strtolower($interface['input_reference']));
         $tpl->SetVariable('input_type', $interface['type']);
         $tpl->SetVariable('maxsize',    $options['maxsize']);
+        $tpl->SetVariable('mincount',   $options['mincount']);
         $tpl->SetVariable('maxcount',   $options['maxcount']);
         $tpl->SetVariable('dimension',  $options['dimension']);
         $tpl->SetVariable('extensions', $options['extensions']);
@@ -342,7 +344,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         // FIXME:: add registry key for set maximum upload file size
         $defaultOptions = array(
             'maxsize'    => 33554432, // 32MB
-            'maxcount'   => 0,        // unlimited
+            'mincount'   => 0,
+            'maxcount'   => 8,
             'dimension'  => '',
             'filetype'   => 0,
             'extensions' => '',
@@ -403,7 +406,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         // FIXME:: add registry key for set maximum upload file size
         $defaultOptions = array(
             'maxsize'     => 33554432, // 32MB
-            'maxcount'    => 0,        // unlimited
+            'mincount'    => 0,
+            'maxcount'    => 8,
             'dimension'   => '',
             'extensions'  => '',
             'imageformat' => ''
@@ -440,12 +444,18 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         if (array_key_exists($newFilesIndex, $_FILES)) {
             $newFilesCount = count($_FILES[$newFilesIndex]['name']);
         }
-        // check max count of files
-        if ($options['maxcount'] > 0 &&
-            ($oldFilesCount + $newFilesCount) > $options['maxcount']
-        ) {
+        // check min count of files
+        if (($oldFilesCount + $newFilesCount) < $options['mincount']) {
             return Jaws_Error::raiseError(
-                Jaws::t('ERROR_UPLOAD_EXCEEDED_COUNT'),
+                Jaws::t('ERROR_UPLOAD_MIN_COUNT'),
+                406,
+                JAWS_ERROR_NOTICE
+            );
+        }
+        // check max count of files
+        if (($oldFilesCount + $newFilesCount) > $options['maxcount']) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_UPLOAD_MAX_COUNT'),
                 406,
                 JAWS_ERROR_NOTICE
             );

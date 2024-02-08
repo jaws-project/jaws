@@ -82,7 +82,7 @@ function Jaws_Gadget_Files() { return {
                 .index($(element).closest('.files-interface-item'));
 
             let dataTransfer = new DataTransfer();
-            Object.values(inputFileElement.files).forEach(function (file, index) {
+            Object.values(inputFileElement.files).forEach(function(file, index) {
                 if (index != itemIndex) {
                     dataTransfer.items.add(file);
                 }
@@ -149,7 +149,7 @@ function Jaws_Gadget_Files() { return {
             if (maxcount > 0) {
                 let filesCount = $(inputFileElement).closest('.files-interface').find('.files-interface-item').length;
                 if ((inputFileElement.files.length + filesCount) > maxcount) {
-                    throw Jaws.t('error_upload_exceeded_count');
+                    throw Jaws.t('error_upload_max_count');
                 } else if ((inputFileElement.files.length + filesCount) == maxcount) {
                     // disable file browser
                     $(inputFileElement).closest('.files-interface').find('[data-initialize="fileuploader"]').prop('disabled', true);
@@ -365,6 +365,10 @@ function Jaws_Gadget_Files() { return {
     prepareFormDataFiles: function($tpl, formData)
     {
         let filesCount = 0;
+        let $fileuploader = $tpl.find('[data-initialize=fileuploader]').first();
+        let mincount = 1;//Number($fileuploader.data('mincount'));
+        let maxcount = Number($fileuploader.data('maxcount'));
+
         // old files
         $tpl.find('.files-interface input[type="hidden"]').each(function (key, el) {
             if (el.value !== undefined && el.value !== null && el.value !== '') {
@@ -380,6 +384,19 @@ function Jaws_Gadget_Files() { return {
                 formData.append(elFile.name, file);
             });
         });
+
+        if ((filesCount < mincount) || (filesCount > maxcount)) {
+            let entry;
+            // reset/empty FormData
+            while (entry = formData.entries().next().value) {
+                formData.delete(entry[0]);
+            }
+
+            this.gadget.message.show({
+                'text': Jaws.t('error_upload_min_count'),
+                'type': 'alert-danger'
+            });
+        }
 
         return filesCount;
     },
