@@ -189,7 +189,7 @@ class Jaws_FileManagement
                     if (!empty($max_size) && $file['size'] > $max_size) {
                         @unlink($file['tmp_name']);
                         throw new Jaws_Exception(
-                            Jaws::t('ERROR_UPLOAD_EXCEEDED_SIZE', $host_filename),
+                            Jaws::t('ERROR_UPLOAD_MAX_SIZE', $host_filename),
                             406,
                             JAWS_NOTICE
                         );
