@@ -29,7 +29,7 @@
         data-preview="{{preview}}"
         name="new_files_{{input_action}}_{{input_reference}}_{{input_type}}[]"
         multiple="multiple"
-        <!-- BEGIN accept -->accept="{{type}}/*"<!-- END accept -->
+        <!-- BEGIN accept -->accept="{{accept}}"<!-- END accept -->
         {{capture}}
         onchange="Jaws_Gadget.getInstance('Files').browseFile(this);"
         style="opacity:0; height:0; width:0;"
@@ -74,7 +74,7 @@
 
     <div class="btn_browse">
       <a href="javascript:void(0);"
-        data-maxcount="{{mincount}}"
+        data-mincount="{{mincount}}"
         data-maxcount="{{maxcount}}"
         data-initialize="fileuploader"
         onclick="Jaws_Gadget.getInstance('Files').uploadMoreFiles(this);">

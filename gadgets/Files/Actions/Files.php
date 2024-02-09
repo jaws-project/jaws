@@ -257,30 +257,17 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $tpl->SetVariable('capture', $options['capture']? 'capture' : '');     
         $tpl->SetVariable('preview', $options['preview']);
         // set accept file type
-        if ($options['filetype'] > 0) {
-            $tpl->SetBlock("$block/files/accept");
-            switch ($options['filetype']) {
-                case JAWS_FILE_TYPE['TEXT']:
-                    $tpl->SetVariable('type', 'text');
-                    break;
-
-                case JAWS_FILE_TYPE['IMAGE']:
-                    $tpl->SetVariable('type', 'image');
-                    break;
-
-                case JAWS_FILE_TYPE['AUDIO']:
-                    $tpl->SetVariable('type', 'audio');
-                    break;
-
-                case JAWS_FILE_TYPE['VIDEO']:
-                    $tpl->SetVariable('type', 'video');
-                    break;
-
-                default:
-                    $tpl->SetVariable('type', '*');
-            }
-            $tpl->ParseBlock("$block/files/accept");
+        $accept = '*';
+        $extensions = array_filter(explode(',', (string)$options['extensions']));
+        if (!empty($extensions)) {
+            array_walk($extensions, 'ltrim', '.');
+            $accept = '.'. implode(',.', $extensions);
+        } elseif (in_array($options['filetype'], array(2, 3, 4, 5, 6, 7))) {
+            $assigns['mimetype'] = strtolower(array_flip(JAWS_FILE_TYPE)[$options['filetype']]). '/*';
         }
+        $tpl->SetBlock("$block/files/accept");
+        $tpl->SetVariable('accept', $accept);
+        $tpl->ParseBlock("$block/files/accept");
 
         if (!empty($interface['reference'])) {
             try {
@@ -371,10 +358,32 @@ class Files_Actions_Files extends Jaws_Gadget_Action
 
         // initiate assign with option array 
         $assigns = $options;
-        // file type
-        if (in_array($options['filetype'], array(2, 3, 4, 5))) {
-            $assigns['mimetype'] = strtolower(array_flip(JAWS_FILE_TYPE)[$options['filetype']]). '/*';
+        // accept file type
+        $accept = '*';
+        $extensions = array_filter(explode(',', (string)$options['extensions']));
+        if (!empty($extensions)) {
+            array_walk($extensions, 'ltrim', '.');
+            $accept = '.'. implode(',.', $extensions);
+        } else {
+            switch ($options['filetype']) {
+                case JAWS_FILE_TYPE['TEXT']:
+                    $accept = 'text/*';
+                    break;
+
+                case JAWS_FILE_TYPE['IMAGE']:
+                    $accept = 'image/*';
+                    break;
+
+                case JAWS_FILE_TYPE['AUDIO']:
+                    $accept = 'audio/*';
+                    break;
+
+                case JAWS_FILE_TYPE['VIDEO']:
+                    $accept = 'video/*';
+                    break;
+            }
         }
+        $assigns['accept'] = $accept;
 
         $assigns['interface'] = $interface;
         $assigns['input_action'] = strtolower($interface['action']);

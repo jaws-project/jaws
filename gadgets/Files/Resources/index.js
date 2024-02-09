@@ -272,6 +272,7 @@ function Jaws_Gadget_Files() { return {
                 },
                 'filetype':  0,
                 'maxsize':   33554432,
+                'extensions': '',
                 'dimension': '',
                 'maxcount':  0,
                 'preview':   true
@@ -288,10 +289,40 @@ function Jaws_Gadget_Files() { return {
 
         let $fileInput = $tpl.find('template').contents().filter('input.files-interface-input');
         $fileInput.attr('name', 'new_files_' + inputIndexName);
-        // preview
         $fileInput.attr('data-maxsize', $options['maxsize']);
+        // preview
         $fileInput.attr('data-preview', $options['preview']);
+        $fileInput.attr('data-extensions', $options['extensions']);
         $fileInput.attr('data-dimension', $options['dimension']);
+        // accept
+        let accept = '*';
+        $options['extensions'] = String($options['extensions']).split(',').map(function(ext) {return ext.replace(/^\.+/g, '');});
+        if ($options['extensions'].length) {
+            accept = '.' + $options['extensions'].join(',.');
+        } else {
+            switch ($options['filetype']) {
+                case 2:
+                    accept = 'text/*';
+                    break;
+                case 3:
+                    accept = 'image/*';
+                    break;
+                case 4:
+                    accept = 'audio/*';
+                    break;
+                case 5:
+                    accept = 'video/*';
+                    break;
+                case 6:
+                    accept = 'font/*';
+                    break;
+                case 7:
+                    accept = 'archive/*';
+                    break;
+            }
+        }
+        $fileInput.attr('accept', accept);
+
         // set remove label
         $tpl.find('template').contents().find('[data-label="remove"]').attr('title', $options['labels']['remove']);
 

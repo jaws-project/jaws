@@ -29,7 +29,7 @@
     data-preview="{{ files.preview }}"
     name="new_files_{{ files.input_action }}_{{ files.input_reference }}_{{ files.input_type }}[]"
     multiple="multiple"
-    accept="{{ files.mimetype | default: '*' }}"
+    accept="{{ files.accept | default: '*' }}"
     {{ files.capture | isset: "capture", "" }}
     onchange="Jaws_Gadget.getInstance('Files').selectFile(this);"
     style="opacity:0; height:0; width:0;"
