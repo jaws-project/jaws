@@ -26,7 +26,7 @@
   <div class="wrapper">
     <!-- header -->
     <section id="topbar" class="position-sticky d-flex align-items-center">
-      <div class="container d-flex align-items-center justify-content-between">
+      <div class="container-fluid d-flex align-items-center justify-content-between">
         <div class="tobbar-brand d-flex align-items-center">
           <a class="icon-link fs-3 text-decoration-none" href="{{site-url}}">
             <img src="images/jaws48.png" alt="{{site-name}}" />
@@ -44,7 +44,7 @@
 
     <!-- navigation -->
     <section id="navigation" class="position-sticky">
-      <div class="container">
+      <div class="container-fluid">
         <!-- BEGIN navigation -->
         {{ELEMENT}}
         <!-- END navigation -->
@@ -53,16 +53,16 @@
 
     <!-- main -->
     <section>
-      <div class="container">
+      <div class="container-fluid">
         <div class="row">
           <!-- sidebar -->
-          <div class="d-none d-md-flex col-md-3">
+          <div id="sidebar" class="d-none d-lg-flex col-lg-3 col-xxl-2 border-top">
             <!-- BEGIN sidebar -->
             {{ELEMENT}}
             <!-- END sidebar -->
           </div>
           <!-- mainbar -->
-          <div class="col-12 col-md-9">
+          <div id="mainbar" class="col-12 col-lg-9 col-xxl-10 position-relative">
             <!-- main content -->
             <div class="row">
               <div class="col-12">
@@ -71,8 +71,8 @@
                 <!-- END main -->
               </div>
             </div>
-            <!-- buttom bars -->
-            <div class="row">
+            <!-- bottom bars -->
+            <div id="footbar" class="row">
               <div class="col-12 col-md-6">
                 <!-- BEGIN bar1 -->
                 {{ELEMENT}}
@@ -85,14 +85,14 @@
               </div>
             </div>
             <!-- footer -->
-            <div class="row">
-              <div class="col-12 d-flex align-items-center justify-content-between">
-                <p>{{site-copyright}}</p>
-                <div>
-                  <!-- BEGIN footer -->
-                  {{ELEMENT}}
-                  <!-- END footer -->
-                </div>
+            <div id="footer" class="row d-flex position-absolute bottom-0 end-0 start-0 mx-0 border-top align-items-center">
+              <div class="col-12 col-md-6">
+                <p class="my-0">{{site-copyright}}</p>
+              </div>
+              <div class="d-none col-md-6">
+                <!-- BEGIN footer -->
+                {{ELEMENT}}
+                <!-- END footer -->
               </div>
             </div>
           </div>
@@ -110,6 +110,7 @@
   <script src="libraries/table/bootstrap-table.min.js?{{site-buildnumber}}"></script>
   <script src="libraries/select/select2.full.min.js"></script>
   <script src="libraries/datepicker/air-datepicker.js?{{site-buildnumber}}"></script>
+  <script src="libraries/js/jquery.mask.js?{{site-buildnumber}}"></script>
 </body>
 </html>
 <!-- END layout -->
