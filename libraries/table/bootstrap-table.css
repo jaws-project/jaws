@@ -68,6 +68,7 @@
 }
 
 .bootstrap-table .fixed-table-container {
+  position: relative;
   clear: both;
 }
 
@@ -206,6 +207,7 @@
   background: #fff;
   display: flex;
   justify-content: center;
+  position: absolute;
   bottom: 0;
   width: 100%;
   max-width: 100%;
