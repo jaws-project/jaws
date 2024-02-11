@@ -673,16 +673,16 @@ function JawsMessage($owner)
 {
     this.alerts = {
         'alert-danger': {
-            'class' : 'alert-danger', 'type' : 'error', 'icon': 'bi bi-x-circle-fill'
+            'class' : 'alert-danger', 'type' : 'error', 'icon': 'fa-solid fa-circle-xmark'
         },
         'alert-warning': {
-            'class' : 'alert-warning', 'type' : 'warning', 'icon': 'bi bi-exclamation-triangle-fill'
+            'class' : 'alert-warning', 'type' : 'warning', 'icon': 'fa-solid fa-triangle-exclamation'
         },
         'alert-success': {
-            'class' : 'alert-success', 'type' : 'success', 'icon': 'bi bi-check-circle-fill'
+            'class' : 'alert-success', 'type' : 'success', 'icon': 'fa-solid fa-circle-check'
         },
         'alert-info': {
-            'class' : 'alert-info', 'type' : 'info', 'icon': 'bi bi-info-circle-fill'
+            'class' : 'alert-info', 'type' : 'info', 'icon': 'fa-solid fa-circle-info'
         }
     };
     this.owner = $owner;
@@ -691,13 +691,14 @@ function JawsMessage($owner)
      * show response message
      *
      * @param   object  message     Jaws Response message
-     * @param   object  $interface  Include (gadget, asction, ...)
+     * @param   object  $interface  Include (gadget, action, ...)
      * @return  void
      */
-    this.show = function (message, $interface = {}) {
+    this.show = async function (message, $interface = {}) {
         if (!message || !$.trim(message.text) || !message.type) {
             return;
         }
+
         // if $interface is empty
         if (!Object.keys($interface).length) {
             $interface = {
@@ -716,19 +717,29 @@ function JawsMessage($owner)
                 ).find('.toast').last().attr('id', $interface.id);
                 $container = $('#' + $interface.id);
             }
+            this.$container = $container;
 
-            $container.on('hidden.bs.toast', $.proxy(
+            // hide message if already shown
+            bootstrap.Toast.getOrCreateInstance(this.$container).hide();
+            await $.until($.proxy(function() {
+                return !(bootstrap.Toast.getOrCreateInstance(this).isShown());
+            }, this.$container));
+
+            // define on-hidden event
+            this.$container.off().on('hidden.bs.toast', $.proxy(
                 function(event) {
-                    $(event.target).find('[role="response.type"]').removeClass(['gadget-response-message', message.type]);
-                    $(event.target).find('[role="response.icon"]').removeClass(this.alerts[message.type].icon);
+                    $(event.target).find('[role="response.type"]').removeClass(['gadget-response-message', this.message.type]);
+                    $(event.target).find('[role="response.icon"]').removeClass(this.alerts[this.message.type].icon);
                 },
                 this
             ));
-            $container.find('[role="response.title"]').html(this.owner.gadget.t('title'));
-            $container.find('[role="response.text"]').html(message.text);
-            $container.find('[role="response.type"]').addClass(['gadget-response-message', message.type]);
-            $container.find('[role="response.icon"]').addClass(this.alerts[message.type].icon);
-            bootstrap.Toast.getOrCreateInstance($container).show();
+
+            this.message = message;
+            this.$container.find('[role="response.title"]').html(this.owner.gadget.t('title'));
+            this.$container.find('[role="response.text"]').html(message.text);
+            this.$container.find('[role="response.type"]').addClass(['gadget-response-message', message.type]);
+            this.$container.find('[role="response.icon"]').addClass(this.alerts[message.type].icon);
+            bootstrap.Toast.getOrCreateInstance(this.$container).show();
         } else {
             toastr.options = {
                 closeButton: true,
