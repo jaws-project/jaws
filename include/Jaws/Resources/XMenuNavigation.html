@@ -1,21 +1,47 @@
-<div class="gadget-menu dropdown">
+<div class="gadget-menu me-1">
   <button class="btn btn-light dropdown-toggle py-1" type="button" data-bs-toggle="dropdown" title="{{navigation.label}}">
     <i class="fas fa-bars"></i>
   </button>
-  <ul class="dropdown-menu dropdown-menu-end">
-    {%- for menu in navigation.menus %}
-      {%- if forloop.first | false and menu.separator < 0 %}
+  <ul class="dropdown-menu dropdown-menu-start">
+    {%- for grouped_menus in navigation.menus | groupby: 'group' %}
+      {%- assign group = grouped_menus | first | index: 'group' %}
 
-      {%- assign prevmenu = navigation.menus | index: forloop.prev.key %}
-      {%- if prevmenu.separator <= 0 %}
+      {%- if forloop.first | false and group | empty | true %}
       <li><hr class="dropdown-divider"></li>
       {%- endif %}
 
+      {%- if group | empty | false %}
+      <li class="dropdown dropend">
+        <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" role="button" data-bs-auto-close="false">
+          <span>{{ grouped_menus | first | index: 'group_title' | t }}</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-start top-0 start-100">
       {%- endif %}
-      <li>
-        <a class="dropdown-item {{ menu.active | equal: true, ' active' }}" href="{{ menu.url }}">{{ menu.title }}</a>
+
+      {%- if forloop.first | false and forloop.last | false %}
+      {%- endif %}
+
+      {%- for menu in grouped_menus %}
+        {%- if forloop.first | false and menu.separator < 0 %}
+          {%- assign prevmenu = navigation.menus | index: forloop.prev.key %}
+          {%- if prevmenu.separator <= 0 %}
+          <li><hr class="dropdown-divider"></li>
+          {%- endif %}
+        {%- endif %}
+        <li>
+          <a class="dropdown-item {{ menu.active | equal: true, ' active' }}" href="{{ menu.url }}">{{ menu.title }}</a>
+        </li>
+        {%- if forloop.last | false and menu.separator > 0 %}
+          <li><hr class="dropdown-divider"></li>
+        {%- endif %}
+      {%- endfor %}
+
+      {%- if group | empty | false %}
+        </ul>
       </li>
-      {%- if forloop.last | false and menu.separator > 0 %}
+      {%- endif %}
+
+      {%- if forloop.last | false and group | empty | true %}
       <li><hr class="dropdown-divider"></li>
       {%- endif %}
     {%- endfor %}

@@ -118,12 +118,19 @@ class Jaws_Gadget_Actions_MenuNavigation extends Jaws_Gadget_Class
 
                 $menu = array(
                     'name'  => $actionName,
-                    'title' => $this->gadget::t("ACTIONS_{$actionName}_TITLE"),
+                    'title' => $this->gadget::t("actions_{$actionName}_title"),
+                    'group' => '',
                     'url' => $this->gadget->urlMap(
                         $actionName,
                         isset($action['navigation']['params'])? $action['navigation']['params'] : array()
                     ),
                 );
+                // navigation group
+                if (array_key_exists('group', $action['navigation'])) {
+                    $menu['group'] = $action['navigation']['group'];
+                    $menu['group_title'] = $this->gadget::t('gadget_navigation_group_' . $menu['group']);
+                }
+
                 // set active menu
                 if ($this->app->mainRequest['gadget'] == $this->gadget->name &&
                     $this->app->mainRequest['action'] == $actionName
@@ -154,7 +161,7 @@ class Jaws_Gadget_Actions_MenuNavigation extends Jaws_Gadget_Class
 
         return array(
             'gadget' => $this->gadget->name,
-            'label'  => empty($label)? Jaws::t('GADGET_ACTIONS_MENUS') : $label,
+            'label'  => empty($label)? Jaws::t('gadget_actions_menus') : $label,
             'menus'  => $options
         );
     }
