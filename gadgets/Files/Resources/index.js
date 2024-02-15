@@ -341,6 +341,8 @@ function Jaws_Gadget_Files() { return {
         }
         // preview?
         $options['preview'] = Boolean($options['preview'] || $fileInput.data('preview'));
+        // min-count
+        $tpl.find("[data-mincount]").data('mincount', $options['mincount']);
         // max-count
         $tpl.find("[data-maxcount]").data('maxcount', $options['maxcount']);
 
@@ -397,7 +399,7 @@ function Jaws_Gadget_Files() { return {
     {
         let filesCount = 0;
         let $fileuploader = $tpl.find('[data-initialize=fileuploader]').first();
-        let mincount = 1;//Number($fileuploader.data('mincount'));
+        let mincount = Number($fileuploader.data('mincount'));
         let maxcount = Number($fileuploader.data('maxcount'));
 
         // old files
