@@ -2132,7 +2132,7 @@ Jaws = {
         let urlTranslates  = 'index.php?reqGadget=Settings' +
             '&reqAction=getTranslates&modules=' + modules +
             '&language='+ Jaws.defines.language +
-            '&restype=gzjson';
+            '&restype=gzjson&resexpr=86400&buildnumber=' + Jaws.defines.buildnumber;
         $.getJSON(urlTranslates, $.proxy(
             function(data) {
                 this.translations = data;

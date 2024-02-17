@@ -23,8 +23,13 @@ class Jaws_Response_GZJSON
         $data = gzencode($data, COMPRESS_LEVEL, FORCE_GZIP);
 
         header('Content-Type: application/json; charset=utf-8');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
+        $resexpr = (string)Jaws::getInstance()->request->fetch('resexpr');
+        if (empty($resexpr)) {
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Pragma: no-cache');
+        } else {
+            header("Cache-Control: max-age=$resexpr");
+        }
         header('Content-Length: '.strlen($data));
         header('Content-Encoding: gzip');
 
