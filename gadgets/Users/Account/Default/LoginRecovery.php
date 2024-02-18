@@ -170,7 +170,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
             unset($rcvryData['password'], $rcvryData['password_check']);
             $this->gadget->session->push(
                 $error->getMessage(),
-                ($error->getCode() == 201)? RESPONSE_NOTICE : RESPONSE_ERROR,
+                ($error->getCode() == 201)? RESPONSE_NOTICE : (($error->getCode() == 206)? RESPONSE_WARNING : RESPONSE_ERROR),
                 'Recovery.Response',
                 $rcvryData
             );

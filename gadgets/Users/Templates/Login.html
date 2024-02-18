@@ -1,5 +1,5 @@
 <!-- BEGIN login -->
-<div class="gadget-header d-flex align-items-center justify-content-between mb-2">
+<div class="gadget-header d-flex align-items-center mb-2">
   <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
 <div class="gadget-container" data-loading-container="users.login">
@@ -73,7 +73,10 @@
         </div>
         <div class="w-100 m-0"></div>
         <div class="gadget-actions col-12 col-md-8 col-lg-6 text-end mt-3">
-          <button class="btn btn-primary" type="submit">{{login}}</button>
+          <div class="d-flex justify-content-between">
+            <div class="w-100 alert {{response_type}} text-start my-0 py-1 me-2" role="alert">{{response_text}}</div>
+            <button class="btn btn-primary text-nowrap" type="submit">{{login}}</button>
+          </div>
           <a class="d-block text-decoration-none mt-2" href="{{url_forgot}}" {{hidden_forgot}}>{{lbl_forgot}}</a>
           <a class="d-block text-decoration-none mt-1" href="{{url_register}}" {{hidden_register}}>{{lbl_register}}</a>
           <a class="d-block text-decoration-none mt-1"href="{{url_back}}">{{lbl_back}}</a>
@@ -90,31 +93,35 @@
     <input type="hidden" name="referrer" value="{{referrer}}" />
     <input type="hidden" name="loginstep" value="2" />
     <input type="hidden" name="remember" value="{{remember}}" />
-    <div class="gadget-content card-body">
-      <div>
-        <label for="login_username">{{lbl_username}}:</label>
-        <input class="form-control ltr" name="username" id="username"
-               type="text"
-               value="{{username}}"
-               readonly
-        />
+    <div class="gadget-content">
+      <div class="row g-2">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_username}}:</span>
+            <input type="text" class="form-control bg-body-secondary" name="username" value="{{username}}" dir="ltr" required readonly />
+          </div>
+        </div>
+        <div class="w-100 m-0"></div>
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_loginkey}}:</span>
+            <input type="text" class="form-control" name="loginkey" value="" dir="ltr" autocomplete="off" required />
+          </div>
+        </div>
+        <div class="w-100 m-0"></div>
+        <div class="col-12 col-md-8 col-lg-6">
+        <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
+        </div>
+        <div class="w-100 m-0"></div>
+        <div class="gadget-actions col-12 col-md-8 col-lg-6 text-end mt-3">
+          <div class="d-flex justify-content-between">
+            <div class="w-100 alert {{response_type}} text-start my-0 py-1 me-2" role="alert">{{response_text}}</div>
+            <button class="btn btn-primary text-nowrap" type="submit">{{login}}</button>
+          </div>
+          <a class="d-block text-decoration-none mt-1"href="{{url_back}}">{{lbl_back}}</a>
+        </div>
+
       </div>
-      <div>
-        <label for="loginkey">{{lbl_loginkey}}:</label>
-        <input class="form-control ltr" name="loginkey" id="loginkey"
-               type="text"
-               autocomplete="off"
-               value=""
-        />
-      </div>
-      <div>
-        <br/>
-      </div>
-      <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
-    </div>
-    <div class="gadget_actions">
-      <div><button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button></div>
-      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
     </div>
   </form>
 <!-- END login_step_2 -->
@@ -130,55 +137,60 @@
     <!-- BEGIN encryption -->
     <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
     <!-- END encryption -->
-    <div class="gadget-content card-body">
-
-      <div class="input-group">
-        <label for="username">{{lbl_username}}:</label>
-        <input class="form-control ltr" type="text"
-          name="username"
-          value="{{username}}"
-          readonly
-        />
-      </div>
-
-      <div class="input-group">
-        <label for="old_password">{{lbl_old_password}}:</label>
-        <div class="input-group">
-          <input class="form-control ltr" type="password" name="old_password"
-            autocomplete="off" data-toggle="password" required
-          />
-          <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
-            <i class="glyphicon glyphicon-eye-open"></i>
-          </span>
+    <div class="gadget-content">
+      <div class="row g-2">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_username}}:</span>
+            <input type="text" class="form-control bg-body-secondary" name="username" value="{{username}}" dir="ltr" required readonly />
+          </div>
+        </div>
+        <div class="w-100 m-0"></div>
+        <!-- old password -->
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_old_password}}:</span>
+            <input class="form-control" type="password" name="old_password" dir="ltr"
+              autocomplete="off" data-toggle="password" required
+            />
+            <span title="Click here to show/hide password" class="input-group-text" style="cursor: pointer;">
+              <i class="fas fa-eye"></i>
+            </span>
+          </div>
+        </div>
+        <div class="w-100 m-0"></div>
+        <!-- new password -->
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_password}}:</span>
+            <input class="form-control" type="password" name="password" dir="ltr"
+              autocomplete="off" data-toggle="password" required
+            />
+            <span title="Click here to show/hide password" class="input-group-text" style="cursor: pointer;">
+              <i class="fas fa-eye"></i>
+            </span>
+          </div>
+        </div>
+        <div class="w-100 m-0"></div>
+        <!-- BEGIN usecrypt -->
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="input-group">
+            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_usecrypt}}</span>
+            <input type="checkbox" name="usecrypt" class="form-check-input fs-2 m-0 rounded align-self-center" value="true"
+              <!-- BEGIN selected -->checked="checked"<!-- END selected -->
+            />
+          </div>
+        </div>
+        <div class="w-100 m-0"></div>
+        <!-- END usecrypt -->
+        <div class="gadget-actions col-12 col-md-8 col-lg-6 text-end mt-3">
+          <div class="d-flex justify-content-between">
+            <div class="w-100 alert {{response_type}} text-start my-0 py-1 me-2" role="alert">{{response_text}}</div>
+            <button class="btn btn-primary text-nowrap" type="submit">{{login}}</button>
+          </div>
+          <a class="d-block text-decoration-none mt-1"href="{{url_back}}">{{lbl_back}}</a>
         </div>
       </div>
-
-      <div class="input-group">
-        <label for="password">{{lbl_password}}:</label>
-        <div class="input-group">
-          <input class="form-control ltr" type="password" name="password"
-            autocomplete="off" data-toggle="password" required
-          />
-          <span title="Click here to show/hide password" class="input-group-addon" style="cursor: pointer;">
-            <i class="glyphicon glyphicon-eye-open"></i>
-          </span>
-        </div>
-      </div>
-
-      <!-- BEGIN usecrypt -->
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input"
-          id="usecrypt" name="usecrypt" value="true"
-          <!-- BEGIN selected -->checked="checked"<!-- END selected -->
-        />
-        <label class="form-check-label" for="usecrypt">{{lbl_usecrypt}}</label>
-      </div>
-      <!-- END usecrypt -->
-
-    </div>
-    <div class="gadget_actions">
-      <div><button class="btn btn-primary" type="submit">{{login}}</button></div>
-      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
     </div>
   </form>
 <!-- END login_step_3 -->

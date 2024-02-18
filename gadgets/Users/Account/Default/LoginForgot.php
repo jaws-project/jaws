@@ -19,13 +19,12 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         // Load the template
         $tpl = $this->gadget->template->load('LoginForgot.html');
         $tpl->SetBlock('forgot');
-        $tpl->SetVariable('title', $this::t('FORGOT_REMEMBER'));
 
         $response = $this->gadget->session->pop('Recovery.Response');
         if (!isset($response['data'])) {
             $reqpost = array(
                 'domain'   => $this->gadget->registry->fetch('default_domain'),
-                'rcvstep'  => 0,
+                'rcvstep'  => 1,
                 'account'  => '',
                 'remember' => 0
             );
@@ -39,6 +38,8 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
             return Jaws_Header::Location('');
         }
 
+        $tpl->SetVariable('title', $this::t("forgot_title_step_{$reqpost['rcvstep']}"));
+        $tpl->SetBlock("forgot/forgot_step_{$reqpost['rcvstep']}");
         switch ($reqpost['rcvstep']) {
             case 2:
                 $this->LoginForgotStep2($tpl, $reqpost, $referrer);
@@ -61,6 +62,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
             $tpl->SetVariable('response_text', $response['text']);
         }
 
+        $tpl->ParseBlock("forgot/forgot_step_{$reqpost['rcvstep']}");
         $tpl->ParseBlock('forgot');
         return $tpl->Get();
     }
@@ -74,7 +76,6 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
     private function LoginForgotStep1(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/forgot_step_1");
 
         $tpl->SetVariable('domain',   $reqpost['domain']);
         $tpl->SetVariable('account',  $reqpost['account']);
@@ -90,8 +91,6 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $tpl->SetVariable('recovery', Jaws::t('REQUEST'));
         $tpl->SetVariable('url_back', $referrer);
         $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
-
-        $tpl->ParseBlock("$block/forgot_step_1");
     }
 
     /**
@@ -103,7 +102,6 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
     private function LoginForgotStep2(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/forgot_step_2");
 
         $tpl->SetVariable('lbl_account', Jaws::t('ACCOUNT'));
         $tpl->SetVariable('account', $reqpost['account']);
@@ -116,8 +114,6 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
         $tpl->SetVariable('recovery', Jaws::t('REQUEST'));
         $tpl->SetVariable('url_back', $referrer);
         $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
-
-        $tpl->ParseBlock("$block/forgot_step_2");
     }
 
     /**
@@ -129,7 +125,6 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
     private function LoginForgotStep3(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/forgot_step_3");
 
         $tpl->SetVariable('lbl_account', Jaws::t('ACCOUNT'));
         $tpl->SetVariable('account', $reqpost['account']);
@@ -138,25 +133,23 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
-            $tpl->SetBlock("$block/forgot_step_3/encryption");
+            $tpl->SetBlock("$block/encryption");
             $tpl->SetVariable('pubkey', $JCrypt->getPublic());
-            $tpl->ParseBlock("$block/forgot_step_3/encryption");
+            $tpl->ParseBlock("$block/encryption");
 
             // usecrypt
-            $tpl->SetBlock("$block/forgot_step_3/usecrypt");
+            $tpl->SetBlock("$block/usecrypt");
             $tpl->SetVariable('lbl_usecrypt', Jaws::t('LOGIN_SECURE'));
             if (empty($reqpost['pubkey']) || !empty($reqpost['usecrypt'])) {
-                $tpl->SetBlock("$block/forgot_step_3/usecrypt/selected");
-                $tpl->ParseBlock("$block/forgot_step_3/usecrypt/selected");
+                $tpl->SetBlock("$block/usecrypt/selected");
+                $tpl->ParseBlock("$block/usecrypt/selected");
             }
-            $tpl->ParseBlock("$block/forgot_step_3/usecrypt");
+            $tpl->ParseBlock("$block/usecrypt");
         }
 
         $tpl->SetVariable('recovery', Jaws::t('REQUEST'));
         $tpl->SetVariable('url_back', $referrer);
         $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
-
-        $tpl->ParseBlock("$block/forgot_step_3");
     }
 
     /**
@@ -168,11 +161,10 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
     private function LoginForgotStep4(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/forgot_step_4");
+
         $tpl->SetVariable('message', $this::t('FORGOT_RECOVERY_SUCCESS'));
         $tpl->SetVariable('url_back', $referrer);
         $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
-        $tpl->ParseBlock("$block/forgot_step_4");
     }
 
 }

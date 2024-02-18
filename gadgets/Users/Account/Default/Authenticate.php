@@ -223,7 +223,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             unset($loginData['password'], $loginData['chkpassword']);
             $this->gadget->session->push(
                 $error->getMessage(),
-                ($error->getCode() == 201)? RESPONSE_NOTICE : RESPONSE_ERROR,
+                ($error->getCode() == 201)? RESPONSE_NOTICE : (($error->getCode() == 206)? RESPONSE_WARNING : RESPONSE_ERROR),
                 'Login.Response',
                 $loginData
             );

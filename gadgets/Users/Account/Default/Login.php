@@ -42,7 +42,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         if (!isset($response['data'])) {
             $reqpost['domain'] = $this->gadget->registry->fetch('default_domain');
             $reqpost['username'] = '';
-            $reqpost['loginstep'] = 0;
+            $reqpost['loginstep'] = 1;
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
         } else {
@@ -50,19 +50,18 @@ class Users_Account_Default_Login extends Users_Account_Default
             $reqpost['loginstep'] = (int)$reqpost['loginstep'];
         }
 
+        $tpl->SetVariable('title', $this::t("login_title_step_{$reqpost['loginstep']}"));
+        $tpl->SetBlock("login/login_step_{$reqpost['loginstep']}");
         switch ($reqpost['loginstep']) {
             case 2:
-                $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
                 $this->LoginBoxStep2($tpl, $reqpost, $referrer);
                 break;
 
             case 3:
-                $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
                 $this->LoginBoxStep3($tpl, $reqpost, $referrer);
                 break;
 
             default:
-                $tpl->SetVariable('title', $this::t('LOGIN_TITLE'));
                 $this->LoginBoxStep1($tpl, $reqpost, $referrer);
         }
 
@@ -71,6 +70,7 @@ class Users_Account_Default_Login extends Users_Account_Default
             $tpl->SetVariable('response_text', $response['text']);
         }
 
+        $tpl->ParseBlock("login/login_step_{$reqpost['loginstep']}");
         $tpl->ParseBlock('login');
         return $tpl->Get();
     }
@@ -137,40 +137,39 @@ class Users_Account_Default_Login extends Users_Account_Default
         http_response_code(401);
 
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/login_step_1");
         $tpl->SetVariable('base_script', BASE_SCRIPT);
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
-            $tpl->SetBlock("$block/login_step_1/encryption");
+            $tpl->SetBlock("$block/encryption");
             $tpl->SetVariable('pubkey', $JCrypt->getPublic());
-            $tpl->ParseBlock("$block/login_step_1/encryption");
+            $tpl->ParseBlock("$block/encryption");
 
             // usecrypt
-            $tpl->SetBlock("$block/login_step_1/usecrypt");
+            $tpl->SetBlock("$block/usecrypt");
             $tpl->SetVariable('lbl_usecrypt', Jaws::t('LOGIN_SECURE'));
             if (empty($reqpost['username']) || !empty($reqpost['usecrypt'])) {
-                $tpl->SetBlock("$block/login_step_1/usecrypt/selected");
-                $tpl->ParseBlock("$block/login_step_1/usecrypt/selected");
+                $tpl->SetBlock("$block/usecrypt/selected");
+                $tpl->ParseBlock("$block/usecrypt/selected");
             }
-            $tpl->ParseBlock("$block/login_step_1/usecrypt");
+            $tpl->ParseBlock("$block/usecrypt");
         }
 
         // domain
         if ($this->gadget->registry->fetch('multi_domain') == 'true') {
             $domains = $this->gadget->model->load('Domains')->getDomains();
             if (!Jaws_Error::IsError($domains) && !empty($domains)) {
-                $tpl->SetBlock("$block/login_step_1/multi_domain");
+                $tpl->SetBlock("$block/multi_domain");
                 $tpl->SetVariable('lbl_domain', $this::t('DOMAIN'));
                 array_unshift($domains, array('id' => 0, 'title' => $this::t('NODOMAIN')));
                 foreach ($domains as $domain) {
-                    $tpl->SetBlock("$block/login_step_1/multi_domain/domain");
+                    $tpl->SetBlock("$block/multi_domain/domain");
                     $tpl->SetVariable('id', $domain['id']);
                     $tpl->SetVariable('title', $domain['title']);
                     $tpl->SetVariable('selected', ($domain['id'] == $reqpost['domain'])? 'selected="selected"': '');
-                    $tpl->ParseBlock("$block/login_step_1/multi_domain/domain");
+                    $tpl->ParseBlock("$block/multi_domain/domain");
                 }
-                $tpl->ParseBlock("$block/login_step_1/multi_domain");
+                $tpl->ParseBlock("$block/multi_domain");
             }
         }
 
@@ -179,13 +178,13 @@ class Users_Account_Default_Login extends Users_Account_Default
         $tpl->SetVariable('lbl_password', Jaws::t('PASSWORD'));
 
         // remember
-        $tpl->SetBlock("$block/login_step_1/remember");
+        $tpl->SetBlock("$block/remember");
         $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
         if (!empty($reqpost['remember'])) {
-            $tpl->SetBlock("$block/login_step_1/remember/selected");
-            $tpl->ParseBlock("$block/login_step_1/remember/selected");
+            $tpl->SetBlock("$block/remember/selected");
+            $tpl->ParseBlock("$block/remember/selected");
         }
-        $tpl->ParseBlock("$block/login_step_1/remember");
+        $tpl->ParseBlock("$block/remember");
 
         // display captcha?
         $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
@@ -201,22 +200,18 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         // anon_register
         if ($this->gadget->registry->fetch('anon_register') == 'true') {
-            $link =& Piwi::CreateWidget(
-                'Link',
-                $this::t('REGISTER'),
-                $this->gadget->urlMap('Registration')
-            );
-            $tpl->SetVariable('user-register', $link->Get());
+            $tpl->SetVariable('lbl_register',  $this::t('REGISTER'));
+            $tpl->SetVariable('url_register', $this->gadget->urlMap('Registration'));
+        } else {
+            $tpl->SetVariable('hidden_register', 'hidden');
         }
 
         // password_recovery
         if ($this->gadget->registry->fetch('password_recovery') == 'true') {
-            $link =& Piwi::CreateWidget(
-                'Link',
-                $this::t('FORGOT_LOGIN'),
-                $this->gadget->urlMap('LoginForgot')
-            );
-            $tpl->SetVariable('forgot-password', $link->Get());
+            $tpl->SetVariable('lbl_forgot', $this::t('FORGOT_LOGIN'));
+            $tpl->SetVariable('url_forgot', $this->gadget->urlMap('LoginForgot'));
+        } else {
+            $tpl->SetVariable('hidden_forgot', 'hidden');
         }
 
         $tpl->ParseBlock("$block/login_step_1");
@@ -231,9 +226,8 @@ class Users_Account_Default_Login extends Users_Account_Default
     public function LoginBoxStep2(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/login_step_2");
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
 
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('remember', $reqpost['remember']);
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
 
@@ -248,8 +242,6 @@ class Users_Account_Default_Login extends Users_Account_Default
         $tpl->SetVariable('login', Jaws::t('LOGIN'));
         $tpl->SetVariable('url_back', $referrer);
         $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
-
-        $tpl->ParseBlock("$block/login_step_2");
     }
 
     /**
@@ -261,9 +253,8 @@ class Users_Account_Default_Login extends Users_Account_Default
     public function LoginBoxStep3(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/login_step_3");
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
 
+        $tpl->SetVariable('base_script', BASE_SCRIPT);
         $tpl->SetVariable('remember', $reqpost['remember']);
         $tpl->SetVariable('username', $reqpost['username']);
 
@@ -273,26 +264,24 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
-            $tpl->SetBlock("$block/login_step_3/encryption");
+            $tpl->SetBlock("$block/encryption");
             $tpl->SetVariable('pubkey', $JCrypt->getPublic());
-            $tpl->ParseBlock("$block/login_step_3/encryption");
+            $tpl->ParseBlock("$block/encryption");
 
             // usecrypt
-            $tpl->SetBlock("$block/login_step_3/usecrypt");
+            $tpl->SetBlock("$block/usecrypt");
             $tpl->SetVariable('lbl_usecrypt', Jaws::t('LOGIN_SECURE'));
             if (empty($reqpost['pubkey']) || !empty($reqpost['usecrypt'])) {
-                $tpl->SetBlock("$block/login_step_3/usecrypt/selected");
-                $tpl->ParseBlock("$block/login_step_3/usecrypt/selected");
+                $tpl->SetBlock("$block/usecrypt/selected");
+                $tpl->ParseBlock("$block/usecrypt/selected");
             }
-            $tpl->ParseBlock("$block/login_step_3/usecrypt");
+            $tpl->ParseBlock("$block/usecrypt");
         }
 
         // global variables
         $tpl->SetVariable('login', Jaws::t('LOGIN'));
         $tpl->SetVariable('url_back', $referrer);
         $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
-
-        $tpl->ParseBlock("$block/login_step_3");
     }
 
 }
