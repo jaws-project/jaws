@@ -19,9 +19,14 @@ class Jaws_Response_Text
      */
     static function get($data)
     {
-        header('Content-Type: text/html; charset=utf-8');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Pragma: no-cache');
+        $headers = implode("\n", headers_list());
+        if (false === stripos($headers, 'Content-Type')) {
+            header('Content-Type: text/html; charset=utf-8');
+        }
+        if (false === stripos($headers, 'Cache-Control')) {
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Pragma: no-cache');
+        }
         return $data;
     }
 
