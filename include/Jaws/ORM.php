@@ -471,12 +471,34 @@ class Jaws_ORM
      *
      * @access  public
      * @param   array   $columns    select column list
+     * @param   bool    $ignore     Ignore select columns
+     * @param   bool    $reset      Reset columns
      * @return  object  Jaws_ORM object
      */
-    function select($columns)
+    function select($columns, $ignore = false, $reset = true)
     {
-        $this->_columns = array();
-        $columns = is_array($columns)? $columns : func_get_args();
+        if (!is_array($columns)) {
+            $columns = func_get_args();
+            // backward compatible for support reset & ignore
+            $ignore = false;
+            $reset  = true;
+            if (count($columns) > 1) {
+                if (is_bool($columns[count($columns)-2])) {
+                    $reset  = array_pop($columns);
+                    $ignore = array_pop($columns);
+                } elseif (is_bool($columns[count($columns)-1])) {
+                    $ignore = array_pop($columns);
+                }
+            }
+        }
+
+        if ($ignore) {
+            return $this;
+        }
+        if ($reset) {
+            $this->_columns = array();
+        }
+
         foreach($columns as $column) {
             if (is_object($column)) {
                 $key = uniqid('', true);
@@ -486,6 +508,10 @@ class Jaws_ORM
                 $this->_columns[$key].= empty($alias)? '' : (' as '. $this->quoteIdentifier($alias));
                 unset($column);
             } else {
+                if (is_array($column)) {
+                    _log_var_dump($columns);
+                    _log_var_dump($column);
+                }
                 if ($type = trim(strrchr($column, ':'), ':')) {
                     $key = substr($column, 0, strrpos($column, ':'));
                 } else {
