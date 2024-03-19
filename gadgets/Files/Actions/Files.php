@@ -525,11 +525,12 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      */
     function files()
     {
-        $postedData = $this->gadget->request->fetch(
-            array('interface:array', 'options:array'),
-            'post'
+        $interface = $this->gadget->request->fetch(
+            array('gadget', 'action', 'reference', 'type', 'public|boolean'),
+            'post',
+            'interface'
         );
-        list($interface, $options) = array_values($postedData);
+        $interface = array_filter($interface, static function($val){return !is_null($val);});
 
         $error_code = 404;
         $error_message = Jaws::t('HTTP_ERROR_TITLE_404');

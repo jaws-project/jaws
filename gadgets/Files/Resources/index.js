@@ -234,6 +234,24 @@ function Jaws_Gadget_Files() { return {
     },
 
     /**
+     * get reference files interface
+     */
+    getReferenceFiles: function($interface, callback)
+    {
+        let files = [];
+        this.gadget.ajax.call(
+            'files',
+            $interface,
+            function(response, status) {
+                if (response['type'] == 'alert-success') {
+                    files = response['data'];
+                }
+                callback(files);
+            }
+        )
+    },
+
+    /**
      * Display reference files interface
      */
     displayReferenceFiles: function($tpl, $interface, $options = [])
