@@ -144,4 +144,30 @@ class Jaws_XTemplate_Filters_Math extends Jaws_XTemplate_Filters
         return (float)$input1 <= (float)$input2;
     }
 
+    /**
+     * find highest value
+     *
+     * @param   float   $input
+     * @param   array   $args   Variable-length argument lists
+     *
+     * @return float
+     */
+    public static function max($input, ...$args)
+    {
+        return max($input, ...$args);
+    }
+
+    /**
+     * find lowest value
+     *
+     * @param   float   $input
+     * @param   array   $args   Variable-length argument lists
+     *
+     * @return float
+     */
+    public static function min($input, ...$args)
+    {
+        return min($input, ...$args);
+    }
+
 }
