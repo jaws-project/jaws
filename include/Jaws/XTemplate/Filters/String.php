@@ -176,6 +176,31 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Perform a regular expression search and replace
+     *
+     * @param string $input
+     * @param string $pattern
+     * @param string $replacement
+     *
+     * @return string
+     */
+    public static function replace_regex($input, $pattern, $replacement = array())
+    {
+        if (!$input || !$pattern) {
+            return '';
+        }
+
+        $input = preg_replace_callback(
+            $pattern, function ($matches) use ($replacement) {
+                return isset($replacement[$matches[0]])? $replacement[$matches[0]] : '';
+            },
+            $input
+        );
+
+        return $input;
+    }
+
+    /**
      * Replace the first occurrences of a string with another
      *
      * @param string $input
