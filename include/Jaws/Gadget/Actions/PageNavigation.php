@@ -111,7 +111,7 @@ class Jaws_Gadget_Actions_PageNavigation extends Jaws_Gadget_Class
             'action'  => $action,
             'params'  => $params,
             'pages'   => $pages,
-            'template'  => array_key_exists('template', $options)? $options['template'] : 1,
+            'template'  => array_key_exists('template', $options)? $options['template'] : 'grid',
             'templates' => array_key_exists('templates', $options)? $options['templates'] : false,
             'limit'   => $options['limit'],
             'sort'    => array_key_exists('sort', $options)? $options['sort'] : '',

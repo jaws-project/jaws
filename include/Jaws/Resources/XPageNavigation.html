@@ -91,21 +91,22 @@
     {%- endif %}
 
     {%- if pagination.templates %}
+      {%- assign templates = 'grid,list,table' | split: ',' %}
       {%- assign template_icons = 'fa-border-all,fa-list,fa-table-cells' | split: ',' %}
       <ul class="pagination col-auto mb-0">
-        {%- for i in (1..3) %}
-          {%- if pagination.templates | contains: i %}
+        {%- for template in templates %}
+          {%- if pagination.templates | contains: template %}
             {%- assign pagination.params.page = 1 %}
-            {%- assign pagination.params.tpl = i %}
+            {%- assign pagination.params.tpl = template %}
             {%- assign pageURL = pagination.gadget | urlmap: pagination.action, pagination.params %}
 
-            {%- if pagination.template == i %}
+            {%- if pagination.template == template %}
               <li class="page-item disabled">
-                <a class="page-link"><i class="fas {{ i | sub: 1 | indexof: template_icons}} align-middle fs-5"></i></a>
+                <a class="page-link"><i class="fas {{ template_icons | index: forloop.index0 }} align-middle fs-5"></i></a>
               </li>
             {%- else %}
               <li class="page-item">
-                <a class="page-link" href="{{pageURL}}"><i class="fas {{ i | sub: 1 | indexof: template_icons}} align-middle fs-5"></i></a>
+                <a class="page-link" href="{{pageURL}}"><i class="fas {{ template_icons | index: forloop.index0 }} align-middle fs-5"></i></a>
               </li>
             {%- endif %}
           {%- endif %}
