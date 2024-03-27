@@ -1591,10 +1591,13 @@ var Jaws_Gadget = (function () {
     return {
         // return singleton instance object of gadget
         getInstance: function(gadget) {
-            if (!Jaws.gadgets.hasOwnProperty(gadget) ||
-                !Jaws.gadgets[gadget].hasOwnProperty('name')
-            ) {
-                var objGadget = new (window['Jaws_Gadget_'+gadget] || Object);
+            if (!window['Jaws_Gadget_'+gadget]) {
+                throw new Error(`Gadget "${gadget}" not found`);
+            }
+
+            if (!Jaws.gadgets.hasOwnProperty(gadget) || !Jaws.gadgets[gadget].hasOwnProperty('name'))
+            {
+                let objGadget = new (window['Jaws_Gadget_'+gadget] || Object);
                 objGadget.app = Jaws;
                 objGadget.name = gadget;
                 objGadget.gadget = objGadget;
@@ -1642,7 +1645,7 @@ var Jaws_Gadget = (function () {
                 Jaws.gadgets[gadget] = objGadget;
             }
 
-            return Jaws.gadgets[gadget];
+            return Jaws.gadgets[gadget] || {};
         },
 
     };
@@ -1658,7 +1661,7 @@ function Jaws_Gadget_Action() { return {
         if (!this.gadget.actions.hasOwnProperty(action) ||
             !this.gadget.actions[action].hasOwnProperty('name')
         ) {
-            var objAction = new (window['Jaws_Gadget_'+this.gadget.name+'_Action_'+action] || Object);
+            let objAction = new (window['Jaws_Gadget_'+this.gadget.name+'_Action_'+action] || Object);
             objAction.app = Jaws;
             objAction.name = action;
             objAction.gadget = this.gadget;
@@ -1923,7 +1926,11 @@ Jaws = {
     session: {},
     permissions: {},
     filters: {},
-    translations: {},
+    translations: {
+        0:{},
+        1:{},
+        2:{},
+    },
 
     // define acl method for get permissions
     permission: function(name, subkey, gadget) {
@@ -2115,19 +2122,31 @@ Jaws = {
 
         // initialize gadgets
         $.each(this.gadgets, function(gadget) {
-            Jaws_Gadget.getInstance(gadget);
-            $.each(Jaws.gadgets[gadget].actions, function(action) {
-                Jaws_Gadget.getInstance(gadget).action.load(action);
-            });
+            try {
+                Jaws_Gadget.getInstance(gadget);
+                $.each(Jaws.gadgets[gadget].actions, function(action) {
+                    Jaws_Gadget.getInstance(gadget).action.load(action);
+                });
+            } catch (error) {
+            }
         });
     },
 
-    init: function() {
-        // load translations
-        let modules = '0:';
-        $.each(this.gadgets, function(gadget, key) {
-            modules+= ',1:'+ gadget;
-        });
+    loadTranslate: function(gadgets, callback) {
+        let modules = '';
+        if (Object.keys(this.translations[0]).length === 0) {
+            modules = '0:';
+        }
+
+        gadgets.forEach(function(gadget, key) {
+            if (!Jaws.translations[1].hasOwnProperty(gadget.toUpperCase())) {
+                modules+= ',1:'+ gadget;
+            }
+        }.bind(this));
+
+        if (!modules) {
+            return callback? callback() : true;
+        }
 
         let urlTranslates  = 'index.php?reqGadget=Settings' +
             '&reqAction=getTranslates&modules=' + modules +
@@ -2135,11 +2154,17 @@ Jaws = {
             '&restype=gzjson&resexpr=86400&buildnumber=' + Jaws.defines.buildnumber;
         $.getJSON(urlTranslates, $.proxy(
             function(data) {
-                this.translations = data;
-                this.initGadgets();
+                // pure javascript not support deep merge
+                $.extend(true, this.translations, data);
+                return callback? callback() : true;
             },
             this
         ));
+    },
+
+    init: function() {
+        // load translations
+        this.loadTranslate(Object.keys(this.gadgets), this.initGadgets.bind(this));
     },
 
 };
