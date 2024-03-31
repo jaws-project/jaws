@@ -1591,13 +1591,10 @@ var Jaws_Gadget = (function () {
     return {
         // return singleton instance object of gadget
         getInstance: function(gadget) {
-            if (!window['Jaws_Gadget_'+gadget]) {
-                throw new Error(`Gadget "${gadget}" not found`);
-            }
-
-            if (!Jaws.gadgets.hasOwnProperty(gadget) || !Jaws.gadgets[gadget].hasOwnProperty('name'))
-            {
-                let objGadget = new (window['Jaws_Gadget_'+gadget] || Object);
+            if (!Jaws.gadgets.hasOwnProperty(gadget) ||
+                !Jaws.gadgets[gadget].hasOwnProperty('name')
+            ) {
+                var objGadget = new (window['Jaws_Gadget_'+gadget] || Object);
                 objGadget.app = Jaws;
                 objGadget.name = gadget;
                 objGadget.gadget = objGadget;
@@ -1645,7 +1642,7 @@ var Jaws_Gadget = (function () {
                 Jaws.gadgets[gadget] = objGadget;
             }
 
-            return Jaws.gadgets[gadget] || {};
+            return Jaws.gadgets[gadget];
         },
 
     };
@@ -2122,13 +2119,10 @@ Jaws = {
 
         // initialize gadgets
         $.each(this.gadgets, function(gadget) {
-            try {
-                Jaws_Gadget.getInstance(gadget);
-                $.each(Jaws.gadgets[gadget].actions, function(action) {
-                    Jaws_Gadget.getInstance(gadget).action.load(action);
-                });
-            } catch (error) {
-            }
+            Jaws_Gadget.getInstance(gadget);
+            $.each(Jaws.gadgets[gadget].actions, function(action) {
+                Jaws_Gadget.getInstance(gadget).action.load(action);
+            });
         });
     },
 
