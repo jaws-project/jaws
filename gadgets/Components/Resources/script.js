@@ -626,7 +626,7 @@ $(document).ready(function() {
                 installed: Jaws.gadgets.Components.defines.lbl_uninstall,
                 notinstalled: Jaws.gadgets.Components.defines.lbl_install
             };
-            pluginsMode = false;
+            pluginsMode = 0;
             break;
 
         case 'Plugins':
@@ -634,7 +634,7 @@ $(document).ready(function() {
                 installed: Jaws.gadgets.Components.defines.lbl_uninstall,
                 notinstalled: Jaws.gadgets.Components.defines.lbl_install
             };
-            pluginsMode = true;
+            pluginsMode = 1;
             break;
     }
 
@@ -647,7 +647,7 @@ $(document).ready(function() {
 var ComponentsStorage = [new JawsStorage('Gadgets'), new JawsStorage('Plugins')];
 var ComponentsAjax = new JawsAjax('Components', ComponentsCallback),
     actions = {},
-    pluginsMode = false,
+    pluginsMode = 0,
     selectedComponent = null,
     components = {},
     regChanges = {},
