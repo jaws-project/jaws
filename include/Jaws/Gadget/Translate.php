@@ -24,7 +24,7 @@ class Jaws_Gadget_Translate extends Jaws_Gadget_Class
         $gadget = empty($gadget)? $this->gadget->name : $gadget;
         return Jaws_Translate::getInstance()->AddTranslation(
             $gadget,
-            strtoupper($gadget.'_'.$key_name),
+            strtoupper($key_name),
             $key_value,
             JAWS_COMPONENT_GADGET
         );
