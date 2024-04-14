@@ -2175,8 +2175,7 @@ Jaws.filters = {
      *
      */
     split: function(input, pattern = ',') {
-        input = [null, undefined].includes(input)? '' : input;
-        return input.toString().split(pattern);
+        return [null, undefined, ''].includes(input)? [] : input.toString().split(pattern);
     },
 
     /**

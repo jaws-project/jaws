@@ -271,7 +271,11 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      */
     public static function split($input, $pattern = ',')
     {
-        return explode($pattern, isset($input)? $input : '');
+        if (!isset($input) || $input === '') {
+            return [];
+        }
+
+        return explode($pattern, $input);
     }
 
     /**
