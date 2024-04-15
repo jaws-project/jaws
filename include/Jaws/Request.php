@@ -94,6 +94,7 @@ class Jaws_Request
      * @access  private
      */
     private $map_types_cast = array(
+        'null'    => 'null',
         'int'     => 'integer',
         'integer' => 'integer',
         'float'   => 'float',
@@ -324,6 +325,13 @@ class Jaws_Request
                 $this->data[$method][$branchName] = array();
             }
             $dataRepository = &$this->data[$method][$branchName];
+        }
+
+        // unset key if it's type is integer and empty string passed to it and also null cast is set
+        if (in_array($cast_type, ['int', 'integer']) && !empty($null_type) &&
+            isset($dataRepository[$key]) && $dataRepository[$key] === ''
+        ) {
+            unset($dataRepository[$key]);
         }
 
         // if key not exists
