@@ -4,7 +4,7 @@
  * @category   Ajax
  * @package    Languages
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2007-2022 Jaws Development Group
+ * @copyright   2007-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 function Jaws_Gadget_Languages() { return {
