@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     PrivateMessage
  * @author      ZehneZiba <zzb@zehneziba.ir>
- * @copyright   2008-2022 Jaws Development Group
+ * @copyright   2008-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class PrivateMessage_Actions_PrivateMessage extends Jaws_Gadget_Action

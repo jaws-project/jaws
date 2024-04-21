@@ -5,7 +5,7 @@
  * @category    Gadget
  * @package     Notification
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2014-2022 Jaws Development Group
+ * @copyright   2014-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class PrivateMessage_Events_Notify extends Jaws_Gadget_Event
