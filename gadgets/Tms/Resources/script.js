@@ -4,7 +4,7 @@
  * @category   Ajax
  * @package    Tms
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright   2007-2022 Jaws Development Group
+ * @copyright   2007-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 function Jaws_Gadget_Tms() { return {
