@@ -403,11 +403,13 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
     {
         $term = $this->gadget->request->fetch('term', 'post');
         $users = Jaws_Gadget::getInstance('Users')->model->load('User')->list(
-            0, 0,
-            array('status' => 1, 'term' => $term),
-            array(),
-            array('nickname' => true), // order by nickname
-            5
+            array(
+                'status' => 1,
+                'term' => $term,
+            ),
+            array(
+                'limit'  => 5,
+            )
         );
         if (Jaws_Error::IsError($users)) {
             return $this->gadget->session->response(
