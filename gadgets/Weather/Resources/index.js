@@ -2,10 +2,15 @@
  * Weather Javascript actions
  *
  * @category    Ajax
- * @package     Logs
+ * @package     Weather
  * @copyright   2016-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
+function Jaws_Gadget_Weather() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
