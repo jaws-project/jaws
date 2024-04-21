@@ -170,4 +170,17 @@ class Jaws_XTemplate_Filters_Math extends Jaws_XTemplate_Filters
         return min($input, ...$args);
     }
 
+    /**
+     * generate a hash value (message digest)
+     *
+     * @param   string  $input
+     * @param   string  $algo
+     *
+     * @return string calculated message digest as lowercase hexits
+     */
+    public static function hash($input, $algo = 'sha1')
+    {
+        return hash($algo, $input);
+    }
+
 }
