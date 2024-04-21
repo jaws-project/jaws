@@ -7,7 +7,7 @@
  * @author      Jon Wood <jon@substance-it.co.uk>
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      ZehneZiba <zzb@zehneziba.ir>
- * @copyright   2005-2022 Jaws Development Group
+ * @copyright   2005-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Installer_Settings extends JawsInstaller

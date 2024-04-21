@@ -5,7 +5,7 @@
  * @category    Application
  * @package     InstallStage
  * @author      Jon Wood <jon@substance-it.co.uk>
- * @copyright   2005-2022 Jaws Development Group
+ * @copyright   2005-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Installer_Finished extends JawsInstaller
