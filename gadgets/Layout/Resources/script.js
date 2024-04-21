@@ -9,7 +9,11 @@
  * @copyright   2004-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
-
+function Jaws_Gadget_Layout() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
