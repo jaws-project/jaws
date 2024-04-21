@@ -5,7 +5,7 @@
  * @category   Plugin
  * @package    Paragraph
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2017-2022 Jaws Development Group
+ * @copyright   2017-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Paragraph_Plugin extends Jaws_Plugin
