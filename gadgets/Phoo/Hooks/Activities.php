@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     Blog
  * @author      ZehneZiba <zzb@zehneziba.ir>
- * @copyright   2015-2022 Jaws Development Group
+ * @copyright   2015-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Phoo_Hooks_Activities extends Jaws_Gadget_Hook
