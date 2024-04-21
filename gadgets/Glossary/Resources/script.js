@@ -8,6 +8,11 @@
  * @copyright   2005-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
+function Jaws_Gadget_Glossary() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Glossary callbacks
  */
