@@ -8,6 +8,11 @@
  * @copyright   2006-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
+function Jaws_Gadget_UrlMapper() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * UrlMapper CallBack
  */
