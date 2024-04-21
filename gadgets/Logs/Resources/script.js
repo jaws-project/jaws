@@ -8,7 +8,11 @@
  * @copyright   2013-2022 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-
+function Jaws_Gadget_Logs() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 function Jaws_Gadget_Logs() { return {
     // ASync callback method
     AjaxCallback: {
