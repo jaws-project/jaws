@@ -4,7 +4,11 @@
  * @category    Ajax
  * @package     Rating
  */
-
+function Jaws_Gadget_Rating() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  *
  */
