@@ -8,6 +8,11 @@
  * @copyright   2005-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
+function Jaws_Gadget_Blog() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
