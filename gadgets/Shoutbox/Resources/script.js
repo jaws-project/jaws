@@ -4,7 +4,7 @@
  * @category   Ajax
  * @package    Shoutbox
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
- * @copyright   2005-2022 Jaws Development Group
+ * @copyright   2005-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 function Jaws_Gadget_Shoutbox() { return {
