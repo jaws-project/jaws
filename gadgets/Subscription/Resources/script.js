@@ -4,6 +4,11 @@
  * @category    Ajax
  * @package     Subscription
  */
+function Jaws_Gadget_Subscription() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
