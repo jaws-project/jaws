@@ -8,7 +8,7 @@
  * @author     Helgi Þormar <dufuz@php.net>
  * @author     Jonathan Hernandez  <ion@suavizado.com>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2004-2022 Jaws Development Group
+ * @copyright   2004-2024 Jaws Development Group
  * @package Blog
  */
 define('APP_TYPE',    'web');
