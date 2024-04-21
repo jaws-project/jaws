@@ -5,7 +5,7 @@
  * @category    GadgetInfo
  * @package     Launcher
  * @author      Jonathan Hernandez <ion@suavizado.com>
- * @copyright   2006-2022 Jaws Development Group
+ * @copyright   2006-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 class Launcher_Info extends Jaws_Gadget
