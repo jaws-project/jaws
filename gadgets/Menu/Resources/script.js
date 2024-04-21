@@ -4,6 +4,11 @@
  * @category    Ajax
  * @package     Menu
  */
+function Jaws_Gadget_Menu() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
