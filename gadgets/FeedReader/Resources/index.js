@@ -3,7 +3,7 @@
  *
  * @category    Ajax
  * @package     FeedReader
- * @copyright   2016-2022 Jaws Development Group
+ * @copyright   2016-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 function Jaws_Gadget_FeedReader() { return {
