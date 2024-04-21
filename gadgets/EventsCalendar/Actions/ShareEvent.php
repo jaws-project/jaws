@@ -119,8 +119,10 @@ class EventsCalendar_Actions_ShareEvent extends Jaws_Gadget_Action
             $gid = false;
         }
         $users = Jaws_Gadget::getInstance('Users')->model->load('User')->list(
-            0, $gid,
-            array('status' => 1)
+            array(
+                'group' => $gid,
+                'status' => 1
+            )
         );
         if (Jaws_Error::IsError($users)) {
             return array();
