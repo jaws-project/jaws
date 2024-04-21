@@ -4,7 +4,11 @@
  * @category    Ajax
  * @package     Directory
  */
-
+function Jaws_Gadget_Directory() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
