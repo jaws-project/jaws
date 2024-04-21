@@ -4,6 +4,11 @@
  * @category   Ajax
  * @package    Banner
  */
+function Jaws_Gadget_Banner() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
