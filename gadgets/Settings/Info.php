@@ -6,7 +6,7 @@
  * @package    Settings
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2004-2022 Jaws Development Group
+ * @copyright   2004-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Settings_Info extends Jaws_Gadget
