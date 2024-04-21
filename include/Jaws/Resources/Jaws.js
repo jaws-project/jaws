@@ -1591,6 +1591,10 @@ var Jaws_Gadget = (function () {
     return {
         // return singleton instance object of gadget
         getInstance: function(gadget) {
+            if (!window['Jaws_Gadget_'+gadget]) {
+                return false;
+            }
+
             if (!Jaws.gadgets.hasOwnProperty(gadget) ||
                 !Jaws.gadgets[gadget].hasOwnProperty('name')
             ) {
@@ -2119,10 +2123,12 @@ Jaws = {
 
         // initialize gadgets
         $.each(this.gadgets, function(gadget) {
-            Jaws_Gadget.getInstance(gadget);
-            $.each(Jaws.gadgets[gadget].actions, function(action) {
-                Jaws_Gadget.getInstance(gadget).action.load(action);
-            });
+            let objGadget = Jaws_Gadget.getInstance(gadget);
+            if (objGadget instanceof Object) {
+                $.each(objGadget.actions, function(action) {
+                    objGadget.action.load(action);
+                });
+            }
         });
     },
 
