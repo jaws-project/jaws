@@ -5,7 +5,7 @@
  * @category    GadgetHook
  * @package     Users
  * @author      ZehneZiba <zzb@zehneziba.ir>
- * @copyright   2008-2022 Jaws Development Group
+ * @copyright   2008-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Comments_Hooks_Activities extends Jaws_Gadget_Hook
