@@ -8,7 +8,11 @@
  * @copyright   2005-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-
+function Jaws_Gadget_VisitCounter() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
