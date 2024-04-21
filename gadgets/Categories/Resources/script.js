@@ -5,6 +5,11 @@
  * @package     Categories
  */
 function Jaws_Gadget_Categories() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
+function Jaws_Gadget_Categories() { return {
     // current selected category
     selectedCategory: 0,
 
