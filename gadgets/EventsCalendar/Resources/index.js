@@ -4,6 +4,11 @@
  * @category    Ajax
  * @package     EventsCalendar
  */
+function Jaws_Gadget_EventsCalendar() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */

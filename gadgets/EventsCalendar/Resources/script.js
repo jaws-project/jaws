@@ -2,12 +2,16 @@
  * EventsCalendar Javascript actions
  *
  * @category    Ajax
- * @package     Mailbox
+ * @package     EventsCalendar
  * @author      Mohsen Khahani <mkhahani@gmail.com>
  * @copyright   2016 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-
+function Jaws_Gadget_EventsCalendar() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
