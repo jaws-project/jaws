@@ -216,8 +216,7 @@ class Users_Actions_Users extends Users_Actions_Default
                 'offset' => $post['offset'],
             ),
             array(
-                'default' => true,
-                'account' => true,
+                'default', 'account'
             )
         );
         if (Jaws_Error::IsError($users)) {
