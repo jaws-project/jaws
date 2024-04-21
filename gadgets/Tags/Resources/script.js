@@ -4,6 +4,11 @@
  * @category    Ajax
  * @package     Tags
  */
+function Jaws_Gadget_Tags() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
