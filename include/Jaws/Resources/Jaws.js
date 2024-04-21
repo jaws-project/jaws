@@ -7,7 +7,7 @@
  * @author      Jonathan Hernandez <ion@suavizado.com>
  * @author      Ali Fazelzadeh <afz@php.net>
  * @author      Mohsen Khahani <mkhahani@gmail.com>
- * @copyright   2004-2022 Jaws Development Group
+ * @copyright   2004-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 

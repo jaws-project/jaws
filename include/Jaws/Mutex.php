@@ -5,7 +5,7 @@
  * @category    Mutex
  * @package     Core
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2019-2022 Jaws Development Group
+ * @copyright   2019-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Mutex

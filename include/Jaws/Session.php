@@ -22,7 +22,7 @@ define('SESSION_SCOPE_USER',   2);
  * @author     Ivan -sk8- Chavero <imcsk8@gluch.org.mx>
  * @author     Jonathan Hernandez <ion@suavizado.com>
  * @author     Ali Fazelzadeh <afz@php.net>
- * @copyright   2004-2022 Jaws Development Group
+ * @copyright   2004-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_Session

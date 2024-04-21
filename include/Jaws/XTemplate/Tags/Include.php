@@ -6,7 +6,7 @@
  * @category    Template
  * @package     Core
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2020-2022 Jaws Development Group
+ * @copyright   2020-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
 class Jaws_XTemplate_Tags_Include extends Jaws_XTemplate_Tag
