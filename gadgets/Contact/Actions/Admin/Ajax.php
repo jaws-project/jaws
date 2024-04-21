@@ -310,8 +310,10 @@ class Contact_Actions_Admin_Ajax extends Jaws_Gadget_Action
     {
         @list($group) = $this->gadget->request->fetchAll('post');
         return Jaws_Gadget::getInstance('Users')->model->load('User')->list(
-            0, $group,
-            array('status' => 1)
+            array(
+                'status' => 1,
+                'group' => $group,
+            )
         );
     }
 

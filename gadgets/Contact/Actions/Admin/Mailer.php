@@ -52,8 +52,9 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
 
         // Users
         $users = Jaws_Gadget::getInstance('Users')->model->load('User')->list(
-            0, 0,
-            array('status' => 1)
+            array(
+                'status' => 1
+            )
         );
         $combo =& Piwi::CreateWidget('Combo', 'users');
         $combo->AddOption($this::t('MAILER_ALL_GROUP_USERS'), 0);
@@ -278,8 +279,10 @@ class Contact_Actions_Admin_Mailer extends Contact_Actions_Admin_Default
                     $target['group'] = false;
                 }
                 $users = Jaws_Gadget::getInstance('Users')->model->load('User')->list(
-                    0, $target['group'],
-                    array('status' => 1)
+                    array(
+                        'group' => $target['group'],
+                        'status' => 1
+                    )
                 );
                 foreach ($users as $user) {
                     $mail->AddRecipient($user['nickname'] . ' <' . $user['email'] . '>', 'Bcc');
