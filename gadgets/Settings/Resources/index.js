@@ -4,7 +4,11 @@
  * @category    Ajax
  * @package     Settings
  */
-
+function Jaws_Gadget_Settings() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
