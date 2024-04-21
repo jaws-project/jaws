@@ -5,7 +5,7 @@
  * @category   Plugin
  * @package    GlossaGlossy
  * @author     Pablo Fischer <pablo@pablo.com.mx>
- * @copyright   2004-2022 Jaws Development Group
+ * @copyright   2004-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class GlossaGlossy_Plugin extends Jaws_Plugin
