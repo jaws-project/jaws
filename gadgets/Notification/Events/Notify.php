@@ -44,9 +44,11 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         $users = array();
         if (isset($params['group']) && !empty($params['group'])) {
             $group_users = Jaws_Gadget::getInstance('Users')->model->load('User')->list(
-                0, $params['group'],
+                array(
+                    'group' => $params['group'],
+                )
                 array(),
-                array('account' => true)
+                array('account')
             );
             if (!Jaws_Error::IsError($group_users) && !empty($group_users)) {
                 $users = $group_users;
