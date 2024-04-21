@@ -8,6 +8,11 @@
  * @copyright   2006-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
+function Jaws_Gadget_Sitemap() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 var SitemapCallback = {
     UpdateCategory: function(response) {
         if (response['type'] == 'alert-success') {
