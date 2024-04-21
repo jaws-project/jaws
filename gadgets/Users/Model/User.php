@@ -8,6 +8,114 @@
 class Users_Model_User extends Jaws_Gadget_Model
 {
     /**
+     * fieldsets
+     */
+    private $fieldsets = array(
+        // internal fieldsets
+        'default' => array(
+            'internal' => true,
+            'alias' => 'user',
+            'mandatory' => true,
+            'persistent' => true,
+            'fields' => array(
+                array('name' => 'id', 'text' => 'id:integer'),
+                array('name' => 'domain', 'text' => 'domain:integer'),
+                array('name' => 'username', 'text' => 'username'),
+                array('name' => 'superadmin', 'text' => 'superadmin:boolean'),
+                array('name' => 'nickname', 'text' => 'nickname'),
+                array('name' => 'email', 'text' => 'email'),
+                array('name' => 'mobile', 'text' => 'mobile'),
+                array('name' => 'avatar', 'text' => 'avatar:boolean'),
+                array('name' => 'status', 'text' => 'status:integer'),
+            ),
+        ),
+        'account' => array(
+            'internal' => true,
+            'alias' => 'user',
+            'mandatory' => false,
+            'persistent' => true,
+            'fields' => array(
+                array('name' => 'concurrents', 'text' => 'concurrents:integer'),
+                array('name' => 'logon_hours', 'text' => 'logon_hours'),
+                array('name' => 'expiry_date', 'text' => 'expiry_date:integer'),
+                array('name' => 'registered_date', 'text' => 'registered_date:integer'),
+                array('name' => 'last_access', 'text' => 'last_access:integer'),
+                array('name' => 'last_update', 'text' => 'last_update:integer'),
+                array('name' => 'bad_password_count', 'text' => 'bad_password_count:integer'),
+                array('name' => 'last_password_update', 'text' => 'last_password_update:integer'),
+                array('name' => 'agreement', 'text' => 'agreement:boolean'),
+            ),
+        ),
+        'personal' => array(
+            'internal' => true,
+            'alias' => 'user',
+            'mandatory' => false,
+            'persistent' => true,
+            'fields' => array(
+                array('name' => 'fname', 'text' => 'fname'),
+                array('name' => 'lname', 'text' => 'lname'),
+                array('name' => 'gender', 'text' => 'gender:integer'),
+                array('name' => 'ssn', 'text' => 'ssn'),
+                array('name' => 'dob', 'text' => 'dob:integer'),
+                array('name' => 'extra', 'text' => 'extra'),
+                array('name' => 'about', 'text' => 'about'),
+                array('name' => 'experiences', 'text' => 'experiences'),
+                array('name' => 'occupations', 'text' => 'occupations'),
+                array('name' => 'interests', 'text' => 'interests'),
+                array('name' => 'signature', 'text' => 'signature'),
+                array('name' => 'pgpkey', 'text' => 'pgpkey'),
+                array('name' => 'public', 'text' => 'public:boolean'),
+                array('name' => 'privacy', 'text' => 'privacy:boolean'),
+            ),
+        ),
+        'password' => array(
+            'internal' => true,
+            'alias' => 'user',
+            'mandatory' => false,
+            'persistent' => true,
+            'fields' => array(
+                array('name' => 'password', 'text' => 'password'),
+            ),
+        ),
+        'contact' => array(
+            'internal' => true,
+            'alias' => 'user',
+            'mandatory' => false,
+            'persistent' => true,
+            'fields' => array(
+                array('name' => 'contact', 'text' => 'contact:integer'),
+                array('name' => 'country', 'text' => 'country:integer'),
+                array('name' => 'province', 'text' => 'province:integer'),
+                array('name' => 'city', 'text' => 'city:integer'),
+            ),
+        ),
+        'extra' => array(
+            'internal' => true,
+            'alias' => 'user',
+            'mandatory' => false,
+            'persistent' => true,
+            'fields' => array(
+                array('name' => 'mailbox', 'text' => 'mailbox'),
+                array('name' => 'maildir', 'text' => 'maildir'),
+                array('name' => 'mailquota', 'text' => 'mailquota:integer'),
+                array('name' => 'ftpdir', 'text' => 'ftpdir'),
+                array('name' => 'ftpquota', 'text' => 'ftpquota:integer'),
+            ),
+        ),
+        // external fieldsets
+        'domain' => array(
+            'internal' => false,
+            'alias' => 'domain',
+            'mandatory' => false,
+            'persistent' => true,
+            'fields' => array(
+                array('name' => 'domain_name', 'text' => 'name as domain_name'),
+                array('name' => 'domain_title', 'text' => 'title as domain_title'),
+            ),
+        ),
+    );
+
+    /**
      * Get the info of an user by the username or ID
      *
      * @access  public
@@ -84,13 +192,9 @@ class Users_Model_User extends Jaws_Gadget_Model
     /**
      * Get list of users
      *
-     * @param   array   $filters    Users filters // donain, group, status, superadmin, term
-     *                  ex: array(
-     *                      'status'  => 1,
-     *                      'term' => 'smith'
-     *                  )
+     * @param   array   $filters    Users filters
      * @param   array   $options    List options (sort, limit, offset, fetchmode)
-     * @param   array   $fieldsets  Array of columns list set (e.g. default, account, personal, password)
+     * @param   array   $fieldsets  Array of columns list set (e.g. default, internal, foreign, ...)
      * @return  array|Jaws_Error    Returns an array of users or Jaws_Error on error
      */
     function list(array $filters = array(), array $options = array(), array $fieldsets = array())
@@ -100,6 +204,8 @@ class Users_Model_User extends Jaws_Gadget_Model
             'limit'  => 0,
             'offset' => null,
             'fetchmode' => null,
+            'fetchstyle' => 'all',
+            'associate' => null,
         );
         $options = array_merge($defaultOptions, array_filter($options));
         // validate sort/order fields
@@ -115,41 +221,38 @@ class Users_Model_User extends Jaws_Gadget_Model
 
         //
         $defaultFilters = array(
+            'id' => null,
             'domain' => null,
+            'group' => null,
             'term' => null,
+            'nickname' => null,
             'superadmin' => null,
             'status' => null,
-            'group' => null,
         );
         $filters = array_merge($defaultFilters, $filters);
 
-        // defined columns set
-        $columns = array(
-            'default'  => array(
-                'user.domain:integer', 'user.id:integer', 'user.username', 'user.email', 'user.mobile',
-                'user.nickname', 'user.contact:integer', 'user.avatar:boolean', 'user.status:integer'
-            ),
-            'account'  => array(
-                'user.superadmin:boolean', 'user.concurrents:integer', 'user.logon_hours',
-                'user.expiry_date:integer', 'user.registered_date:integer', 'user.bad_password_count:integer', 
-                'user.last_update:integer', 'user.last_password_update:integer',
-                'user.last_access:integer'
-            ),
-            'personal' => array(
-                'user.fname', 'user.lname', 'user.gender', 'user.ssn', 'user.dob', 'user.extra', 'user.public:boolean', 'user.privacy:boolean',
-                'user.pgpkey', 'user.signature', 'user.about', 'user.experiences', 'user.occupations', 'user.interests'
-            ),
-            'password' => array('user.password'),
-        );
-
-        array_unshift($fieldsets, 'default');
-        $fieldsets = array_unique($fieldsets);
+        if (empty($fieldsets)) {
+            // use all columns set if fieldsets is empty
+            $fieldsets = array_keys(array_filter($this->fieldsets, static fn($fieldset) => $fieldset['persistent']));
+        } else {
+            // only internal fieldsets
+            if (in_array('internal', $fieldsets)) {
+                $fieldsets = array_keys(array_filter($this->fieldsets, static fn($fieldset) => $fieldset['internal']));
+            } else {
+                // inject mandatory fieldsets into requested fieldsets
+                array_unshift($fieldsets, 'default');
+                $fieldsets = array_unique($fieldsets);
+            }
+        }
 
         $selectedColumns = array();
         // selected columns by given fieldsets
-        foreach ($fieldsets as $fieldset) {
-            if (array_key_exists($fieldset, $columns)) {
-                $selectedColumns = array_merge($selectedColumns, $columns[$fieldset]);
+        foreach ($this->fieldsets as $fieldset_name => $fieldset) {
+            if (!in_array($fieldset_name, $fieldsets)) {
+                continue;
+            }
+            foreach ($fieldset['fields'] as $field) {
+                $selectedColumns[] = $fieldset['alias'] . '.' . $field['text'];
             }
         }
 
@@ -163,102 +266,15 @@ class Users_Model_User extends Jaws_Gadget_Model
                 'left'
             )
             ->join(
-                'users_groups as usergroup',
+                'users_groups as user_usergroup',
                 'user.id',
-                'usergroup.user',
+                'user_usergroup.user',
                 'inner',
                 '=',
-                is_null($filters['group']) // ignore join if $filters['group'] empty
-            )
-            ->where(
-                'user.domain',
-                $filters['domain'],
-                is_array($filters['domain'])? 'in' : '=',
-                is_null($filters['domain'])
-            )->and()
-            ->openWhere(
-                'user.username',
-                $filters['term'],
-                'like',
-                is_null($filters['term'])
-            )->or()
-            ->where(
-                'user.nickname',
-                $filters['term'],
-                'like',
-                is_null($filters['term'])
-            )->or()
-            ->where(
-                'user.email',
-                $filters['term'],
-                'like',
-                is_null($filters['term'])
-            )->or()
-            ->closeWhere(
-                'user.mobile',
-                $filters['term'],
-                'like',
-                is_null($filters['term'])
-            )->and()
-            ->where(
-                'user.superadmin',
-                $filters['superadmin'],
-                is_array($filters['superadmin'])? 'in' : '=',
-                is_null($filters['superadmin'])
-            )->and()
-            ->where(
-                'user.status',
-                $filters['status'],
-                is_array($filters['status'])? 'in' : '=',
-                is_null($filters['status'])
-            )->and()
-            ->where(
-                'usergroup.group',
-                $filters['group'],
-                is_array($filters['group'])? 'in' : '=',
-                is_null($filters['group'])
-            )
-            ->groupBy('user.id')
-            ->limit($options['limit'], $options['offset'])
-            ->orderBy($options['sort'])
-            ->fetchmode($options['fetchmode'])
-            ->fetchAll();
-    }
-
-    /**
-     *
-     */
-    function listFunction(array $filters = array(), $function = '', $execute = true)
-    {
-        //
-        $defaultFilters = array(
-            'id' => null,
-            'domain' => null,
-            'term' => null,
-            'superadmin' => null,
-            'status' => null,
-            'group' => null,
-        );
-        $filters = array_merge($defaultFilters, $filters);
-
-        return Jaws_ORM::getInstance()
-            ->table('users', 'user')
-            ->select(
-                empty($function)? 'count(user.id):integer' : $function
-            )
-            ->join(
-                'domains as domain',
-                'user.domain',
-                'domain.id',
-                'left'
-            )
-            ->join(
-                'users_groups as usergroup',
-                'user.id',
-                'usergroup.user',
-                'inner',
-                '=',
-                is_null($filters['group']) // ignore join if $filters['group'] empty
+                empty(array_filter(
+                    array_intersect_key($filters, array_flip(['group'])),
+                    fn($val) => null !== $val
+                )) // ignore join if related filters are empty
             )
             ->where(
                 'user.id',
@@ -272,14 +288,14 @@ class Users_Model_User extends Jaws_Gadget_Model
                 is_array($filters['domain'])? 'in' : '=',
                 is_null($filters['domain'])
             )->and()
+            ->where(
+                'user_usergroup.group',
+                $filters['group'],
+                is_array($filters['group'])? 'in' : '=',
+                is_null($filters['group'])
+            )->and()
             ->openWhere(
                 'user.username',
-                $filters['term'],
-                'like',
-                is_null($filters['term'])
-            )->or()
-            ->where(
-                'user.nickname',
                 $filters['term'],
                 'like',
                 is_null($filters['term'])
@@ -297,6 +313,12 @@ class Users_Model_User extends Jaws_Gadget_Model
                 is_null($filters['term'])
             )->and()
             ->where(
+                'user.nickname',
+                $filters['nickname'],
+                'like',
+                is_null($filters['nickname'])
+            )->and()
+            ->where(
                 'user.superadmin',
                 $filters['superadmin'],
                 is_array($filters['superadmin'])? 'in' : '=',
@@ -307,14 +329,132 @@ class Users_Model_User extends Jaws_Gadget_Model
                 $filters['status'],
                 is_array($filters['status'])? 'in' : '=',
                 is_null($filters['status'])
+            )
+            ->groupBy('user.id')
+            ->limit($options['limit'], $options['offset'])
+            ->orderBy($options['sort'])
+            ->fetchmode($options['fetchmode'])
+            ->fetch($options['fetchstyle'], $options['associate']);
+    }
+
+    /**
+     *
+     */
+    function listFunction(array $filters = array(), $function = '', $execute = true, $table_depended = true)
+    {
+        //
+        $defaultFilters = array(
+            'id' => null,
+            'domain' => null,
+            'group' => null,
+            'term' => null,
+            'nickname' => null,
+            'superadmin' => null,
+            'status' => null,
+        );
+        $filters = array_merge($defaultFilters, $filters);
+        $function = $function ?: 'count(user.id):integer';
+        $function = is_array($function)? $function : [$function];
+
+        if (!$table_depended) {
+            return Jaws_ORM::getInstance()
+            ->select(
+                $function
+            )->fetch((count($function)>1)? 'row' : 'one');
+        }
+
+        $result = Jaws_ORM::getInstance()
+            ->table('users', 'user')
+            ->select(
+                $function
+            )
+            ->join(
+                'domains as domain',
+                'user.domain',
+                'domain.id',
+                'left'
+            )
+            ->join(
+                'users_groups as user_usergroup',
+                'user.id',
+                'user_usergroup.user',
+                'inner',
+                '=',
+                empty(array_filter(
+                    array_intersect_key($filters, array_flip(['group'])),
+                    fn($val) => null !== $val
+                )) // ignore join if related filters are empty
+            )
+            ->where(
+                'user.id',
+                $filters['id'],
+                is_array($filters['id'])? 'in' : '=',
+                is_null($filters['id'])
             )->and()
             ->where(
-                'usergroup.group',
+                'user.domain',
+                $filters['domain'],
+                is_array($filters['domain'])? 'in' : '=',
+                is_null($filters['domain'])
+            )->and()
+            ->where(
+                'user_usergroup.group',
                 $filters['group'],
                 is_array($filters['group'])? 'in' : '=',
                 is_null($filters['group'])
+            )->and()
+            ->openWhere(
+                'user.username',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->or()
+            ->where(
+                'user.email',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->or()
+            ->closeWhere(
+                'user.mobile',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->and()
+            ->where(
+                'user.nickname',
+                $filters['nickname'],
+                'like',
+                is_null($filters['nickname'])
+            )->and()
+            ->where(
+                'user.superadmin',
+                $filters['superadmin'],
+                is_array($filters['superadmin'])? 'in' : '=',
+                is_null($filters['superadmin'])
+            )->and()
+            ->where(
+                'user.status',
+                $filters['status'],
+                is_array($filters['status'])? 'in' : '=',
+                is_null($filters['status'])
             )
-            ->fetchOne(null, JAWS_ERROR_ERROR, $execute);
+            ->fetch((count($function) > 1)? 'all' : 'column',0, JAWS_ERROR_ERROR, $execute);
+        if (Jaws_Error::IsError($result)) {
+            return $result;
+        }
+
+        if (!$execute) {
+            return $result;
+        }
+
+        if (empty($result)) {
+            return null;
+        } elseif (count($function) > 1) {
+            return (count($result) == 1)? reset($result) : $result;
+        } else {
+            return (count($result) == 1)? ($result[0]) : $result;
+        }
     }
 
     /**
