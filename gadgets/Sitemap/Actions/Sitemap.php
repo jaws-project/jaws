@@ -5,7 +5,7 @@
  * @category   Gadget
  * @package    Sitemap
  * @author     ZehneZiba <zzb@zehneziba.ir>
- * @copyright   2006-2022 Jaws Development Group
+ * @copyright   2006-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 class Sitemap_Actions_Sitemap extends Jaws_Gadget_Action

@@ -5,7 +5,7 @@
  * @category    GadgetActions
  * @package     Sitemap
  * @author      ZehneZiba <zzb@zehneziba.ir>
- * @copyright   2004-2022 Jaws Development Group
+ * @copyright   2004-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/gpl.html
  */
 

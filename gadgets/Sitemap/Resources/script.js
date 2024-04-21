@@ -5,7 +5,7 @@
  * @package    Sitemap
  * @author     Jonathan Hernandez <ion@gluch.org.mx>
  * @author     ZehneZiba <zzb@zehneziba.ir>
- * @copyright   2006-2022 Jaws Development Group
+ * @copyright   2006-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
 function Jaws_Gadget_Sitemap() { return {
