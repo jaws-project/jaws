@@ -7,6 +7,11 @@
  * @copyright   2007-2022 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
+function Jaws_Gadget_Tms() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
