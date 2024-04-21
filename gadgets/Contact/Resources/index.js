@@ -4,7 +4,11 @@
  * @category    Ajax
  * @package     Contact
  */
-
+function Jaws_Gadget_Contact() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 
 /**
  *
