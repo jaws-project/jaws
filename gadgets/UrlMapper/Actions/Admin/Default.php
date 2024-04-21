@@ -7,7 +7,7 @@
  * @author     Pablo Fischer <pablo@pablo.com.mx>
  * @author     Ali Fazelzadeh <afz@php.net>
  * @author     ZehneZiba <zzb@zehneziba.ir>
- * @copyright   2006-2022 Jaws Development Group
+ * @copyright   2006-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/lesser.html
  */
 class UrlMapper_Actions_Admin_Default extends Jaws_Gadget_Action
