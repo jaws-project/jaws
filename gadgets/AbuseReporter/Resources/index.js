@@ -4,6 +4,11 @@
  * @category    Ajax
  * @package     AbuseReporter
  */
+function Jaws_Gadget_AbuseReporter() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 var AbuseReporterCallback = {
     SaveReport: function (response) {
         var reportSign = response.data.gadget + '-' + response.data.action + '-' + response.data.reference;

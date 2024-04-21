@@ -4,7 +4,11 @@
  * @category    Ajax
  * @package     AbuseReporter
  */
-
+function Jaws_Gadget_AbuseReporter() { return {
+    // ASync callback method
+    AjaxCallback : {
+    },
+}};
 /**
  * Use async mode, create Callback
  */
