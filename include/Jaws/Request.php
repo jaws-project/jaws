@@ -364,6 +364,11 @@ class Jaws_Request
             $options['filters'] = array('strip_null');
         }
 
+        // type cast value to array if value must be array but if some condition occurs
+        if ($valid_type == 'array' && !empty($cast_type) && !is_array($value)) {
+            settype($value, 'array');
+        }
+
         if (is_array($value)) {
             array_walk_recursive($value, array(&$this, 'filter'), $options['filters']);
         } else {
