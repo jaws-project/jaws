@@ -504,7 +504,9 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 
         // loading container
         if (!callOptions.hasOwnProperty('loading_container')) {
-            callOptions.loading_container = $("#"+(options.interface.gadget+'_'+ options.interface.action+'_'+'loading').toLowerCase());
+            callOptions.loading_container = $(
+                '[data-loading-container="' + (options.interface.gadget + '.' + options.interface.action).toLowerCase() + '"]'
+            );
         }
 
         gadget = callOptions.hasOwnProperty('gadget')? callOptions.gadget : this.gadget;
@@ -580,7 +582,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 
     this.onSend = function (reqOptions) {
         // start show loading indicator
-        this.callbackObject.gadget.loading.show(reqOptions.interface);
+        this.callbackObject.gadget.loading.show(reqOptions.callOptions.loading_container);
     };
 
     this.onSuccess = function (reqOptions, data, textStatus, jqXHR) {
@@ -623,7 +625,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
 
     this.onComplete = function (reqOptions, jqXHR, textStatus) {
         // hide loading
-        this.callbackObject.gadget.loading.hide(reqOptions.interface);
+        this.callbackObject.gadget.loading.hide(reqOptions.callOptions.loading_container);
 
         let response = jqXHR.responseText;
         if (reqOptions.callOptions.restype == 'json') {
@@ -770,17 +772,13 @@ function JawsLoading($owner)
      * @param   object  container   jQuery DOM element message container
      * @return  void
      */
-    this.show = function ($interface = {}) {
-        // if $interface is empty
-        if (!Object.keys($interface).length) {
-            $interface = {
-                'gadget': Jaws.defines.mainGadget,
-                'action': Jaws.defines.mainAction
-            }
-        }
-        $container = $('[data-loading-container="' + ($interface.gadget + '.' + $interface.action).toLowerCase() + '"]');
+    this.show = function ($container) {
         if (!$container.length) {
-            return;
+            // if $container not defined for notfound
+            $container = $('[data-loading-container="' + (Jaws.defines.mainGadget + '.' + Jaws.defines.mainAction).toLowerCase() + '"]');
+            if (!$container.length) {
+                return;
+            }
         }
 
         if (!$container.find('[role="loading"]').length) {
@@ -801,15 +799,14 @@ function JawsLoading($owner)
      * @param   object  container   jQuery DOM object message container
      * @return  void
      */
-    this.hide = function ($interface = {}) {
-        // if $interface is empty
-        if (!Object.keys($interface).length) {
-            $interface = {
-                'gadget': Jaws.defines.mainGadget,
-                'action': Jaws.defines.mainAction
+    this.hide = function ($container) {
+        if (!$container.length) {
+            // if $container not defined for notfound
+            $container = $('[data-loading-container="' + (Jaws.defines.mainGadget + '.' + Jaws.defines.mainAction).toLowerCase() + '"]');
+            if (!$container.length) {
+                return;
             }
         }
-        $container = $('[data-loading-container="' + ($interface.gadget + '.' + $interface.action).toLowerCase() + '"]');
         if (!$container.find('[role="loading"]').length) {
             return;
         }
