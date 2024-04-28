@@ -23,9 +23,9 @@
 
       {%- for menu in grouped_menus %}
         {%- if forloop.first | false and menu.separator < 0 %}
-          {%- assign prevmenu = navigation.menus | index: forloop.prev.key %}
+          {%- assign prevmenu = grouped_menus | index: forloop.prev.key %}
           {%- if prevmenu.separator <= 0 %}
-          <li><hr class="dropdown-divider"></li>
+            <li><hr class="dropdown-divider"></li>
           {%- endif %}
         {%- endif %}
         <li>
