@@ -306,6 +306,12 @@ class Users_Model_User extends Jaws_Gadget_Model
                 'like',
                 is_null($filters['term'])
             )->or()
+            ->where(
+                'user.nickname',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->or()
             ->closeWhere(
                 'user.mobile',
                 $filters['term'],
@@ -411,6 +417,12 @@ class Users_Model_User extends Jaws_Gadget_Model
             )->or()
             ->where(
                 'user.email',
+                $filters['term'],
+                'like',
+                is_null($filters['term'])
+            )->or()
+            ->where(
+                'user.nickname',
                 $filters['term'],
                 'like',
                 is_null($filters['term'])
