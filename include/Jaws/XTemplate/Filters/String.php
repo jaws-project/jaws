@@ -192,7 +192,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
 
         $input = preg_replace_callback(
             $pattern, function ($matches) use ($replacement) {
-                return isset($replacement[$matches[0]])? $replacement[$matches[0]] : '';
+                return isset($replacement[$matches[1]])? $replacement[$matches[1]] : '';
             },
             $input
         );
@@ -463,6 +463,31 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
         );
 
         return $input;
+    }
+
+    /**
+     * Format a title by associated array
+     *
+     * @param   string  $input
+     * @param   array   $args   arguments
+     *
+     * @return  string
+     */
+    public static function formatTitle($input, $args, $prefix = '', $delimiter = '_')
+    {
+        if (!$input) {
+            return '';
+        }
+        $prefix = in_array($prefix, ['', null])? '' : ($prefix . $delimiter);
+
+        $result = preg_replace_callback(
+            '/\{(\w+)\}/', function ($matches) use ($args, $prefix) {
+                return isset($args[$prefix . $matches[1]])? $args[$prefix . $matches[1]] : '';
+            },
+            $input
+        );
+
+        return $result;
     }
 
     /**
