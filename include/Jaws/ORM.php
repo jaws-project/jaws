@@ -1333,11 +1333,14 @@ class Jaws_ORM
             case 'or':
             case 'and':
                 if (!empty($this->_where)) {
-                    if (in_array(end($this->_where), array(' and ', ' or '))) {
+                    $last_part = end($this->_where);
+                    if (in_array($last_part, array(' and ', ' or '))) {
                         array_pop($this->_where);
                     }
 
-                    $this->_where[] = " $method ";
+                    if ($last_part != '(') {
+                        $this->_where[] = " $method ";
+                    }
                 }
                 return $this;
 
