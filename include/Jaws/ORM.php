@@ -710,13 +710,12 @@ class Jaws_ORM
         if (!$ignore) {
             if (!empty($column)) {
                 $this->where($column, $value, $opt);
-            } else {
-                if (in_array(end($this->_where), array(' and ', ' or '))) {
-                    array_pop($this->_where);
-                }
             }
         }
 
+        if (in_array(end($this->_where), array(' and ', ' or '))) {
+            array_pop($this->_where);
+        }
         $this->_where[] = ')';
         return $this;
     }
