@@ -31,8 +31,10 @@ class Notification_Hooks_Autoload extends Jaws_Gadget_Hook
             !empty($this->app->session->webpush)
         );
 
-        // this action must be call by time-based job scheduler
-        //$this->SendNotifications();
+        // it's better this action call by time-based job scheduler
+        if ($this->gadget->registry->fetch('internal_auto_send')) {
+            $this->SendNotifications();
+        }
     }
 
     /**

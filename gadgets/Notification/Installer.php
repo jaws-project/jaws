@@ -20,6 +20,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
         array('webpush_anonymouse', false),
         array('processing', 'false'),
         array('last_update', '0'),
+        array('internal_auto_send', false),
         array('default_longevity', 600), // seconds(10 min)
         array('queue_max_time', '1800'), // maximum time to execution an queue (seconds)
         array('eml_fetch_limit', '100'),
@@ -288,6 +289,11 @@ class Notification_Installer extends Jaws_Gadget_Installer
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }
+        }
+
+        if (version_compare($old, '3.0.0', '<')) {
+            // registry keys
+            $this->gadget->registry->insert('internal_auto_send', false);
         }
 
         return true;
