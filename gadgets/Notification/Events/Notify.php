@@ -46,7 +46,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             $group_users = Jaws_Gadget::getInstance('Users')->model->load('User')->list(
                 array(
                     'group' => $params['group'],
-                )
+                ),
                 array(),
                 array('account')
             );
