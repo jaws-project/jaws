@@ -74,7 +74,7 @@ class Jaws_Notification
             JAWS_COMPONENT_OTHERS,
             $this->attributes['site_language']
         );
-        $this->attributes['site_url']       = $this->app->GetSiteURL('/');
+        $this->attributes['site_url']       = $this->app->GetSiteURL('/', false);
         $this->attributes['site_direction'] = Jaws::t('LANG_DIRECTION|'. $this->attributes['site_language']);
     }
 
