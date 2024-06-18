@@ -1588,16 +1588,14 @@ var Jaws_Gadget = (function () {
     return {
         // return singleton instance object of gadget
         getInstance: function(gadget) {
-            if (!window['Jaws_Gadget_'+gadget]) {
-                return false;
-            }
-
+            let objGadget;
             if (!Jaws.gadgets.hasOwnProperty(gadget) ||
                 !Jaws.gadgets[gadget].hasOwnProperty('name')
             ) {
-                var objGadget = new (window['Jaws_Gadget_'+gadget] || Object);
+                objGadget = new Object;
                 objGadget.app = Jaws;
                 objGadget.name = gadget;
+                objGadget.loaded = false;
                 objGadget.gadget = objGadget;
 
                 if (Jaws.gadgets[gadget]) {
@@ -1636,11 +1634,23 @@ var Jaws_Gadget = (function () {
                 // show/hide loading interface
                 objGadget.loading = new JawsLoading(objGadget);
 
-                // load gadget initialize method if exist
-                if (objGadget.init) {
-                    objGadget.init(Jaws.defines.mainGadget, Jaws.defines.mainAction);
-                }
                 Jaws.gadgets[gadget] = objGadget;
+            } else {
+                objGadget = Jaws.gadgets[gadget];
+            }
+
+            if (!objGadget.loaded) {
+                if (window['Jaws_Gadget_'+gadget]) {
+                    let objGadgetOverload = new window['Jaws_Gadget_'+gadget];
+                    objGadget = Object.assign(objGadget, new window['Jaws_Gadget_'+gadget]);
+                    objGadget.loaded = true;
+                    // load gadget initialize method if exist
+                    if (objGadget.init) {
+                        objGadget.init(Jaws.defines.mainGadget, Jaws.defines.mainAction);
+                    }
+
+                    Jaws.gadgets[gadget] = objGadget;
+                }
             }
 
             return Jaws.gadgets[gadget];
