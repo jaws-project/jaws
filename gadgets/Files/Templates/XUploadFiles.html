@@ -70,7 +70,9 @@
     <div class="col-6 col-md-4 col-lg-3 btn-browse">
       <div class="card h-100">
         <div class="card-body">
-          <button class="btn btn-lg w-100 h-100 fs-1" data-mincount="{{ files.mincount }}" data-maxcount="{{ files.maxcount }}" data-initialize="fileuploader"
+          <button class="btn btn-lg w-100 h-100 fs-1" type="button"
+            data-mincount="{{ files.mincount }}"
+            data-maxcount="{{ files.maxcount }}" data-initialize="fileuploader"
             onclick="Jaws_Gadget.getInstance('Files').browseFile(this)">
             <span class="fas fa-file-circle-plus align-middle" data-label="browse">{{ files.labels.browse }}</span>
           </button>
