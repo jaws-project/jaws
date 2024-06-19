@@ -56,15 +56,16 @@ class Jaws_Gadget_Event extends Jaws_Gadget_Class
      * Shouts a call to the listener object that will act immediately.
      *
      * @access  public
-     * @param   string  $event      Event name
-     * @param   mixed   $params     Event param(s)
-     * @param   string  $gadget     If set, returns listener result of this gadget
-     * @param   bool    $broadcast  Broadcast event to all listeners
+     * @param   string  $event          Event name
+     * @param   mixed   $event_params   Event param(s)
+     * @param   mixed   $event_options  Event control options
+     * @param   string  $gadget         If set, returns listener result of this gadget
+     * @param   bool    $broadcast      Broadcast event to all listeners
      * @return  mixed   True if successfully, otherwise returns Jaws_Error
      */
-    public function shout($event, $params = array(), $gadget = '', $broadcast = true)
+    public function shout($event, $event_params = array(), $event_options = array(), $gadget = '', $broadcast = true)
     {
-        return $this->app->listener->Shout($this->gadget->name, $event, $params, $gadget, $broadcast);
+        return $this->app->listener->Shout($this->gadget->name, $event, $event_params, $event_options, $gadget, $broadcast);
     }
 
 
