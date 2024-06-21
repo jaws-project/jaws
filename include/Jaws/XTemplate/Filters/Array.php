@@ -84,9 +84,9 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
      *
      * @return mixed
      */
-    public static function index(array $input, $index)
+    public static function index(array|null $input, $index)
     {
-        if (array_key_exists($index, $input)) {
+        if (is_array($input) && array_key_exists($index, $input)) {
             return $input[$index];
         }
 
@@ -101,9 +101,9 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
      *
      * @return mixed
      */
-    public static function indexof($index, array $input)
+    public static function indexof($index, array|null $input)
     {
-        if (array_key_exists($index, $input)) {
+        if (is_array($input) && array_key_exists($index, $input)) {
             return $input[$index];
         }
 
