@@ -554,6 +554,18 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
                 );
             }
 
+            if (callOptions.requestType == 'http') {
+                // Copy the browser's native setRequestHeader method
+                let setRequestHeader = xhr.setRequestHeader;
+                // Replace with a wrapper
+                xhr.setRequestHeader = function(name, value) {
+                    // Ignore the X-Requested-With header
+                    if (name == 'X-Requested-With') return;
+                    // Otherwise call the native setRequestHeader method
+                    setRequestHeader.call(this, name, value);
+                }
+            }
+
             return xhr;
         }
 
