@@ -6,6 +6,7 @@
         <li class="file_details" style="display: none;">
           <input type="hidden"
             name="tpl_files_{{input_action}}_{{input_reference}}_{{input_type}}[]"
+            data-role="file"
           />
           <ul>
             <li data-type="preview" style="display: none;"></li>
@@ -22,7 +23,7 @@
         </li>
       </ul>
 
-      <input class="form-control-file" type="file"
+      <input class="form-control-file" type="file" data-role="file"
         data-maxsize="{{maxsize}}"
         data-dimension="{{dimension}}"
         data-extensions="{{extensions}}"
@@ -38,6 +39,7 @@
   </template>
   <label>{{lbl_file}}:</label>
   <div>
+    <input type="hidden" name="files_upload_interface" value="1" />
     <div class="old_files">
       <div>
         <ul>
@@ -46,6 +48,7 @@
             <input type="hidden"
                 name="old_files_{{input_action}}_{{input_reference}}_{{input_type}}[]"
                 value="{{fid}}"
+                data-role="file"
             />
             <ul>
               <!-- BEGIN image_preview -->

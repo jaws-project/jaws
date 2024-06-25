@@ -408,7 +408,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      * @access  public
      * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
      * @param   array   $options    User interface control options(maxsize, maxcount, extensions)
-     * @return  mixed   TRUE otherwise Jaws_Error on error
+     * @return  mixed   Array of files id otherwise Jaws_Error on error
      */
     function uploadReferenceFiles($interface, $options = array())
     {
@@ -443,6 +443,11 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $uploadFilesIndex = strtolower(
             $interface['action'] . '_'. $interface['input_reference']. '_'. $interface['type']
         );
+
+        $is_in_upload_interface = (bool)$this->app->request->fetch("files_upload_interface");
+        if (!$is_in_upload_interface) {
+            return false;
+        }
 
         $oldFilesIndex = 'old_files_'. $uploadFilesIndex;
         $remainFiles = $this->app->request->fetch("$oldFilesIndex:array");

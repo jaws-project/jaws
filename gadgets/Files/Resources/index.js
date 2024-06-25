@@ -420,8 +420,10 @@ function Jaws_Gadget_Files() { return {
         let mincount = Number($fileuploader.data('mincount'));
         let maxcount = Number($fileuploader.data('maxcount'));
 
+        // is upload interface
+        formData.append('files_upload_interface', 1);
         // old files
-        $tpl.find('.files-interface input[type="hidden"]').each(function (key, el) {
+        $tpl.find('.files-interface input[type="hidden"][data-role="file"]').each(function (key, el) {
             if (el.value !== undefined && el.value !== null && el.value !== '') {
                 filesCount++;
                 formData.append(el.name, el.value);
