@@ -49,16 +49,21 @@ class Jaws_Gadget_Class
     public static function t($input, ...$params)
     {
         @list($string, $lang) = explode('|', $input);
-        if ($gadget = strstr($string, '.', true)) {
-            $string = substr($string, strlen($gadget) + 1);
+        if ($component = strstr($string, '.', true)) {
+            $string = substr($string, strlen($component) + 1);
         } else {
-            $gadget = strstr(get_called_class(), '_', true);
+            $component = strstr(get_called_class(), '_', true);
+        }
+
+        $type = Jaws_Translate::TRANSLATE_GADGET;
+        if ($component == 'global') {
+             $type = Jaws_Translate::TRANSLATE_GLOBAL;
         }
 
         return Jaws_Translate::getInstance()->XTranslate(
             $lang,
-            Jaws_Translate::TRANSLATE_GADGET,
-            $gadget,
+            $type,
+            $component,
             $string,
             $params
         );
