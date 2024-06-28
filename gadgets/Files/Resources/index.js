@@ -140,7 +140,7 @@ function Jaws_Gadget_Files() { return {
                 } else {
                     file.extension = '';
                 }
-                if (extensions.length > 0 && extensions.indexOf(file.extension) < 0) {
+                if (extensions.length > 0 && extensions.indexOf(file.extension.toLowerCase()) < 0) {
                     throw Jaws.t('error_upload_invalid_format', [file.name]);
                 }
             }
