@@ -12,7 +12,7 @@ define('JAWS_PATH', substr(dirname(__DIR__) . '/', strlen(ROOT_PATH)));
 define('ROOT_JAWS_PATH', ROOT_PATH . JAWS_PATH);
 <!-- BEGIN data_path -->
 define('DATA_PATH', '{{data_path}}');
-define('ROOT_DATA_PATH', ROOT_PATH . DATA_PATH);
+define('ROOT_DATA_PATH', ROOT_JAWS_PATH . DATA_PATH);
 <!-- END data_path -->
 <!-- BEGIN base_data_path -->
 define('BASE_DATA_PATH', '{{base_data_path}}');

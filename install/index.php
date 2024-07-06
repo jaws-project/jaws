@@ -50,7 +50,7 @@ define(
     'DATA_PATH',
     isset($_SESSION['DATA_PATH'])? $_SESSION['DATA_PATH'] : (JAWS_PATH . 'data/')
 );
-define('ROOT_DATA_PATH', ROOT_PATH . DATA_PATH);
+define('ROOT_DATA_PATH', ROOT_JAWS_PATH . DATA_PATH);
 // base data path
 define(
     'BASE_DATA_PATH',

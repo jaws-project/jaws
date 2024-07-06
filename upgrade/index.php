@@ -45,7 +45,7 @@ if (!defined('ROOT_JAWS_PATH')) {
     define('ROOT_JAWS_PATH', ROOT_PATH . JAWS_PATH_NEW);
 
     define('DATA_PATH', JAWS_PATH_NEW . 'data/');
-    define('ROOT_DATA_PATH', ROOT_PATH . DATA_PATH);
+    define('ROOT_DATA_PATH', ROOT_JAWS_PATH . DATA_PATH);
 }
 
 if (!defined('PEAR_PATH')) {

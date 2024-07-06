@@ -11,7 +11,7 @@ define('ROOT_PATH', realpath($_SERVER['DOCUMENT_ROOT']) . '/');
 define('JAWS_PATH', substr(dirname(__DIR__) . '/', strlen(ROOT_PATH)));
 define('ROOT_JAWS_PATH', ROOT_PATH . JAWS_PATH);
 define('DATA_PATH', JAWS_PATH . 'data/');
-define('ROOT_DATA_PATH', ROOT_PATH . DATA_PATH);
+define('ROOT_DATA_PATH', ROOT_JAWS_PATH . DATA_PATH);
 
 $db = array(); //DONT RENAME/DELETE THIS VARIABLE!!
 /**
