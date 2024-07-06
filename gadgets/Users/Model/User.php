@@ -344,10 +344,24 @@ class Users_Model_User extends Jaws_Gadget_Model
     }
 
     /**
+     * Get function result on list of users
      *
+     * @param   array           $filters    Users filters
+     * @param   array           $options    List function options (execute, table_depended, fetchstyle, fetchmode)
+     * @param   array|string    $function   Array of columns list set (e.g. default, internal, foreign, ...)
+     * @return  array|Jaws_Error    Returns an array of bases or Jaws_Error on error
      */
-    function listFunction(array $filters = array(), $function = '', $execute = true, $table_depended = true)
+    function listFunction(array $filters = array(), array $options = array(), $function = '')
     {
+        $defaultOptions = array(
+            'execute' => true,
+            'table_depended' => true,
+            'fetchmode' => null,
+            'fetchstyle' => 'one',
+            'associate' => null,
+        );
+        $options = array_merge($defaultOptions, $options);
+
         //
         $defaultFilters = array(
             'id' => null,
@@ -362,11 +376,11 @@ class Users_Model_User extends Jaws_Gadget_Model
         $function = $function ?: 'count(user.id):integer';
         $function = is_array($function)? $function : [$function];
 
-        if (!$table_depended) {
+        if (!$options['table_depended']) {
             return Jaws_ORM::getInstance()
             ->select(
                 $function
-            )->fetch((count($function)>1)? 'row' : 'one');
+            )->fetch($options['fetchstyle'], $options['associate']);
         }
 
         $result = Jaws_ORM::getInstance()
@@ -451,22 +465,12 @@ class Users_Model_User extends Jaws_Gadget_Model
                 is_array($filters['status'])? 'in' : '=',
                 is_null($filters['status'])
             )
-            ->fetch((count($function) > 1)? 'all' : 'column',0, JAWS_ERROR_ERROR, $execute);
+            ->fetch($options['fetchstyle'], $options['associate'], JAWS_ERROR_ERROR, $options['execute']);
         if (Jaws_Error::IsError($result)) {
             return $result;
         }
 
-        if (!$execute) {
-            return $result;
-        }
-
-        if (empty($result)) {
-            return null;
-        } elseif (count($function) > 1) {
-            return (count($result) == 1)? reset($result) : $result;
-        } else {
-            return (count($result) == 1)? ($result[0]) : $result;
-        }
+        return $result;
     }
 
     /**
