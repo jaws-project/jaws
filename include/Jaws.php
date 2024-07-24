@@ -164,6 +164,11 @@ class Jaws
         $this->session->init();
         $this->acl->init($this->session->user->id, array_keys($this->session->user->groups));
         $this->loadPreferences();
+
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $this->define('', 'pubkey', base64_encode($JCrypt->getPublic()));
+        }
     }
 
     /**

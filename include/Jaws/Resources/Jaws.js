@@ -1760,6 +1760,11 @@ $(document).ready(function() {
         }
     }
 
+    // decode base64 encoded pubkey key 
+    if (Jaws.defines.pubkey) {
+        Jaws.defines.pubkey = window.atob(Jaws.defines.pubkey);
+    }
+
     // grab hash change event
     $(window).on('hashchange', function() {
         if (!window.location.hash.blank() && Jaws.defines.requestedURL == '') {
