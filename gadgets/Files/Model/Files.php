@@ -39,8 +39,8 @@ class Files_Model_Files extends Jaws_Gadget_Model
         $resultFiles = array();
         $attachTable = Jaws_ORM::getInstance()->table('files');
         foreach ($files as $file) {
+            $data['folderized'] = $interface['folderized'];
             $data['title']    = $file['user_filename'];
-            $data['folderized'] = $file['folderized'];
             $data['postname'] = $file['user_filename'];
             $data['filename'] = $file['host_filename'];
             $data['filesize'] = $file['host_filesize'];
