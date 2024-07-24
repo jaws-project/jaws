@@ -419,7 +419,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             'maxcount'    => 8,
             'dimension'   => '',
             'extensions'  => '',
-            'imageformat' => ''
+            'imageformat' => '',
         );
         $options = array_merge($defaultOptions, $options);
 
@@ -428,6 +428,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             'action'      => '',
             'reference'   => 0,
             'type'        => 0,
+            'folderized'  => false,
         );
         $interface = array_merge($defaultInterface, $interface);
         // optional input_reference for new record(without reference id)
@@ -493,9 +494,13 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         }
 
         if (array_key_exists($newFilesIndex, $_FILES)) {
+            $uploadPath = ROOT_DATA_PATH. strtolower('files/'. $interface['gadget']. '/'. $interface['action']);
+            if ($interface['folderized']) {
+                $uploadPath.= '/'. $interface['reference'];
+            }
             $newFiles = $this->gadget->fileManagement::uploadFiles(
                 $_FILES[$newFilesIndex],
-                ROOT_DATA_PATH. strtolower('files/'. $interface['gadget']. '/'. $interface['action']),
+                $uploadPath,
                 $options['extensions'],
                 null,
                 true,
@@ -589,6 +594,9 @@ class Files_Actions_Files extends Jaws_Gadget_Action
 
         if (!empty($file) && $file['filekey'] == $get['key']) {
             $filePath = strtolower('files/'. $file['gadget']. '/'. $file['action']. '/');
+            if ($file['folderized']) {
+                $filePath.= $file['reference'] . '/';
+            }
             if ($this->gadget->fileManagement::file_exists(ROOT_DATA_PATH. $filePath . $file['filename'])) {
                 // set response type to raw  because HTTP headers managed by fileManagement::download method
                 $this->app->request->update('restype', 'raw');

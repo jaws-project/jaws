@@ -439,8 +439,11 @@ function Jaws_Gadget_Files() { return {
         });
 
         if ((filesCount < mincount) || (filesCount > maxcount)) {
-            let entry;
+            // inform caller there is an issue
+            filesCount = -1;
+
             // reset/empty FormData
+            let entry;
             while (entry = formData.entries().next().value) {
                 formData.delete(entry[0]);
             }
