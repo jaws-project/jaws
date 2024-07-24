@@ -586,4 +586,42 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
         return mb_convert_encoding($input, 'ISO-8859-1', 'UTF-8');
     }
 
+    /**
+     * Encrypt text by RSA algorithm
+     *
+     * @param   string  $input Plain text
+     *
+     * @return  string  Encrypted text
+     */
+    public static function encrypt($input)
+    {
+        if (!in_array($input, ['', null])) {
+            $JCrypt = Jaws_Crypt::getInstance();
+            if (!Jaws_Error::IsError($JCrypt)) {
+                $input = $JCrypt->encrypt($input);
+            }
+        }
+
+        return $input;
+    }
+
+    /**
+     * Decrypt text by RSA algorithm
+     *
+     * @param   string  $input Encrypted text
+     *
+     * @return  string  Plain text
+     */
+    public static function decrypt($input)
+    {
+        if (!in_array($input, ['', null])) {
+            $JCrypt = Jaws_Crypt::getInstance();
+            if (!Jaws_Error::IsError($JCrypt)) {
+                $input = $JCrypt->decrypt($input);
+            }
+        }
+
+        return $input;
+    }
+
 }
