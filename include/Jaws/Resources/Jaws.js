@@ -547,7 +547,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
                     'progress',
                     function(evt) {
                         if (evt.lengthComputable) {
-                            progress.call(this.callbackObject, evt.loaded, evt.total);
+                            progress.call(this.callbackObject, callOptions.loading_container, evt.loaded, evt.total);
                         }
                     },
                     false
