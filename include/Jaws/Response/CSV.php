@@ -20,8 +20,12 @@ class Jaws_Response_CSV
     static function get($data)
     {
         $result = "\xEF\xBB\xBF";
-        foreach ($data as $entry) {
-            $result.= str_putcsv($entry). "\n";
+        if (is_array($data)) {
+            foreach ($data as $entry) {
+                $result.= str_putcsv($entry). "\n";
+            }
+        } else {
+            $result.= $data;
         }
 
         header('Content-Type: text/csv; charset=utf-8');
