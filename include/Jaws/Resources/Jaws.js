@@ -2555,15 +2555,17 @@ Jaws.filters = {
         $filters = Array.isArray($filter)? $filter : [$filter];
         for (let i = 0; i < $filters.length; i++) {
             // split filter and parameters (for example: function: param1, param2, ...)
-            let params = [];
+            let filterArgs = [];
             let filter = $filters[i];
             let indexColon = $filters[i].indexOf(':');
             if (indexColon != -1) {
                 filter = $filters[i].slice(0, indexColon);
-                params = $.map(($filters[i].slice(indexColon + 1) || '').split(','), $.trim);
+                filterArgs = ($filters[i].slice(indexColon + 1) || '').split(
+                    /,(?=(?:(?:[^"']*["'][^"']*["'])*[^"']*$))/
+                ).map(s => s.trim().replace(/^["']|["']$/g, ''));
             }
 
-            input = Jaws.filters[filter].call(this, input, ...params);
+            input = Jaws.filters[filter].call(this, input, ...filterArgs);
         }
         return input;
     },
