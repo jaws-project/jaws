@@ -11,6 +11,18 @@
 class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
 {
     /**
+     * Generate a single-byte string from a number
+     *
+     * @param   int $input
+     *
+     * @return string
+     */
+    public static function chr($input)
+    {
+        return chr((int)$input);
+    }
+
+    /**
      * Add one string to another
      *
      * @param string $input
@@ -276,6 +288,18 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
         }
 
         return explode($pattern, $input);
+    }
+
+    /**
+     * Quote string with slashes in a C style
+     *
+     * @param   string  $input
+     *
+     * @return string   Returns the escaped string. 
+     */
+    public static function slash($input, $characters = "'")
+    {
+        return addcslashes($input, $characters);
     }
 
     /**
