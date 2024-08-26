@@ -299,7 +299,7 @@ class Jaws_Request
      * @param   array   $options    Options(filter, xss_strip, json_decode, type_validate)
      * @return  mixed   Null if there is no data else an string|array with the processed data
      */
-    private function _fetch($keys, $method, $branchName = '', array $options = array()) {
+    private function _fetch($keys, $method, $branchName = '', array $options = array(), &$exists = true) {
         if (is_array($keys)) {
             $result = array();
             foreach ($keys as $key) {
@@ -307,12 +307,16 @@ class Jaws_Request
                     continue;
                 }
                 @list($all, $key, $valid_type, $cast_type, $null_type) = $this->regexp->matches;
-                $result[$key] = $this->_fetch($all, $method, $branchName, $options);
+                $keyval = $this->_fetch($all, $method, $branchName, $options, $exists);
+                if ($exists) {
+                    $result[$key] = $keyval;
+                }
             }
 
             return $result;
         }
 
+        $exists = false;
         if (false === $this->regexp->match($keys)) {
             return null;
         }
@@ -331,6 +335,7 @@ class Jaws_Request
         if (in_array($cast_type, ['int', 'integer']) && !empty($null_type) &&
             isset($dataRepository[$key]) && $dataRepository[$key] === ''
         ) {
+            $exists = true;
             unset($dataRepository[$key]);
         }
 
@@ -342,6 +347,8 @@ class Jaws_Request
                 settype($value, $this->map_types_cast[$null_type]);
             }
             return $value;
+        } else {
+            $exists = true;
         }
 
         $value = $options['json_decode']? json_decode($dataRepository[$key]) : $dataRepository[$key];
@@ -408,7 +415,7 @@ class Jaws_Request
      * @param   array   $options        Options(filters, xss_strip, json_decode, type_validate)
      * @return  mixed   Returns string or an array depending on the key, otherwise Null if key not exist
      */
-    function fetch($keys, $methods = '', $branchName = '', array $options = array())
+    function fetch($keys, $methods = '', $branchName = '', array $options = array(), &$exists = true)
     {
         $defaultOptions = array(
             'filters' => true,       // bool|array apply default filters? (can pass array of filters by name)
@@ -437,7 +444,7 @@ class Jaws_Request
         }
 
         foreach ($methods as $method) {
-            $result = $this->_fetch($keys, $method, $branchName, $options);
+            $result = $this->_fetch($keys, $method, $branchName, $options, $exists);
             if (!is_null($result)) {
                 break;
             }
@@ -472,7 +479,8 @@ class Jaws_Request
         $keys = array_keys($this->data[$method]);
         $keys = preg_replace('/[^[:alnum:]_\.\-]/', '', $keys);
 
-        return $this->_fetch($keys, $method, '', $options);
+        $exists = null;
+        return $this->_fetch($keys, $method, '', $options, $exists);
     }
 
     /** Creates a new key or updates an old one

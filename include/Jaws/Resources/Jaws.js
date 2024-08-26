@@ -34,8 +34,15 @@ jQuery.extend({
             }
         }
 
-        $.each($elements.serializeArray(), function (i, input) {
-            if (removeBlanks && (input.value === undefined || input.value === null || input.value === '')) {
+        $.each($elements, function(index, element) {
+            let input = {
+                name: $(element).attr('name'),
+                value: $(element).prop('type') == 'checked'? $(element).prop('checked') : $(element).val()
+            };
+
+            if (['', null, undefined].includes(input.name) ||
+                (removeBlanks && (input.value === undefined || input.value === null || input.value.length == 0))
+            ) {
                 return;
             }
 
@@ -48,13 +55,13 @@ jQuery.extend({
 
             if (last === '') {
                 if (Array.isArray(property)) {
-                    property.push(input.value);
+                    property.push(...input.value);
                 } else {
                     property = [input.value];
                 }
             } else if (property.hasOwnProperty(last)) {
                 if (Array.isArray(property[last])) {
-                    property[last].push(input.value);
+                    property[last].push(...input.value);
                 } else {
                     property[last] = [property[last], input.value];
                 }
@@ -103,7 +110,8 @@ jQuery.extend({
         if (data && typeof data === 'object' &&
             !(data instanceof Date) &&
             !(data instanceof File) &&
-            !(data instanceof Blob)
+            !(data instanceof Blob) &&
+            Object.keys(data).length
         ) {
             $.each(Object.keys(data),
                 $.proxy(
