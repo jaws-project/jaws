@@ -110,8 +110,7 @@ jQuery.extend({
         if (data && typeof data === 'object' &&
             !(data instanceof Date) &&
             !(data instanceof File) &&
-            !(data instanceof Blob) &&
-            Object.keys(data).length
+            !(data instanceof Blob)
         ) {
             $.each(Object.keys(data),
                 $.proxy(
