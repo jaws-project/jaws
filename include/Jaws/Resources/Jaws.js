@@ -37,7 +37,7 @@ jQuery.extend({
         $.each($elements, function(index, element) {
             let input = {
                 name: $(element).attr('name'),
-                value: $(element).prop('type') == 'checked'? $(element).prop('checked') : $(element).val()
+                value: $(element).prop('type') == 'checkbox'? $(element).prop('checked') : $(element).val()
             };
 
             if (['', null, undefined].includes(input.name) ||
