@@ -112,14 +112,18 @@ jQuery.extend({
             !(data instanceof File) &&
             !(data instanceof Blob)
         ) {
-            $.each(Object.keys(data),
-                $.proxy(
-                    function(index, key) {
-                        $.formData(data[key], objFormData, parentKey? `${parentKey}[${key}]` : key);
-                    },
-                    this
-                )
-            );
+            if (Object.keys(data).length) {
+                $.each(Object.keys(data),
+                    $.proxy(
+                        function(index, key) {
+                            $.formData(data[key], objFormData, parentKey? `${parentKey}[${key}]` : key);
+                        },
+                        this
+                    )
+                );
+            } else {
+                objFormData.append(parentKey || 0, '');
+            }
         } else {
             data = (data == null)? '' : data;
             objFormData.append(parentKey || 0, data);
