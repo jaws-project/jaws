@@ -438,7 +438,7 @@ function Jaws_Gadget_Files() { return {
             });
         });
 
-        if ((filesCount < mincount) || (filesCount > maxcount)) {
+        if ((filesCount < mincount) || (maxcount && filesCount > maxcount)) {
             // inform caller there is an issue
             filesCount = -1;
 

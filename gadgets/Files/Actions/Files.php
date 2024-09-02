@@ -468,7 +468,7 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             );
         }
         // check max count of files
-        if (($oldFilesCount + $newFilesCount) > $options['maxcount']) {
+        if (($options['maxcount'] > 0) && ($oldFilesCount + $newFilesCount) > $options['maxcount']) {
             return Jaws_Error::raiseError(
                 Jaws::t('ERROR_UPLOAD_MAX_COUNT'),
                 406,
