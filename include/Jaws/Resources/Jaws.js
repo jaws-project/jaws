@@ -61,7 +61,11 @@ jQuery.extend({
                 }
             } else if (property.hasOwnProperty(last)) {
                 if (Array.isArray(property[last])) {
-                    property[last].push(...input.value);
+                    if (Array.isArray(input.value)) {
+                        property[last].push(...input.value);
+                    } else {
+                        property[last].push(input.value);
+                    }
                 } else {
                     property[last] = [property[last], input.value];
                 }
