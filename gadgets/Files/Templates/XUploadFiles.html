@@ -1,4 +1,4 @@
-<div class="files-interface">
+<div class="files-interface accordion accordion-flush" id="" data-accordion="id">
   <template>
   <div class="col-6 col-md-4 col-lg-3 files-interface-item" data-input-file-uid="">
     <div class="card position-relative">
@@ -18,16 +18,16 @@
         </button>
       </div>
     </div>
-    <input type="hidden" name="tpl_files_{{ files.input_action }}_{{ files.input_reference }}_{{ files.input_type }}[]" data-role="file"/>
+    <input type="hidden" name="tpl_files_{{files.input_action}}_{{files.input_reference}}_{{files.input_type}}[]" data-role="file" />
   </div>
 
-  <input class="form-control-file files-interface-input" type="file" data-role="file"
+  <input class="form-control-file files-interface-input d-none" type="file" data-role="file"
     data-input-file-uid=""
     data-maxsize="{{ files.maxsize }}"
     data-dimension="{{ files.dimension }}"
     data-extensions="{{ files.extensions }}"
     data-preview="{{ files.preview }}"
-    name="new_files_{{ files.input_action }}_{{ files.input_reference }}_{{ files.input_type }}[]"
+    name="new_files_{{files.input_action}}_{{files.input_reference}}_{{files.input_type}}[]"
     multiple="multiple"
     accept="{{ files.accept | default: '*' }}"
     {{ files.capture | isset: "capture", "" }}
@@ -36,53 +36,70 @@
   />
   </template>
 
-  <div class="row gy-3 files-interface-items">
-    {%- indent -2 %}
-    <input type="hidden" name="files_upload_interface" value="1" />
-    {%- for file in files.files %}
-      {%- assign file.url = 'Files' | urlmap: 'file', 'id', file.id, 'key', file.filekey %}
-      <div class="col-6 col-md-4 col-lg-3 files-interface-item" data-input-file-uid="">
-        <div class="card position-relative">
-          {% if file.preview and file.mimetype contains "image/" %}
-          <img class="card-img-top" src="{{ file.url }}" alt="" data-type="image"/>
-          {%- else %}
-          <img class="card-img-top" src="images/image.svg" alt="" data-type="image"/>
-          {% endif %}
-          <div class="card-body pb-0">
-            <div class="card-text">
-              <ul class="list-group list-group-flush text-center">
-                <li class="list-group-item align-self-center w-100 text-nowrap overflow-hidden" data-type="name">
-                  <a class="text-nowrap text-nowrap" href="{{ file.url }}" target="_blank">{{ file.title }}</a>
-                </li>
-                <li class="list-group-item" data-type="size" dir="ltr">{{ file.size }}</li>
-              </ul>
-            </div>
-            <button class="btn btn-sm btn-danger position-absolute top-0 start-0"
-              onclick="Jaws_Gadget.getInstance('Files').removeFile(this)"
-              data-label="remove"
-              title="{{ files.labels.remove }}">
-              <i class="fas fa-trash-can align-middle"></i>
-            </button>
-          </div>
-        </div>
-        <input type="hidden" name="old_files_{{ files.input_action }}_{{ files.input_reference }}_{{ files.input_type }}[]"
-          data-role="file" value="{{ file.id }}"
-        />
-      </div>
-    {% endfor %}
-    {%- endindent %}
-
-    <div class="col-6 col-md-4 col-lg-3 btn-browse">
-      <div class="card h-100">
-        <div class="card-body">
-          <button class="btn btn-lg w-100 h-100 fs-1" type="button"
+  <div class="accordion-item border-0">
+    <h5 class="row accordion-header gx-0 gx-md-4">
+      <div class="col-12" data-grid-role="col">
+        <div class="input-group" >
+          <span class="input-group-text min-w-12rem justify-content-center" data-label="label">
+            {{ 'commission100.report_files_1' | t }}
+          </span>
+          <span class="input-group-text w-icon px-2">
+            <i tabindex="-1" class="fas fa-circle-info align-middle fs-5" data-bs-toggle="tooltip" data-bs-trigger="focus" data-bs-placement="top"
+              title="{{ 'commission100.report_files_1_description' | t }}">
+            </i>
+          </span>
+          <button class="btn border text-bg-light" type="button"
             data-mincount="{{ files.mincount }}"
             data-maxcount="{{ files.maxcount }}" data-initialize="fileuploader"
             onclick="Jaws_Gadget.getInstance('Files').browseFile(this)">
-            <span class="fas fa-file-circle-plus align-middle" data-label="browse">{{ files.labels.browse }}</span>
+            <span class="fas fa-file-circle-plus fs-5 align-middle" data-label="browse">{{ files.labels.browse }}</span>
+          </button>
+          <span class="form-control bg-body-secondary" data-role="count"></span>
+          <button class="btn accordion-button shadow-none w-auto py-0 px-1 border text-bg-light collapsed"
+            type="button" data-bs-toggle="collapse" data-bs-target="#" data-accordion="item-id">
+            <span class="far fa-file-lines fs-5 px-1"></span>
           </button>
         </div>
       </div>
+    </h5>
+  </div>
+  <div id="" class="accordion-collapse collapse" data-bs-parent="#" data-accordion="item-body">
+    <div class="row gy-2 accordion-body px-0 files-interface-items">
+      {%- indent -2 %}
+      <input type="hidden" name="files_upload_interface" value="1" />
+      {%- for file in files.files %}
+        {%- assign file.url = 'Files' | urlmap: 'file', 'id', file.id, 'key', file.filekey %}
+        <div class="col-6 col-md-4 col-lg-3 files-interface-item" data-input-file-uid="">
+          <div class="card position-relative">
+            {% if file.preview and file.mimetype contains "image/" %}
+            <img class="card-img-top" src="{{ file.url }}" alt="" data-type="image"/>
+            {%- else %}
+            <img class="card-img-top" src="images/image.svg" alt="" data-type="image"/>
+            {% endif %}
+            <div class="card-body pb-0">
+              <div class="card-text">
+                <ul class="list-group list-group-flush text-center">
+                  <li class="list-group-item align-self-center w-100 text-nowrap overflow-hidden" data-type="name">
+                    <a class="text-nowrap text-nowrap" href="{{ file.url }}" target="_blank">{{ file.title }}</a>
+                  </li>
+                  <li class="list-group-item" data-type="size" dir="ltr">{{ file.size }}</li>
+                </ul>
+              </div>
+              <button class="btn btn-sm btn-danger position-absolute top-0 start-0"
+                onclick="Jaws_Gadget.getInstance('Files').removeFile(this)"
+                data-label="remove"
+                title="{{ files.labels.remove }}">
+                <i class="fas fa-trash-can align-middle"></i>
+              </button>
+            </div>
+          </div>
+          <input type="hidden" name="old_files_{{files.input_action}}_{{files.input_reference}}_{{files.input_type}}[]"
+            data-role="file" value="{{ file.id }}"
+          />
+        </div>
+      {% endfor %}
+      {%- endindent %}
     </div>
   </div>
+
 </div>

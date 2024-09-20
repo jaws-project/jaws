@@ -71,14 +71,12 @@ function Jaws_Gadget_Files() { return {
      */
     removeFile: function(element)
     {
+        let $filesInterface = $(element).closest('.files-interface');
         let inputFileUID = $(element).closest('.files-interface-item').data('input-file-uid');
         if (inputFileUID) {
-            let inputFileElement = $(element).closest('.files-interface')
-                .find('input[data-input-file-uid="' + inputFileUID + '"]')
-                .get(0);
+            let inputFileElement = $filesInterface.find('input[data-input-file-uid="' + inputFileUID + '"]').get(0);
             // find file index
-            let itemIndex = $(element).closest('.files-interface')
-                .find('.files-interface-item[data-input-file-uid="' + inputFileUID + '"]')
+            let itemIndex = $filesInterface.find('.files-interface-item[data-input-file-uid="' + inputFileUID + '"]')
                 .index($(element).closest('.files-interface-item'));
 
             let dataTransfer = new DataTransfer();
@@ -91,9 +89,11 @@ function Jaws_Gadget_Files() { return {
         }
 
         // enable file browser, before remove item
-        $(element).closest('.files-interface').find('[data-initialize="fileuploader"]').prop('disabled', false);
+        $filesInterface.find('[data-initialize="fileuploader"]').prop('disabled', false);
         // remove DOM element
         $(element).closest('.files-interface-item').remove();
+        // update files count
+        $filesInterface.find('[data-role="count"]').html($filesInterface.find('.files-interface-item').length);
     },
 
     /**
@@ -101,6 +101,7 @@ function Jaws_Gadget_Files() { return {
      */
     async selectFile(inputFileElement)
     {
+        let $filesInterface = $(inputFileElement).closest('.files-interface');
         // max file size
         let maxsize = Number($(inputFileElement).data('maxsize'));
 
@@ -117,8 +118,7 @@ function Jaws_Gadget_Files() { return {
 
         // max files count
         let maxcount = Number(
-            $(inputFileElement)
-            .closest('.files-interface')
+            $filesInterface
             .find('[data-initialize=fileuploader]')
             .first()
             .data('maxcount')
@@ -147,12 +147,13 @@ function Jaws_Gadget_Files() { return {
 
             // max files count
             if (maxcount > 0) {
-                let filesCount = $(inputFileElement).closest('.files-interface').find('.files-interface-item').length;
-                if ((inputFileElement.files.length + filesCount) > maxcount) {
+                let filesCount = $filesInterface.find('.files-interface-item').length;
+                filesCount += inputFileElement.files.length;
+                if (filesCount > maxcount) {
                     throw Jaws.t('error_upload_max_count');
-                } else if ((inputFileElement.files.length + filesCount) == maxcount) {
+                } else if (filesCount == maxcount) {
                     // disable file browser
-                    $(inputFileElement).closest('.files-interface').find('[data-initialize="fileuploader"]').prop('disabled', true);
+                    $filesInterface.find('[data-initialize="fileuploader"]').prop('disabled', true);
                 }
             }
         } catch(error) {
@@ -168,14 +169,14 @@ function Jaws_Gadget_Files() { return {
         }
 
         let dataTransfer = new DataTransfer();
-        let $container = $(inputFileElement).closest('.files-interface').find('.files-interface-items');
+        let $container = $filesInterface.find('.files-interface-items');
 
         let inputFileUID = Date.now().toString() + Math.floor(Math.random()*100000).toString();
         $(inputFileElement).attr('data-input-file-uid', inputFileUID);
         // client side processing selected files
         for (let file of inputFileElement.files) {
             $container.append(
-                $(inputFileElement).closest('.files-interface').find('template').contents().filter('.files-interface-item').prop('outerHTML')
+                $filesInterface.find('template').contents().filter('.files-interface-item').prop('outerHTML')
             );
 
             let $item = $container.children('.files-interface-item').last();
@@ -217,7 +218,7 @@ function Jaws_Gadget_Files() { return {
                 $item.remove();
 
                 // enable file browser
-                $(inputFileElement).closest('.files-interface').find('[data-initialize="fileuploader"]').prop('disabled', false);
+                $filesInterface.find('[data-initialize="fileuploader"]').prop('disabled', false);
 
                 this.gadget.message.show(
                     {
@@ -228,7 +229,9 @@ function Jaws_Gadget_Files() { return {
             }
 
         }
-
+        // update files count
+        $filesInterface.find('[data-role="count"]').html($filesInterface.find('.files-interface-item').length);
+        $filesInterface.find('.accordion-collapse').collapse('show');
         // set value of the file input to new files list
         inputFileElement.files = dataTransfer.files;
     },
@@ -288,6 +291,7 @@ function Jaws_Gadget_Files() { return {
                     'browse': '',
                     'remove': ''
                 },
+                'class': 'col-12 col-md-6',
                 'filetype':  0,
                 'maxsize':   33554432,
                 'extensions': '',
@@ -297,6 +301,7 @@ function Jaws_Gadget_Files() { return {
             },
             $options
         );
+        $tpl.find('[data-grid-role="col"]').toggleClass($options['class'], true);
 
         if (!$interface.hasOwnProperty('input_reference')) {
             $interface['input_reference'] = $interface['reference'];
@@ -348,6 +353,17 @@ function Jaws_Gadget_Files() { return {
         $tpl.find('.files-interface-item').remove();
         $tpl.find('.files-interface input[type="file"]').remove();
         let $container = $tpl.find('.files-interface-items');
+
+        // initiate accordion
+        let uid = $interface['action'].toLowerCase() + '-' +
+            $interface['input_reference'] + '-' + $interface['type'];
+
+        // initiate accordion
+        $tpl.find('[data-accordion="id"]').attr('id', `files-interface-accordion-${uid}`);
+        $tpl.find('[data-accordion="item-id"]').attr('data-bs-target', `#files-interface-accordion-body-${uid}`);
+        $tpl.find('[data-accordion="item-body"]').attr('data-bs-parent', `#files-interface-accordion-${uid}`);
+        $tpl.find('[data-accordion="item-body"]').attr('id', `files-interface-accordion-body-${uid}`);
+        $tpl.find('.accordion-collapse').collapse('hide');
 
         // set label
         if ($options['labels']['title']) {
@@ -462,14 +478,17 @@ function Jaws_Gadget_Files() { return {
      */
     initFileUploader: function($fileuploader)
     {
+        let $filesInterface = $fileuploader.closest('.files-interface');
         let maxcount = Number($fileuploader.data('maxcount'));
-        let filesCount = $fileuploader.closest('.files-interface').find('.files-interface-item').length;
+        let filesCount = $filesInterface.find('.files-interface-item').length;
+        // update files count
+        $filesInterface.find('[data-role="count"]').html(filesCount);
         if (maxcount > 0 && filesCount >= maxcount) {
             // disable file browser
-            $fileuploader.closest('.files-interface').find('[data-initialize="fileuploader"]').prop('disabled', true);
+            $filesInterface.find('[data-initialize="fileuploader"]').prop('disabled', true);
         } else {
             // enable file browser
-            $fileuploader.closest('.files-interface').find('[data-initialize="fileuploader"]').prop('disabled', false);
+            $filesInterface.find('[data-initialize="fileuploader"]').prop('disabled', false);
         }
     },
 
