@@ -40,6 +40,10 @@ jQuery.extend({
                 value: $(element).prop('type') == 'checkbox'? Number($(element).prop('checked')) : $(element).val()
             };
 
+            if ($(element).attr('disabled')) {
+                return;
+            }
+
             if (['', null, undefined].includes(input.name) ||
                 (removeBlanks && (input.value === undefined || input.value === null || input.value.length == 0))
             ) {
