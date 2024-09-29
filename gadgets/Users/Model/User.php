@@ -747,7 +747,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         if (Jaws_Error::IsError($howmany) || !empty($howmany)) {
             return Jaws_Error::raiseError(
                 Jaws::t('USERS_ALREADY_EXISTS'),
-                __FUNCTION__,
+                MDB2_ERROR_CONSTRAINT,
                 JAWS_ERROR_NOTICE
             );
         }

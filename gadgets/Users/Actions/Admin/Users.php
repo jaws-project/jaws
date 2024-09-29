@@ -115,8 +115,8 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
             $filters,
             array (
                 'sort'   => $sort,
-                'limit'  => $post['limit'],
-                'offset' => $post['offset'],
+                'limit'  => @$post['limit'],
+                'offset' => @$post['offset'],
             )
         );
         if (Jaws_Error::IsError($users)) {
@@ -153,7 +153,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $userInfo = $this->gadget->model->load('User')->get(
             (int)$post['id'],
             0,
-            array('account' => (bool)$post['account'], 'personal' => (bool)$post['personal'])
+            array('account' => (bool)@$post['account'], 'personal' => (bool)@$post['personal'])
         );
         if (Jaws_Error::IsError($userInfo)) {
             return $this->gadget->session->response($userInfo->getMessage(), RESPONSE_ERROR);

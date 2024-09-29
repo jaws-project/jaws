@@ -212,8 +212,8 @@ class Users_Actions_Users extends Users_Actions_Default
             ),
             array (
                 'sort'   => $sort,
-                'limit'  => $post['limit'],
-                'offset' => $post['offset'],
+                'limit'  => @$post['limit'],
+                'offset' => @$post['offset'],
             ),
             array(
                 'default', 'account'
