@@ -40,12 +40,12 @@
     <h5 class="row accordion-header gx-0 gx-md-4">
       <div class="col-12" data-grid-role="col">
         <div class="input-group" >
-          <span class="input-group-text min-w-12rem justify-content-center" data-label="label">
-            {{ 'commission100.report_files_1' | t }}
+          <span class="input-group-text min-w-12rem justify-content-center" data-label="title">
+            {{ files.labels.title }}
           </span>
-          <span class="input-group-text w-icon px-2">
+          <span class="input-group-text w-icon px-2 d-none" data-label="description">
             <i tabindex="-1" class="fas fa-circle-info align-middle fs-5" data-bs-toggle="tooltip" data-bs-trigger="focus" data-bs-placement="top"
-              title="{{ 'commission100.report_files_1_description' | t }}">
+              title="{{ files.labels.description }}">
             </i>
           </span>
           <button class="btn border text-bg-light" type="button"

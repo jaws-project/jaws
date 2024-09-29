@@ -93,7 +93,7 @@ function Jaws_Gadget_Files() { return {
         // remove DOM element
         $(element).closest('.files-interface-item').remove();
         // update files count
-        $filesInterface.find('[data-role="count"]').html($filesInterface.find('.files-interface-item').length);
+        $filesInterface.find('[data-role="count"]').html(this.t('files_count', [$filesInterface.find('.files-interface-item').length]));
     },
 
     /**
@@ -227,11 +227,14 @@ function Jaws_Gadget_Files() { return {
                     }
                 );
             }
-
         }
+
         // update files count
-        $filesInterface.find('[data-role="count"]').html($filesInterface.find('.files-interface-item').length);
-        $filesInterface.find('.accordion-collapse').collapse('show');
+        $filesInterface.find('[data-role="count"]').html(this.t('files_count', [$filesInterface.find('.files-interface-item').length]));
+
+        // show select files preview/details
+        //$filesInterface.find('.accordion-collapse').collapse('show');
+
         // set value of the file input to new files list
         inputFileElement.files = dataTransfer.files;
     },
@@ -239,12 +242,12 @@ function Jaws_Gadget_Files() { return {
     /**
      * get reference files interface
      */
-    getReferenceFiles: function($interface, callback)
+    getReferenceFiles: function(interface, callback)
     {
         let files = [];
         this.gadget.ajax.call(
             'files',
-            $interface,
+            interface,
             function(response, status) {
                 if (response['type'] == 'alert-success') {
                     files = response['data'];
@@ -257,11 +260,11 @@ function Jaws_Gadget_Files() { return {
     /**
      * Display reference files interface
      */
-    displayReferenceFiles: function($tpl, $interface, $options = [])
+    displayReferenceFiles: function($tpl, interface, options = [])
     {
         this.gadget.ajax.call(
             'displayReferenceFiles',
-            $interface,
+            interface,
             function(response, status) {
                 if (response['type'] == 'alert-success') {
                     var regex = new RegExp(
@@ -271,7 +274,7 @@ function Jaws_Gadget_Files() { return {
 
                     $.each(response['data'].files, function (index, file) {
                         let tplStr = response['data'].template.replace(regex, (m, $1) => file[$1] || m);
-                        $tpl.append(tplStr.replace(/{{lbl_file}}/g, $options.labels.title));
+                        $tpl.append(tplStr.replace(/{{lbl_file}}/g, options.labels.title));
                     });
                 }
             }
@@ -281,17 +284,18 @@ function Jaws_Gadget_Files() { return {
     /**
      * Get upload reference files interface
      */
-    loadReferenceFiles: function($tpl, $interface, $options = {})
+    loadReferenceFiles: function($tpl, interface, options = {})
     {
         // merge input options with default options
-        $options = Object.assign(
+        options = Object.assign(
             {
                 'labels': {
                     'title':  '',
                     'browse': '',
-                    'remove': ''
+                    'remove': '',
+                    'description':  '',
                 },
-                'class': 'col-12 col-md-6',
+                'modalsize': '',
                 'filetype':  0,
                 'maxsize':   33554432,
                 'extensions': '',
@@ -299,31 +303,39 @@ function Jaws_Gadget_Files() { return {
                 'maxcount':  0,
                 'preview':   true
             },
-            $options
+            options
         );
-        $tpl.find('[data-grid-role="col"]').toggleClass($options['class'], true);
 
-        if (!$interface.hasOwnProperty('input_reference')) {
-            $interface['input_reference'] = $interface['reference'];
+        let widthClasses = {
+            '': 'col-12',
+            'modal-sm': 'col-12',
+            'modal-sm': 'col-12',
+            'modal-lg': 'col-12 col-md-6',
+            'modal-xl': 'col-12 col-md-6',
+        };
+        $tpl.find('[data-grid-role="col"]').toggleClass(widthClasses[options.modalsize], true);
+
+        if (!interface.hasOwnProperty('input_reference')) {
+            interface['input_reference'] = interface['reference'];
         }
 
-        let inputIndexName = $interface['action'].toLowerCase() + '_' +
-            $interface['input_reference'] + '_' + $interface['type'] + '[]';
+        let inputIndexName = interface['action'].toLowerCase() + '_' +
+            interface['input_reference'] + '_' + interface['type'] + '[]';
 
         let $fileInput = $tpl.find('template').contents().filter('input.files-interface-input');
         $fileInput.attr('name', 'new_files_' + inputIndexName);
-        $fileInput.attr('data-maxsize', $options['maxsize']);
+        $fileInput.attr('data-maxsize', options['maxsize']);
         // preview
-        $fileInput.attr('data-preview', $options['preview']);
-        $fileInput.attr('data-extensions', $options['extensions']);
-        $fileInput.attr('data-dimension', $options['dimension']);
+        $fileInput.attr('data-preview', options['preview']);
+        $fileInput.attr('data-extensions', options['extensions']);
+        $fileInput.attr('data-dimension', options['dimension']);
         // accept
         let accept = '*';
-        $options['extensions'] = String($options['extensions']).split(',').map(function(ext) {return ext.replace(/^\.+/g, '');});
-        if ($options['extensions'].length) {
-            accept = '.' + $options['extensions'].join(',.');
+        options['extensions'] = String(options['extensions']).split(',').map(function(ext) {return ext.replace(/^\.+/g, '');});
+        if (options['extensions'].length) {
+            accept = '.' + options['extensions'].join(',.');
         } else {
-            switch ($options['filetype']) {
+            switch (options['filetype']) {
                 case 2:
                     accept = 'text/*';
                     break;
@@ -347,7 +359,7 @@ function Jaws_Gadget_Files() { return {
         $fileInput.attr('accept', accept);
 
         // set remove label
-        $tpl.find('template').contents().find('[data-label="remove"]').attr('title', $options['labels']['remove']);
+        $tpl.find('template').contents().find('[data-label="remove"]').attr('title', options['labels']['remove']);
 
         // empty items
         $tpl.find('.files-interface-item').remove();
@@ -355,8 +367,8 @@ function Jaws_Gadget_Files() { return {
         let $container = $tpl.find('.files-interface-items');
 
         // initiate accordion
-        let uid = $interface['action'].toLowerCase() + '-' +
-            $interface['input_reference'] + '-' + $interface['type'];
+        let uid = interface['action'].toLowerCase() + '-' +
+            interface['input_reference'] + '-' + interface['type'];
 
         // initiate accordion
         $tpl.find('[data-accordion="id"]').attr('id', `files-interface-accordion-${uid}`);
@@ -366,21 +378,31 @@ function Jaws_Gadget_Files() { return {
         $tpl.find('.accordion-collapse').collapse('hide');
 
         // set label
-        if ($options['labels']['title']) {
-            $tpl.find("[data-label='title']").html($options['labels']['title']);
+        if (options['labels']['title']) {
+            $tpl.find("[data-label='title']").html(options['labels']['title']);
+        }
+        // set description
+        if (options['labels']['description']) {
+            let $tooltip = $tpl.find("[data-label='description']")
+                .removeClass('d-none')
+                .find("[data-bs-toggle='tooltip']")
+                .attr('title', options['labels']['description']);
+            // re-initiate tool tip 
+            bootstrap.Tooltip.getOrCreateInstance($tooltip.get(0)).dispose();
+            new bootstrap.Tooltip($tooltip.get(0), {});
         }
         // set browse label
-        if ($options['labels']['browse']) {
-            $tpl.find("[data-label='browse']").attr('title', $options['labels']['browse']);
+        if (options['labels']['browse']) {
+            $tpl.find("[data-label='browse']").attr('title', options['labels']['browse']);
         }
         // preview?
-        $options['preview'] = Boolean($options['preview'] || $fileInput.data('preview'));
+        options['preview'] = Boolean(options['preview'] || $fileInput.data('preview'));
         // min-count
-        $tpl.find("[data-mincount]").data('mincount', $options['mincount']);
+        $tpl.find("[data-mincount]").data('mincount', options['mincount']);
         // max-count
-        $tpl.find("[data-maxcount]").data('maxcount', $options['maxcount']);
+        $tpl.find("[data-maxcount]").data('maxcount', options['maxcount']);
 
-        if ($interface['reference'] == 0) {
+        if (interface['reference'] == 0) {
             this.initFileUploader($tpl.find('[data-initialize=fileuploader]').first());
             return;
         }
@@ -388,8 +410,8 @@ function Jaws_Gadget_Files() { return {
         this.gadget.ajax.call(
             'loadReferenceFiles',
             {
-                'interface': $interface,
-                'options': $options
+                'interface': interface,
+                'options': options
             },
             function(response, status) {
                 if (response['type'] == 'alert-success') {
@@ -409,7 +431,7 @@ function Jaws_Gadget_Files() { return {
                             $item.find("[data-type='size']").html(Jaws.filters.apply(['formatNumber:filesize'], file.filesize));
                             // show preview
                             // FIXME! check file is an image
-                            if ($options['preview']) {
+                            if (options['preview']) {
                                 $item.find('[data-type="image"]').attr('src', file.fileurl);
                             }
                         }
@@ -482,7 +504,7 @@ function Jaws_Gadget_Files() { return {
         let maxcount = Number($fileuploader.data('maxcount'));
         let filesCount = $filesInterface.find('.files-interface-item').length;
         // update files count
-        $filesInterface.find('[data-role="count"]').html(filesCount);
+        $filesInterface.find('[data-role="count"]').html(this.t('files_count', [filesCount]));
         if (maxcount > 0 && filesCount >= maxcount) {
             // disable file browser
             $filesInterface.find('[data-initialize="fileuploader"]').prop('disabled', true);
