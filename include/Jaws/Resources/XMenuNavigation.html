@@ -31,14 +31,14 @@
             {%- if forloop.first | false and menu.separator < 0 %}
               {%- assign prevmenu = grouped_menus | index: forloop.prev.key %}
               {%- if prevmenu.separator <= 0 %}
-                <hr class="dropdown-divider my-1" />
+                <hr class="border-secondary my-1 mx-3" />
               {%- endif %}
             {%- endif %}
             <a class="list-group-item list-group-item-action {{- menu.active | equal: true, ' active' }} border-0 py-2" href="{{ menu.url }}">
               {{- menu.title -}}
             </a>
             {%- if forloop.last | false and menu.separator > 0 %}
-              <hr class="dropdown-divider my-1" />
+              <hr class="border-secondary my-1 mx-3" />
             {%- endif %}
           {%- endfor %}
         </div>
@@ -53,7 +53,7 @@
 
         {%- if forloop.last | false and group | empty | true %}
           {%- indent -2 %}
-          <li><hr class="dropdown-divider my-1"></li>
+          <li><hr class="border-secondary my-1 mx-3"></li>
           {%- endindent %}
         {%- endif %}
       {%- endfor %}
