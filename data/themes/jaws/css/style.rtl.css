@@ -188,7 +188,7 @@ input[type='checkbox'][readonly]{
 
 /* begin bootstrap-table */
 .fixed-table-container .fixed-table-loading {
-  width: 99% !important;
+  top: 0 !important;
 }
 .fixed-table-container {
   position: unset !important;
@@ -221,6 +221,25 @@ input[type='checkbox'][readonly]{
   background-color: rgba(var(--bs-secondary-bg-rgb), var(--bs-bg-opacity)) !important;
 }
 
+.bootstrap-table .fixed-table-container .table tbody tr .card-view .card-view-title {
+  text-align: start !important;
+}
+.bootstrap-table .fixed-table-container .table tbody tr .card-view .card-view-value {
+  text-align: start !important;
+}
+
+.bootstrap-table .fixed-table-container .table tfoot tr .card-view .card-view-title {
+  font-weight: 700;
+  display: inline-block;
+  min-width: 30%;
+  width: auto!important;
+  text-align: start!important
+}
+
+.bootstrap-table .fixed-table-container .table tfoot tr .card-view .card-view-value {
+  width: 100%!important;
+  text-align: start!important
+}
 
 .btn-group.actions-dropdown-menu {
   position: unset;
