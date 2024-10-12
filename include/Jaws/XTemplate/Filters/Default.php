@@ -326,6 +326,32 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
     }
 
     /**
+     * get registry on a gadget/task
+     *
+     * @param   string  $reg    Registry key name include gadget (ex. users.anon_register)
+     * @param   int     $user   User Id (0: non-users value)
+     *
+     * @return  mixed
+     */
+    public static function registry($reg, $user = 0)
+    {
+        if (Jaws::getInstance()->session->user->superadmin) {
+            $user = 0;
+        }
+
+        if (false === $gadget = strstr($reg, '.', true)) {
+            return null;
+        }
+
+        $key = substr($reg, strlen($gadget) + 1);
+        if (empty($user)) {
+            return Jaws::getInstance()->registry->fetch($key, $gadget);
+        } else {
+            return Jaws::getInstance()->registry->fetchByUser($user, $key, $gadget);
+        }
+    }
+
+    /**
      * get permission on a gadget/task
      *
      * @param   string    $acl      ACL key name include gadget (ex. Users.EditUserName)
