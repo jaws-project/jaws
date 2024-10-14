@@ -2118,9 +2118,13 @@ Jaws = {
             let $direction = Jaws.t('lang_direction');
             // picker position
             let $position = 'bottom ' + ($direction == 'ltr'? 'left' : 'right');
+            // is mobile
+            $isMobile = ['xs' , 'sm'].indexOf($.viewport.get()) >= 0;
 
-            new AirDatepicker(el, Object.assign({
+            let dpInstance = new AirDatepicker(el, Object.assign({
                 inline: $inline,
+                isMobile: $isMobile,
+                autoClose: true,
                 calendar: $calendar,
                 //startDate: '',
                 //multipleDates: true,
@@ -2128,12 +2132,12 @@ Jaws = {
                 direction: $direction,
                 position: $position,
                 parent: $(el).closest('div.modal-body, body').get(0),
-                onBeforeShow: function(dpInstance) {
+                onBeforeShow: function(dp) {
                     let _startDate = Date.now();
                     let _selectedDates = [];
-                    if (!$(dpInstance.$el).val().blank()) {
-                        _selectedDates = $.map($(dpInstance.$el).val().toString().split(','), $.trim);
-                        if (dpInstance.opts.onlyTimepicker) {
+                    if (!$(dp.$el).val().blank()) {
+                        _selectedDates = $.map($(dp.$el).val().toString().split(','), $.trim);
+                        if (dp.opts.onlyTimepicker) {
                             _startDate = new Date();
                             let _time = _selectedDates[0].match(/([0-9]+):([0-9]+)\s*([ap]m)?/) || [0,0,''];
                             if (_time[3] == 'pm' && _time[1] != 12) {
@@ -2145,9 +2149,9 @@ Jaws = {
                             _startDate = _selectedDates[0];
                         }
                     }
-                    dpInstance.clear(true);
-                    dpInstance.setViewDate(_startDate);
-                    dpInstance.selectDate(_selectedDates, {updateTime: true});
+                    dp.clear(true);
+                    dp.setViewDate(_startDate);
+                    dp.selectDate(_selectedDates, {updateTime: true});
                 },
                 locale: {
                     days: $days,
@@ -2542,7 +2546,7 @@ Jaws.filters = {
             };
         }
 
-        return AirDatepicker.formatDate(input, format, this.date2str.locale[calendar], calendar);
+        return input;//AirDatepicker.formatDate(input, format, this.date2str.locale[calendar], calendar);
     },
 
     /**
