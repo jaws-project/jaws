@@ -433,6 +433,30 @@ if (!function_exists('str_putcsv')) {
 }
 
 /**
+ * Generate a globally unique identifier (GUID)
+ *
+ * @return  string
+ */
+function generate_guid()
+{
+    if (function_exists('com_create_guid')) {
+        return trim(com_create_guid(), '{}');
+    }
+
+    if (function_exists('openssl_random_pseudo_bytes')) {
+        $data = openssl_random_pseudo_bytes(16);
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x40);    // set version to 0100
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);    // set bits 6-7 to 10
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+    }
+
+    return vsprintf(
+        '%s%s-%s-%s-%s-%s%s%s',
+        str_split(substr(dechex((int)floor(microtime(true)*1000)) . bin2hex(random_bytes(12)), 0, 32), 4)
+    );
+}
+
+/**
  * Terminate script
  *
  * @param   mixed   $data   Response data
