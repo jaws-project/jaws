@@ -24,7 +24,7 @@ class Jaws_Payment
      * @access  protected
      * @var     array
      */
-    protected $options;
+    protected $options = array();
 
     /**
      * Callback url
