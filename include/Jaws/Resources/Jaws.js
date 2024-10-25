@@ -742,37 +742,41 @@ function JawsMessage($owner)
         $interface.id = ($interface.gadget + '-' + $interface.action + '-response-message').toLowerCase();
 
         if (Jaws.defines.script == 'index') {
-            $container = $('#' + $interface.id);
-            if (!$container.length) {
-                // clone toast html elements
-                $('#jaws-response-container').append(
-                    $('#jaws-response-container').find('#jaws-response-template').html()
-                ).find('.toast').last().attr('id', $interface.id);
+            try {
                 $container = $('#' + $interface.id);
+                if (!$container.length) {
+                    // clone toast html elements
+                    $('#jaws-response-container').append(
+                        $('#jaws-response-container').find('#jaws-response-template').html()
+                    ).find('.toast').last().attr('id', $interface.id);
+                    $container = $('#' + $interface.id);
+                }
+                this.$container = $container;
+
+                // hide message if already shown
+                bootstrap.Toast.getOrCreateInstance(this.$container).hide();
+                await $.until($.proxy(function() {
+                    return !(bootstrap.Toast.getOrCreateInstance(this).isShown());
+                }, this.$container));
+
+                // define on-hidden event
+                this.$container.off().on('hidden.bs.toast', $.proxy(
+                    function(event) {
+                        $(event.target).find('[role="response.type"]').removeClass(['gadget-response-message', this.message.type]);
+                        $(event.target).find('[role="response.icon"]').removeClass(this.alerts[this.message.type].icon);
+                    },
+                    this
+                ));
+
+                this.message = message;
+                this.$container.find('[role="response.title"]').html(this.owner.gadget.t('title'));
+                this.$container.find('[role="response.text"]').html(message.text);
+                this.$container.find('[role="response.type"]').addClass(['gadget-response-message', message.type]);
+                this.$container.find('[role="response.icon"]').addClass(this.alerts[message.type].icon);
+                bootstrap.Toast.getOrCreateInstance(this.$container).show();
+            } catch(error) {
+                //
             }
-            this.$container = $container;
-
-            // hide message if already shown
-            bootstrap.Toast.getOrCreateInstance(this.$container).hide();
-            await $.until($.proxy(function() {
-                return !(bootstrap.Toast.getOrCreateInstance(this).isShown());
-            }, this.$container));
-
-            // define on-hidden event
-            this.$container.off().on('hidden.bs.toast', $.proxy(
-                function(event) {
-                    $(event.target).find('[role="response.type"]').removeClass(['gadget-response-message', this.message.type]);
-                    $(event.target).find('[role="response.icon"]').removeClass(this.alerts[this.message.type].icon);
-                },
-                this
-            ));
-
-            this.message = message;
-            this.$container.find('[role="response.title"]').html(this.owner.gadget.t('title'));
-            this.$container.find('[role="response.text"]').html(message.text);
-            this.$container.find('[role="response.type"]').addClass(['gadget-response-message', message.type]);
-            this.$container.find('[role="response.icon"]').addClass(this.alerts[message.type].icon);
-            bootstrap.Toast.getOrCreateInstance(this.$container).show();
         } else {
             toastr.options = {
                 closeButton: true,
@@ -2172,9 +2176,10 @@ Jaws = {
         $.each(this.gadgets, function(gadget) {
             let objGadget = Jaws_Gadget.getInstance(gadget);
             if (objGadget instanceof Object) {
-                $.each(objGadget.actions, function(action) {
+                for (let i = 0; i < Object.keys(objGadget.actions).length; i++) {
+                    let action = Object.keys(objGadget.actions)[i];
                     objGadget.action.load(action);
-                });
+                }
             }
         });
     },
@@ -2546,7 +2551,7 @@ Jaws.filters = {
             };
         }
 
-        return input;//AirDatepicker.formatDate(input, format, this.date2str.locale[calendar], calendar);
+        return AirDatepicker.formatDate(input, format, this.date2str.locale[calendar], calendar);
     },
 
     /**
