@@ -25,7 +25,7 @@ class Jaws_Gadget_Request extends Jaws_Gadget_Class
         if ($this->gadget->name == $this->app->mainRequest['gadget']) {
             return $this->app->request->fetch($key, $method, $branchName, $options);
         } else {
-            return is_scalar($key)? null : array_fill_keys($key, null);
+            return is_scalar($key)? null : array();
         }
     }
 
