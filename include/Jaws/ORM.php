@@ -265,7 +265,7 @@ class Jaws_ORM
      * @var     array
      * @access  private
      */
-    private $reserved_words = array('as', 'desc', 'asc');
+    private $reserved_words = array('as', 'desc', 'asc', 'distinct');
 
     /**
      * save nested transactions and auto rollback state for each levels
@@ -751,14 +751,28 @@ class Jaws_ORM
      * @param   mixed   $column Column
      * @param   mixed   $value  Column value
      * @param   string  $opt    Operator condition
+     * @param   bool    $ignore Ignore this condition
      * @return  object  Jaws_ORM object
      */
-    function having($column, $value, $opt = '=')
+    function having($column, $value, $opt = '=', $ignore = false)
     {
+        if ($ignore) {
+            return $this;
+        }
+
         switch ($opt) {
             case 'in':
             case 'not in':
-                $value = '('. implode(', ', array_map(array($this, 'quoteValue'), $value)). ')';
+                // if value empty do nothing
+                if (empty($value)) {
+                    return $this;
+                }
+
+                if (is_object($value)) {
+                    $value = $this->quoteValue($value);
+                } else {
+                    $value = '('. implode(', ', array_map(array($this, 'quoteValue'), $value)). ')';
+                }
                 break;
 
             case 'between':
@@ -768,7 +782,17 @@ class Jaws_ORM
 
             case 'like':
             case 'not like':
-                $value  = $this->quoteValue($value);
+                if (is_array($value)) {
+                    $value = $this->quoteValue(
+                        Jaws_UTF8::str_replace(
+                            '$',
+                            $this->jawsdb->dbc->escapePattern($value[1]),
+                            $value[0]
+                        )
+                    );
+                } else {
+                    $value = $this->quoteValue('%' . $this->jawsdb->dbc->escapePattern($value) . '%');
+                }
                 break;
 
             case 'is null':
@@ -776,8 +800,20 @@ class Jaws_ORM
                 $value  = '';
                 break;
 
+            case 'exists':
+            case 'not exists':
+                $column = '';
+                $value = '('. $value->get(). ')';
+                break;
+
             default:
-                $value  = $this->quoteValue($value);
+                if ($this->_dbDriver == 'oci8' && $value === '') {
+                    // oracle automatically convert empty string to null !!!
+                    $value = '';
+                    $opt   = 'is null';
+                } else {
+                    $value  = $this->quoteValue($value);
+                }
         }
 
         // quote column identifier
@@ -791,6 +827,56 @@ class Jaws_ORM
         }
 
         $this->_having[] = "($colstr $opt $value)";
+        return $this;
+    }
+
+    /**
+     * Having SQL command prefix with open parenthesis
+     *
+     * @access  public
+     * @param   string  $column Column
+     * @param   string  $value  Column value
+     * @param   string  $opt    Operator condition
+     * @param   bool    $ignore Ignore this condition
+     * @return  object  Jaws_ORM object
+     */
+    function openHaving($column = '', $value = '', $opt = '=', $ignore = false)
+    {
+        $this->_having[] = '(';
+
+        if ($ignore) {
+            return $this;
+        }
+
+        if (!empty($column)) {
+            $this->having($column, $value, $opt);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Having SQL command suffix with open parenthesis
+     *
+     * @access  public
+     * @param   string  $column Column
+     * @param   string  $value  Column value
+     * @param   string  $opt    Operator condition
+     * @param   bool    $ignore Ignore this condition
+     * @return  object  Jaws_ORM object
+     */
+    function closeHaving($column = '', $value = '', $opt = '=', $ignore = false)
+    {
+        if (!$ignore) {
+            if (!empty($column)) {
+                $this->having($column, $value, $opt);
+            }
+        }
+
+        if (in_array(end($this->_having), array(' and ', ' or '))) {
+            array_pop($this->_having);
+        }
+        $this->_having[] = ')';
         return $this;
     }
 
@@ -942,16 +1028,32 @@ class Jaws_ORM
      */
     private function _build_having()
     {
-        // removing extra and/or operators at begin/end of statement
-        if (in_array(reset($this->_having), array(' and ', ' or '))) {
-            array_shift($this->_having);
-        }
-        if (in_array(end($this->_having), array(' and ', ' or '))) {
-            array_pop($this->_having);
-        }
+        $having = implode('', $this->_having);
+        // removing extra and/or operators at begin/middle/end of statement
+        do {
+            $temp_having_str = $having;
+            $having = preg_replace(
+                array(
+                    '@\s+(and|or)\s+(and|or)\s+@',
+                    '@\(\s*(and|or)\s*\)@',
+                    '@\(\s*\)@',
+                    '@^\s*(and|or)\s+@',
+                    '@\s+(and|or)\s*$@',
+                    '@^\s*(and|or)\s*$@',
+                ),
+                array(
+                    ' $1 ',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                ),
+                $temp_having_str
+            );
+        } while ( $temp_having_str != $having );
 
-        $having_str = implode('', $this->_having);
-        return empty($having_str)? '' : "having $having_str\n";
+        return empty($having)? '' : "having $having\n";
     }
 
     /**
