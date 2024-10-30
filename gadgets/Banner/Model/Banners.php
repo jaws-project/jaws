@@ -120,7 +120,7 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
      * @param   int     $limit_count
      * @return  array   An array of available banners
      */
-    function GetVisibleBanners($gid, $domain = -1, $limit_count)
+    function GetVisibleBanners($gid, $domain = -1, $limit_count = null)
     {
         $limit_count = empty($limit_count)? 256 : $limit_count;
         if (($always_array = $this->GetEnableBanners($gid, $domain, 0)) == false) {
