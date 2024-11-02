@@ -213,8 +213,6 @@ class Users_Account_Default_Login extends Users_Account_Default
         } else {
             $tpl->SetVariable('hidden_forgot', 'hidden');
         }
-
-        $tpl->ParseBlock("$block/login_step_1");
     }
 
     /**

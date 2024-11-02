@@ -79,9 +79,12 @@
         <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
       </fieldset>
 
-      <div class="gadget-actions text-end mt-3">
-        <a class="btn" href="{{url_back}}">{{lbl_back}}</a>
-        <button class="btn btn-primary" type="submit">{{register}}</button>
+      <div class="gadget-actions col-12 text-end mt-3">
+        <div class="d-flex justify-content-between">
+          <div class="w-100 alert {{response_type}} text-start my-0 py-1 me-2" role="alert">{{response_text}}</div>
+          <button class="btn btn-primary text-nowrap" type="submit">{{register}}</button>
+        </div>
+        <a class="d-block text-decoration-none mt-1"href="{{url_back}}">{{lbl_back}}</a>
       </div>
     </form>
   </div>
@@ -115,9 +118,12 @@
         <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
       </fieldset>
     </div>
-    <div class="gadget_actions">
-      <button class="btn btn-primary" type="submit">{{register}}</button>
-      <div><a href="{{url_back}}">{{lbl_back}}</a></div>
+    <div class="gadget-actions col-12 text-end mt-3">
+      <div class="d-flex justify-content-between">
+        <div class="w-100 alert {{response_type}} text-start my-0 py-1 me-2" role="alert">{{response_text}}</div>
+        <button class="btn btn-primary text-nowrap" type="submit">{{register}}</button>
+      </div>
+      <a class="d-block text-decoration-none mt-1"href="{{url_back}}">{{lbl_back}}</a>
     </div>
   </form>
   <!-- END reg_step_2 -->

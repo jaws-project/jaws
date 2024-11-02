@@ -25,7 +25,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
         if (!isset($response['data'])) {
             $reqpost = array(
                 'domain'   => $this->gadget->registry->fetch('default_domain'),
-                'regstep'  => 0,
+                'regstep'  => 1,
                 'username' => '',
                 'email'    => '',
                 'mobile'   => '',
@@ -47,6 +47,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
             return Jaws_Header::Location('');
         }
 
+        $tpl->SetBlock("registration/reg_step_{$reqpost['regstep']}");
         switch ($reqpost['regstep']) {
             case 2:
                 $this->RegistrationStep2($tpl, $reqpost, $referrer);
@@ -65,6 +66,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
             $tpl->SetVariable('response_text', $response['text']);
         }
 
+        $tpl->ParseBlock("registration/reg_step_{$reqpost['regstep']}");
         $tpl->ParseBlock('registration');
         return $tpl->Get();
     }
@@ -80,7 +82,6 @@ class Users_Account_Default_Registration extends Users_Account_Default
         http_response_code(401);
 
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/reg_step_1");
 
         $tpl->SetVariable('domain',    $reqpost['domain']);
         $tpl->SetVariable('username',  $reqpost['username']);
@@ -123,7 +124,10 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('url_back', $referrer);
         $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
 
-        $tpl->ParseBlock("$block/reg_step_1");
+        if (!empty($response['text'])) {
+            $tpl->SetVariable('response_type', $response['type']);
+            $tpl->SetVariable('response_text', $response['text']);
+        }
     }
 
     /**
@@ -135,7 +139,6 @@ class Users_Account_Default_Registration extends Users_Account_Default
     private function RegistrationStep2(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/reg_step_2");
 
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
         $tpl->SetVariable('email',    isset($reqpost['email'])? $reqpost['email'] : '');
@@ -155,8 +158,6 @@ class Users_Account_Default_Registration extends Users_Account_Default
         $tpl->SetVariable('register', $this::t('REGISTER'));
         $tpl->SetVariable('url_back', $referrer);
         $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
-
-        $tpl->ParseBlock("$block/reg_step_2");
     }
 
     /**
@@ -168,7 +169,6 @@ class Users_Account_Default_Registration extends Users_Account_Default
     private function RegistrationStep3(&$tpl, $reqpost, $referrer)
     {
         $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetBlock("$block/reg_step_3");
         $anon_activation = $this->gadget->registry->fetch('anon_activation');
         switch ($anon_activation) {
             case 'admin':
@@ -185,7 +185,6 @@ class Users_Account_Default_Registration extends Users_Account_Default
         }
         
         $tpl->SetVariable('message', $message);
-        $tpl->ParseBlock("$block/reg_step_3");
     }
 
 }
