@@ -4,12 +4,6 @@
   </div>
 
   <div class="gadget-container" data-loading-container="comment.form">
-    <div class="gadget_response">
-      <div class="alert {{comment_form.response.type}}" role="alert">
-        <a class="alert-link" id="{{comment_form.gadget}}_{{comment_form.action}}"></a>
-        {{comment_form.response.text}}
-      </div>
-    </div>
     <form action="{{comment_form.base_script}}" method="post">
         <input type="hidden" name="reqGadget" value="Comments"/>
         <input type="hidden" name="reqAction" value="PostMessage"/>
@@ -53,10 +47,8 @@
         </div>
     </form>
 
-
-      {% unless "user.logged" | session %}
-      <div class="simple-response-msg">{{comment_form.msg_access_restricted}}</div>
-      {% endunless %}
   </div>
-  <div class="gadget-footer card-footer" hidden></div>
+  <div class="gadget-footer">
+    <div class="gadget-response-message alert mb-0 {{response.type}}" role="alert">{{response.text}}</div>
+  </div>
 </div>
