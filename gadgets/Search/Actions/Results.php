@@ -36,10 +36,12 @@ class Search_Actions_Results extends Jaws_Gadget_Action
         }
 
         $searchable = false;
-        $model = $this->gadget->model->load('Search');
-        $options = $model->parseSearch($post, $searchable);
-        if ($searchable) {
-            $items = $model->Search($options);
+        if (!empty($post)) {
+            $model = $this->gadget->model->load('Search');
+            $options = $model->parseSearch($post, $searchable);
+            if ($searchable) {
+                $items = $model->Search($options);
+            }
         }
 
         $query_string = '?reqGadget=Search&reqAction=Results';
@@ -57,7 +59,7 @@ class Search_Actions_Results extends Jaws_Gadget_Action
 
         if (!$searchable) {
             $tpl->SetBlock('results/notfound');
-            $min_key_len = $this->gadget->registry->fetch('Search/min_key_len');
+            $min_key_len = $this->gadget->registry->fetch('min_key_len');
             $tpl->SetVariable('message', $this::t('STRING_TOO_SHORT', $min_key_len));
             $tpl->ParseBlock('results/notfound');
         } elseif (count($items) > 1) {
