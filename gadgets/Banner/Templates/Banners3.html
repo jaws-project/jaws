@@ -1,0 +1,43 @@
+{%- if group.show_title %}
+  <div class="gadget-header d-flex align-items-center mb-2">
+    <h4 class="gadget-header-title m-0 me-2 py-1">
+      {{ group.title }}
+    </h4>
+  </div>
+{%- endif %}
+
+<div class="gadget-container">
+  <div class="gadget-content">
+    <div id="banner-carousel-{{group.id}}" class="carousel slide" data-bs-ride="carousel" data-bs-touch="true">
+      <div class="carousel-indicators">
+        {%-for banner in banners %}
+          <button type="button" 
+            data-bs-target="#banner-carousel-{{group.id}}"
+            data-bs-slide-to="{{forloop.index0}}" {% if forloop.first %}class="active"{%- endif %}>
+          </button>
+        {%- endfor %}
+      </div>
+      <div class="carousel-inner">
+        {%-for banner in banners %}
+          <div class="carousel-item {%- if forloop.first %} active{%- endif %}">
+            {%- if banner.banner | contains: '://' %}
+              <img src="{{banner.banner}}" class="d-block w-100" alt="{{banner.title}}">
+            {%- else %}
+              <img src="{{banner.banner | prepend: 'banners/' | dataURL}}" class="d-block w-100" alt="{{banner.title}}">
+            {%- endif %}
+            <div class="carousel-caption d-none d-md-block">
+              <h5><a {{- banner.url | formatString: ' href="{0}"', banner.url }}>{{banner.title}}</a></h5>
+            </div>
+          </div>
+        {%- endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#banner-carousel-{{group.id}}" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#banner-carousel-{{group.id}}" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="gadget-footer" hidden></div>

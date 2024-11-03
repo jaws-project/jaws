@@ -90,78 +90,12 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
             return false;
         }
 
-        $tpl = $this->gadget->template->load('Banners.html');
-        switch ($group['show_type']) {
-            case 1:
-            case 2:
-                $type_block = 'banners_type_'. $group['show_type'];
-                break;
-            default:
-                $type_block = 'banners';
-        }
+        $assigns = array();
+        $assigns['group'] = $group;
+        $assigns['banners'] = $banners;
 
-        $tpl->SetBlock($type_block);
-        $tpl->SetVariable('gid', $gid);
-        if ($group['show_title']) {
-            $tpl->SetBlock("$type_block/title");
-            $tpl->SetVariable('title', $this::t('ACTIONS_BANNERS_TITLE', $group['title']));
-            $tpl->ParseBlock("$type_block/title");
-        }
-
-        foreach ($banners as $index => $banner) {
-            // indicator
-            $tpl->SetBlock("$type_block/indicator");
-            if ($index == 0) {
-                $tpl->SetBlock("$type_block/indicator/first");
-                $tpl->ParseBlock("$type_block/indicator/first");
-            }
-            $tpl->SetVariable('gid', $gid);
-            $tpl->SetVariable('index', $index);
-            $tpl->ParseBlock("$type_block/indicator");
-            // banner
-            $tpl->SetBlock("$type_block/banner");
-            if ($index == 0) {
-                $tpl->SetBlock("$type_block/banner/first");
-                $tpl->ParseBlock("$type_block/banner/first");
-            }
-            $tpl_template = new Jaws_Template();
-            $tpl_template->LoadFromString('<!-- BEGIN x -->'.$banner['template'].'<!-- END x -->');
-            $tpl_template->SetBlock('x');
-            $tpl_template->SetVariable('title',  $banner['title']);
-            if (Jaws_FileManagement_File::file_exists(
-                ROOT_DATA_PATH . $this->gadget->DataDirectory . $banner['banner']
-            )) {
-                $tpl_template->SetVariable(
-                    'banner',
-                    $this->app->getDataURL($this->gadget->DataDirectory . $banner['banner'])
-                );
-            } else {
-                $tpl_template->SetVariable('banner', $banner['banner']);
-            }
-
-            if (empty($banner['url'])) {
-                $tpl_template->SetVariable('link', 'javascript:void(0);');
-                $tpl_template->SetVariable('target', '_self');
-            } else {
-                $tpl_template->SetVariable(
-                    'link',
-                    $this->gadget->urlMap(
-                        'Click',
-                        array('id' => $banner['id']),
-                        array('absolute' => $abs_url)
-                    )
-                );
-                $tpl_template->SetVariable('target', '_blank');
-            }
-            $tpl_template->ParseBlock('x');
-            $tpl->SetVariable('template', $tpl_template->Get());
-            unset($tpl_template);
-            $tpl->ParseBlock("$type_block/banner");
-            $bannerModel->ViewBanner($banner['id']);
-        }
-
-        $tpl->ParseBlock($type_block);
-        return $tpl->Get();
+        $tFilename = 'Banners'. (in_array($group['show_type'], [1, 2, 3])? $group['show_type'] : 1) . '.html';
+        return $this->gadget->template->xLoad($tFilename)->render($assigns);
     }
 
     /**

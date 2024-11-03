@@ -102,10 +102,10 @@ class Banner_Actions_Admin_Groups extends Banner_Actions_Admin_Default
         $tpl->SetVariable('lbl_show_type', $this::t('GROUPS_SHOW_TYPE'));
         $showType =& Piwi::CreateWidget('Combo', 'show_type');
         $showType->SetStyle('width: 128px;');
-        $showType->AddOption($this::t("GROUPS_SHOW_TYPE_0"),  0);
         $showType->AddOption($this::t("GROUPS_SHOW_TYPE_1"),  1);
         $showType->AddOption($this::t("GROUPS_SHOW_TYPE_2"),  2);
-        $showType->SetDefault(0);
+        $showType->AddOption($this::t("GROUPS_SHOW_TYPE_3"),  3);
+        $showType->SetDefault(1);
         $tpl->SetVariable('show_type', $showType->Get());
 
         $tpl->SetVariable('lbl_published', Jaws::t('PUBLISHED'));
