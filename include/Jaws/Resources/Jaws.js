@@ -2577,6 +2577,13 @@ Jaws.filters = {
     },
 
     /**
+     * Get data url of given file/path
+     */
+    dataURL: function(suffixt = '', rel_url = true) {
+        return (rel_url? Jaws.defines.relDataURL : Jaws.defines.absDataURL) +  suffixt;
+    },
+
+    /**
      * call filter(s) indirect as variable
      */
     apply: function($filter, input) {

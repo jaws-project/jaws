@@ -154,9 +154,11 @@ class Jaws
         $this->define('', 'base', Jaws_Utils::getBaseURL('/'));
         $this->define('', 'relBase', Jaws_Utils::getBaseURL('/'));
         $this->define('', 'absBase', Jaws_Utils::getBaseURL('/', false));
+        $this->define('', 'relDataURL', $this->getDataURL('', true));
+        $this->define('', 'absDataURL', $this->getDataURL('', false));
         $this->define('', 'requestedURL', Jaws_Utils::getRequestURL());
 
-        // Filesystem management
+        // FileSystem management
         $this->fileManagement = Jaws_FileManagement::getInstance(
             $this->registry->fetch('fm_driver', 'Settings')
         );
