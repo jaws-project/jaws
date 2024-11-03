@@ -181,7 +181,7 @@ class Jaws_ORM
     /**
      * Table name
      *
-     * @var     string
+     * @var     string|object
      * @access  private
      */
     private $_table = '';
