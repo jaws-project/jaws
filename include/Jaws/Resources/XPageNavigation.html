@@ -2,10 +2,9 @@
   <input type="hidden" name="reqGadget" value="{{pagination.gadget}}" />
   <input type="hidden" name="reqAction" value="{{pagination.action}}" />
 
-  <nav class="gadget-pagination row d-flex justify-content-end mb-3 gy-2" aria-label="Page navigation">
+  <div class="gadget-pagination row d-flex mb-3 gy-2" aria-label="Page navigation">
     {%- if pagination.perpage or pagination.sort %}
-      <ul class="pagination col-auto mb-0">
-        <li>
+      <div class="pagination col-auto mb-0 justify-content-start">
         {%- assign pagination.params.limit = pagination.limit %}
         {%- if pagination.perpage %}
           <div class="input-group">
@@ -19,9 +18,9 @@
         {%- else %}
           <input type="hidden" name="limit" value="{{pagination.limit}}" />
         {%- endif %}
-        </li>
-  
-        <li>
+      </div>
+
+      <div class="pagination col-auto mb-0 justify-content-start">
         {%- if pagination.sort %}
           {%- assign pagination.params.sort = pagination.sort.default %}
           {%- if pagination.sort.options %}
@@ -37,12 +36,11 @@
             <input type="hidden" name="sort" value="{{pagination.sort.default}}" />
           {%- endif %}
         {%- endif %}
-        </li>
-      </ul>
+      </div>
     {%- endif %}
 
     {%- if pagination.pages %}
-      <ul class="pagination col-auto mb-0">
+      <ul class="pagination col mb-0 justify-content-end">
         {%- for page in pagination.pages %}
           {%- assign pagination.params.page = page %}
           {%- assign pagination.params.tpl = pagination.template %}
@@ -93,7 +91,7 @@
     {%- if pagination.templates %}
       {%- assign templates = 'grid,list,table' | split: ',' %}
       {%- assign template_icons = 'fa-border-all,fa-list,fa-table-cells' | split: ',' %}
-      <ul class="pagination col-auto mb-0">
+      <ul class="pagination col mb-0 justify-content-end">
         {%- for template in templates %}
           {%- if pagination.templates | contains: template %}
             {%- assign pagination.params.page = 1 %}
@@ -113,5 +111,5 @@
         {%- endfor %}
       </ul>
     {%- endif %}
-  </nav>
+  </div>
 </form>
