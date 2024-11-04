@@ -354,12 +354,13 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
     /**
      * get permission on a gadget/task
      *
-     * @param   string    $acl      ACL key name include gadget (ex. Users.EditUserName)
-     * @param   string    $subkey
+     * @param   string  $acl        ACL key name include gadget (ex. Users.EditUserName)
+     * @param   string  $subkey
+     * @param   bool    $together   And/Or tasks permission result, default true
      *
      * @return  integer
      */
-    public static function permission($acl, $subkey = '')
+    public static function permission($acl, $subkey = '', $together = true)
     {
         if (Jaws::getInstance()->session->user->superadmin) {
             return 0xff;
@@ -370,7 +371,7 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
         }
 
         $key = substr($acl, strlen($gadget) + 1);
-        return Jaws::getInstance()->session->getPermission($gadget, $key, $subkey);
+        return Jaws::getInstance()->session->getPermission($gadget, $key, $subkey, $together);
     }
 
     /**
