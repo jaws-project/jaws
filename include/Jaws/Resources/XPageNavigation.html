@@ -2,48 +2,48 @@
   <input type="hidden" name="reqGadget" value="{{pagination.gadget}}" />
   <input type="hidden" name="reqAction" value="{{pagination.action}}" />
 
+  {%- assign parts = parts | empty: 'perpage,sort,pages,templates', parts | split %}
   <div class="gadget-pagination row d-flex mb-3 gy-2" aria-label="Page navigation">
-    {%- if pagination.perpage or pagination.sort %}
+
+    {%- if pagination.perpage and parts | contains: 'perpage' %}
       <div class="pagination col-auto mb-0 justify-content-start">
         {%- assign pagination.params.limit = pagination.limit %}
-        {%- if pagination.perpage %}
-          <div class="input-group">
-            <span class="input-group-text">{{ "global.perpage" | t }}</span>
-            <select class="form-control form-select" name="limit" onchange="this.form.submit()">
-              {%- for pagesize in pagination.perpage %}
-                <option value="{{pagesize}}" {{- pagination.limit | equal: pagesize, ' selected', '' -}} >{{pagesize}}</option>
-              {%- endfor %}
-            </select>
-          </div>
-        {%- else %}
-          <input type="hidden" name="limit" value="{{pagination.limit}}" />
-        {%- endif %}
+        <div class="input-group">
+          <span class="input-group-text">{{ "global.perpage" | t }}</span>
+          <select class="form-control form-select" name="limit" onchange="this.form.submit()">
+            {%- for pagesize in pagination.perpage %}
+              <option value="{{pagesize}}" {{- pagination.limit | equal: pagesize, ' selected', '' -}} >{{pagesize}}</option>
+            {%- endfor %}
+          </select>
+        </div>
       </div>
-
-      <div class="pagination col-auto mb-0 justify-content-start">
-        {%- if pagination.sort %}
-          {%- assign pagination.params.sort = pagination.sort.default %}
-          {%- if pagination.sort.options %}
-            <div class="input-group">
-              <span class="input-group-text">{{ "global.sort" | t }}</span>
-              <select class="form-control form-select" name="sort" onchange="this.form.submit()">
-                {%- for option in pagination.sort.options %}
-                  <option value="{{forloop.key}}" {{- pagination.sort.default | equal: forloop.key, ' selected', '' -}}>{{option}}</option>
-                {%- endfor %}
-              </select>
-            </div>
-          {%- else %}
-            <input type="hidden" name="sort" value="{{pagination.sort.default}}" />
-          {%- endif %}
-        {%- endif %}
-      </div>
+    {%- else %}
+      <input type="hidden" name="limit" value="{{pagination.limit}}" />
     {%- endif %}
 
-    {%- if pagination.pages %}
+    {%- if pagination.sort and pagination.sort.options and parts | contains: 'sort' %}
+      <div class="pagination col-auto mb-0 justify-content-start">
+        {%- assign pagination.params.sort = pagination.sort.default %}
+        <div class="input-group">
+          <span class="input-group-text">{{ "global.sort" | t }}</span>
+          <select class="form-control form-select" name="sort" onchange="this.form.submit()">
+            {%- for option in pagination.sort.options %}
+              <option value="{{forloop.key}}" {{- pagination.sort.default | equal: forloop.key, ' selected', '' -}}>{{option}}</option>
+            {%- endfor %}
+          </select>
+        </div>
+      </div>
+    {%- else %}
+      <input type="hidden" name="sort" value="{{pagination.sort.default}}" />
+    {%- endif %}
+
+    {%- if pagination.pages and parts | contains: 'pages' %}
       <ul class="pagination col mb-0 justify-content-end">
         {%- for page in pagination.pages %}
           {%- assign pagination.params.page = page %}
+          {%- assign pagination.params.limit = pagination.limit %}
           {%- assign pagination.params.tpl = pagination.template %}
+          {%- assign pagination.params.sort = pagination.sort.default %}
           {%- assign pageURL = pagination.gadget | urlmap: pagination.action, pagination.params %}
   
           {%- case forloop.key %}
@@ -88,7 +88,7 @@
       </ul>
     {%- endif %}
 
-    {%- if pagination.templates %}
+    {%- if pagination.templates and parts | contains: 'templates' %}
       {%- assign templates = 'grid,list,table' | split: ',' %}
       {%- assign template_icons = 'fa-border-all,fa-list,fa-table-cells' | split: ',' %}
       <ul class="pagination col mb-0 justify-content-end">
