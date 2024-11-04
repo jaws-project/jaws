@@ -15,6 +15,10 @@ $actions['Login'] = array(
     'global' => true,
     'file' => 'Login',
 );
+$actions['links'] = array(
+    'layout' => true,
+    'file' => 'Login',
+);
 $actions['LoginLinks'] = array(
     'layout' => true,
     'file' => 'Login',

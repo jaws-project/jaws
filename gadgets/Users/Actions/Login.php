@@ -8,6 +8,18 @@
 class Users_Actions_Login extends Jaws_Gadget_Action
 {
     /**
+     * Builds the login/user links
+     *
+     * @access  public
+     * @return  string  XHTML content
+     */
+    function links()
+    {
+        $assigns = array();
+        return $this->gadget->template->xLoad('Links.html')->render($assigns);
+    }
+
+    /**
      * Builds the login links
      *
      * @access  public
@@ -152,7 +164,9 @@ class Users_Actions_Login extends Jaws_Gadget_Action
     function Login()
     {
         if ($this->app->session->user->logged) {
-            return $this->LoginLinks();
+            return Jaws_Header::Location(
+                $this->gadget->urlMap('Profile', array('user' => $this->app->session->user->username))
+            );
         }
 
         // get/check given authentication type
