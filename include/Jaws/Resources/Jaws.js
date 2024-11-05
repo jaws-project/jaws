@@ -2584,6 +2584,35 @@ Jaws.filters = {
     },
 
     /**
+     * Get mixed mapped url with arguments
+     */
+    urlmap: function($urlmap, urlParams = {}, gadget = '', action = '') {
+        if (Object.keys($urlmap).length === 0) { // empty map
+            return $.param(Object.assign(
+                {
+                    'reqGadget': gadget,
+                    'reqAction': action
+                },
+                urlParams)
+            );
+        }
+
+        let url = $urlmap.map.replace(
+            /\{(\w+)\}/gi,
+            function(all, key) {
+                return urlParams.hasOwnProperty(key)? urlParams[key] : '{}';
+            }
+        ).replace(
+            /\[[^\]]*\{\}[^\]]*\]/g,
+            function(all) {
+                return '';
+            }
+        ).replace(/\[|\]/g, '');
+
+        return /\{\}/.test(url)? false : (url + $urlmap.extension);
+    },
+
+    /**
      * call filter(s) indirect as variable
      */
     apply: function($filter, input) {
