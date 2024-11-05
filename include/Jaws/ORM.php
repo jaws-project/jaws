@@ -155,6 +155,14 @@ class Jaws_ORM
     private $_having = array();
 
     /**
+     * last condition_type type (where or having), required for and/or functions
+     *
+     * @var     string
+     * @access  private
+     */
+    private $_last_condition_type = '';
+
+    /**
      * Order By columns list
      *
      * @var     array
@@ -596,6 +604,8 @@ class Jaws_ORM
      */
     function where($column, $value, $opt = '=', $ignore = false)
     {
+        $this->_last_condition_type = 'where';
+
         if ($ignore) {
             return $this;
         }
@@ -682,6 +692,7 @@ class Jaws_ORM
      */
     function openWhere($column = '', $value = '', $opt = '=', $ignore = false)
     {
+        $this->_last_condition_type = 'where';
         $this->_where[] = '(';
 
         if ($ignore) {
@@ -707,6 +718,8 @@ class Jaws_ORM
      */
     function closeWhere($column = '', $value = '', $opt = '=', $ignore = false)
     {
+        $this->_last_condition_type = 'where';
+
         if (!$ignore) {
             if (!empty($column)) {
                 $this->where($column, $value, $opt);
@@ -756,6 +769,8 @@ class Jaws_ORM
      */
     function having($column, $value, $opt = '=', $ignore = false)
     {
+        $this->_last_condition_type = 'having';
+
         if ($ignore) {
             return $this;
         }
@@ -842,6 +857,7 @@ class Jaws_ORM
      */
     function openHaving($column = '', $value = '', $opt = '=', $ignore = false)
     {
+        $this->_last_condition_type = 'having';
         $this->_having[] = '(';
 
         if ($ignore) {
@@ -867,6 +883,8 @@ class Jaws_ORM
      */
     function closeHaving($column = '', $value = '', $opt = '=', $ignore = false)
     {
+        $this->_last_condition_type = 'having';
+
         if (!$ignore) {
             if (!empty($column)) {
                 $this->having($column, $value, $opt);
@@ -1433,16 +1451,34 @@ class Jaws_ORM
         switch ($method) {
             case 'or':
             case 'and':
-                if (!empty($this->_where)) {
-                    $last_part = end($this->_where);
-                    if (in_array($last_part, array(' and ', ' or '))) {
-                        array_pop($this->_where);
-                    }
+                switch ($this->_last_condition_type) {
+                    case 'where':
+                        if (!empty($this->_where)) {
+                            $last_part = end($this->_where);
+                            if (in_array($last_part, array(' and ', ' or '))) {
+                                array_pop($this->_where);
+                            }
 
-                    if ($last_part != '(') {
-                        $this->_where[] = " $method ";
-                    }
+                            if ($last_part != '(') {
+                                $this->_where[] = " $method ";
+                            }
+                        }
+                        break;
+
+                    case 'having':
+                        if (!empty($this->_having)) {
+                            $last_part = end($this->_having);
+                            if (in_array($last_part, array(' and ', ' or '))) {
+                                array_pop($this->_having);
+                            }
+
+                            if ($last_part != '(') {
+                                $this->_having[] = " $method ";
+                            }
+                        }
+                        break;
                 }
+
                 return $this;
 
             case 'insert':
@@ -1525,6 +1561,7 @@ class Jaws_ORM
         $this->_offset     = null;
         $this->_passed_types  = false;
         $this->_query_command = '';
+        $this->_last_condition_type = '';
 
         return $this;
     }
