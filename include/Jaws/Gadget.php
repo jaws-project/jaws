@@ -670,6 +670,22 @@ class Jaws_Gadget
     }
 
     /**
+     * Get action map
+     *
+     * @access  public
+     * @param   string  $action    Action name
+     * @param   string  $gadget    Gadget name
+     * @return  array   Action map (url & extension)
+     */
+    function getActionURLMap($action, $gadget = '')
+    {
+        return $this->app->map->getActionURLMap(
+            empty($gadget)? $this->name : $gadget,
+            $action
+        );
+    }
+
+    /**
      * Returns an URL to the gadget icon
      *
      * @access  public
