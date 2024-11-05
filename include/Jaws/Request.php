@@ -391,8 +391,13 @@ class Jaws_Request
             if (is_array($value) && $cast_type != 'mixed') {
                 array_walk(
                     $value,
-                    function (&$val, $key, $type) {
-                        settype($val, $type);
+                    function (&$val, $key, $type) use (&$value, $null_type) {
+                        // unset key if it's type is integer and empty string passed to it and also null cast is set
+                        if (in_array($type, ['int', 'integer']) && !empty($null_type) && $val === '') {
+                            unset($value[$key]);
+                        } else {
+                            settype($val, $type);
+                        }
                     },
                     $this->map_types_cast[$cast_type]
                 );
