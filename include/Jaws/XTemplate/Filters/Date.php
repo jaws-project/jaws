@@ -38,10 +38,14 @@ class Jaws_XTemplate_Filters_Date extends Jaws_XTemplate_Filters
         if (!empty($input)) {
             $result = is_array($input)? $input : [$input];
             foreach ($result as $key => $val) {
+                if (empty($val)) {
+                    unset($result[$key]);
+                    continue;
+                }
                 $result[$key] = (int)Jaws_Date::getInstance($calendar)->ToBaseDate(preg_split('/[\/\- \:]/', $val), 'U');
             }
 
-            $result = is_array($input)? $result : $result[0];
+            $result = empty($result)? null : (is_array($input)? $result : $result[0]);
         }
 
         return $result;
