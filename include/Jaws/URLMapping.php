@@ -418,6 +418,12 @@ class Jaws_URLMapping
         $extension = isset($options['extension'])? $options['extension'] : true;
         unset($options['absolute'], $options['extension']);
 
+        $params = array_filter(
+            $params,
+            static function($val){
+                return !is_null($val) && !(is_array($val) && empty($val));
+            }
+        );
         $params_vars = array_keys($params);
         if ($this->_enabled && isset($this->_actions_maps[$gadget][$action])) {
             $map = $this->_maps[$gadget][$this->_actions_maps[$gadget][$action]];
@@ -494,6 +500,30 @@ class Jaws_URLMapping
         }
 
         return ($abs_url? $this->app->getSiteURL('/', false) : '') . $url;
+    }
+
+    /**
+     * Get action map
+     *
+     * @access  public
+     * @param   string  $gadget     Gadget name
+     * @param   string  $action     Action name
+     * @return  array   Action map (url & extension)
+     */
+    function getActionURLMap($gadget, $action)
+    {
+        $urlmap = [];
+        if ($this->_enabled && isset($this->_actions_maps[$gadget][$action])) {
+            $map = $this->_maps[$gadget][$this->_actions_maps[$gadget][$action]];
+            if ($this->_custom_precedence && !empty($map['custom_map'])) {
+                $urlmap['map'] = $map['custom_map'];
+            } else {
+                $urlmap['map'] = $map['map'];
+            }
+            $urlmap['extension'] = ($map['extension'] == '.')? $this->_extension : $map['extension'];
+        }
+
+        return $urlmap;
     }
 
 }
