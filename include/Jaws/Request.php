@@ -137,7 +137,7 @@ class Jaws_Request
         $this->_filters  = array();
         $this->_params   = array();
         $this->_includes = array();
-        $this->regexp = new Jaws_Regexp('/^(\w+)(?>\:(\w+))?(?>\|(\w+))?(?>\?(\w+)?)?/');
+        $this->regexp = new Jaws_Regexp('/^(\w+)(?>\:(\w+))?(?>\>(split))?(?>\|(\w+))?(?>\?(\w+)?)?/');
 
         $this->data['get']    = $_GET;
         $this->data['cookie'] = $_COOKIE;
@@ -306,7 +306,7 @@ class Jaws_Request
                 if (false === $this->regexp->match($key)) {
                     continue;
                 }
-                @list($all, $key, $valid_type, $cast_type, $null_type) = $this->regexp->matches;
+                @list($all, $key, $valid_type, $split, $cast_type, $null_type) = $this->regexp->matches;
                 $keyval = $this->_fetch($all, $method, $branchName, $options, $exists);
                 if ($exists) {
                     $result[$key] = $keyval;
@@ -320,7 +320,7 @@ class Jaws_Request
         if (false === $this->regexp->match($keys)) {
             return null;
         }
-        @list($all, $key, $valid_type, $cast_type, $null_type) = $this->regexp->matches;
+        @list($all, $key, $valid_type, $split, $cast_type, $null_type) = $this->regexp->matches;
 
         if ($branchName === '' || $branchName === false) {
             $dataRepository = &$this->data[$method];
@@ -331,8 +331,8 @@ class Jaws_Request
             $dataRepository = &$this->data[$method][$branchName];
         }
 
-        // unset key if it's type is integer and empty string passed to it and also null cast is set
-        if (in_array($cast_type, ['int', 'integer']) && !empty($null_type) &&
+        // unset key if it's type is integer/float and empty string passed to it and also null cast is set
+        if (in_array($cast_type, ['int', 'integer', 'float']) && !empty($null_type) &&
             isset($dataRepository[$key]) && $dataRepository[$key] === ''
         ) {
             $exists = true;
@@ -356,6 +356,10 @@ class Jaws_Request
         if (is_string($value) && false !== $tvalue = @unserialize($value)) {
             $value = $tvalue;
             unset($tvalue);
+        }
+
+        if (!empty($split) && is_string($value)) {
+            $value = explode(',', $value);
         }
 
         // filter not allowed html tags/attributes
@@ -392,8 +396,8 @@ class Jaws_Request
                 array_walk(
                     $value,
                     function (&$val, $key, $type) use (&$value, $null_type) {
-                        // unset key if it's type is integer and empty string passed to it and also null cast is set
-                        if (in_array($type, ['int', 'integer']) && !empty($null_type) && $val === '') {
+                        // unset key if it's type is integer/float and empty string passed to it and also null cast is set
+                        if (in_array($type, ['int', 'integer', 'float']) && !empty($null_type) && $val === '') {
                             unset($value[$key]);
                         } else {
                             settype($val, $type);
