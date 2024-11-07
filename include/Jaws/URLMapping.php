@@ -291,7 +291,17 @@ class Jaws_URLMapping
                         $request->update('reqGadget', $gadget, 'get');
                         $request->update('reqAction', $map['action'], 'get');
                         foreach ($reqOptions as $key => $value) {
-                            $request->update(rawurldecode($key), rawurldecode($value));
+                            if (is_array($value)) {
+                                $decodedValue = [];
+                                array_walk($value,
+                                    static function($ival, $ikey) use(&$decodedValue) {
+                                        $decodedValue[rawurldecode($ikey)] = rawurldecode($ival);
+                                    }
+                                );
+                            } else {
+                                $decodedValue = rawurldecode($value);
+                            }
+                            $request->update(rawurldecode($key), $decodedValue);
                         }
 
                         // Params
@@ -436,9 +446,13 @@ class Jaws_URLMapping
             // set map variables by params values
             foreach ($params as $key => $value) {
                 if (!is_null($value)) {
-                    $value = implode('/', array_map('rawurlencode', explode('/', $value)));
-                    // prevent encode comma
-                    $value = str_replace('%2C', ',', $value);
+                    $values = is_array($value)? $value : [$value];
+                    foreach ($values as $idx => $val) {
+                        $values[$idx] = implode('/', array_map('rawurlencode', explode('/', $val)));
+                        // prevent encode comma
+                        $values[$idx] = str_replace('%2C', ',', $values[$idx]);
+                    }
+                    $value = implode(',', $values);
                     $url = str_replace('{' . $key . '}', $value, $url);
                 }
             }
