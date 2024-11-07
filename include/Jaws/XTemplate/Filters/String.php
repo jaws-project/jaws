@@ -287,7 +287,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
             return [];
         }
 
-        return explode($pattern, $input);
+        return is_array($input)? $input : explode($pattern, $input);
     }
 
     /**
