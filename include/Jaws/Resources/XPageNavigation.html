@@ -1,12 +1,16 @@
-<form name="account" action="{{base_script}}" method="post">
-  <input type="hidden" name="reqGadget" value="{{pagination.gadget}}" />
-  <input type="hidden" name="reqAction" value="{{pagination.action}}" />
-
-  {%- assign parts = parts | empty: 'perpage,sort,pages,templates', parts | split %}
-  <div class="gadget-pagination row d-flex mb-3 gy-2" aria-label="Page navigation">
-
-    {%- if pagination.perpage and parts | contains: 'perpage' %}
-      <div class="pagination col-auto mb-0 justify-content-start">
+{%- assign parts = parts | empty: 'perpage,sort,pages,templates', parts | split %}
+<div class="gadget-pagination row d-flex mb-3 gy-2" aria-label="Page navigation">
+  {%- if pagination.perpage and parts | contains: 'perpage' %}
+    <div class="pagination col-auto mb-0 justify-content-start">
+      <form name="account" action="{{base_script}}" method="post">
+        <input type="hidden" name="reqGadget" value="{{pagination.gadget}}" />
+        <input type="hidden" name="reqAction" value="{{pagination.action}}" />
+        <input type="hidden" name="tpl" value="{{pagination.template}}" />
+        <input type="hidden" name="sort" value="{{pagination.sort.default}}" />
+        <input type="hidden" name="page" value="1" />
+        {%- for param in pagination.params %}
+            <input type="hidden" name="{{forloop.key}}" value="{{param}}" />
+        {%- endfor %}
         {%- assign pagination.params.limit = pagination.limit %}
         <div class="input-group">
           <span class="input-group-text">{{ "global.perpage" | t }}</span>
@@ -16,13 +20,21 @@
             {%- endfor %}
           </select>
         </div>
-      </div>
-    {%- else %}
-      <input type="hidden" name="limit" value="{{pagination.limit}}" />
-    {%- endif %}
+      </form>
+    </div>
+  {%- endif %}
 
-    {%- if pagination.sort and pagination.sort.options and parts | contains: 'sort' %}
-      <div class="pagination col-auto mb-0 justify-content-start">
+  {%- if pagination.sort and pagination.sort.options and parts | contains: 'sort' %}
+    <div class="pagination col-auto mb-0 justify-content-start">
+      <form name="account" action="{{base_script}}" method="post">
+        <input type="hidden" name="reqGadget" value="{{pagination.gadget}}" />
+        <input type="hidden" name="reqAction" value="{{pagination.action}}" />
+        <input type="hidden" name="tpl" value="{{pagination.template}}" />
+        <input type="hidden" name="limit" value="{{pagination.limit}}" />
+        <input type="hidden" name="page" value="1" />
+        {%- for param in pagination.params %}
+            <input type="hidden" name="{{forloop.key}}" value="{{param}}" />
+        {%- endfor %}
         {%- assign pagination.params.sort = pagination.sort.default %}
         <div class="input-group">
           <span class="input-group-text">{{ "global.sort" | t }}</span>
@@ -32,84 +44,83 @@
             {%- endfor %}
           </select>
         </div>
-      </div>
-    {%- else %}
-      <input type="hidden" name="sort" value="{{pagination.sort.default}}" />
-    {%- endif %}
+      </form>
+    </div>
+  {%- endif %}
 
-    {%- if pagination.pages and parts | contains: 'pages' %}
-      <ul class="pagination col mb-0 justify-content-end">
-        {%- for page in pagination.pages %}
-          {%- assign pagination.params.page = page %}
-          {%- assign pagination.params.limit = pagination.limit %}
-          {%- assign pagination.params.tpl = pagination.template %}
-          {%- assign pagination.params.sort = pagination.sort.default %}
-          {%- assign pageURL = pagination.gadget | urlmap: pagination.action, pagination.params %}
-  
-          {%- case forloop.key %}
-            {%- when 'previous' %}
-              {%- if page %}
-                <li class="page-item">
-                  <a class="page-link" href="{{ pageURL }}" aria-label="Previous">
-                    <span aria-hidden="true">{{ "global.pagination_previous" | t }}</span>
-                  </a>
-                </li>
-              {%- else %}
-                <li class="page-item disabled">
-                  <a class="page-link" aria-label="Previous">
-                    <span aria-hidden="true">{{ "global.pagination_previous" | t }}</span>
-                  </a>
-                </li>
-              {%- endif %}
-            {%- when 'current' %}
-              <li class="page-item active"><a class="page-link" href="{{ pageURL }}">{{ page }}</a></li>
-            {%- when 'next' %}
-              {%- if page %}
-                <li class="page-item">
-                  <a class="page-link" href="{{ pageURL }}" aria-label="Next">
-                   <span aria-hidden="true">{{ "global.pagination_next" | t }}</span>
-                  </a>
-                </li>
-                {%- else %}
-                <li class="page-item disabled">
-                  <a class="page-link" aria-label="Next">
-                    <span aria-hidden="true">{{ "global.pagination_next" | t }}</span>
-                  </a>
-                </li>
-              {%- endif %}
-            {%- when 'separator' %}
-              <li class="page-item disabled"><a class="page-link">...</a></li>
-            {%- else %}
-              {%- if forloop.key != 'total' %}
-                <li class="page-item"><a class="page-link" href="{{ pageURL }}">{{ page }}</a></li>
-              {%- endif %}
-          {%- endcase %}
-        {%- endfor %}
-      </ul>
-    {%- endif %}
+  {%- if pagination.pages and parts | contains: 'pages' %}
+    <ul class="pagination col mb-0 justify-content-end">
+      {%- for page in pagination.pages %}
+        {%- assign pagination.params.page = page %}
+        {%- assign pagination.params.limit = pagination.limit %}
+        {%- assign pagination.params.tpl = pagination.template %}
+        {%- assign pagination.params.sort = pagination.sort.default %}
+        {%- assign pageURL = pagination.gadget | urlmap: pagination.action, pagination.params %}
 
-    {%- if pagination.templates and parts | contains: 'templates' %}
-      {%- assign templates = 'grid,list,table' | split: ',' %}
-      {%- assign template_icons = 'fa-border-all,fa-list,fa-table-cells' | split: ',' %}
-      <ul class="pagination col mb-0 justify-content-end">
-        {%- for template in templates %}
-          {%- if pagination.templates | contains: template %}
-            {%- assign pagination.params.page = 1 %}
-            {%- assign pagination.params.tpl = template %}
-            {%- assign pageURL = pagination.gadget | urlmap: pagination.action, pagination.params %}
-
-            {%- if pagination.template == template %}
-              <li class="page-item disabled">
-                <a class="page-link"><i class="fas {{ template_icons | index: forloop.index0 }} align-middle fs-5"></i></a>
+        {%- case forloop.key %}
+          {%- when 'previous' %}
+            {%- if page %}
+              <li class="page-item">
+                <a class="page-link" href="{{ pageURL }}" aria-label="Previous">
+                  <span aria-hidden="true">{{ "global.pagination_previous" | t }}</span>
+                </a>
               </li>
             {%- else %}
-              <li class="page-item">
-                <a class="page-link" href="{{pageURL}}"><i class="fas {{ template_icons | index: forloop.index0 }} align-middle fs-5"></i></a>
+              <li class="page-item disabled">
+                <a class="page-link" aria-label="Previous">
+                  <span aria-hidden="true">{{ "global.pagination_previous" | t }}</span>
+                </a>
               </li>
             {%- endif %}
+          {%- when 'current' %}
+            <li class="page-item active"><a class="page-link" href="{{ pageURL }}">{{ page }}</a></li>
+          {%- when 'next' %}
+            {%- if page %}
+              <li class="page-item">
+                <a class="page-link" href="{{ pageURL }}" aria-label="Next">
+                 <span aria-hidden="true">{{ "global.pagination_next" | t }}</span>
+                </a>
+              </li>
+              {%- else %}
+              <li class="page-item disabled">
+                <a class="page-link" aria-label="Next">
+                  <span aria-hidden="true">{{ "global.pagination_next" | t }}</span>
+                </a>
+              </li>
+            {%- endif %}
+          {%- when 'separator' %}
+            <li class="page-item disabled"><a class="page-link">...</a></li>
+          {%- else %}
+            {%- if forloop.key != 'total' %}
+              <li class="page-item"><a class="page-link" href="{{ pageURL }}">{{ page }}</a></li>
+            {%- endif %}
+        {%- endcase %}
+      {%- endfor %}
+    </ul>
+  {%- endif %}
+
+  {%- if pagination.templates and parts | contains: 'templates' %}
+    {%- assign templates = 'grid,list,table' | split: ',' %}
+    {%- assign template_icons = 'fa-border-all,fa-list,fa-table-cells' | split: ',' %}
+    <ul class="pagination col mb-0 justify-content-end">
+      {%- for template in templates %}
+        {%- if pagination.templates | contains: template %}
+          {%- assign pagination.params.tpl = template %}
+          {%- assign pagination.params.limit = pagination.limit %}
+          {%- assign pagination.params.page = pagination.page %}
+          {%- assign pagination.params.sort = pagination.sort.default %}
+          {%- assign pageURL = pagination.gadget | urlmap: pagination.action, pagination.params %}
+          {%- if pagination.template == template %}
+            <li class="page-item disabled">
+              <a class="page-link"><i class="fas {{ template_icons | index: forloop.index0 }} align-middle fs-5"></i></a>
+            </li>
+          {%- else %}
+            <li class="page-item">
+              <a class="page-link" href="{{pageURL}}"><i class="fas {{ template_icons | index: forloop.index0 }} align-middle fs-5"></i></a>
+            </li>
           {%- endif %}
-        {%- endfor %}
-      </ul>
-    {%- endif %}
-  </div>
-</form>
+        {%- endif %}
+      {%- endfor %}
+    </ul>
+  {%- endif %}
+</div>
