@@ -71,13 +71,14 @@ class StaticPage_Actions_Page extends Jaws_Gadget_Action
         }
 
         $page_id = empty($post['pid'])? $this->gadget->registry->fetch('default_page') : $post['pid'];
-        $page_language = $post['language'];
-        if (empty($page_language)) {
+        if (!array_key_exists('language', $post) || empty($post['language'])) {
             // if page language not set try to load language translation of page that same as site language
             $page_language = $this->app->getLanguage();
             if (!$tModel->TranslationExists($page_id, $page_language)) {
                 $page_language = null;
             }
+        } else {
+            $page_language = $post['language'];
         }
 
         $page = $pModel->GetPage($page_id,  $page_language);
