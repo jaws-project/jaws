@@ -64,7 +64,7 @@ class Installer_Settings extends JawsInstaller
         $request = Jaws_Request::getInstance();
         $post = $request->fetch($keys, 'post');
         foreach ($this->_Fields as $key => $value) {
-            if ($post[$key] !== null) {
+            if (array_key_exists($key, $post) && !is_null($post[$key])) {
                 $values[$key] = $post[$key];
             }
         }
