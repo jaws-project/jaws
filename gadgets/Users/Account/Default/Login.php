@@ -226,7 +226,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         $block = $tpl->GetCurrentBlockPath();
 
         $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('remember', $reqpost['remember']);
+        $tpl->SetVariable('remember', isset($reqpost['remember'])? $reqpost['remember'] : '');
         $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
 
         $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
