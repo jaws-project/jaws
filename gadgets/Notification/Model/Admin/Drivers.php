@@ -19,7 +19,7 @@ class Notification_Model_Admin_Drivers extends Notification_Model_Drivers
     function UpdateNotificationDriver($id, $pData, $settings)
     {
         if (!empty($settings)) {
-            $pData['options'] = serialize($settings);
+            $pData['options'] = json_encode($settings);
         }
         $pData['enabled'] = (bool)$pData['enabled'];
         $driverTable = Jaws_ORM::getInstance()->table('notification_driver');

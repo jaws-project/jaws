@@ -47,9 +47,6 @@ class Notification_Model_Drivers extends Jaws_Gadget_Model
             return $driverInfo;
         }
 
-        if (!empty($driverInfo['options'])) {
-            $driverInfo['options'] = unserialize($driverInfo['options']);
-        }
         return $driverInfo;
     }
 
@@ -100,7 +97,7 @@ class Notification_Model_Drivers extends Jaws_Gadget_Model
         }
         $options = null;
         if (!empty($driverInfo)) {
-            $options = $driverInfo['options'];
+            $options = (array)@json_decode($driverInfo['options']);
             $dName =  $driverInfo['name'];
         }
 

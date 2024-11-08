@@ -220,12 +220,11 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
             );
         }
 
-        $driverOptions = empty($installDriver['options']) ? array() : $installDriver['options'];
-        $availableOptions = $driver->getDriverOptions();
+        $driverOptions = $driver->getDriverOptions();
         return $this->gadget->session->response(
             '',
             RESPONSE_NOTICE,
-            array_merge($availableOptions, $driverOptions)
+            $driverOptions
         );
     }
 
