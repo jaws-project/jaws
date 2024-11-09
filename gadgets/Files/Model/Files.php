@@ -92,16 +92,16 @@ class Files_Model_Files extends Jaws_Gadget_Model
         return Jaws_ORM::getInstance()
             ->table('files')
             ->select(
-                'id:integer', 'type:integer', 'title', 'description', 'public:boolean', 'folderized:boolean',
-                'postname', 'filename', 'mimetype', 'filetype:integer', 'filesize:integer', 'filetime:integer',
-                'filehits:integer', 'filekey'
+                'id:integer', 'gadget', 'action', 'reference', 'type:integer', 'title', 'description', 'public:boolean',
+                'folderized:boolean', 'postname', 'filename', 'mimetype', 'filetype:integer',
+                'filesize:integer', 'filetime:integer', 'filehits:integer', 'filekey'
             )->where('id', (array)$ids, 'in')
             ->and()
             ->where('gadget', $interface['gadget'])
             ->and()
             ->where('action', $interface['action'])
             ->and()
-            ->where('reference', $interface['reference'])
+            ->where('reference', $interface['reference'], is_array($interface['reference'])? 'in' : '=')
             ->and()
             ->where('type', $interface['type'])
             ->and()
