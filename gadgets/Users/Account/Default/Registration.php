@@ -83,6 +83,20 @@ class Users_Account_Default_Registration extends Users_Account_Default
 
         $block = $tpl->GetCurrentBlockPath();
 
+        $defaultValues = array(
+            'domain' => $this->gadget->registry->fetch('default_domain'),
+            'username' => '',
+            'email' => '',
+            'mobile' => '',
+            'nickname' => '',
+            'fname' => '',
+            'lname' => '',
+            'ssn' => '',
+            'dob' => 0,
+            'remember' => false,
+        );
+        $reqpost = array_merge($defaultValues, $reqpost);
+
         $tpl->SetVariable('domain',    $reqpost['domain']);
         $tpl->SetVariable('username',  $reqpost['username']);
         $tpl->SetVariable('email',     $reqpost['email']);

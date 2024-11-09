@@ -27,7 +27,7 @@ class Users_Account_Default_Register extends Users_Account_Default
         $rgstrData['regstep'] = (int)$rgstrData['regstep'];
 
         // set default domain if not set
-        if (is_null($rgstrData['domain'])) {
+        if (!array_key_exists('domain', $rgstrData) || empty($rgstrData['domain'])) {
             $rgstrData['domain'] = (int)$this->gadget->registry->fetch('default_domain');
         }
 
@@ -71,7 +71,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                     throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
                 }
 
-                if ($rgstrData['usecrypt']) {
+                if (array_key_exists('usecrypt', $rgstrData) && $rgstrData['usecrypt']) {
                     $JCrypt = Jaws_Crypt::getInstance();
                     if (!Jaws_Error::IsError($JCrypt)) {
                         $rgstrData['password'] = $JCrypt->decrypt($rgstrData['password']);
