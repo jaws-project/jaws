@@ -240,9 +240,12 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
         }
 
         $result = array();
-        if (!is_array($properties)) $properties = array($properties);
         foreach ($input as $element) {
-            $groupkey = json_encode(array_map(function($property) use ($element) { return $element[$property]; }, $properties));
+            if (!is_array($properties)) {
+                $groupkey = $element[$properties];
+            } else {
+                $groupkey = json_encode(array_map(function($property) use ($element) { return $element[$property]; }, $properties));
+            }
             $result[$groupkey][] = $element;
         }
 
