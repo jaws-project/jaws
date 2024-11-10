@@ -1,4 +1,9 @@
 {%- for menu in menus %}
+
+  {%- if menu.items | type | equal: 'array' and menu.items | empty %}
+    {%- continue %}
+  {%- endif %}
+
   {%- if menu.items | size %}
   <li class="nav-item dropdown {{class}}">
     <a class="nav-link dropdown-toggle" href="{{menu.url}}" data-bs-toggle="dropdown" role="button" data-bs-auto-close="false">

@@ -99,9 +99,10 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
     {
         $menus = $this->gadget->model->load('Menu')->GetLevelsMenus($pid, $gid, true);
         if (Jaws_Error::IsError($menus) || empty($menus)) {
-            return array();
+            return false;
         }
 
+        $levels = array();
         $logged = $this->app->session->user->logged;
         foreach ($menus as $i => $menu) {
             // parse menu
@@ -111,8 +112,8 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
             $levels[$menu['id']] = $menu;
             //menu selected?
             $levels[$menu['id']]['selected'] = str_replace(BASE_SCRIPT, '', urldecode($menu['url'])) == $this->_ReqURL;
-            
-            $levels[$menu['id']]['items'] = array();
+
+            $levels[$menu['id']]['items'] = false;
             //get sub level menus
             $this->GetNextLevel($levels[$menu['id']]['items'], $gid, $menu['id']);
         }
