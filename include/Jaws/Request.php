@@ -343,6 +343,7 @@ class Jaws_Request
         if (!isset($dataRepository[$key])) {
             $value = null;
             if (!empty($null_type)) {
+                $exists = true;
                 // type cast
                 settype($value, $this->map_types_cast[$null_type]);
             }
