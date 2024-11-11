@@ -1446,9 +1446,51 @@ function Jaws_Gadget_Users() { return {
     },
 
     /**
+     *
+     */
+    initRegistration: function()
+    {
+        let $form = $('[name="user-registration-form"]');
+        $form.on('submit', $.proxy(function (event) {
+            let $email = $form.find('[name="email"]');
+            let $mobile = $form.find('[name="mobile"]');
+            if ((!$email.length || $email.val().blank()) && (!$mobile.length || $mobile.val().blank())) {
+                event.preventDefault();
+                this.gadget.message.show(
+                    {
+                        'text': Jaws.t('error_incomplete_fields'),
+                        'type': 'alert-danger'
+                    }
+                );
+                return false;
+            }
+
+            let $username = $form.find('[name="username"]');
+            if ($username.length && $username.attr('type') == 'hidden') {
+                if ($mobile.length && !$mobile.val().blank()) {
+                    $username.val($mobile.val());
+                } else {
+                    $username.val($email.val());
+                }
+            }
+
+            let $nickname = $form.find('[name="nickname"]');
+            if ($nickname.length && $nickname.attr('type') == 'hidden') {
+                $nickname.val($username.val());
+            }
+
+            return true;
+        }, this));
+    },
+
+    /**
      * initialize gadget actions
      */
     init: function(mainGadget, mainAction) {
+        // init registration
+        if (this.gadget.actions.hasOwnProperty('Registration')) {
+            this.initRegistration();
+        }
         // init Users action
         if (this.gadget.actions.hasOwnProperty('Users')) {
             this.currentAction = "UserAccount";

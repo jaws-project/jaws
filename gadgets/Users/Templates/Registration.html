@@ -5,7 +5,7 @@
 <div class="gadget-container" data-loading-container="users.registration">
   <!-- BEGIN reg_step_1 -->
   <div class="gadget-content card-body">
-    <form name="registerBox" method="post">
+    <form name="user-registration-form" method="post">
       <input type="hidden" name="reqGadget" value="Users" />
       <input type="hidden" name="reqAction" value="Register" />
       <input type="hidden" name="regstep" value="1" />
@@ -91,7 +91,7 @@
   <!-- END reg_step_1 -->
 
   <!-- BEGIN reg_step_2 -->
-  <form name="registerBox" action="{{base_script}}" method="post">
+  <form name="user-registration-form" action="{{base_script}}" method="post">
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="Register" />
     <input type="hidden" name="regstep" value="2" />

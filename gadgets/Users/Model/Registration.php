@@ -28,9 +28,9 @@ class Users_Model_Registration extends Jaws_Gadget_Model
             unset($uData[$invalid]);
         }
 
-        $uData['username'] = trim($uData['username']);
-        $uData['email']    = trim($uData['email']);
-        $uData['mobile']   = trim($uData['mobile']);
+        $uData['username'] = trim((string)$uData['username']);
+        $uData['email']    = trim((string)$uData['email']);
+        $uData['mobile']   = trim((string)$uData['mobile']);
         if (empty($uData['username']) ||
             empty($uData['nickname']) ||
            (empty($uData['email']) && empty($uData['mobile']))
