@@ -91,6 +91,7 @@ class Users_Account_Default_Registration extends Users_Account_Default
             'nickname' => '',
             'fname' => '',
             'lname' => '',
+            'gender' => 0,
             'ssn' => '',
             'dob' => 0,
             'remember' => false,

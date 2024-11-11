@@ -17,8 +17,8 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
     {
         $loginData = $this->gadget->request->fetch(
             array(
-                'domain', 'username', 'password', 'old_password',
-                'usecrypt', 'resend', 'loginkey', 'loginstep', 'remember', 'defaults:array'
+                'domain?null', 'username', 'password', 'old_password',
+                'usecrypt', 'resend', 'loginkey', 'loginstep', 'remember?null', 'defaults:array'
             ),
             'post'
         );

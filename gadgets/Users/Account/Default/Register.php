@@ -17,13 +17,12 @@ class Users_Account_Default_Register extends Users_Account_Default
     {
         $rgstrData = $this->gadget->request->fetch(
             array(
-                'domain', 'username', 'email', 'mobile', 'nickname', 'password',
+                'domain', 'username', 'email?null', 'mobile?null', 'nickname', 'password',
                 'fname', 'lname', 'gender', 'ssn', 'dob', 'regstep', 'resend', 'regkey', 'usecrypt',
-                'remember', 'defaults:array'
+                'remember?null', 'defaults:array?null'
             ),
             'post'
         );
-
         $rgstrData['regstep'] = (int)$rgstrData['regstep'];
 
         // set default domain if not set
@@ -66,6 +65,20 @@ class Users_Account_Default_Register extends Users_Account_Default
 
             } else {
                 $rgstrData['regstep'] = 1;
+
+                if (empty($rgstrData['email']) && empty($rgstrData['mobile'])) {
+                    throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
+                }
+
+                // fill username with mobile/email if not exists
+                if (!array_key_exists('username', $rgstrData) || empty($rgstrData['username'])) {
+                    $rgstrData['username'] = empty($rgstrData['mobile'])? $rgstrData['email'] : $rgstrData['mobile'];
+                }
+
+                // fill nickname with username if not exists
+                if (!array_key_exists('nickname', $rgstrData) || empty($rgstrData['nickname'])) {
+                    $rgstrData['nickname'] = $rgstrData['username'];
+                }
 
                 if (empty($rgstrData['password'])) {
                     throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
@@ -143,7 +156,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                 $rgstrData
             );
 
-            return Jaws_Error::raiseError($error->getMessage(), $error->getCode());
+            return Jaws_Error::raiseError($error->getMessage(), $error->getCode(), JAWS_ERROR_NOTICE);
         }
     }
 
