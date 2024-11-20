@@ -9,7 +9,7 @@
 
         {%- if forloop.first | false and group | empty | true %}
           {%- indent -2 %}
-          <li><hr class="dropdown-divider"></li>
+          <hr class="dropdown-divider" />
           {%- endindent %}
         {%- endif %}
 
@@ -53,7 +53,7 @@
 
         {%- if forloop.last | false and group | empty | true %}
           {%- indent -2 %}
-          <li><hr class="border-secondary my-1 mx-3"></li>
+          <hr class="border-secondary my-1 mx-3" />
           {%- endindent %}
         {%- endif %}
       {%- endfor %}
