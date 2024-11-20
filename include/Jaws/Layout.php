@@ -503,7 +503,6 @@ class Jaws_Layout
                                 $item['gadget'],
                                 $item['action'],
                                 $item['params'],
-                                $item['filename'],
                                 $item['section'],
                                 $privateAccess
                             );
@@ -542,11 +541,10 @@ class Jaws_Layout
      * @param   string  $gadget     Gadget to put
      * @param   string  $action     Action to execute
      * @param   mixed   $params     Action's params
-     * @param   mixed   $filename   Layout filename
      * @param   mixed   $section    Layout section name
      * @param   mixed   $privateAccess  Website/app is private?
      */
-    function PutGadget($gadget, $action, $params = null, $filename = '', $section = '', $privateAccess = false)
+    function PutGadget($gadget, $action, $params = null, $section = '', $privateAccess = false)
     {
         $output = '';
         $enabled = Jaws_Gadget::IsGadgetEnabled($gadget);
