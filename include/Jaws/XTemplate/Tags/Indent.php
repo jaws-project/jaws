@@ -52,9 +52,10 @@ class Jaws_XTemplate_Tags_Indent extends Jaws_XTemplate_TagSegmental
         $output = parent::render($context);
         $indents = $this->indents->render($context);
         if ($indents < 0) {
-            return Jaws_UTF8::str_replace(
-                array("\r\n", "\r", str_pad("\n", abs($indents)+1, ' ', STR_PAD_RIGHT)),
-                array("\n", "\n", "\n"),
+            $indents = abs($indents);
+            return preg_replace(
+                array("/\r\n/", "/\r/", "/^[ ]{1,$indents}/m"),
+                array("\n", "\n", ''),
                 $output
             );
         } else {
