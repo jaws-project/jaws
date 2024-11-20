@@ -1979,6 +1979,7 @@ Jaws = {
         1:{},
         2:{},
     },
+    liquid: null,
 
     // define acl method for get permissions
     permission: function(name, subkey, gadget) {
@@ -2220,9 +2221,22 @@ Jaws = {
         ));
     },
 
+    template: function() {
+        if (!this.liquid) {
+            this.liquid = new liquidjs.Liquid({'jaws': this, 'globals': {'app': this}});
+        }
+
+        return this.liquid;
+    },
+
     init: function() {
         // load translations
         this.loadTranslate(Object.keys(this.gadgets), this.initGadgets.bind(this));
+
+        this.template().registerFilter('t', this.t);
+        for (const [name, fn] of Object.entries(Jaws.filters)) {
+            this.template().registerFilter(name, fn.bind(Jaws.filters));
+        }
     },
 
 };
