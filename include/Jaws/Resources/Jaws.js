@@ -2038,9 +2038,15 @@ Jaws = {
             [module , string] = string.split('.');
         }
 
+        let type = 0;
         string = string.toUpperCase();
-        module = module? module.toUpperCase() : '';
-        type = module? 1 : 0;
+        if (!module || module.toLowerCase() == 'global') {
+            module = '';
+        } else {
+            type = 1;
+            module = module.toUpperCase();
+        }
+
         if (Jaws.translations[type].hasOwnProperty(module) &&
             Jaws.translations[type][module].hasOwnProperty(string)
         ) {
