@@ -2590,6 +2590,22 @@ Jaws.filters = {
     },
 
     /**
+     * Get global variables(theme_url, data_url, .dir, .browser, ...)
+     */
+    global: function(input) {
+        let result = '';
+        switch(input) {
+            case "theme_url":
+                result = this.dataURL('themes/' + Jaws.defines.theme.name + '/');
+                break;
+
+            default:
+        }
+
+        return result;
+    },
+
+    /**
      * Get mixed mapped url with arguments
      */
     urlmap: function($urlmap, urlParams = {}, gadget = '', action = '') {
