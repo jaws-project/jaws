@@ -20,6 +20,14 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
     var $name = '';
 
     /**
+     * Hierarchical structure navigation parts
+     * @var     array
+     * @access  public
+     */
+    protected $breadcrumb = array(
+    );
+
+    /**
      * Constructor
      *
      * @access  public
@@ -300,10 +308,16 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
             $this->app->requestedAction  = $action;
             $this->app->requestedSection = $section;
             $this->app->requestedActionMode = $mode;
-            if (is_null($params)) {
-                return $objAction->$action();
-            } else {
-                return call_user_func_array(array($objAction, $action), $params);
+            try {
+                if (is_null($params)) {
+                    return $objAction->$action();
+                } else {
+                    return call_user_func_array(array($objAction, $action), $params);
+                }
+            } finally {
+                if ($this->app->inMainRequest) {
+                    $this->app->breadcrumb = $objAction->breadcrumb;
+                }
             }
         }
 

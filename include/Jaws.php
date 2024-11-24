@@ -89,6 +89,14 @@ class Jaws
     private $defines = array();
 
     /**
+     * Hierarchical structure navigation parts
+     * @var     array
+     * @access  public
+     */
+    public $breadcrumb = array(
+    );
+
+    /**
      * Default preferences
      * @var     array
      * @access  private
