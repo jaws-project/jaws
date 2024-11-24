@@ -25,7 +25,7 @@ class Blog_Actions_Categories extends Blog_Actions_Default
         $pModel = $this->gadget->model->load('Posts');
 
         $rqst = $this->gadget->request->fetch(array('id', 'page'), 'get');
-        $page = $rqst['page'];
+        $page = @$rqst['page'];
         if (is_null($page) || $page <= 0 ) {
             $page = 1;
         }
