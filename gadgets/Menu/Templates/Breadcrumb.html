@@ -1,0 +1,8 @@
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    {%- for item in items %}
+      <li class="breadcrumb-item"><a href="{{item.url}}">{{item.title}}</a></li>
+    {%- endfor %}
+  </ol>
+</nav>
+<!-- <li class="breadcrumb-item active" aria-current="page">Library</li> -->

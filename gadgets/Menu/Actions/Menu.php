@@ -83,7 +83,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
 
         $assigns['levels'] = array();
         $this->GetNextLevel($assigns['levels'], $group['id'], 0);
-        return $this->gadget->template->xLoad('Menu'. $group['view_type'].'.html',)->render($assigns);
+        return $this->gadget->template->xLoad('Menu'. $group['view_type'].'.html')->render($assigns);
     }
 
     /**
@@ -239,6 +239,19 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         }
 
         return true;
+    }
+
+    /**
+     * Returns navigation of hierarchical structure 
+     *
+     * @access  public
+     * @return  string  XHTML template content
+     */
+    function Breadcrumb()
+    {
+        $assigns = array();
+        $assigns['items'] = array_reverse($this->app->breadcrumb);
+        return $this->gadget->template->xLoad('Breadcrumb.html')->render($assigns);
     }
 
     /**

@@ -14,6 +14,10 @@ $actions['Menu'] = array(
     'file' => 'Menu',
     'parametric' => true
 );
+$actions['Breadcrumb'] = array(
+    'layout' => true,
+    'file' => 'Menu'
+);
 $actions['LoadImage'] = array(
     'standalone' => true,
     'file' => 'Menu'
