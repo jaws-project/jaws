@@ -298,6 +298,17 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
                 if (is_null($val)) {
                     return empty($elem)? !$logic : $logic;
                 }
+                if (is_array($val) && is_array($elem)) {
+                    if ($strict) {
+                        return empty(array_intersect($val, $elem))? !$logic : $logic;
+                    }
+
+                    return empty(
+                        array_intersect(
+                            array_map('strtolower', $val),
+                            array_map('strtolower', $elem)
+                        ))? !$logic : $logic;
+                }
                 if (is_array($val)) {
                     if ($strict) {
                         return in_array($elem, $val)? $logic : !$logic;
