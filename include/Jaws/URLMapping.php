@@ -443,6 +443,7 @@ class Jaws_URLMapping
                 $url = $map['map'];
             }
 
+            $extraParams = array();
             // set map variables by params values
             foreach ($params as $key => $value) {
                 if (!is_null($value)) {
@@ -453,9 +454,14 @@ class Jaws_URLMapping
                         $values[$idx] = str_replace('%2C', ',', $values[$idx]);
                     }
                     $value = implode(',', $values);
-                    $url = str_replace('{' . $key . '}', $value, $url);
+                    if (strpos($url, '{' . $key . '}') !== false) {
+                        $url = str_replace('{' . $key . '}', $value, $url);
+                    } else {
+                        $extraParams[$key] = $value;
+                    }
                 }
             }
+            $options = $extraParams + $options;
 
             // remove not fill optional part of map
             do {

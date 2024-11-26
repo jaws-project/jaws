@@ -2636,7 +2636,12 @@ Jaws.filters = {
         let url = $urlmap.map.replace(
             /\{(\w+)\}/gi,
             function(all, key) {
-                return urlParams.hasOwnProperty(key)? urlParams[key] : '{}';
+                let ret = '{}';
+                if (urlParams.hasOwnProperty(key)) {
+                    ret = urlParams[key];
+                    delete urlParams[key];
+                }
+                return ret;
             }
         ).replace(
             /\[[^\]]*\{\}[^\]]*\]/g,
@@ -2645,7 +2650,7 @@ Jaws.filters = {
             }
         ).replace(/\[|\]/g, '');
 
-        return /\{\}/.test(url)? false : (url + $urlmap.extension);
+        return /\{\}/.test(url)? false : (url + $urlmap.extension + (Object.keys(urlParams).length? ('?' + $.param(urlParams)) : ''));
     },
 
     /**
