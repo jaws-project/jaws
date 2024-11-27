@@ -1001,6 +1001,7 @@ function initEditor(selector)
         case 'ckeditor':
         case 'CKEditor':
             $.loadScript('libraries/ckeditor/ckeditor.js', function() {
+                CKEDITOR.env.cssClass = 'form-control float-none';
                 objEditor.ckeditor({
                     'baseHref': $('base').attr('href'),
                     'contentsLangDirection': objEditor.data('direction') || Jaws.defines.direction || 'ltr',

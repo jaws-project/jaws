@@ -166,7 +166,7 @@ class Jaws_Widgets_CKEditor extends Container
         $this->_Direction = Jaws::t('LANG_DIRECTION');
 
         $this->_Container =& Piwi::CreateWidget('Division');
-        $this->_Container->setClass('jaws_editor');
+        $this->_Container->setClass('input-group jaws_editor');
         parent::init();
     }
 
