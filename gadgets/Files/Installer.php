@@ -83,19 +83,8 @@ class Files_Installer extends Jaws_Gadget_Installer
      */
     function Upgrade($old, $new)
     {
-        if (version_compare($old, '0.3.0', '<')) {
-            $result = $this->installSchema('0.3.0.xml', array(), '0.2.0.xml');
-            if (Jaws_Error::IsError($result)) {
-                return $result;
-            }
-        }
-
-        if (version_compare($old, '0.4.0', '<')) {
-            $this->gadget->registry->insert('fm_driver', 'File');
-        }
-
-        if (version_compare($old, '0.5.0', '<')) {
-            $result = $this->installSchema('schema.xml', array(), '0.3.0.xml');
+        if (version_compare($old, '1.0.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '0.5.0.xml');
             if (Jaws_Error::IsError($result)) {
                 return $result;
             }

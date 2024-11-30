@@ -24,9 +24,9 @@ class Files_Model_Files extends Jaws_Gadget_Model
         $data = array(
             'gadget'      => '',
             'action'      => '',
+            'folder'      => '',
             'reference'   => 0,
             'type'        => 0,
-            'folderized'  => false,
             'description' => '',
             'public'      => true,
         );
@@ -39,7 +39,6 @@ class Files_Model_Files extends Jaws_Gadget_Model
         $resultFiles = array();
         $attachTable = Jaws_ORM::getInstance()->table('files');
         foreach ($files as $file) {
-            $data['folderized'] = $interface['folderized'];
             $data['title']    = $file['user_filename'];
             $data['postname'] = $file['user_filename'];
             $data['filename'] = $file['host_filename'];
@@ -52,10 +51,8 @@ class Files_Model_Files extends Jaws_Gadget_Model
 
             $result = $attachTable->insert($data)->exec();  
             if (!Jaws_Error::IsError($result)) {
-                $filepath = 'files/'. $interface['gadget']. '/'. $interface['action']. '/'. $data['filename'];
-                if ($interface['folderized']) {
-                    $filepath.= $interface['reference'];
-                }
+                $filepath = 'files/'. $data['gadget']. '/'. $data['action']. '/';
+                $filepath.= ((string)$data['folder'] === '')? '' : ($data['folder'] . '/');
                 $resultFiles[] = array_merge(
                     array(
                         'id' => $result,
@@ -92,8 +89,8 @@ class Files_Model_Files extends Jaws_Gadget_Model
         return Jaws_ORM::getInstance()
             ->table('files')
             ->select(
-                'id:integer', 'gadget', 'action', 'reference', 'type:integer', 'title', 'description', 'public:boolean',
-                'folderized:boolean', 'postname', 'filename', 'mimetype', 'filetype:integer',
+                'id:integer', 'gadget', 'action', 'reference', 'folder', 'type:integer', 'title', 'description',
+                'public:boolean', 'postname', 'filename', 'mimetype', 'filetype:integer',
                 'filesize:integer', 'filetime:integer', 'filehits:integer', 'filekey'
             )->where('id', (array)$ids, 'in')
             ->and()
@@ -120,11 +117,11 @@ class Files_Model_Files extends Jaws_Gadget_Model
     function deleteFiles($interface, $ids = array())
     {
         $data = array(
-            'gadget'      => '',
-            'action'      => '',
-            'reference'   => 0,
-            'type'        => 0,
-            'public'      => true,
+            'gadget'    => '',
+            'action'    => '',
+            'reference' => 0,
+            'type'      => 0,
+            'public'    => true,
         );
         $interface = array_merge($data, $interface);
         $interface['user'] = $this->app->session->user->id;
@@ -155,7 +152,8 @@ class Files_Model_Files extends Jaws_Gadget_Model
             foreach ($files as $file) {
                 if (!empty($file['filename'])) {
                     $this->gadget->fileManagement::delete(
-                        ROOT_DATA_PATH. $filesPath. ($file['folderized']? ($interface['reference'].'/') : ''). $file['filename']
+                        ROOT_DATA_PATH. $filesPath.
+                        (((string)$file['folder'] === '')? '' : ($file['folder']. '/')) . $file['filename']
                     );
                 }
             }
@@ -176,8 +174,8 @@ class Files_Model_Files extends Jaws_Gadget_Model
         return Jaws_ORM::getInstance()
             ->table('files')
             ->table('files')->select(
-                'id:integer', 'gadget', 'action', 'reference', 'type:integer', 'title', 'description',
-                'public:boolean', 'folderized:boolean', 'postname', 'filename', 'mimetype', 'filetype:integer',
+                'id:integer', 'gadget', 'action', 'reference', 'folder', 'type:integer', 'title', 'description',
+                'public:boolean', 'postname', 'filename', 'mimetype', 'filetype:integer',
                 'filesize:integer', 'filetime:integer', 'filehits:integer', 'filekey'
             )->where('id', $id)
             ->fetchRow();

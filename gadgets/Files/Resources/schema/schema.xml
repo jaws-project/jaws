@@ -33,6 +33,12 @@
             </field>
 
             <field>
+                <name>folder</name>
+                <type>text</type>
+                <length>32</length>
+            </field>
+
+            <field>
                 <name>type</name>
                 <type>integer</type>
                 <length>2</length>
@@ -48,12 +54,6 @@
             <field>
                 <name>description</name>
                 <type>text</type>
-            </field>
-
-            <field>
-                <name>folderized</name>
-                <type>boolean</type>
-                <default>false</default>
             </field>
 
             <field>

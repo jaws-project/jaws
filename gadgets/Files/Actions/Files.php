@@ -403,14 +403,13 @@ class Files_Actions_Files extends Jaws_Gadget_Action
     }
 
     /**
-     * Upload/Insert/Update reference files
+     * inspect reference files
      *
      * @access  public
-     * @param   array   $interface  Gadget interface(gadget, action, reference, ...)
-     * @param   array   $options    User interface control options(maxsize, maxcount, extensions)
-     * @return  mixed   Array of files id otherwise Jaws_Error on error
+     * @param   array   $interface  Interface(gadget, action, reference)
+     * @return  int|Jaws_Error      Returns uploaded files or Jaws_Error on failure
      */
-    function uploadReferenceFiles($interface, $options = array())
+    function inspectReferenceFiles(array &$interface, $options = array())
     {
         // FIXME:: add registry key for set maximum upload file size
         $defaultOptions = array(
@@ -424,13 +423,14 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         $options = array_merge($defaultOptions, $options);
 
         $defaultInterface = array(
-            'gadget'      => '',
-            'action'      => '',
-            'reference'   => 0,
-            'type'        => 0,
-            'folderized'  => false,
+            'gadget'     => '',
+            'action'     => '',
+            'folder'     => '',
+            'reference'  => 0,
+            'type'       => 0,
         );
         $interface = array_merge($defaultInterface, $interface);
+
         // optional input_reference for new record(without reference id)
         // or update/insert multi references together
         if (!array_key_exists('input_reference', $interface)) {
@@ -451,8 +451,8 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         }
 
         $oldFilesIndex = 'old_files_'. $uploadFilesIndex;
-        $remainFiles = $this->app->request->fetch("$oldFilesIndex:array");
-        $oldFilesCount = empty($remainFiles)? 0 : count($remainFiles);
+        $remains = $this->app->request->fetch("$oldFilesIndex:array?array");
+        $oldFilesCount = empty($remains)? 0 : count($remains);
 
         $newFilesCount = 0;
         $newFilesIndex = 'new_files_'. $uploadFilesIndex;
@@ -476,34 +476,22 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             );
         }
 
-        $resultFiles = array();
-        //FIXME: need improvement for multi files delete
-        if (empty($remainFiles)) {
-            $filesModel->deleteFiles($interface);
-        } else {
-            foreach ($oldFiles as $file) {
-                if (!in_array($file['id'], $remainFiles)) {
-                    $filesModel->deleteFiles(
-                        $interface,
-                        $file['id']
-                    );
-                } else {
-                    $resultFiles[] = $file;
-                }
-            }
-        }
+        $inspectResult = array(
+            'news' => array(),
+            'olds' => $oldFiles, 
+            'remains' => $remains,
+            'interface' => $interface,
+        );
 
         if (array_key_exists($newFilesIndex, $_FILES)) {
-            $uploadPath = ROOT_DATA_PATH. strtolower('files/'. $interface['gadget']. '/'. $interface['action']);
-            if ($interface['folderized']) {
-                $uploadPath.= '/'. $interface['reference'];
-            }
+            $uploadPath = ROOT_DATA_PATH. strtolower('files/'. $interface['gadget']. '/'. $interface['action']. '/');
+            $uploadPath.= ((string)$interface['folder'] === '')? '' : ($interface['folder']. '/');
             $newFiles = $this->gadget->fileManagement::uploadFiles(
                 $_FILES[$newFilesIndex],
                 $uploadPath,
                 $options['extensions'],
                 null,
-                true,
+                false,
                 $options['maxsize'],
                 $options['dimension'],
                 $options['imageformat']
@@ -514,13 +502,61 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             }
 
             if (!empty($newFiles)) {
-                $result = $filesModel->insertFiles(
+                $inspectResult['news'] = $newFiles[0];
+            }
+        }
+
+        return $inspectResult;
+    }
+
+    /**
+     * Upload/Insert/Update reference files
+     *
+     * @access  public
+     * @param   array   $interface      Gadget interface(gadget, action, reference, ...)
+     * @param   array   $options        User interface control options(maxsize, maxcount, extensions)
+     * @param   array   $inspectResult  Result of inspectReferenceFiles method
+     * @return  mixed   Array of files id otherwise Jaws_Error on error
+     */
+    function uploadReferenceFiles($interface, array $options = array(), array $inspectResult = array())
+    {
+        if (empty($inspectResult)){
+            $inspectResult = $this->inspectReferenceFiles($interface, $options);
+            if (Jaws_Error::IsError($inspectResult)) {
+                return $inspectResult;
+            }
+        } else {
+            $interface = array_merge(
+                $inspectResult['interface'],
+                array('reference' => $interface['reference'])
+            );
+        }
+
+        $resultFiles = array(
+            'news' => array(),
+            'olds' => array(),
+        );
+        $filesModel = $this->gadget->model->load('Files');
+
+        //FIXME: need improvement for multi files delete
+        foreach ($inspectResult['olds'] as $file) {
+            if (!in_array($file['id'], $inspectResult['remains'])) {
+                $filesModel->deleteFiles(
                     $interface,
-                    $newFiles[0]
+                    $file['id']
                 );
-                if (!Jaws_Error::IsError($result)) {
-                    call_user_func_array('array_push', array_merge(array(&$resultFiles), $result));
-                }
+            } else {
+                $resultFiles['olds'][] = $file;
+            }
+        }
+
+        if (!empty($inspectResult['news'])) {
+            $result = $filesModel->insertFiles(
+                $interface,
+                $inspectResult['news']
+            );
+            if (!Jaws_Error::IsError($result)) {
+                call_user_func_array('array_push', array_merge(array(&$resultFiles['news']), $result));
             }
         }
 
@@ -593,18 +629,16 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         }
 
         if (!empty($file) && $file['filekey'] == $get['key']) {
-            $filePath = strtolower('files/'. $file['gadget']. '/'. $file['action']. '/');
-            if ($file['folderized']) {
-                $filePath.= $file['reference'] . '/';
-            }
-            if ($this->gadget->fileManagement::file_exists(ROOT_DATA_PATH. $filePath . $file['filename'])) {
+            $filepath = strtolower('files/'. $file['gadget']. '/'. $file['action']. '/');
+            $filepath.= ((string)$file['folder'] === '')? '' : ($file['folder'] . '/');
+            if ($this->gadget->fileManagement::file_exists(ROOT_DATA_PATH. $filepath . $file['filename'])) {
                 // set response type to raw  because HTTP headers managed by fileManagement::download method
                 $this->app->request->update('restype', 'raw');
                 // increase file hits
                 $this->gadget->model->load('Files')->hitDownload($file['id']);
                 // download
                 if ($this->gadget->fileManagement::download(
-                    ROOT_DATA_PATH. $filePath . $file['filename'],
+                    ROOT_DATA_PATH. $filepath . $file['filename'],
                     $file['postname'],
                     $file['mimetype']
                 )) {

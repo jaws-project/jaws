@@ -13,7 +13,7 @@ class Files_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '0.5.0';
+    var $version = '1.0.0';
 
     /**
      * Default front-end action name
