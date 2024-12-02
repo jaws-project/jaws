@@ -1000,7 +1000,7 @@ function initEditor(selector)
     switch(editorType) {
         case 'ckeditor':
         case 'CKEditor':
-            $.loadScript('libraries/ckeditor/ckeditor.js', function() {
+            $.loadScript('libraries/ckeditor/ckeditor.js?' + Jaws.defines.buildnumber, function() {
                 CKEDITOR.env.cssClass = 'form-control float-none';
                 objEditor.ckeditor({
                     'baseHref': $('base').attr('href'),
@@ -1015,7 +1015,8 @@ function initEditor(selector)
                     'extraPlugins': Jaws.defines.editorPlugins,
                     'filebrowserBrowseUrl': Jaws.defines.editorFileBrowser || '',
                     'filebrowserImageBrowseUrl': Jaws.defines.editorImageBrowser || '',
-                    'filebrowserFlashBrowseUrl': Jaws.defines.editorMediaBrowser || '',
+                    'filebrowserAudioBrowseUrl': Jaws.defines.editorAudioBrowser || '',
+                    'filebrowserVideoBrowseUrl': Jaws.defines.editorVideoBrowser || '',
                     'removePlugins': '',
                     'autoParagraph': false,
                     'indentUnit': 'em',
