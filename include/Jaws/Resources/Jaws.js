@@ -2273,6 +2273,17 @@ Jaws.filters = {
     },
 
     /**
+     * index of ...
+     */
+    index: function(input, key) {
+        if (Array.isArray(input)) {
+            return (typeof input[key] === 'undefined')? null : input[key];
+        }
+
+        return input.hasOwnProperty(key)? input[key] : null;
+    },
+
+    /**
      *
      */
     json_encode: function(input) {
@@ -2653,6 +2664,13 @@ Jaws.filters = {
         ).replace(/\[|\]/g, '');
 
         return /\{\}/.test(url)? false : (url + $urlmap.extension + (Object.keys(urlParams).length? ('?' + $.param(urlParams)) : ''));
+    },
+
+    /**
+     * console log
+     */
+    log: function(input) {
+        console.log(input);
     },
 
     /**
