@@ -520,10 +520,10 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      */
     function uploadReferenceFiles($interface, array $options = array(), array $inspectResult = array())
     {
-        if (empty($inspectResult)){
+        if (empty($inspectResult)) {
             $inspectResult = $this->inspectReferenceFiles($interface, $options);
-            if (Jaws_Error::IsError($inspectResult)) {
-                return $inspectResult;
+            if (Jaws_Error::IsError($inspectResult) || empty($inspectResult)) {
+                return empty($inspectResult)? false : $inspectResult;
             }
         } else {
             $interface = array_merge(
