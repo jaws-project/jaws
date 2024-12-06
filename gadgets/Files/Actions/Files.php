@@ -515,12 +515,14 @@ class Files_Actions_Files extends Jaws_Gadget_Action
      * @access  public
      * @param   array   $interface      Gadget interface(gadget, action, reference, ...)
      * @param   array   $options        User interface control options(maxsize, maxcount, extensions)
-     * @param   array   $inspectResult  Result of inspectReferenceFiles method
+     * @param   array|bool  $inspectResult  Result of inspectReferenceFiles method
      * @return  mixed   Array of files id otherwise Jaws_Error on error
      */
-    function uploadReferenceFiles($interface, array $options = array(), array $inspectResult = array())
+    function uploadReferenceFiles($interface, array $options = array(), $inspectResult = array())
     {
-        if (empty($inspectResult)) {
+        if ($inspectResult === false) {
+            return false;
+        } else if (empty($inspectResult)) {
             $inspectResult = $this->inspectReferenceFiles($interface, $options);
             if (Jaws_Error::IsError($inspectResult) || empty($inspectResult)) {
                 return empty($inspectResult)? false : $inspectResult;
