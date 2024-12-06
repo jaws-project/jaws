@@ -35,10 +35,27 @@ jQuery.extend({
         }
 
         $.each($elements, function(index, element) {
-            let input = {
-                name: $(element).attr('name'),
-                value: $(element).prop('type') == 'checkbox'? Number($(element).prop('checked')) : $(element).val()
-            };
+            let input = {};
+
+            if ($(element).prop('type') == 'radio') {
+                input = {
+                    name: $(element).attr('name'),
+                    value: $(element).prop('checked')? ($(element).val() || 1) : 0
+                };
+                if ($elements.filter(`input[type='radio'][name=${input.name}]`).length > 1 && input.value == 0) {
+                    return;
+                }
+            } else if ($(element).prop('type') == 'checkbox') {
+                input = {
+                    name: $(element).attr('name'),
+                    value: $(element).prop('checked')? ($(element).val() || 1) : 0
+                };
+            } else {
+                input = {
+                    name: $(element).attr('name'),
+                    value: $(element).val()
+                };
+            }
 
             if ($(element).attr('disabled')) {
                 return;
