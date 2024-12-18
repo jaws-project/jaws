@@ -42,7 +42,11 @@ class Jaws_XTemplate_Filters_Date extends Jaws_XTemplate_Filters
                     unset($result[$key]);
                     continue;
                 }
-                $result[$key] = (int)Jaws_Date::getInstance($calendar)->ToBaseDate(preg_split('/[\/\- \:]/', $val), 'U');
+                if ($val == 'now') {
+                    $result[$key] = time();
+                } else {
+                    $result[$key] = (int)Jaws_Date::getInstance($calendar)->ToBaseDate(preg_split('/[\/\- \:]/', $val), 'U');
+                }
                 $result[$key] = Jaws::getInstance()->UserTime2UTC($result[$key]);
             }
 
