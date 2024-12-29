@@ -48,7 +48,7 @@ set_include_path('.' . PATH_SEPARATOR . ROOT_JAWS_PATH . 'libraries/pear');
 // data path
 define(
     'DATA_PATH',
-    isset($_SESSION['DATA_PATH'])? $_SESSION['DATA_PATH'] : (JAWS_PATH . 'data/')
+    isset($_SESSION['DATA_PATH'])? $_SESSION['DATA_PATH'] : ('data/')
 );
 define('ROOT_DATA_PATH', ROOT_JAWS_PATH . DATA_PATH);
 // base data path
