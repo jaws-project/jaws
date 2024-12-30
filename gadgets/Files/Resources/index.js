@@ -12,7 +12,7 @@ function Jaws_Gadget_Files() { return {
     AjaxCallback : {
     },
 
-    async resizeImage(file, { quality = 1, type = file.type, dimension = false})
+    async resizeImage(file, { type = file.type, dimension = false, quality = undefined})
     {
         // Get as image data
         const imageBitmap = await createImageBitmap(file);
@@ -190,10 +190,9 @@ function Jaws_Gadget_Files() { return {
                         fReader.onload = $.proxy(async function (event) {
                             $item.find('[data-type="image"]').attr('src', event.target.result);
                         }, this.gadget);
-                        // resize & compress the image by 75%
+                        // resize the image
                         file = await this.resizeImage(file, {
-                            'quality': 0.75,
-                            'type': 'image/jpeg',
+                            'type': file.type,
                             'dimension': dimension
                         });
 
