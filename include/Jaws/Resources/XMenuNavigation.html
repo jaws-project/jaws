@@ -17,7 +17,7 @@
           {%- indent -2 %}
           <div class="accordion-item">
             <h5 class="accordion-header">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-{{navigation.gadget}}-{{group}}-group">
+              <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-{{navigation.gadget}}-{{group}}-group">
                 {{ grouped_menus | first | index: 'group_title' | t }}
               </button>
             </h5>
