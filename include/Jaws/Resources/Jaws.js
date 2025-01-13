@@ -167,7 +167,100 @@ jQuery.extend({
                 return breakPoint == this.get(element);
             }
         };
-    }()
+    }(),
+
+    initDatePicker: function(el) {
+        // picker type (date & time, date, time)
+        let $picker = {};
+        let $pickerType = $(el).data('picker-type') || 'date';
+        if ($pickerType == 'datetime') {
+            $picker = {
+                timepicker : true
+            };
+        } else if ($pickerType == 'time') {
+            $picker = {
+                timepicker : true,
+                onlyTimepicker: true
+            };
+        }
+
+        // calendar type
+        let $calendar = ($(el).data('calendar') || Jaws.defines.calendar).toLowerCase();
+        // inline view
+        let $inline = ($(el).data('picker-view') || '') == 'inline';
+        // date format
+        let $dateFormat = $(el).data('date-format');
+        $dateFormat = ($dateFormat === null || $dateFormat === undefined)? 'yyyy/MM/dd' : $dateFormat;
+        // time format
+        let $timeFormat = $(el).data('time-format') || 'HH:mm';
+        // months string name
+        let $months = [];
+        let $monthsShort = [];
+        for (let i = 0; i <= 11; i++) {
+            $months.push(Jaws.t($calendar + '_month_' + i));
+            $monthsShort.push(Jaws.t($calendar + '_month_short_' + i));
+        }
+        // days string name
+        let $days = [];
+        let $daysShort = [];
+        for (let i = 0; i <= 6; i++) {
+            $days.push(Jaws.t('day_' + i));
+            $daysShort.push(Jaws.t('day_short_' + i));
+        }
+        // picker direction
+        let $direction = Jaws.t('lang_direction');
+        // picker position
+        let $position = 'bottom ' + ($direction == 'ltr'? 'left' : 'right');
+        // is mobile
+        $isMobile = ['xs' , 'sm'].indexOf($.viewport.get()) >= 0;
+
+        let dpInstance = new AirDatepicker(el, Object.assign({
+            inline: $inline,
+            isMobile: $isMobile,
+            autoClose: true,
+            calendar: $calendar,
+            //startDate: '',
+            //multipleDates: true,
+            //selectedDates: [],
+            direction: $direction,
+            position: $position,
+            parent: $(el).closest('div.modal-body, body').get(0),
+            onBeforeShow: function(dp) {
+                let _startDate = Date.now();
+                let _selectedDates = [];
+                if (!$(dp.$el).val().blank()) {
+                    _selectedDates = $.map($(dp.$el).val().toString().split(','), $.trim);
+                    if (dp.opts.onlyTimepicker) {
+                        _startDate = new Date();
+                        let _time = _selectedDates[0].match(/([0-9]+):([0-9]+)\s*([ap]m)?/) || [0,0,''];
+                        if (_time[3] == 'pm' && _time[1] != 12) {
+                            _time[1] = parseFloat(_time[1]) + 12;
+                        }
+                        _startDate.setHours(_time[1], _time[2]);
+                        _selectedDates = [_startDate];
+                    } else {
+                        _startDate = _selectedDates[0];
+                    }
+                }
+                dp.clear(true);
+                dp.setViewDate(_startDate);
+                dp.selectDate(_selectedDates, {updateTime: true});
+            },
+            locale: {
+                days: $days,
+                daysShort: $daysShort,
+                daysMin: $daysShort,
+                months: $months,
+                monthsShort: $monthsShort,
+                today: Jaws.t('today'),
+                clear: Jaws.t('clear'),
+                dateFormat: $dateFormat,
+                timeFormat: $timeFormat,
+                firstDay: ($calendar == 'gregorian')? 1 : 6
+            }
+        }, $picker));
+        $(el).data('datepicker', dpInstance);
+    },
 });
 
 (function($) {
@@ -1935,12 +2028,27 @@ $(document).ready(function() {
     // toggle password between hide and show
     $(".input-group input[type='password'] + .input-group-text").click(
         function() {
-            if ($(this).prev().attr('type') == 'password') {
-                $(this).prev().attr('type', 'text');
+            let $password = $(this).closest(':has([role="password"])').find('[role="password"]');
+            if ($password.attr('type') == 'password') {
+                $password.attr('type', 'text');
             } else {
-                $(this).prev().attr('type', 'password');
+                $password.attr('type', 'password');
             }
             $(this).find('i').toggleClass('fa-eye fa-eye-slash');
+        }
+    );
+
+    // toggle datepicker input between active and inactive
+    $('[role="datepicker"]  + .input-group-text').click(
+        function() {
+            let $datepicker = $(this).closest(':has([role="datepicker"])').find('[role="datepicker"]').first();
+            let dp = $datepicker.data('datepicker');
+            if (dp.isDestroyed) {
+                $.initDatePicker($datepicker.get(0));
+            } else {
+                dp.destroy();
+            }
+            $(this).find('i').toggleClass('fa-calendar-xmark fa-calendar-check');
         }
     );
 
@@ -2107,95 +2215,7 @@ Jaws = {
     initGadgets: function() {
         // initialize date/time pickers
         $('[role="datepicker"]').each(function(index, el) {
-            // picker type (date & time, date, time)
-            let $picker = {};
-            let $pickerType = $(el).data('picker-type') || 'date';
-            if ($pickerType == 'datetime') {
-                $picker = {
-                    timepicker : true
-                };
-            } else if ($pickerType == 'time') {
-                $picker = {
-                    timepicker : true,
-                    onlyTimepicker: true
-                };
-            }
-
-            // calendar type
-            let $calendar = ($(el).data('calendar') || Jaws.defines.calendar).toLowerCase();
-            // inline view
-            let $inline = ($(el).data('picker-view') || '') == 'inline';
-            // date format
-            let $dateFormat = $(el).data('date-format');
-            $dateFormat = ($dateFormat === null || $dateFormat === undefined)? 'yyyy/MM/dd' : $dateFormat;
-            // time format
-            let $timeFormat = $(el).data('time-format') || 'HH:mm';
-            // months string name
-            let $months = [];
-            let $monthsShort = [];
-            for (let i = 0; i <= 11; i++) {
-                $months.push(Jaws.t($calendar + '_month_' + i));
-                $monthsShort.push(Jaws.t($calendar + '_month_short_' + i));
-            }
-            // days string name
-            let $days = [];
-            let $daysShort = [];
-            for (let i = 0; i <= 6; i++) {
-                $days.push(Jaws.t('day_' + i));
-                $daysShort.push(Jaws.t('day_short_' + i));
-            }
-            // picker direction
-            let $direction = Jaws.t('lang_direction');
-            // picker position
-            let $position = 'bottom ' + ($direction == 'ltr'? 'left' : 'right');
-            // is mobile
-            $isMobile = ['xs' , 'sm'].indexOf($.viewport.get()) >= 0;
-
-            let dpInstance = new AirDatepicker(el, Object.assign({
-                inline: $inline,
-                isMobile: $isMobile,
-                autoClose: true,
-                calendar: $calendar,
-                //startDate: '',
-                //multipleDates: true,
-                //selectedDates: [],
-                direction: $direction,
-                position: $position,
-                parent: $(el).closest('div.modal-body, body').get(0),
-                onBeforeShow: function(dp) {
-                    let _startDate = Date.now();
-                    let _selectedDates = [];
-                    if (!$(dp.$el).val().blank()) {
-                        _selectedDates = $.map($(dp.$el).val().toString().split(','), $.trim);
-                        if (dp.opts.onlyTimepicker) {
-                            _startDate = new Date();
-                            let _time = _selectedDates[0].match(/([0-9]+):([0-9]+)\s*([ap]m)?/) || [0,0,''];
-                            if (_time[3] == 'pm' && _time[1] != 12) {
-                                _time[1] = parseFloat(_time[1]) + 12;
-                            }
-                            _startDate.setHours(_time[1], _time[2]);
-                            _selectedDates = [_startDate];
-                        } else {
-                            _startDate = _selectedDates[0];
-                        }
-                    }
-                    dp.clear(true);
-                    dp.setViewDate(_startDate);
-                    dp.selectDate(_selectedDates, {updateTime: true});
-                },
-                locale: {
-                    days: $days,
-                    daysShort: $daysShort,
-                    daysMin: $daysShort,
-                    months: $months,
-                    monthsShort: $monthsShort,
-                    today: Jaws.t('today'),
-                    clear: Jaws.t('clear'),
-                    dateFormat: $dateFormat,
-                    timeFormat: $timeFormat,
-                    firstDay: ($calendar == 'gregorian')? 1 : 6
-                }
-            }, $picker));
+            $.initDatePicker(el);
         });
 
         // initialize gadgets
