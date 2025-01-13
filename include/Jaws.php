@@ -541,9 +541,9 @@ class Jaws
      *
      * @access  public
      */
-    static function classExists($classname)
+    static function classExists($classname, $autoload = false)
     {
-        return class_exists($classname, false);
+        return class_exists($classname, $autoload);
     }
 
     /**
