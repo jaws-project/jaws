@@ -55,7 +55,7 @@ class Jaws_Gadget_Model extends Jaws_Gadget_Class
             }
 
             include_once($file);
-            if (!Jaws::classExists($classname)) {
+            if (!Jaws::classExists($classname, true)) {
                 return Jaws_Error::raiseError(
                     "Class [$classname] not exists!",
                     __FUNCTION__,
