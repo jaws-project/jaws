@@ -2629,21 +2629,23 @@ Jaws.filters = {
      */
     time2str: function(input, format = '') {
         format = format || 'HH:mm';
-        return this.date2str(this.utc2local(input), format);
+        return this.date2str(input, format);
     },
 
     /**
      * UTC to local date/time timestamp
      */
     utc2local: function(input) {
-        return input + (new Date()).getTimezoneOffset()*60;
+        // -1: the timezone offset is opposite of PHP
+        return input + (-1 * (new Date()).getTimezoneOffset()*60);
     },
 
     /**
      * local date/time timestamp to UTC
      */
     local2utc: function(input) {
-        return input - (new Date()).getTimezoneOffset()*60;
+        // -1: the timezone offset is opposite of PHP
+        return input - (-1 * (new Date()).getTimezoneOffset()*60);
     },
 
     /**
