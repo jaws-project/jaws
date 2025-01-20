@@ -71,6 +71,14 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             }
         }
 
+        if (isset($params['devices']) && !empty($params['devices'])) {
+            foreach ($params['devices'] as $device) {
+                if (!empty($device)) {
+                    $users[] = array('device' => $device);
+                }
+            }
+        }
+
         if (isset($params['user']) && !empty($params['user'])) {
             $user = Jaws_Gadget::getInstance('Users')->model->load('User')->get(
                 $params['user'],

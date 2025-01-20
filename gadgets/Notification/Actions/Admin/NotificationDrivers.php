@@ -126,6 +126,11 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
     {
         $this->gadget->CheckPermission('NotificationDrivers');
         $post = $this->gadget->request->fetch(array('id', 'data:array', 'settings:array'), 'post');
+        $post['settings'] = array_map(
+            static function($item) { return htmlspecialchars_decode($item, ENT_QUOTES); },
+            $post['settings']
+        );
+
         $model = $this->gadget->model->loadAdmin('Drivers');
         $res = $model->UpdateNotificationDriver($post['id'], $post['data'], $post['settings']);
         if (Jaws_Error::IsError($res)) {
