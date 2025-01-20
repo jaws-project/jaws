@@ -26,6 +26,7 @@ class Notification_Installer extends Jaws_Gadget_Installer
         array('eml_fetch_limit', '100'),
         array('sms_fetch_limit', '100'),
         array('web_fetch_limit', '100'),
+        array('app_fetch_limit', '100'),
         array('configuration', ''), // array(gadget_name=>(0,1, driver_name))
     );
 
@@ -294,6 +295,11 @@ class Notification_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '3.0.0', '<')) {
             // registry keys
             $this->gadget->registry->insert('internal_auto_send', false);
+        }
+
+        if (version_compare($old, '3.1.0', '<')) {
+            // registry keys
+            $this->gadget->registry->insert('app_fetch_limit', 100);
         }
 
         return true;

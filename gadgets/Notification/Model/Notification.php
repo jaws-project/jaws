@@ -226,7 +226,8 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         if (empty($notifications) || (
             empty($notifications['emails']) &&
             empty($notifications['webpush']) &&
-            empty($notifications['mobiles'])
+            empty($notifications['mobiles']) &&
+            empty($notifications['devices'])
         )) {
             return false;
         }
@@ -309,6 +310,29 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                         array(
                             'message' => $messageId, 'driver' => Jaws_Notification::WEB_DRIVER,
                             'contact' => $webpush, 'hash' => $hash
+                        )
+                    )->and()
+                    ->where('message', $messageId)
+                    ->and()
+                    ->where('hash', $hash)
+                    ->exec();
+                if (Jaws_Error::IsError($res)) {
+                    return $res;
+                }
+            }
+        }
+
+        // insert device items
+        if(!empty($notifications['devices'])) {
+            $objORM = $objORM->table('notification_recipient');
+            foreach ($notifications['devices'] as $device) {
+                // FIXME : increase performance by adding upsertAll method in core
+                $hash = hash64($device);
+                $row['message'] = $messageId;
+                $res = $objORM->upsert(
+                        array(
+                            'message' => $messageId, 'driver' => Jaws_Notification::APP_DRIVER,
+                            'contact' => $device, 'hash' => $hash
                         )
                     )->and()
                     ->where('message', $messageId)

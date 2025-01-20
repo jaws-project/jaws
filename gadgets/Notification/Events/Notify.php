@@ -121,6 +121,7 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
         $notificationsEmails  = array();
         $notificationsMobiles = array();
         $notificationsWebPush = array();
+        $notificationsDevices = array();
 
         // notification for this shouter was disabled
         if (empty($configuration[$shouter])) {
@@ -155,6 +156,11 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                     $notificationsWebPush = array_filter(array_column($users, 'webpush'));
                     break;
 
+                case Jaws_Notification::APP_DRIVER:
+                    // generate devices array
+                    $notificationsDevices = array_filter(array_column($users, 'device'));
+                    break;
+
                 default:
                     return false;
             }
@@ -162,9 +168,12 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             $notificationsEmails  = array_filter(array_column($users, 'email'));
             $notificationsMobiles = array_filter(array_column($users, 'mobile'));
             $notificationsWebPush = array_filter(array_column($users, 'webpush'));
+            $notificationsDevices = array_filter(array_column($users, 'device'));
         }
 
-        if (!empty($notificationsEmails) || !empty($notificationsMobiles) || !empty($notificationsWebPush)) {
+        if (!empty($notificationsEmails) || !empty($notificationsMobiles) ||
+            !empty($notificationsWebPush) || !empty($notificationsDevices)
+        ) {
             // initiate variables if not exist
             if (!array_key_exists('variables', $params)) {
                 $params['variables'] = array();
@@ -174,7 +183,8 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
                 array(
                     'emails'  => $notificationsEmails,
                     'mobiles' => $notificationsMobiles,
-                    'webpush' => $notificationsWebPush
+                    'webpush' => $notificationsWebPush,
+                    'devices' => $notificationsDevices,
                 ),
                 $shouter,
                 $params['name'],

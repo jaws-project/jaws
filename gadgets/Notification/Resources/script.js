@@ -307,7 +307,7 @@ function Jaws_Gadget_Notification_Action_NotificationDrivers() { return {
         }
 
         var data = $.unserialize($('#driver-form').serialize());
-        var settings = $.unserialize($('#driver-settings-form').serialize());
+        var settings = $.formArray($('#driver-settings-form').find('input,select,textarea'), false, false);
         this.ajax.call(
             'UpdateNotificationDriver', {
                 'id': this.selectedDriver,

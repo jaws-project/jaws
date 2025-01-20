@@ -95,7 +95,7 @@ class Notification_Model_Drivers extends Jaws_Gadget_Model
         if (Jaws_Error::IsError($driverInfo)) {
             return $driverInfo;
         }
-        $options = null;
+        $options = array();
         if (!empty($driverInfo)) {
             $options = (array)@json_decode($driverInfo['options']);
             $dName =  $driverInfo['name'];

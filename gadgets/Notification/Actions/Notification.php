@@ -50,6 +50,10 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                     case Jaws_Notification::WEB_DRIVER:
                         $limit = (int)$this->gadget->registry->fetch('web_fetch_limit');
                         break;
+
+                    case Jaws_Notification::APP_DRIVER:
+                        $limit = (int)$this->gadget->registry->fetch('app_fetch_limit');
+                        break;
                 }
 
                 // fetch notifications
