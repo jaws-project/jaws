@@ -17,7 +17,12 @@ class Search_Model_Search extends Jaws_Gadget_Model
      * @var     array
      * @access  private
      */
-    var $_SearchTerms = array();
+    var $_SearchTerms = array(
+        'all' => '',
+        'least' => '',
+        'exact' => '',
+        'exclude' => '',
+    );
 
     /**
      * Returns the search results
@@ -130,11 +135,9 @@ class Search_Model_Search extends Jaws_Gadget_Model
      * @param   array   $options    Search options
      * @return  string  Search result title
      */
-    function implodeSearch($options = null)
+    function implodeSearch($options = array())
     {
-        if (is_null($options)) {
-            $options = $this->_SearchTerms;
-        }
+        $options = array_merge($this->_SearchTerms, $options);
 
         $resTitle = '';
         $terms = implode(' ', is_array($options['all'])? $options['all'] : explode(' ', (string)$options['all']));
