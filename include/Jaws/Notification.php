@@ -24,6 +24,7 @@ class Jaws_Notification
     const EML_DRIVER = 1; // Email
     const SMS_DRIVER = 2; // SMS
     const WEB_DRIVER = 3; // Web push API
+    const APP_DRIVER = 4; // App push API
 
     /**
      * Driver title
@@ -87,7 +88,7 @@ class Jaws_Notification
      * @param   array   $options    Associated options array
      * @return  object  Jaws_Notification type object or Jaws_Error on failure
      */
-    static function getInstance($driver, $options)
+    static function getInstance($driver, $options = array())
     {
         static $instances = array();
         $driver = preg_replace('/[^[:alnum:]_\-]/', '', $driver);
