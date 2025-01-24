@@ -505,7 +505,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
         $prefix = in_array($prefix, ['', null])? '' : ($prefix . $delimiter);
 
         $result = preg_replace_callback(
-            '/\{(\w+)\}/', function ($matches) use ($args, $prefix) {
+            '/(\w+)/', function ($matches) use ($args, $prefix) {
                 return isset($args[$prefix . $matches[1]])? $args[$prefix . $matches[1]] : '';
             },
             $input
