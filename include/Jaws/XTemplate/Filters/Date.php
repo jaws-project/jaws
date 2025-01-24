@@ -93,6 +93,7 @@ class Jaws_XTemplate_Filters_Date extends Jaws_XTemplate_Filters
                     $hours = $hours + 12;
                 }
                 $result[$key] = $hours*3600 + $minutes*60 + $seconds;
+                $result[$key] = Jaws::getInstance()->UserTime2UTC($result[$key]);
             }
 
             $result = is_array($input)? $result : $result[0];
