@@ -224,7 +224,7 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
         if (is_array($input)) {
             return in_array($needle, is_null($column_key)? $input : array_column($input, $column_key));
         } else {
-            return strpos($input, $needle) !== false;
+            return strpos((string)$input, $needle) !== false;
         }
     }
 
