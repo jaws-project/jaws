@@ -289,18 +289,18 @@ function Jaws_Gadget_Files() { return {
         options = Object.assign(
             {
                 'labels': {
-                    'title':  '',
+                    'title': '',
                     'browse': '',
                     'remove': '',
-                    'description':  '',
+                    'description': '',
                 },
                 'modalsize': '',
-                'filetype':  0,
-                'maxsize':   33554432,
+                'filetype': 0,
+                'maxsize': 33554432,
                 'extensions': '',
                 'dimension': '',
-                'maxcount':  0,
-                'preview':   true
+                'maxcount': 0,
+                'preview': true
             },
             options
         );
