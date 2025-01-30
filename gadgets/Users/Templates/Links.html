@@ -130,12 +130,16 @@
         {%- endindent %}
       {%- endif %}
 
-      <li class="nav-item">
-        {%- assign admin_script = 'Settings.admin_script' | registry %}
-        <a class="nav-link icon-link fw-bold" href="{{ admin_script | empty: 'admin.php' : admin_script }}">
-          <i class="fas fa-screwdriver-wrench"></i>{{ 'users.controlpanel' | t }}
-        </a>
-      </li>
+      {%- if 'ControlPanel.default_admin' | permission %}
+        {%- indent -2 %}
+        <li class="nav-item">
+          {%- assign admin_script = 'Settings.admin_script' | registry %}
+          <a class="nav-link icon-link fw-bold" href="{{ admin_script | empty: 'admin.php' : admin_script }}">
+            <i class="fas fa-screwdriver-wrench"></i>{{ 'users.controlpanel' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+      {%- endif %}
       <li class="nav-item">
         <a class="nav-link icon-link" href="{{ 'Users' | urlmap: 'Logout' }}">
           <i class="fas fa-arrow-right-from-bracket"></i>{{ 'global.logout' | t }}

@@ -1452,31 +1452,34 @@ function Jaws_Gadget_Users() { return {
     {
         let $form = $('[name="user-registration-form"]');
         $form.on('submit', $.proxy(function (event) {
-            let $email = $form.find('[name="email"]');
-            let $mobile = $form.find('[name="mobile"]');
-            if ((!$email.length || $email.val().blank()) && (!$mobile.length || $mobile.val().blank())) {
-                event.preventDefault();
-                this.gadget.message.show(
-                    {
-                        'text': Jaws.t('error_incomplete_fields'),
-                        'type': 'alert-danger'
-                    }
-                );
-                return false;
-            }
-
-            let $username = $form.find('[name="username"]');
-            if ($username.length && $username.attr('type') == 'hidden') {
-                if ($mobile.length && !$mobile.val().blank()) {
-                    $username.val($mobile.val());
-                } else {
-                    $username.val($email.val());
+            let regstep = $form.find('[name="regstep"]').val();
+            if (regstep && regstep == 1) {
+                let $email = $form.find('[name="email"]');
+                let $mobile = $form.find('[name="mobile"]');
+                if ((!$email.length || $email.val().blank()) && (!$mobile.length || $mobile.val().blank())) {
+                    event.preventDefault();
+                    this.gadget.message.show(
+                        {
+                            'text': Jaws.t('error_incomplete_fields'),
+                            'type': 'alert-danger'
+                        }
+                    );
+                    return false;
                 }
-            }
 
-            let $nickname = $form.find('[name="nickname"]');
-            if ($nickname.length && $nickname.attr('type') == 'hidden') {
-                $nickname.val($username.val());
+                let $username = $form.find('[name="username"]');
+                if ($username.length && $username.attr('type') == 'hidden') {
+                    if ($mobile.length && !$mobile.val().blank()) {
+                        $username.val($mobile.val());
+                    } else {
+                        $username.val($email.val());
+                    }
+                }
+
+                let $nickname = $form.find('[name="nickname"]');
+                if ($nickname.length && $nickname.attr('type') == 'hidden') {
+                    $nickname.val($username.val());
+                }
             }
 
             return true;
