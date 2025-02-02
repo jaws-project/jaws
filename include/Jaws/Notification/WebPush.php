@@ -85,7 +85,7 @@ class Jaws_Notification_WebPush extends Jaws_Notification
      * @return  mixed   Jaws_Error on failure
      */
     function notify(
-        $shouter, $name, $contacts, $title, $summary, $verbose, $variables, $time, $callback_url, $image
+        $shouter, $name, $contacts, $title, $summary, $verbose, array $variables, $time, $callback_url, $image
     ) {
         try {
             foreach ($contacts as $pushSubscription) {
@@ -99,7 +99,7 @@ class Jaws_Notification_WebPush extends Jaws_Notification
                                 'icon'    => $image,
                                 'url'     => $callback_url,
                                 'title'   => $title,
-                                'body'    => $summary,
+                                'body'    => $this->setMessageVariables($summary, $variables),
                                 'vibrate' => [],
                             )
                         )

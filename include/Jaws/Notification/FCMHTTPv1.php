@@ -175,7 +175,7 @@ class Jaws_Notification_FCMHTTPv1 extends Jaws_Notification
      * @return  mixed   Jaws_Error on failure
      */
     function notify(
-        $shouter, $name, $contacts, $title, $summary, $verbose, $variables, $time, $callback_url, $image
+        $shouter, $name, $contacts, $title, $summary, $verbose, array $variables, $time, $callback_url, $image
     ) {
         try {
             if (empty($this->accessToken)) {
@@ -193,7 +193,7 @@ class Jaws_Notification_FCMHTTPv1 extends Jaws_Notification
                         'token' => $deviceToken,
                         'notification' => [
                             'title' => $title,
-                            'body' => $summary,
+                            'body' => $this->setMessageVariables($summary, $variables),
                         ],
                         'data' => null,
                     ],

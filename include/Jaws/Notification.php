@@ -153,9 +153,29 @@ class Jaws_Notification
      * @return  mixed   Jaws_Error on failure
      */
     function notify(
-        $shouter, $name, $contacts, $title, $summary, $verbose, $variables, $time, $callback_url, $image
+        $shouter, $name, $contacts, $title, $summary, $verbose, array $variables, $time, $callback_url, $image
     ) {
         return Jaws_Error::raiseError('notify() method not supported by this driver.', __CLASS__);
+    }
+
+    /**
+     *  set message variables
+     *
+     * @param   string  $message    Message
+     * @param   array   $variables  Variables
+     *
+     * @return  string  parsed message by set variables
+     */
+    function setMessageVariables($message, array $variables)
+    {
+        $result = preg_replace_callback(
+            '/\{(\w+)\}/', function ($matches) use ($variables) {
+                return isset($variables[$matches[1]])? $variables[$matches[1]] : '';
+            },
+            $message
+        );
+
+        return $result;
     }
 
 }

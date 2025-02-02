@@ -63,7 +63,7 @@ class Jaws_Notification_Mail extends Jaws_Notification
      * @return  mixed   Jaws_Error on failure
      */
     function notify(
-        $shouter, $name, $contacts, $title, $summary, $verbose, $variables, $time, $callback_url, $image
+        $shouter, $name, $contacts, $title, $summary, $verbose, array $variables, $time, $callback_url, $image
     ) {
         $this->object->reset();
         $this->object->SetFrom();
@@ -86,8 +86,8 @@ class Jaws_Notification_Mail extends Jaws_Notification
         $tpl->SetVariable('site-license',   $this->attributes['site_license']);
         $tpl->SetVariable('site-copyright', $this->attributes['site_copyright']);
         $tpl->SetVariable('title', $title);
-        $tpl->SetVariable('summary', $summary);
-        $tpl->SetVariable('content', $verbose);
+        $tpl->SetVariable('summary', $this->setMessageVariables($summary, $variables));
+        $tpl->SetVariable('content', $this->setMessageVariables($verbose, $variables));
         $tpl->SetVariablesArray(Jaws_Date::getInstance()->GetDateInfo($time));
         $tpl->ParseBlock('notification/eml');
         $tpl->ParseBlock('notification');
