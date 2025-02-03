@@ -48,7 +48,7 @@ class Jaws_Notification
      * @access  protected
      * @var     array
      */
-    protected $options;
+    protected $options = array();
 
     /**
      * Site attributes
