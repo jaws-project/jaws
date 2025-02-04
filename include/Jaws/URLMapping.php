@@ -242,7 +242,11 @@ class Jaws_URLMapping
 
         $reqOptions = array();
         $matched_but_ignored = false;
+        $matched_and_accepted = false;
+
         if (false !== $requestedURL = strstr($this->_request_uri, '?', true)) {
+            parse_str(substr($this->_request_uri, strlen($requestedURL) + 1), $reqOptions);
+        } elseif (false !== $requestedURL = strstr($this->_request_uri, '&', true)) {
             parse_str(substr($this->_request_uri, strlen($requestedURL) + 1), $reqOptions);
         } else {
             $requestedURL = $this->_request_uri;
@@ -290,19 +294,6 @@ class Jaws_URLMapping
                         // Gadget/Action
                         $request->update('reqGadget', $gadget, 'get');
                         $request->update('reqAction', $map['action'], 'get');
-                        foreach ($reqOptions as $key => $value) {
-                            if (is_array($value)) {
-                                $decodedValue = [];
-                                array_walk($value,
-                                    static function($ival, $ikey) use(&$decodedValue) {
-                                        $decodedValue[rawurldecode($ikey)] = rawurldecode($ival);
-                                    }
-                                );
-                            } else {
-                                $decodedValue = rawurldecode($value);
-                            }
-                            $request->update(rawurldecode($key), $decodedValue);
-                        }
 
                         // Params
                         if (isset($map['params']) && is_array($map['params'])) {
@@ -322,14 +313,29 @@ class Jaws_URLMapping
                             }
                         }
 
-                        return true;
+                        $matched_and_accepted = true;
+                        break 3;
                     }
                 } // for
             } //foreach maps
         } // foreach gadgets
 
-        if ($matched_but_ignored) {
-            return false;
+        foreach ($reqOptions as $key => $value) {
+            if (is_array($value)) {
+                $decodedValue = [];
+                array_walk($value,
+                    static function($ival, $ikey) use(&$decodedValue) {
+                        $decodedValue[rawurldecode($ikey)] = rawurldecode($ival);
+                    }
+                );
+            } else {
+                $decodedValue = rawurldecode($value);
+            }
+            $request->update(rawurldecode($key), $decodedValue);
+        }
+
+        if ($matched_but_ignored || $matched_and_accepted) {
+            return $matched_and_accepted? true : false;
         }
 
         /**
