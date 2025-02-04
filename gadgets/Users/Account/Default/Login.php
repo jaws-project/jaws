@@ -45,6 +45,7 @@ class Users_Account_Default_Login extends Users_Account_Default
             $reqpost['loginstep'] = 1;
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
+            $reqpost['referrer'] = $referrer;
         } else {
             $reqpost = $response['data'];
             $reqpost['loginstep'] = (int)$reqpost['loginstep'];
@@ -52,6 +53,8 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         $tpl->SetVariable('title', $this::t("login_title_step_{$reqpost['loginstep']}"));
         $tpl->SetBlock("login/login_step_{$reqpost['loginstep']}");
+        $tpl->SetVariable('referrer', $reqpost['referrer']);
+
         switch ($reqpost['loginstep']) {
             case 2:
                 $this->LoginBoxStep2($tpl, $reqpost, $referrer);
@@ -98,6 +101,7 @@ class Users_Account_Default_Login extends Users_Account_Default
             $reqpost['loginstep'] = 0;
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
+            $reqpost['referrer'] = $referrer;
         } else {
             $reqpost = $response['data'];
             $reqpost['loginstep'] = (int)$reqpost['loginstep'];
@@ -105,6 +109,7 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         //
         $ltpl->SetVariable('legend_title', Jaws_Gadget::t('CONTROLPANEL.LOGIN_TITLE'));
+        $tpl->SetVariable('referrer', $reqpost['referrer']);
 
         if ($reqpost['loginstep'] == 3) {
             $this->LoginBoxStep3($ltpl, $reqpost, $referrer);

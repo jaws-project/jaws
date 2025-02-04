@@ -18,7 +18,8 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
         $loginData = $this->gadget->request->fetch(
             array(
                 'domain?null', 'username', 'password', 'old_password',
-                'usecrypt', 'resend', 'loginkey', 'loginstep', 'remember?null', 'defaults:array'
+                'usecrypt', 'resend', 'loginkey', 'loginstep', 'remember?null', 'referrer',
+                'defaults:array'
             ),
             'post'
         );
@@ -171,8 +172,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 $this->gadget->session->temp_login_user = $user;
 
                 // two step verification?
-                if ((bool)$this->gadget->registry->fetchByUser('two_step_verification', '', $user['id']))
-                {
+                if ((bool)$this->gadget->registry->fetchByUser('two_step_verification', '', $user['id'])) {
                     $loginData['loginstep'] = 2;
                     // send notification to user
                     $this->gadget->action->load('Login')->NotifyLoginKey($user);
@@ -218,6 +218,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
             // unset bad login entry
             $this->gadget->action->load('Login')->BadLogins($user['username'], -1);
 
+            $user['referrer'] = $loginData['referrer'];
             return $user;
         } catch (Exception $error) {
             unset($loginData['password'], $loginData['chkpassword']);
@@ -228,7 +229,7 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
                 $loginData
             );
 
-            return Jaws_Error::raiseError($error->getMessage(), $error->getCode());
+            return Jaws_Error::raiseError($error->getMessage(), $error->getCode(), JAWS_ERROR_NOTICE);
         }
 
     }
@@ -244,9 +245,6 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
         $urlParams = array();
         if (!empty($authtype)) {
             $urlParams['authtype'] = strtolower($authtype);
-        }
-        if (!empty($referrer)) {
-            $urlParams['referrer'] = bin2hex($referrer);
         }
 
         // if stored authtype in session not found, push error message

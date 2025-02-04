@@ -222,13 +222,14 @@ class Users_Actions_Login extends Jaws_Gadget_Action
                     );
                 }
             }
+        } else {
+            $referrer = bin2hex(Jaws_XSS::filterURL(hex2bin($referrer), true, true));
         }
-        $this->gadget->session->referrer = $referrer;
 
         // load authentication method driver
         $classname = "Users_Account_{$authtype}_Login";
         $objAccount = new $classname($this->gadget);
-        return $objAccount->Login(hex2bin($defaults), Jaws_XSS::filterURL(hex2bin($referrer), true, true));
+        return $objAccount->Login(hex2bin($defaults), $referrer);
     }
 
     /**
@@ -255,8 +256,11 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $loginData = $objAccount->Authenticate();
         }
         
+        $referrer = '';
         if (!Jaws_Error::IsError($loginData)) {
             $loginData['auth'] = $session_authtype;
+            // parse referrer url
+            $referrer = Jaws_XSS::filterURL(hex2bin((string)@$loginData['referrer']), true, true);
             // create session & cookie
             $this->app->session->create($loginData, $loginData['remember']);
             // login event logging
@@ -276,8 +280,6 @@ class Users_Actions_Login extends Jaws_Gadget_Action
             $this->gadget->event->shout('LoginUser', $loginData);
         }
 
-        // parse referrer url
-        $referrer = Jaws_XSS::filterURL(hex2bin((string)$this->gadget->session->referrer), true, true);
         return $objAccount->AuthenticateError(
             $loginData,
             ($session_authtype != $default_authtype)? $session_authtype : '',
