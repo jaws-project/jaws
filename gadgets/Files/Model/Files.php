@@ -15,7 +15,7 @@ class Files_Model_Files extends Jaws_Gadget_Model
      * @param   array   $files  List of upload files in FileManagement format
      * @return  bool    True if insert successfully otherwise False
      */
-    function insertFiles($interface, $files)
+    function insertFiles($interface, $files, $move2folder = false)
     {
         if (!is_array($files) || empty($files)) {
             return false;
@@ -51,8 +51,17 @@ class Files_Model_Files extends Jaws_Gadget_Model
 
             $result = $attachTable->insert($data)->exec();  
             if (!Jaws_Error::IsError($result)) {
-                $filepath = 'files/'. $data['gadget']. '/'. $data['action']. '/';
-                $filepath.= ((string)$data['folder'] === '')? '' : ($data['folder'] . '/');
+                $actionpath = strtolower('files/'. $data['gadget']. '/'. $data['action']. '/');
+                $filepath = $actionpath . strtolower(((string)$data['folder'] === '')? '' : ($data['folder'] . '/'));
+                if ($move2folder) {
+                    if ($this->gadget->fileManagement::mkdir(ROOT_DATA_PATH . $filepath)) {
+                        $ret = $this->gadget->fileManagement::rename(
+                            ROOT_DATA_PATH . $actionpath . $file['host_filename'],
+                            ROOT_DATA_PATH . $filepath . $file['host_filename']
+                        );
+                        // FIXME: we need an action for moving failure
+                    }
+                }
                 $resultFiles[] = array_merge(
                     array(
                         'id' => $result,

@@ -530,7 +530,10 @@ class Files_Actions_Files extends Jaws_Gadget_Action
         } else {
             $interface = array_merge(
                 $inspectResult['interface'],
-                array('reference' => $interface['reference'])
+                array(
+                    'reference' => $interface['reference'],
+                    'folder' => $interface['folder']?? '',
+                )
             );
         }
 
@@ -552,10 +555,12 @@ class Files_Actions_Files extends Jaws_Gadget_Action
             }
         }
 
+        $move2folder = ($interface['reference'] != $interface['input_reference']) && !empty($interface['folder']);
         if (!empty($inspectResult['news'])) {
             $result = $filesModel->insertFiles(
                 $interface,
-                $inspectResult['news']
+                $inspectResult['news'],
+                $move2folder
             );
             if (!Jaws_Error::IsError($result)) {
                 call_user_func_array('array_push', array_merge(array(&$resultFiles['news']), $result));
