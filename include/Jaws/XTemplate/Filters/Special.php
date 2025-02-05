@@ -72,18 +72,20 @@ class Jaws_XTemplate_Filters_Special extends Jaws_XTemplate_Filters
      */
     public static function session($var, $component = '')
     {
-        if (empty($component)) {
-            if (false !== $property = strstr($var, '.')) {
-                $var = strstr($var, '.', true);
-                $property = substr($property, 1);
+        if (false !== $property = strstr($var, '.')) {
+            $var = strstr($var, '.', true);
+            $property = substr($property, 1);
+            if (empty($component)) {
                 $objKey = Jaws::getInstance()->session->$var;
-                if (is_object($objKey) && property_exists($objKey, $property)) {
-                    return Jaws::getInstance()->session->$var->$property;
-                }
-
-                return null;
+            } else {
+                $objKey = Jaws_Gadget::getInstance($component)->session->$var;
+            }
+            if (is_object($objKey) && property_exists($objKey, $property)) {
+                return $objKey->$property;
             }
 
+            return null;
+        } elseif (empty($component)) {
             return Jaws::getInstance()->session->$var;
         } else {
             return Jaws::getInstance()->session->getAttribute($var, $component);
