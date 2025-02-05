@@ -21,6 +21,7 @@ class Jaws_XTemplate_Filters_Date extends Jaws_XTemplate_Filters
      */
     public static function date2str($input, $format = '', $calendar = '')
     {
+        $input = Jaws::getInstance()->UTC2UserTime($input);
         return Jaws_Date::getInstance($calendar)->Format($input, $format, false);
     }
 
