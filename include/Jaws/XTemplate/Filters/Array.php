@@ -103,8 +103,17 @@ class Jaws_XTemplate_Filters_Array extends Jaws_XTemplate_Filters
      */
     public static function indexof($index, array|null $input)
     {
-        if (is_array($input) && array_key_exists($index, $input)) {
-            return $input[$index];
+        if ($input instanceof \Traversable) {
+            $input = iterator_to_array($input);
+        }
+        if (is_array($input)) {
+            if (is_array($index)) {
+                return array_intersect_key($input, array_flip($index));
+            } else {
+                if (array_key_exists($index, $input)) {
+                    return $input[$index];
+                }
+            }
         }
 
         return null;
