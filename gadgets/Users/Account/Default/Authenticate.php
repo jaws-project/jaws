@@ -258,10 +258,21 @@ class Users_Account_Default_Authenticate extends Users_Account_Default
 
         if (Jaws_Error::IsError($result)) {
             http_response_code($result->getCode());
-            return Jaws_Header::Location(
-                $this->gadget->urlMap('Login', $urlParams),
-                'Login.Response'
-            );
+            if (JAWS_SCRIPT == 'index') {
+                return Jaws_Header::Location(
+                    $this->gadget->urlMap('Login', $urlParams),
+                    'Login.Response'
+                );
+            } else {
+                $admin_script = $this->gadget->registry->fetch('admin_script', 'Settings');
+                return Jaws_Header::Location($admin_script?: 'admin.php');
+                /*
+                return Jaws_Header::Location(
+                    $this->gadget->urlMap('Login', $urlParams),
+                    'Login.Response'
+                );
+                */
+            }
         }
 
         // 201 http code for success login

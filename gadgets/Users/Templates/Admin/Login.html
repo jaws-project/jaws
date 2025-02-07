@@ -7,6 +7,7 @@
   <base href="{{base_url}}" />
   <link rel="icon" type="image/png" href="images/jaws.png" />
   <!-- BEGIN metas -->{{elements}}<!-- END metas -->
+  <link rel="stylesheet" type="text/css" href="libraries/bootstrap.fuelux/css/bootstrap.fuelux.min.rtl.css" />
   <link href="gadgets/ControlPanel/Resources/style{{.dir}}.css?{{cpanel_version}}" type="text/css" rel="stylesheet" >
   <!-- BEGIN links -->{{elements}}<!-- END links -->
  </head>
@@ -196,6 +197,11 @@
       </form>
 <!-- END login_step_3 -->
 
+    </div>
+    <div class="text-center">
+      <div class="alert {{response_type}}" role="alert">
+        {{response_text}}
+      </div>
     </div>
    </div>
    <hr />

@@ -54,18 +54,20 @@ class Users_Account_Default_Login extends Users_Account_Default
         $tpl->SetVariable('title', $this::t("login_title_step_{$reqpost['loginstep']}"));
         $tpl->SetBlock("login/login_step_{$reqpost['loginstep']}");
         $tpl->SetVariable('referrer', $reqpost['referrer']);
+        $backURL = $referrer;
+        $backTitle = Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE'));
 
         switch ($reqpost['loginstep']) {
             case 2:
-                $this->LoginBoxStep2($tpl, $reqpost, $referrer);
+                $this->LoginBoxStep2($tpl, $reqpost, $backURL, $backTitle);
                 break;
 
             case 3:
-                $this->LoginBoxStep3($tpl, $reqpost, $referrer);
+                $this->LoginBoxStep3($tpl, $reqpost, $backURL, $backTitle);
                 break;
 
             default:
-                $this->LoginBoxStep1($tpl, $reqpost, $referrer);
+                $this->LoginBoxStep1($tpl, $reqpost, $backURL, $backTitle);
         }
 
         if (!empty($response)) {
@@ -98,7 +100,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         if (!isset($response['data'])) {
             $reqpost['domain'] = $this->gadget->registry->fetch('default_domain');
             $reqpost['username'] = '';
-            $reqpost['loginstep'] = 0;
+            $reqpost['loginstep'] = 1;
             $reqpost['remember'] = '';
             $reqpost['usecrypt'] = '';
             $reqpost['referrer'] = $referrer;
@@ -108,21 +110,26 @@ class Users_Account_Default_Login extends Users_Account_Default
         }
 
         //
-        $ltpl->SetVariable('legend_title', Jaws_Gadget::t('CONTROLPANEL.LOGIN_TITLE'));
-        $tpl->SetVariable('referrer', $reqpost['referrer']);
+        $ltpl->SetBlock("layout/login_step_{$reqpost['loginstep']}");
+        $ltpl->SetVariable('legend_title', $this::t("login_title_step_{$reqpost['loginstep']}"));
+        $ltpl->SetVariable('referrer', $reqpost['referrer']);
+        $backURL = $this->app->getSiteURL();
+        $backTitle = Jaws::t('VIEW_SITE');
 
-        if ($reqpost['loginstep'] == 3) {
-            $this->LoginBoxStep3($ltpl, $reqpost, $referrer);
-        } elseif ($reqpost['loginstep'] == 2) {
-            $this->LoginBoxStep2($ltpl, $reqpost, $referrer);
-        } else {
-            $this->LoginBoxStep1($ltpl, $reqpost, $referrer);
+        switch ($reqpost['loginstep']) {
+            case 2:
+                $this->LoginBoxStep2($ltpl, $reqpost, $backURL, $backTitle);
+                break;
+
+            case 3:
+                $this->LoginBoxStep3($ltpl, $reqpost, $backURL, $backTitle);
+                break;
+
+            default:
+                $this->LoginBoxStep1($ltpl, $reqpost, $backURL, $backTitle);
         }
 
-        $ltpl->SetVariable('login', Jaws::t('LOGIN'));
-        $ltpl->SetVariable('url_back', $this->app->getSiteURL('/'));
-        $ltpl->SetVariable('lbl_back', Jaws_Gadget::t('CONTROLPANEL.LOGIN_BACK_TO_SITE'));
-
+        $ltpl->ParseBlock("layout/login_step_{$reqpost['loginstep']}");
         if (!empty($response)) {
             $ltpl->SetVariable('response_type', $response['type']);
             $ltpl->SetVariable('response_text', $response['text']);
@@ -137,7 +144,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template of the login form
      */
-    public function LoginBoxStep1(&$tpl, $reqpost, $referrer)
+    public function LoginBoxStep1(&$tpl, $reqpost, $backURL, $backTitle)
     {
         http_response_code(401);
 
@@ -200,8 +207,8 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         // global variables
         $tpl->SetVariable('login', Jaws::t('LOGIN'));
-        $tpl->SetVariable('url_back', $referrer);
-        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
+        $tpl->SetVariable('url_back', $backURL);
+        $tpl->SetVariable('lbl_back', $backTitle);
 
         // anon_register
         if ($this->gadget->registry->fetch('anon_register') == 'true') {
@@ -226,7 +233,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template of the login form
      */
-    public function LoginBoxStep2(&$tpl, $reqpost, $referrer)
+    public function LoginBoxStep2(&$tpl, $reqpost, $backURL, $backTitle)
     {
         $block = $tpl->GetCurrentBlockPath();
 
@@ -243,8 +250,8 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         // global variables
         $tpl->SetVariable('login', Jaws::t('LOGIN'));
-        $tpl->SetVariable('url_back', $referrer);
-        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
+        $tpl->SetVariable('url_back', $backURL);
+        $tpl->SetVariable('lbl_back', $backTitle);
     }
 
     /**
@@ -253,7 +260,7 @@ class Users_Account_Default_Login extends Users_Account_Default
      * @access  public
      * @return  string  XHTML template of the login form
      */
-    public function LoginBoxStep3(&$tpl, $reqpost, $referrer)
+    public function LoginBoxStep3(&$tpl, $reqpost, $backURL, $backTitle)
     {
         $block = $tpl->GetCurrentBlockPath();
 
@@ -283,8 +290,8 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         // global variables
         $tpl->SetVariable('login', Jaws::t('LOGIN'));
-        $tpl->SetVariable('url_back', $referrer);
-        $tpl->SetVariable('lbl_back', Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE')));
+        $tpl->SetVariable('url_back', $backURL);
+        $tpl->SetVariable('lbl_back', $backTitle);
     }
 
 }
