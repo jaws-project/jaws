@@ -18,7 +18,7 @@ class Blocks_Hooks_Search extends Jaws_Gadget_Hook
      */
     function GetOptions() {
         return array(
-            'blocks' => array('title', 'contents'),
+            'blocks' => array('title', 'content'),
         );
     }
 
