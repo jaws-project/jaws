@@ -23,14 +23,10 @@ class Policy_Model_IP extends Jaws_Gadget_Model
      */
     function IsReguestAccessible($ip, $script, $gadget, $action)
     {
-        $result = Jaws_ORM::getInstance()
+        $zone_ranges = Jaws_ORM::getInstance()
             ->table('policy_zone_action')
-            ->select('access:boolean')
+            ->select('policy_zone_range.from', 'policy_zone_range.to', 'access:boolean')
             ->join('policy_zone_range', 'policy_zone_range.zone', 'policy_zone_action.zone')
-            ->where('policy_zone_range.from', $ip, '>=')
-            ->and()
-            ->where('policy_zone_range.to', $ip, '<=')
-            ->and()
             ->openWhere('script', $script)
             ->or()
             ->closeWhere('script', 0)
@@ -43,12 +39,22 @@ class Policy_Model_IP extends Jaws_Gadget_Model
             ->or()
             ->closeWhere('action', '')
             ->orderBy('policy_zone_action.order')
-            ->fetchOne();
-        return $result;
+            ->fetchAll();
+
+        $ip = inet_ntop(base64_decode($ip));
+        foreach ($zone_ranges as $range) {
+            $to = inet_ntop(base64_decode($range['to']));
+            $from = inet_ntop(base64_decode($range['from']));
+            if (version_compare($ip, $from, '>=') && version_compare($ip, $to, '<=')) {
+                return $range['access'];
+            }
+        }
+
+        return true;
     }
 
     /**
-     * Checks wheter the IP is blocked or not
+     * Checks whether the IP is blocked or not
      *
      * @access  public
      * @param   string  $ip     IP Address
@@ -85,4 +91,5 @@ class Policy_Model_IP extends Jaws_Gadget_Model
 
         return $this->gadget->registry->fetch('block_undefined_ip') == 'true';
     }
+
 }

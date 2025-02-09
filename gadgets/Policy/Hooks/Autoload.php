@@ -29,10 +29,12 @@ class Policy_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function RequestAccessible()
     {
-        if (!$this->app->session->user->superadmin) {
+        if (!$this->app->session->user->superadmin ||
+            !defined('JAWS_GODUSER') || JAWS_GODUSER !== $this->app->session->user->id
+        ) {
             $addr = Jaws_Utils::GetRemoteAddress();
             $accessible = $this->gadget->model->load('IP')->IsReguestAccessible(
-                $addr['proxy']?: $addr['client'],
+                ($addr['public']? $addr['client'] : $addr['proxy']),
                 JAWS_SCRIPT == 'index'? 1 : 2,
                 $this->app->mainRequest['gadget'],
                 $this->app->mainRequest['action']

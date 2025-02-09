@@ -86,7 +86,7 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
         );
 
         $model = $this->gadget->model->loadAdmin('Zone');
-        $zones = $model->GetZoneRanges($post['limit'], $post['offset']);
+        $zones = $model->GetZoneRanges($post['filters'], $post['limit'], $post['offset']);
         if (Jaws_Error::IsError($zones)) {
             return $this->gadget->session->response($zones->GetMessage(), RESPONSE_ERROR);
         }
