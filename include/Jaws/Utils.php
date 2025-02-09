@@ -425,6 +425,11 @@ class Jaws_Utils
                 }
             }
 
+            $public = (bool)filter_var(
+                $direct, 
+                FILTER_VALIDATE_IP, 
+                FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 | FILTER_FLAG_NO_PRIV_RANGE
+            );
             $client = @inet_pton($client);
             $direct = @inet_pton($direct);
             if (empty($client)) {
@@ -436,7 +441,8 @@ class Jaws_Utils
 
             $addr = array(
                 'proxy'  => rtrim(base64_encode($proxy),  '='),
-                'client' => rtrim(base64_encode($client), '=')
+                'client' => rtrim(base64_encode($client), '='),
+                'public' => $public,
             );
         }
 
