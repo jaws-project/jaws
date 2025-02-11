@@ -79,7 +79,7 @@ class Users_Account_Default_LoginForgot extends Users_Account_Default
 
         $tpl->SetVariable('domain',   $reqpost['domain']);
         $tpl->SetVariable('account',  $reqpost['account']);
-        $tpl->SetVariable('remember', $reqpost['remember']);
+        $tpl->SetVariable('remember', $reqpost['remember']?? '');
         $tpl->SetVariable('lbl_account',  Jaws::t('ACCOUNT'));
         $tpl->SetVariable('lbl_account_hint',  Jaws::t('ACCOUNT_HINT'));
         $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
