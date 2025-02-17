@@ -685,12 +685,12 @@ class Jaws_ORM
 
         if (is_array($value) && !empty($value)) {
             $this->openWhere();
-            foreach ($value as $val) {
-                if ($this->_dbDriver == 'oci8' && $value === '' && $opt == '=') {
+            foreach ($value as $qval) {
+                if ($this->_dbDriver == 'oci8' && $qval === '' && $opt == '=') {
                     // oracle automatically convert empty string to null !!!
                     $this->_where[] = "($colstr is null)";
                 } else {
-                    $this->_where[] = "($colstr $opt $val)";
+                    $this->_where[] = "($colstr $opt $qval)";
                 }
 
                 $logic == 'or'? $this->or() : $this->and();
@@ -875,12 +875,12 @@ class Jaws_ORM
 
         if (is_array($value) && !empty($value)) {
             $this->openHaving();
-            foreach ($value as $val) {
-                if ($this->_dbDriver == 'oci8' && $value === '' && $opt == '=') {
+            foreach ($value as $qval) {
+                if ($this->_dbDriver == 'oci8' && $qval === '' && $opt == '=') {
                     // oracle automatically convert empty string to null !!!
                     $this->_having[] = "($colstr is null)";
                 } else {
-                    $this->_having[] = "($colstr $opt $val)";
+                    $this->_having[] = "($colstr $opt $qval)";
                 }
 
                 $logic == 'or'? $this->or() : $this->and();
