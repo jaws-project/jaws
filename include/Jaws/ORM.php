@@ -642,9 +642,9 @@ class Jaws_ORM
 
                     $val = $this->quoteValue(
                         preg_replace_callback(
-                            '/%?([^%]+)%?/u', 
+                            '/(%?)([^%]+)(%?)/u',
                             static function ($matches) use($jawsdb) {
-                                return $jawsdb->dbc->escapePattern($matches[0]);
+                                return $matches[1] . $jawsdb->dbc->escapePattern($matches[2]) . $matches[3];
                             },
                             $val
                         )
@@ -832,9 +832,9 @@ class Jaws_ORM
 
                     $val = $this->quoteValue(
                         preg_replace_callback(
-                            '/%?([^%]+)%?/u', 
+                            '/(%?)([^%]+)(%?)/u',
                             static function ($matches) use($jawsdb) {
-                                return $jawsdb->dbc->escapePattern($matches[0]);
+                                return $matches[1] . $jawsdb->dbc->escapePattern($matches[2]) . $matches[3];
                             },
                             $val
                         )
