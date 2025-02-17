@@ -33,9 +33,9 @@ class Blocks_Hooks_Search extends Jaws_Gadget_Hook
     function Execute($table, &$objORM)
     {
         $objORM->table('blocks');
-        $objORM->select('id', 'title', 'contents', 'updatetime');
+        $objORM->select('id', 'title', 'content', 'updated');
         $objORM->loadWhere('search.terms');
-        $result = $objORM->orderBy('createtime desc')->fetchAll();
+        $result = $objORM->orderBy('inserted desc')->fetchAll();
         if (Jaws_Error::IsError($result)) {
             return false;
         }
@@ -47,8 +47,8 @@ class Blocks_Hooks_Search extends Jaws_Gadget_Hook
             $block['title']   = $r['title'];
             $block['url']     = $this->gadget->urlMap('Block', array('id' => $r['id']));
             $block['image']   = 'gadgets/Blocks/Resources/images/logo.png';
-            $block['snippet'] = $r['contents'];
-            $block['date']    = $date->ToISO($r['updatetime']);
+            $block['snippet'] = $r['content'];
+            $block['date']    = $date->ToISO($r['updated']);
             $blocks[] = $block;
         }
 
