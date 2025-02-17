@@ -603,7 +603,7 @@ class Jaws_ORM
      * @param   string  $logic  'or' or 'and' glue codition if passing multi values
      * @return  object  Jaws_ORM object
      */
-    function where($column, $value, $opt = '=', $ignore = false, $logic = 'or')
+    function where($column, $value, $opt = '=', $ignore = false, $logic = 'and')
     {
         $this->_last_condition_type = 'where';
 
@@ -793,7 +793,7 @@ class Jaws_ORM
      * @param   string  $logic  'or' or 'and' glue codition if passing multi values
      * @return  object  Jaws_ORM object
      */
-    function having($column, $value, $opt = '=', $ignore = false, $logic = 'or')
+    function having($column, $value, $opt = '=', $ignore = false, $logic = 'and')
     {
         $this->_last_condition_type = 'having';
 
