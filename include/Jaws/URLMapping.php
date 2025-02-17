@@ -331,7 +331,7 @@ class Jaws_URLMapping
             } else {
                 $decodedValue = rawurldecode($value);
             }
-            $request->update(rawurldecode($key), $decodedValue);
+            $request->update(rawurldecode($key), $decodedValue, 'get');
         }
 
         if ($matched_but_ignored || $matched_and_accepted) {
