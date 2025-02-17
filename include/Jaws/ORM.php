@@ -600,9 +600,10 @@ class Jaws_ORM
      * @param   mixed   $value  Column value
      * @param   string  $opt    Operator condition
      * @param   bool    $ignore Ignore this condition
+     * @param   string  $logic  'or' or 'and' glue codition if passing multi values
      * @return  object  Jaws_ORM object
      */
-    function where($column, $value, $opt = '=', $ignore = false)
+    function where($column, $value, $opt = '=', $ignore = false, $logic = 'or')
     {
         $this->_last_condition_type = 'where';
 
@@ -632,16 +633,22 @@ class Jaws_ORM
 
             case 'like':
             case 'not like':
-                if (is_array($value)) {
-                    $value = $this->quoteValue(
-                        Jaws_UTF8::str_replace(
-                            '$',
-                            $this->jawsdb->dbc->escapePattern($value[1]),
-                            $value[0]
+                $jawsdb = $this->jawsdb;
+                $value = is_array($value)? $value : [$value];
+                foreach ($value as &$val) {
+                    if ($val[0] !== '%' && $val[-1] !== '%') {
+                        $val = "%{$val}%";
+                    }
+
+                    $val = $this->quoteValue(
+                        preg_replace_callback(
+                            '/%?([^%]+)%?/u', 
+                            static function ($matches) use($jawsdb) {
+                                return $jawsdb->dbc->escapePattern($matches[0]);
+                            },
+                            $val
                         )
                     );
-                } else {
-                    $value = $this->quoteValue('%' . $this->jawsdb->dbc->escapePattern($value) . '%');
                 }
                 break;
 
@@ -657,12 +664,12 @@ class Jaws_ORM
                 break;
 
             default:
-                if ($this->_dbDriver == 'oci8' && $value === '') {
-                    // oracle automatically convert empty string to null !!!
-                    $value = '';
-                    $opt   = 'is null';
+                if (is_array($value)) {
+                    foreach ($value as &$val) {
+                        $val = $this->quoteValue($val);
+                    }
                 } else {
-                    $value  = $this->quoteValue($value);
+                    $value = $this->quoteValue($value);
                 }
         }
 
@@ -676,7 +683,23 @@ class Jaws_ORM
             $colstr = $this->quoteIdentifier($column);
         }
 
-        $this->_where[] = "($colstr $opt $value)";
+        if (is_array($value) && !empty($value)) {
+            $this->openWhere();
+            foreach ($value as $val) {
+                if ($this->_dbDriver == 'oci8' && $value === '' && $opt == '=') {
+                    // oracle automatically convert empty string to null !!!
+                    $this->_where[] = "($colstr is null)";
+                } else {
+                    $this->_where[] = "($colstr $opt $val)";
+                }
+
+                $logic == 'or'? $this->or() : $this->and();
+            }
+            $this->closeWhere();
+        } else {
+            $this->_where[] = "($colstr $opt $value)";
+        }
+
         return $this;
     }
 
@@ -688,9 +711,10 @@ class Jaws_ORM
      * @param   string  $value  Column value
      * @param   string  $opt    Operator condition
      * @param   bool    $ignore Ignore this condition
+     * @param   string  $logic  'or' or 'and' glue codition if passing multi values
      * @return  object  Jaws_ORM object
      */
-    function openWhere($column = '', $value = '', $opt = '=', $ignore = false)
+    function openWhere($column = '', $value = '', $opt = '=', $ignore = false, $logic = 'or')
     {
         $this->_last_condition_type = 'where';
         $this->_where[] = '(';
@@ -700,7 +724,7 @@ class Jaws_ORM
         }
 
         if (!empty($column)) {
-            $this->where($column, $value, $opt);
+            $this->where($column, $value, $opt, $ignore, $logic);
         }
 
         return $this;
@@ -714,15 +738,16 @@ class Jaws_ORM
      * @param   string  $value  Column value
      * @param   string  $opt    Operator condition
      * @param   bool    $ignore Ignore this condition
+     * @param   string  $logic  'or' or 'and' glue codition if passing multi values
      * @return  object  Jaws_ORM object
      */
-    function closeWhere($column = '', $value = '', $opt = '=', $ignore = false)
+    function closeWhere($column = '', $value = '', $opt = '=', $ignore = false, $logic = 'or')
     {
         $this->_last_condition_type = 'where';
 
         if (!$ignore) {
             if (!empty($column)) {
-                $this->where($column, $value, $opt);
+                $this->where($column, $value, $opt, $ignore, $logic);
             }
         }
 
@@ -765,9 +790,10 @@ class Jaws_ORM
      * @param   mixed   $value  Column value
      * @param   string  $opt    Operator condition
      * @param   bool    $ignore Ignore this condition
+     * @param   string  $logic  'or' or 'and' glue codition if passing multi values
      * @return  object  Jaws_ORM object
      */
-    function having($column, $value, $opt = '=', $ignore = false)
+    function having($column, $value, $opt = '=', $ignore = false, $logic = 'or')
     {
         $this->_last_condition_type = 'having';
 
@@ -797,16 +823,22 @@ class Jaws_ORM
 
             case 'like':
             case 'not like':
-                if (is_array($value)) {
-                    $value = $this->quoteValue(
-                        Jaws_UTF8::str_replace(
-                            '$',
-                            $this->jawsdb->dbc->escapePattern($value[1]),
-                            $value[0]
+                $jawsdb = $this->jawsdb;
+                $value = is_array($value)? $value : [$value];
+                foreach ($value as &$val) {
+                    if ($val[0] !== '%' && $val[-1] !== '%') {
+                        $val = "%{$val}%";
+                    }
+
+                    $val = $this->quoteValue(
+                        preg_replace_callback(
+                            '/%?([^%]+)%?/u', 
+                            static function ($matches) use($jawsdb) {
+                                return $jawsdb->dbc->escapePattern($matches[0]);
+                            },
+                            $val
                         )
                     );
-                } else {
-                    $value = $this->quoteValue('%' . $this->jawsdb->dbc->escapePattern($value) . '%');
                 }
                 break;
 
@@ -822,12 +854,12 @@ class Jaws_ORM
                 break;
 
             default:
-                if ($this->_dbDriver == 'oci8' && $value === '') {
-                    // oracle automatically convert empty string to null !!!
-                    $value = '';
-                    $opt   = 'is null';
+                if (is_array($value)) {
+                    foreach ($value as &$val) {
+                        $val = $this->quoteValue($val);
+                    }
                 } else {
-                    $value  = $this->quoteValue($value);
+                    $value = $this->quoteValue($value);
                 }
         }
 
@@ -841,7 +873,23 @@ class Jaws_ORM
             $colstr = $this->quoteIdentifier($column);
         }
 
-        $this->_having[] = "($colstr $opt $value)";
+        if (is_array($value) && !empty($value)) {
+            $this->openHaving();
+            foreach ($value as $val) {
+                if ($this->_dbDriver == 'oci8' && $value === '' && $opt == '=') {
+                    // oracle automatically convert empty string to null !!!
+                    $this->_having[] = "($colstr is null)";
+                } else {
+                    $this->_having[] = "($colstr $opt $val)";
+                }
+
+                $logic == 'or'? $this->or() : $this->and();
+            }
+            $this->closeHaving();
+        } else {
+            $this->_having[] = "($colstr $opt $value)";
+        }
+
         return $this;
     }
 
@@ -853,6 +901,7 @@ class Jaws_ORM
      * @param   string  $value  Column value
      * @param   string  $opt    Operator condition
      * @param   bool    $ignore Ignore this condition
+     * @param   string  $logic  'or' or 'and' glue codition if passing multi values
      * @return  object  Jaws_ORM object
      */
     function openHaving($column = '', $value = '', $opt = '=', $ignore = false)
@@ -865,7 +914,7 @@ class Jaws_ORM
         }
 
         if (!empty($column)) {
-            $this->having($column, $value, $opt);
+            $this->having($column, $value, $opt, $ignore, $logic);
         }
 
         return $this;
@@ -879,6 +928,7 @@ class Jaws_ORM
      * @param   string  $value  Column value
      * @param   string  $opt    Operator condition
      * @param   bool    $ignore Ignore this condition
+     * @param   string  $logic  'or' or 'and' glue codition if passing multi values
      * @return  object  Jaws_ORM object
      */
     function closeHaving($column = '', $value = '', $opt = '=', $ignore = false)
@@ -887,7 +937,7 @@ class Jaws_ORM
 
         if (!$ignore) {
             if (!empty($column)) {
-                $this->having($column, $value, $opt);
+                $this->having($column, $value, $opt, $ignore, $logic);
             }
         }
 
