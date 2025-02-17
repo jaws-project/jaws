@@ -91,7 +91,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                             foreach($words as $word) {
                                 $objORM->openWhere();
                                 foreach($fields as $fidx => $field) {
-                                    $objORM->where("lower($field)", array('%$%', $word), 'like')->or();
+                                    $objORM->where("lower($field)", $word, 'like')->or();
                                 }
                                 $objORM->closeWhere()->and();
                             }
@@ -101,7 +101,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
                             foreach($words as $word) {
                                 $objORM->openWhere();
                                 foreach($fields as $fidx => $field) {
-                                    $objORM->where("lower($field)", array('%$%', $word), 'like')->or();
+                                    $objORM->where("lower($field)", $word, 'like')->or();
                                 }
                                 $objORM->closeWhere()->or();
                             }
