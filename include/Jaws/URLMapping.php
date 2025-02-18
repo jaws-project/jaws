@@ -514,15 +514,7 @@ class Jaws_URLMapping
         $params = array_merge($params, $options);
 
         if (is_array($params)) {
-            //Params should be in pairs
-            foreach ($params as $key => $value) {
-                $value = implode('/', array_map('rawurlencode', explode('/', $value)));
-                if ($this->_enabled) {
-                    $url.= '/' . $key . '/' . $value;
-                } else {
-                    $url.= '&' . $key . '=' . $value;
-                }
-            }
+            $url.= '?'. http_build_query($params);
         }
 
         return ($abs_url? $this->app->getSiteURL('/', false) : '') . $url;
