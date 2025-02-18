@@ -47,6 +47,17 @@ class Search_Model_Search extends Jaws_Gadget_Model
             $gadgets = array($options['gadgets']);
         }
 
+        foreach($options as $option => $words) {
+            if (empty($words) || !is_array($words)) {
+                unset($options[$option]);
+            }
+
+            $words = array_filter(array_map('trim', $words));
+            if (empty($words)) {
+                unset($options[$option]);
+            }
+        }
+
         foreach ($gadgets as $gadget) {
             $gadget = trim($gadget);
             if ($gadget == 'Search' || empty($gadget)) {
@@ -55,6 +66,17 @@ class Search_Model_Search extends Jaws_Gadget_Model
 
             $objHook = Jaws_Gadget::getInstance($gadget)->hook->load('Search');
             if (Jaws_Error::IsError($objHook)) {
+                continue;
+            }
+
+            if (property_exists($objHook, 'standalone')) {
+                // new search method
+                $gResult = $objHook->Execute($options);
+                if (Jaws_Error::IsError($gResult) || empty($gResult)) {
+                    continue;
+                }
+                $result[$gadget] = $gResult;
+                $result['_totalItems'] += count($gResult);
                 continue;
             }
 
@@ -67,14 +89,6 @@ class Search_Model_Search extends Jaws_Gadget_Model
             foreach($searchFields as $table => $fields) {
                 $objORM = Jaws_ORM::getInstance();
                 foreach($options as $option => $words) {
-                    if (empty($words) || !is_array($words)) {
-                        continue;
-                    }
-
-                    $words = array_filter(array_map('trim', $words));
-                    if (empty($words)) {
-                        continue;
-                    }
                     switch($option) {
                         case 'exclude':
                             foreach($words as $word) {
