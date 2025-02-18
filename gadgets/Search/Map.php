@@ -12,3 +12,4 @@
 $maps[] = array('Box', 'search');
 $maps[] = array('SimpleBox', 'search/simple');
 $maps[] = array('AdvancedBox', 'search/advanced');
+$maps[] = array('Results', 'search/results');

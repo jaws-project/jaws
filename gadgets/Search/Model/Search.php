@@ -12,50 +12,91 @@
 class Search_Model_Search extends Jaws_Gadget_Model
 {
     /**
-     * Search options
+     * Parse input search query to find the excluding matches, exact matches, any matches and all other words
      *
-     * @var     array
-     * @access  private
+     * @access  public
+     * @param   string  $query  Search query
+     * @return  array   An array with the following indexes (and results): exact, least and exclude
      */
-    var $_SearchTerms = array(
-        'all' => '',
-        'least' => '',
-        'exact' => '',
-        'exclude' => '',
-    );
+    function parseSearchQuery($phrases)
+    {
+        $result = array(
+            'exclude' => [],
+            'exact' => [],
+            'least' => [],
+        );
+
+        if (!empty($phrases['all'])) {
+            $query = preg_replace_callback('/"([^"]+)"|-(\w+)|\+(\w+)/u', function ($matches) use (&$result) {
+                if (!empty($matches[1])) {
+                    $result['exact'][] = $matches[1];
+                } elseif (!empty($matches[2])) {
+                    $result['exclude'][] = $matches[2];
+                } elseif (!empty($matches[3])) {
+                    $result['least'][] = $matches[3];
+                }
+                return ''; // Remove matched parts from the query
+            }, $phrases['all']);
+
+            // Extract remaining words as normal search terms
+            $words = array_filter(explode(' ', trim($query)));
+            $result['exact'] = array_merge($result['exact'], array_values($words));
+        } else {
+            // remove invalid phrase keys
+            $result = array_intersect_key($phrases, $result);
+        }
+
+        $min_key_len = (int)$this->gadget->registry->fetch('min_key_len');
+        foreach ($result as &$partPhrases) {
+            if (!is_array($partPhrases)) {
+                $partPhrases = [$partPhrases];
+            }
+            $partPhrases = array_map('Jaws_UTF8::trim', $partPhrases);
+            $partPhrases = array_filter(
+                $partPhrases,
+                static function($val) use ($min_key_len){
+                    return !empty($val) && (Jaws_UTF8::strlen($val) > $min_key_len);
+                }
+            );
+        }
+
+        return array_filter($result);
+    }
 
     /**
      * Returns the search results
      *
      * @access  public
-     * @param   array   $options    Search options
+     * @param   array   $phrases    Search phrases (exact, least, exclude)
+     * @param   array   $options    Search options (gadgets, date, page, limit)
      * @return  array   Search results
      */
-    function Search($options)
+    function Search($phrases, $options)
     {
-        $result = array();
-        $result['_totalItems'] = 0;
+        $defaultOptions = array(
+            'gadgets' => '',
+            'date' => ['anytime'],
+            'page' => 1,
+            'limit' => 10,
+        );
+        $options = array_merge($defaultOptions, $options);
 
-        $this->_SearchTerms = $options;
+        $result = array(
+            'total' => 0,
+            'gadgets' => array(),
+            'items' => array(),
+        );
+
         $gadgetList = $this->GetSearchableGadgets();
-        $gSearchable = $this->gadget->registry->fetch('searchable_gadgets');
-        $gadgets = ($gSearchable=='*')? array_keys($gadgetList) : explode(', ', $gSearchable);
-        if (array_key_exists('gadgets',  $options) &&
-            !empty($options['gadgets']) &&
-            in_array($options['gadgets'], $gadgets))
-        {
-            $gadgets = array($options['gadgets']);
+        $searchableGadgets = $this->gadget->registry->fetch('searchable_gadgets');
+        if ($searchableGadgets == '*') {
+            $gadgets = array_keys($gadgetList);
+        } else {
+            $gadgets = array_filter(array_map('trim', explode(',', $searchableGadgets)));
         }
-
-        foreach($options as $option => $words) {
-            if (empty($words) || !is_array($words)) {
-                unset($options[$option]);
-            }
-
-            $words = array_filter(array_map('trim', $words));
-            if (empty($words)) {
-                unset($options[$option]);
-            }
+        if (!empty($options['gadgets']) && in_array($options['gadgets'], $gadgets))
+        {
+            $gadgets = [$options['gadgets']];
         }
 
         foreach ($gadgets as $gadget) {
@@ -71,12 +112,14 @@ class Search_Model_Search extends Jaws_Gadget_Model
 
             if (property_exists($objHook, 'standalone')) {
                 // new search method
-                $gResult = $objHook->Execute($options);
+                $gResult = $objHook->Execute($phrases);
                 if (Jaws_Error::IsError($gResult) || empty($gResult)) {
                     continue;
                 }
-                $result[$gadget] = $gResult;
-                $result['_totalItems'] += count($gResult);
+
+                array_push($result['items'], ...$gResult);
+                $result['gadgets'][$gadget] = ['name' => $gadget, 'count' => count($gResult)];
+                $result['total'] += $result['gadgets'][$gadget]['count'];
                 continue;
             }
 
@@ -85,11 +128,11 @@ class Search_Model_Search extends Jaws_Gadget_Model
                 continue;
             }
 
-            $result[$gadget] = array();
+            $result['gadgets'][$gadget] = ['name' => $gadget, 'count' => 0];
             foreach($searchFields as $table => $fields) {
                 $objORM = Jaws_ORM::getInstance();
-                foreach($options as $option => $words) {
-                    switch($option) {
+                foreach($phrases as $part => $words) {
+                    switch($part) {
                         case 'exclude':
                             foreach($words as $word) {
                                 $objORM->openWhere();
@@ -129,12 +172,14 @@ class Search_Model_Search extends Jaws_Gadget_Model
                 if (Jaws_Error::IsError($gResult) || empty($gResult)) {
                     continue;
                 }
-                $result[$gadget] = array_merge($result[$gadget], $gResult);
-                $result['_totalItems'] += count($gResult);
+                
+                array_push($result['items'], ...$gResult);
+                $result['gadgets'][$gadget]['count'] += count($gResult);
+                $result['total'] += $result['gadgets'][$gadget]['count'];
             }
 
-            if (empty($result[$gadget])) {
-                unset($result[$gadget]);
+            if ($result['gadgets'][$gadget]['count'] == 0) {
+                unset($result['gadgets'][$gadget]);
             }
 
         }
@@ -146,151 +191,41 @@ class Search_Model_Search extends Jaws_Gadget_Model
      * Prepares result title by joining search phrases
      *
      * @access  public
-     * @param   array   $options    Search options
+     * @param   array   $phrases    Search phrases (exact, least, exclude)
      * @return  string  Search result title
      */
-    function implodeSearch($options = array())
+    function implodeSearch($phrases = array())
     {
-        $options = array_merge($this->_SearchTerms, $options);
+        $defaulPhrases = array(
+            'all' => [],
+            'exact' => [],
+            'least' => [],
+            'exclude' => [],
+        );
+        $phrases = array_merge($defaulPhrases, $phrases);
 
         $resTitle = '';
-        $terms = implode(' ', is_array($options['all'])? $options['all'] : explode(' ', (string)$options['all']));
+        $terms = implode(' ', $phrases['all']);
         if (!empty($terms)) {
             $resTitle .= $terms;
         }
 
-        $terms = implode(' +', is_array($options['least'])? $options['least'] : explode(' ', (string)$options['least']));
+        $terms = implode(' +', $phrases['least']);
         if (!empty($terms)) {
             $resTitle .= ' +' . $terms;
         }
 
-        $terms = is_array($options['exact'])? implode(' ', $options['exact']) : $options['exact'];
+        $terms = implode(' ', $phrases['exact']);
         if (!empty($terms)) {
             $resTitle .= ' "' . $terms . '"';
         }
 
-        $terms = implode(
-            ' -',
-            is_array($options['exclude'])? $options['exclude'] : explode(' ', (string)$options['exclude'])
-        );
+        $terms = implode(' -', $phrases['exclude']);
         if (!empty($terms)) {
             $resTitle .= ' -' . $terms;
         }
 
         return Jaws_XSS::filter($resTitle);
-    }
-
-    /**
-     * Parses a search phrase to find the excluding matches, exact matches,
-     * any matches and all other words
-     *
-     * @access  public
-     * @param   string  $phrase     Phrase to parse
-     * @param   array   $searchable List of searchable gadgets
-     * @return  array   An array with the following indexes (and results):
-     *                     - all, exact, least and exclude
-     */
-    function parseSearch($options, &$searchable)
-    {
-        $phrase = $options['all'];
-        if (!empty($phrase)) {
-            $phrase.= chr(32);
-        }
-        $newOptions = array('all'     => '',
-            'exact'   => '',
-            'least'   => '',
-            'exclude' => '',
-            'date'    => '');
-        $size = Jaws_UTF8::strlen($phrase);
-        $lastKey = '';
-        $tmpWord = '';
-        for($i=0; $i<$size; $i++) {
-            $word = Jaws_UTF8::substr($phrase, $i , 1);
-            $ord  = Jaws_UTF8::ord($word);
-            $tmpWord.= $word;
-            switch($ord) {
-                case 34: // Quotes..
-                    if ($lastKey == 'exact') { //Open exact was open, we are closing it
-                        $newOptions['exact'].= Jaws_UTF8::substr($tmpWord, 1, Jaws_UTF8::strlen($tmpWord) - 2);
-                        $lastKey = '';
-                        $tmpWord = '';
-                    } else if (empty($lastKey)) {
-                        $lastKey = 'exact'; //We open the exact match
-                    }
-                    break;
-                case 43: //Plus
-                    if ($lastKey != 'exact') {
-                        $lastKey = 'least';
-                    }
-                    break;
-                case 45: //Minus
-                    if ($lastKey != 'exclude') {
-                        $lastKey = 'exclude';
-                    }
-                    break;
-                case 32: //Space
-                    if ($lastKey != 'exact' && !empty($lastKey)) {
-                        if ($lastKey != 'all') {
-                            $substrCount = 1;
-                            if ($tmpWord[0] == ' ') {
-                                $substrCount = 2;
-                            }
-                            $newOptions[$lastKey].= Jaws_UTF8::substr($tmpWord, $substrCount);
-                        } else {
-                            $newOptions[$lastKey].= $tmpWord;
-                        }
-                        $lastKey = '';
-                        $tmpWord = '';
-                    }
-                    break;
-                default:
-                    //Any other word opens all
-                    if (empty($lastKey)) {
-                        $lastKey = 'all';
-                    }
-                    break;
-            }
-        }
-
-        $options['all'] = '';
-        $min_key_len = $this->gadget->registry->fetch('min_key_len');
-        foreach(array_keys($newOptions) as $option) {
-            if (!empty($newOptions[$option])) {
-                $options[$option] = trim(isset($options[$option])?
-                    $options[$option] . ' ' . $newOptions[$option] :
-                    $newOptions[$option]);
-            }
-
-            $content = (isset($options[$option])) ? $options[$option] : '';
-            $content = $content;
-            $content = Jaws_UTF8::strtolower(Jaws_UTF8::trim($content));
-            if (Jaws_UTF8::strlen($content) >= $min_key_len) {
-                $searchable = true;
-            }
-
-            $options[$option] = '';
-            switch($option) {
-                case 'exclude':
-                case 'least':
-                case 'all':
-                    $options[$option] = array_filter(explode(' ', $content));
-                    break;
-                case 'exact':
-                    $options[$option] = array($content);
-                    break;
-                case 'date':
-                    if (in_array($content, array('past_1month', 'past_2month', 'past_3month',
-                        'past_6month', 'past_1year',  'anytime'))) {
-                        $options[$option] = array($content);
-                    } else {
-                        $options[$option] = array('anytime');
-                    }
-                    break;
-            }
-
-        }
-
-        return $options;
     }
 
     /**
@@ -311,108 +246,4 @@ class Search_Model_Search extends Jaws_Gadget_Model
         return $gadgets;
     }
 
-    /**
-     * Gets entry pager numbered links
-     *
-     * @access  public
-     * @param   int     $page       Active page number
-     * @param   int     $page_size  Number of results per page
-     * @param   int     $total      Number of all results
-     * @return  array   Array of page numbers
-     */
-    function GetEntryPagerNumbered($page, $page_size, $total)
-    {
-        $tail = 1;
-        $paginator_size = 4;
-        $pages = array();
-        if ($page_size == 0) {
-            return $pages;
-        }
-
-        $npages = ceil($total / $page_size);
-
-        if ($npages < 2) {
-            return $pages;
-        }
-
-        // Previous
-        if ($page == 1) {
-            $pages['previous'] = false;
-        } else {
-            $pages['previous'] = $page - 1;
-        }
-
-        if ($npages <= ($paginator_size + $tail)) {
-            for ($i = 1; $i <= $npages; $i++) {
-                if ($i == $page) {
-                    $pages['current'] = $i;
-                } else {
-                    $pages[$i] = $i;
-                }
-            }
-        } elseif ($page < $paginator_size) {
-            for ($i = 1; $i <= $paginator_size; $i++) {
-                if ($i == $page) {
-                    $pages['current'] = $i;
-                } else {
-                    $pages[$i] = $i;
-                }
-            }
-
-            $pages['separator2'] = true;
-
-            for ($i = $npages - ($tail - 1); $i <= $npages; $i++) {
-                $pages[$i] = $i;
-            }
-
-        } elseif ($page > ($npages - $paginator_size + $tail)) {
-            for ($i = 1; $i <= $tail; $i++) {
-                $pages[$i] = $i;
-            }
-
-            $pages['separator1'] = true;
-
-            for ($i = $npages - $paginator_size + ($tail - 1); $i <= $npages; $i++) {
-                if ($i == $page) {
-                    $pages['current'] = $i;
-                } else {
-                    $pages[$i] = $i;
-                }
-            }
-        } else {
-            for ($i = 1; $i <= $tail; $i++) {
-                $pages[$i] = $i;
-            }
-
-            $pages['separator1'] = true;
-
-            $start = floor(($paginator_size - $tail)/2);
-            $end = ($paginator_size - $tail) - $start;
-            for ($i = $page - $start; $i < $page + $end; $i++) {
-                if ($i == $page) {
-                    $pages['current'] = $i;
-                } else {
-                    $pages[$i] = $i;
-                }
-            }
-
-            $pages['separator2'] = true;
-
-            for ($i = $npages - ($tail - 1); $i <= $npages; $i++) {
-                $pages[$i] = $i;
-            }
-
-        }
-
-        // Next
-        if ($page == $npages) {
-            $pages['next'] = false;
-        } else {
-            $pages['next'] = $page + 1;
-        }
-
-        $pages['total'] = $total;
-
-        return $pages;
-    }
 }

@@ -1,28 +1,52 @@
-<!-- BEGIN results -->
-<div class="gadget-header card-header d-flex align-items-center justify-content-between">
-  <h5 class="m-0 me-2 py-1">{{title}}</h5>
+<div class="gadget-header d-flex align-items-center mb-2">
+  <h2 class="gadget-header-title h5 m-0 me-2 py-1">
+    {{ 'search.results' | t }}
+  </h2>
 </div>
+
 <div class="gadget-container">
-  <div class="gadget_section search_result_summary">
-    <!-- BEGIN subtitle -->{{text}}<!-- END subtitle -->
-    <!-- BEGIN gadget --><h5>{{gadget_result}}</h5><!-- END gadget -->
+  <div class="row d-flex mb-3 gy-2">
+    <div class="col-12">
+      {%- if result.error %}
+        {{ result.error }}
+      {%- elseif result.total == 0 %}
+        {{ 'search.no_results' | t: phrases }}
+      {%- else %}
+        {{ 'search.results_subtitle' | t: result.total, phrases }}
+      {%- endif %}
+    </div>
+    {%- for gadget in result.gadgets %}
+      <div class="col-12">{{ 'search.results_in_gadgets' | t: gadget.count, gadget.name }}</div>
+    {%- endfor %}
   </div>
-  <div class="gadget-content card-body">
-    <ul>
-    <!-- BEGIN item -->
-    <li class="gadget_section">
-      <div class="search_result_meta">
-        <img src="{{image}}" width="48" alt="{{title}}"/>
-        <h5><a href="{{url}}" target="{{target}}">{{title}}</a></h5>
-        <span>{{date}}</span>
+  <div class="gadget-content mb-3">
+    {%- for item in result.items %}
+      <div class="card mb-3 pt-3">
+        <div class="row g-0">
+          <div class="col-md-4 col-lg-3 d-flex justify-content-center">
+            <div class="w-100 text-center">
+              <a class="w-100" href="{{ item.url }}">
+                <img src="{{ item.image }}" class="card-img-top w-75" alt="no-image" />
+              </a>
+            </div>
+          </div>
+          <div class="col-md-8 col-lg-9">
+            <div class="card-body text-center text-md-start">
+              <h5 class="card-title">
+                <a href="{{ item.url }}">{{ item.title }}</a>
+              </h5>
+            </div>
+            <p class="card-text d-none">{{ item.snippet }}</p>
+            <div class="card-footer text-body-secondary d-none">{{ item.date }}</div>
+          </div>
+        </div>
       </div>
-      <p>{{snippet}}</p>
-    </li>
-    <!-- END item -->
-    </ul>
-  <!-- BEGIN notfound -->{{message}}<!-- END notfound -->
+    {%- endfor %}
   </div>
-  {{navigation}}
+
+  {% include 'XPageNavigation.html' path 'include/Jaws/Resources' with pagination parts:'pages' %}
 </div>
-<div class="gadget-footer card-footer" hidden></div>
-<!-- END results -->
+
+<div class="gadget-actions"></div>
+
+<div class="gadget-footer" hidden></div>
