@@ -1085,7 +1085,7 @@ class Users_Model_User extends Jaws_Gadget_Model
         if (array_key_exists('dob', $pData)) {
             if (empty($pData['dob'])) {
                 $pData['dob'] = null;
-            } else {
+            } elseif (!is_numeric($pData['dob'])) {
                 $pData['dob'] = (int)Jaws_Date::getInstance()->ToBaseDate(
                     preg_split('/[\/\- \:]/', $pData['dob']),
                     'U'
