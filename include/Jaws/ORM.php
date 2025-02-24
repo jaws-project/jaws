@@ -515,25 +515,28 @@ class Jaws_ORM
                 $alias  = $column->alias;
                 $this->_columns[$key].= empty($alias)? '' : (' as '. $this->quoteIdentifier($alias));
                 unset($column);
-            } else {
-                if (is_array($column)) {
-                    _log_var_dump($columns);
-                    _log_var_dump($column);
-                }
-                if ($type = trim(strrchr($column, ':'), ':')) {
+            } elseif (is_array($column)) {
+                _log_var_dump($columns);
+                _log_var_dump($column);
+                // do nothing
+                return $this;
+            } elseif (is_string($column)) {
+                if (false !== $type = strrchr($column, ':')) {
+                    $type = trim($type, ':');
                     $key = substr($column, 0, strrpos($column, ':'));
                 } else {
+                    $type = 'text';
                     $key = $column;
                 }
                 $this->_columns[$key] = $this->quoteIdentifier($key);
+            } else {
+                $key = $column;
+                $type = is_float($column)? 'float' : 'integer';
+                $this->_columns[$key] = $this->quoteIdentifier($key);
             }
 
-            if (empty($type)) {
-                $this->_types[] = 'text';
-            } else {
-                $this->_types[] = $type;
-                $this->_passed_types = true;
-            }
+            $this->_types[] = $type;
+            $this->_passed_types = true;
         }
 
         return $this;
