@@ -302,12 +302,16 @@ class MDB2_Driver_Datatype_Common extends MDB2_Module_Common
         foreach ($columns as $col) {
             $sorted_types[$col] = null;
         }
+
+        /* commented because constant int in query maybe conflict with type array keys
         foreach ($types as $name => $type) {
             if (array_key_exists($name, $sorted_types)) {
                 $sorted_types[$name] = $type;
                 unset($types[$name]);
             }
         }
+        */
+
         // if there are left types in the array, fill the null values of the
         // sorted array with them, in order.
         if (count($types)) {
