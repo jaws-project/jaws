@@ -535,7 +535,7 @@ class Jaws_ORM
                 $this->_columns[$key] = $this->quoteIdentifier($key);
             }
 
-            $this->_types[] = $type;
+            $this->_types[] = $type? $type : 'text';
             $this->_passed_types = true;
         }
 
