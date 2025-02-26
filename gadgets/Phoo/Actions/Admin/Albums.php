@@ -151,7 +151,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
         $this->gadget->define('base_script', BASE_SCRIPT);
         $model = $this->gadget->model->load('Albums');
 
-        $get = $this->gadget->request->fetch(array('action', 'album'), 'get');
+        $get = $this->gadget->request->fetch(array('action?null', 'album?null'), 'get');
         $id  = (int)$get['album'];
         $album = $model->GetAlbumInfo($id);
         if (Jaws_Error::IsError($album) || empty($album)) {

@@ -34,7 +34,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
         $data['description'] = $description;
         $data['meta_keywords'] = $meta_keywords;
         $data['meta_description'] = $meta_description;
-        $data['allow_comments'] = $allow_comments;
+        $data['allow_comments'] = ($allow_comments == 'true');
         $data['updatetime'] = Jaws_DB::getInstance()->date();
         $data['published'] = (bool)$published;
 
@@ -112,7 +112,7 @@ class Phoo_Model_Admin_Photos extends Phoo_Model_Common
      * @param   array   $album            Array containing the required info about the album
      * @return  mixed   Returns the ID of the new entry and Jaws_Error on error
      */
-    function NewEntry($user, $files, $title, $description, $fromControlPanel = true, $album)
+    function NewEntry($user, $files, $title, $description, $fromControlPanel, $album)
     {
         // check if it's really a uploaded file.
         /*if (is_uploaded_file($files['tmp_name'])) {
