@@ -66,7 +66,14 @@ class Entry extends Bin
      * @see      setAutoComplete()
      */
     var $_autocomplete = '';
-    
+
+    /**
+     *
+     * @var    string $_validate
+     * @access private
+     */
+    var $_validate;
+
     /**
      * Public constructor
      *

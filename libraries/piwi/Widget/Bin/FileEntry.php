@@ -14,13 +14,6 @@ define('FILEENTRY_REQ_PARAMS', 1);
 class FileEntry extends Entry
 {
     /**
-     *
-     * @var    string $_validate
-     * @access private
-     */
-    var $_validate;
-
-    /**
      * Public constructor
      *
      * @param    string Name of the entry

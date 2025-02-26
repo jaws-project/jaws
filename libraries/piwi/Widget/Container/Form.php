@@ -84,6 +84,14 @@ class Form extends Container
     var $_customValidate;
 
     /**
+     * The javascript code
+     *
+     * @var      string   $_JSCode
+     * @access   private
+     */
+    var $_JSCode;
+
+    /**
      * The javascript code to validate the form
      *
      * @var      string   $_JSValidCode
@@ -389,24 +397,24 @@ class Form extends Container
                     default:
                         if (!empty($warning)) {
                             $this->_XHTML .= "  <div class=\"form_warning\">\n";
-                            $this->_XHTML .= "    ${warning}\n";
+                            $this->_XHTML .= "    {$warning}\n";
                             $this->_XHTML .= "  </div>\n";
                         }
 
                         //WAS:
                         if (!empty($title)) {
                             if ($usetwocolons) {
-                                $this->_XHTML .= "  <div><label for=\"${name}\">${title}:</label>\n";
+                                $this->_XHTML .= "  <div><label for=\"{$name}\">{$title}:</label>\n";
                             } else {
-                                $this->_XHTML .= "  <div><label for=\"${name}\">${title}</label>\n";
+                                $this->_XHTML .= "  <div><label for=\"{$name}\">{$title}</label>\n";
                             }
                         }
-                        $this->_XHTML .= "  ${control}";
+                        $this->_XHTML .= "  {$control}";
                         $this->_XHTML .= " </div>\n";
 
                         if (!empty($comment)) {
                             $this->_XHTML .= "  <span class=\"form_comment\">\n";
-                            $this->_XHTML .= "    ${comment}\n";
+                            $this->_XHTML .= "    {$comment}\n";
                             $this->_XHTML .= "  </span>\n";
                         }
 
