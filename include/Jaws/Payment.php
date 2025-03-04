@@ -71,11 +71,12 @@ class Jaws_Payment
      *
      * @access  public
      * @param   int     $invoice    Invoice ID
-     * @param   int     $price      Invoice price(Iran Rial)
+     * @param   int     $price      Invoice price
      * @param   string  $title      Invoice title
+     * @param   string  $arguments  JSON-ed transaction arguments
      * @return  mixed   Jaws_Error on failure
      */
-    function paymentRequest($invoice, $price, $title)
+    function paymentRequest($invoice, $price, $title, $arguments)
     {
         return Jaws_Error::raiseError('paymentRequest() method not supported by this driver.', __CLASS__);
     }
@@ -86,11 +87,13 @@ class Jaws_Payment
      *
      * @access  public
      * @param   int     $invoice        Invoice ID
-     * @param   int     $price          Invoice price(Iran Rial)
-     * @param   array   $feedbackData   Feedback data
+     * @param   int     $price          Invoice price
+     * @param   string  $token          Transaction token
+     * @param   string  $arguments      JSON-ed transaction arguments
+     * @param   array   $feedbackData   Feedback/Callback data
      * @return  mixed   Transaction identifier or Jaws_Error on failure  
      */
-    function paymentVerify($invoice, $price, $feedbackData)
+    function paymentVerify($invoice, $price, $token, $arguments, $feedbackData = null)
     {
         return Jaws_Error::raiseError('paymentVerify() method not supported by this driver.', __CLASS__);
     }
