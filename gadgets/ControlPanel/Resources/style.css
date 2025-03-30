@@ -87,7 +87,7 @@ margin:0 0 10px 0;
 padding-top:60px;
 }
 #login fieldset{
-width:250px;
+width:352px;
 margin:1em auto;
 }
 #login fieldset > div{
@@ -101,7 +101,7 @@ width:100%;
 padding-left:24px;
 background:#fff url(../Resources/images/user.png) no-repeat;
 }
-#login #password{
+#login [type=password]{
 width:100%;
 padding-left:24px;
 background:#fff url(../Resources/images/pass.png) no-repeat;

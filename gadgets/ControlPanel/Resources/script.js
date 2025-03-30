@@ -66,7 +66,7 @@ function Jaws_Gadget_ControlPanel() { return {
         if (this.gadget.actions.hasOwnProperty('DefaultAction')) {
             this.storage = new JawsStorage('ControlPanel');
             this.initSidebar();
-            this.checkVersion();
+            //this.checkVersion();
         }
     },
 
