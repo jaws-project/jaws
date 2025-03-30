@@ -159,6 +159,32 @@ if (!function_exists('strristr')) {
 }
 
 /**
+ * Remove a portion of the array and replace it with something else
+ *
+ * @param   array   $array
+ * @param   mixed   $key
+ * @param   int     $length
+ * @param   array   $replacement
+ * @return  array   Returns an array consisting of the extracted elements
+ * @see     https://www.php.net/function.array-splice
+ */
+if (!function_exists('array_splice_assoc')) {
+    function array_splice_assoc(array &$array, $key, $length = null, $replacement = array())
+    {
+        if (false === $offset = array_search($key, array_keys($array))) {
+            return array();
+        }
+
+        $array = array_slice($array, 0, $offset, true) +
+            $replacement +
+            array_slice($array, $offset + $length, null, true);
+
+        //return extracted elements
+        return array_slice($array, $offset, $length, true);
+    }
+}
+
+/**
  * Converts MIME-encoded text to UTF-8
  *
  * @param   string  $text   MIME encoded string
