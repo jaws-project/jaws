@@ -59,8 +59,12 @@ class Jaws_Cache_Memcached extends Jaws_Cache
      */
     function get($key, $unserialize = false)
     {
-        if ($unserialize) {
-            return @unserialize($this->memcache->get($key));
+        try {
+            if ($unserialize) {
+                return unserialize($this->memcache->get($key));
+            }
+        } catch (Exception $error) {
+            return null;
         }
 
         return $this->memcache->get($key);

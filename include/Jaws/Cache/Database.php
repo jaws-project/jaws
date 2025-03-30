@@ -78,23 +78,27 @@ class Jaws_Cache_Database extends Jaws_Cache
             )->where('key', $key)
             ->fetchRow();
         if (Jaws_Error::IsError($result) || empty($result)) {
-            return false;
+            return null;
         }
 
         if ($result['lifetime'] > time()) {
-            if (is_resource($result['value'])) {
-                $clob = '';
-                while (!feof($result['value'])) {
-                    $clob.= fread($result['value'], 8192);
+            try {
+                if (is_resource($result['value'])) {
+                    $clob = '';
+                    while (!feof($result['value'])) {
+                        $clob.= fread($result['value'], 8192);
+                    }
+                    $result['value'] = $clob;
                 }
-                $result['value'] = $clob;
-            }
 
-            if ($unserialize) {
-                return @unserialize($result['value']);
-            }
+                if ($unserialize) {
+                    return unserialize($result['value']);
+                }
 
-            return $result['value'];
+                return $result['value'];
+            } catch (Exception $error) {
+                return null;
+            }
         }
 
         // delete expired cache
@@ -103,7 +107,7 @@ class Jaws_Cache_Database extends Jaws_Cache
             // do noting
         }
 
-        return false;
+        return null;
     }
 
     /**

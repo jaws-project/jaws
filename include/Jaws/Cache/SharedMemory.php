@@ -84,7 +84,7 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
      */
     function get($key, $unserialize = false)
     {
-        $value = false;
+        $value = null;
         if ($this->shmcache->open('w')) {
             $keyscached = @unserialize($this->shmcache->read());
             if (!$keyscached) {
@@ -110,15 +110,19 @@ class Jaws_Cache_SharedMemory extends Jaws_Cache
         if (array_key_exists($key, $keyscached) &&
             ($keyscached[$key]['lifetime'] > time())
         ) {
-            $keyFile = Jaws_SharedSegment::getInstance($keyscached[$key]['token']);
-            if ($keyFile->open('a')) {
-                $value = $keyFile->read();
+            try {
+                $keyFile = Jaws_SharedSegment::getInstance($keyscached[$key]['token']);
+                if ($keyFile->open('a')) {
+                    $value = $keyFile->read();
 
-                if ($unserialize) {
-                    $value = @unserialize($value);
+                    if ($unserialize) {
+                        $value = unserialize($value);
+                    }
+
+                    $keyFile->close();
                 }
-
-                $keyFile->close();
+            } catch (Exception $error) {
+                return null;
             }
         }
 
