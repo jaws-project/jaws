@@ -226,7 +226,7 @@ class Jaws_XSS
      */
     static function defilter($string, $noquotes = false)
     {
-        return htmlspecialchars_decode($string, $noquotes? ENT_NOQUOTES : ENT_QUOTES);
+        return htmlspecialchars_decode((string)$string, $noquotes? ENT_NOQUOTES : ENT_QUOTES);
     }
 
     /**
