@@ -245,7 +245,7 @@ class Jaws_Crypt
     function decrypt($ctext)
     {
         $result = '';
-        $ctext = base64_decode($ctext);
+        $ctext = base64_decode((string)$ctext);
         $n = $this->length($this->pvt_key)/8;
         $ctext = str_split($ctext, $n*2);
         foreach ($ctext as $chunk) {
