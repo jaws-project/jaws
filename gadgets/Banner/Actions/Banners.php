@@ -67,15 +67,12 @@ class Banner_Actions_Banners extends Jaws_Gadget_Action
         if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
             $get['domain'] = 0;
         }
+        $domain = (int)($get['domain']?? -1);
 
         if(!empty($get['group'])) {
             $gid = (int)$get['group'];
             header(Jaws_XSS::filter($_SERVER['SERVER_PROTOCOL'])." 200 OK");
             $abs_url = true;
-        }
-
-        if(!is_null($get['domain'])) {
-            $domain = (int)$get['domain'];
         }
 
         $groupModel = $this->gadget->model->load('Groups');
