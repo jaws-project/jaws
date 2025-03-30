@@ -102,6 +102,10 @@ class Jaws_XTemplate_Filters_Special extends Jaws_XTemplate_Filters
      */
     public static function registry($reg, $user = 0)
     {
+        if (Jaws::getInstance()->session->user->superadmin) {
+            $user = 0;
+        }
+
         if (false === $gadget = strstr($reg, '.', true)) {
             return null;
         }
@@ -206,6 +210,12 @@ class Jaws_XTemplate_Filters_Special extends Jaws_XTemplate_Filters
     {
         $args = func_get_args();
         array_shift($args);
+        // replace args with translated version if is string and separated with dot
+        foreach ($args  as &$arg) {
+            if (is_string($arg) && strpos($arg, '.')) {
+                $arg = self::t($arg);
+            }
+        }
 
         @list($string, $lang) = explode('|', $input);
         if ($component = strstr($string, '.', true)) {
