@@ -16,8 +16,8 @@ class Policy_Model_Admin_AdvancedPolicies extends Jaws_Gadget_Model
      *
      * @access  public
      * @param   string  $password_complexity
-     * @param   int     $password_bad_count
-     * @param   int     $password_lockedout_time
+     * @param   int     $login_bad_count
+     * @param   int     $login_lockedout_time
      * @param   int     $password_max_age
      * @param   int     $password_min_length
      * @param   string  $login_captcha
@@ -29,18 +29,18 @@ class Policy_Model_Admin_AdvancedPolicies extends Jaws_Gadget_Model
      * @return  bool    True on success and Jaws error on failure
      */
     function UpdateAdvancedPolicies(
-        $password_complexity, $password_bad_count, $password_lockedout_time,
+        $password_complexity, $login_bad_count, $login_lockedout_time,
         $password_max_age, $password_min_length, $login_captcha, $login_captcha_driver,
         $xss_parsing_level, $session_online_timeout,
         $session_anony_remember_timeout, $session_login_remember_timeout
     ) {
-        $this->gadget->registry->update('password_complexity',     $password_complexity);
-        $this->gadget->registry->update('password_bad_count',      (int)$password_bad_count);
-        $this->gadget->registry->update('password_lockedout_time', (int)$password_lockedout_time);
-        $this->gadget->registry->update('password_max_age',        (int)$password_max_age);
-        $this->gadget->registry->update('password_min_length',     (int)$password_min_length);
-        $this->gadget->registry->update('login_captcha_status',  $login_captcha);
-        $this->gadget->registry->update('login_captcha_driver',  $login_captcha_driver);
+        $this->gadget->registry->update('password_complexity',  $password_complexity);
+        $this->gadget->registry->update('login_bad_count',      (int)$login_bad_count);
+        $this->gadget->registry->update('login_lockedout_time', (int)$login_lockedout_time);
+        $this->gadget->registry->update('password_max_age',     (int)$password_max_age);
+        $this->gadget->registry->update('password_min_length',  (int)$password_min_length);
+        $this->gadget->registry->update('login_captcha_status', $login_captcha);
+        $this->gadget->registry->update('login_captcha_driver', $login_captcha_driver);
         $this->gadget->registry->update(
             'xss_parsing_level', 
             ($xss_parsing_level=='paranoid')? 'paranoid' : 'normal'

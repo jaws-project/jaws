@@ -49,27 +49,27 @@ class Policy_Actions_Admin_AdvancedPolicies extends Policy_Actions_Admin_Default
         $tpl->SetVariable('lbl_password_complexity', $this::t('PASSWORD_COMPLEXITY'));
         $tpl->SetVariable('password_complexity', $complexity->Get());
 
-        $badCount =& Piwi::CreateWidget('Combo', 'password_bad_count');
-        $badCount->setID('password_bad_count');
+        $badCount =& Piwi::CreateWidget('Combo', 'login_bad_count');
+        $badCount->setID('login_bad_count');
         $badCount->AddOption(Jaws::t('TIMES', 1), '1');
         $badCount->AddOption(Jaws::t('TIMES', 3), '3');
         $badCount->AddOption(Jaws::t('TIMES', 5), '5');
         $badCount->AddOption(Jaws::t('TIMES', 7), '7');
-        $badCount->SetDefault($this->gadget->registry->fetch('password_bad_count'));
-        $tpl->SetVariable('lbl_password_bad_count', $this::t('PASSWORD_BAD_COUNT'));
-        $tpl->SetVariable('password_bad_count', $badCount->Get());
+        $badCount->SetDefault($this->gadget->registry->fetch('login_bad_count'));
+        $tpl->SetVariable('lbl_login_bad_count', $this::t('LOGIN_BAD_COUNT'));
+        $tpl->SetVariable('login_bad_count', $badCount->Get());
 
-        $lockedout =& Piwi::CreateWidget('Combo', 'password_lockedout_time');
-        $lockedout->setID('password_lockedout_time');
+        $lockedout =& Piwi::CreateWidget('Combo', 'login_lockedout_time');
+        $lockedout->setID('login_lockedout_time');
         $lockedout->AddOption(Jaws::t('DISABLED'), '0');
         $lockedout->AddOption(Jaws::t('DATE_MINUTES',  1),  60);
         $lockedout->AddOption(Jaws::t('DATE_MINUTES',  3), 180);
         $lockedout->AddOption(Jaws::t('DATE_MINUTES',  5), 300);
         $lockedout->AddOption(Jaws::t('DATE_MINUTES', 10), 600);
         $lockedout->AddOption(Jaws::t('DATE_MINUTES', 15), 900);
-        $lockedout->SetDefault($this->gadget->registry->fetch('password_lockedout_time'));
-        $tpl->SetVariable('lbl_password_lockedout_time', $this::t('PASSWORD_LOCKEDOUT_TIME'));
-        $tpl->SetVariable('password_lockedout_time', $lockedout->Get());
+        $lockedout->SetDefault($this->gadget->registry->fetch('login_lockedout_time'));
+        $tpl->SetVariable('lbl_login_lockedout_time', $this::t('LOGIN_LOCKEDOUT_TIME'));
+        $tpl->SetVariable('login_lockedout_time', $lockedout->Get());
 
         $maxAge =& Piwi::CreateWidget('Combo', 'password_max_age');
         $maxAge->setID('password_max_age');

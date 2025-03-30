@@ -32,8 +32,8 @@ class Policy_Installer extends Jaws_Gadget_Installer
         array('crypt_key_len', '512'),
         array('crypt_key_age', '86400'),
         array('crypt_key_start_date', '0'),
-        array('password_bad_count', '7'),
-        array('password_lockedout_time', '60'),    // per second
+        array('login_bad_count', '7'),
+        array('login_lockedout_time', '60'),    // per second
         array('password_max_age', '0'),            // per hours 0 = resistant
         array('password_min_length', '0'),
         array('password_complexity', '/^[[:print:]]{1,24}$/'),
@@ -193,6 +193,11 @@ class Policy_Installer extends Jaws_Gadget_Installer
         if (version_compare($old, '1.8.0', '<')) {
             $this->gadget->acl->insert('ManageZones', '', false);
             $this->gadget->acl->insert('ManageZoneActions', '', false);
+        }
+
+        if (version_compare($old, '1.9.0', '<')) {
+            $this->gadget->registry->rename('password_bad_count', 'login_bad_count');
+            $this->gadget->registry->rename('password_lockedout_time', 'login_lockedout_time');
         }
 
         return true;

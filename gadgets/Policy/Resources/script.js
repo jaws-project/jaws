@@ -398,8 +398,8 @@ function Jaws_Gadget_Policy() { return {
             this.gadget.ajax.call(
                 'UpdateAdvancedPolicies', [
                     $('#password_complexity').val(),
-                    $('#password_bad_count').val(),
-                    $('#password_lockedout_time').val(),
+                    $('#login_bad_count').val(),
+                    $('#login_lockedout_time').val(),
                     $('#password_max_age').val(),
                     $('#password_min_length').val(),
                     $('#login_captcha').val(),
