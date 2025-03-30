@@ -154,12 +154,13 @@ class Users_Model_User extends Jaws_Gadget_Model
 
         $objORM = Jaws_ORM::getInstance()
             ->table('users')
-            ->select($selectedColumns)
-            ->where('domain', (int)$domain);
+            ->select($selectedColumns);
         if (is_int($user)) {
-            $objORM->and()->where('users.id', $user);
+            $objORM->where('users.id', $user);
         } else {
-            $objORM->and()->where('username', Jaws_UTF8::strtolower($user));
+            $objORM->where('domain', (int)$domain)
+                ->and()
+                ->where('username', Jaws_UTF8::strtolower($user));
         }
 
         return $objORM->fetchRow();
@@ -178,7 +179,8 @@ class Users_Model_User extends Jaws_Gadget_Model
         return Jaws_ORM::getInstance()
             ->table('users')
             ->select('id:integer', 'domain:integer', 'username', 'nickname', 'email',
-                'mobile', 'superadmin:boolean', 'status:integer'
+                'mobile', 'superadmin:boolean', 'concurrents:integer', 'last_password_update:integer',
+                'status:integer'
             )->where('domain', (int)$domain)
             ->and()
             ->openWhere('username', Jaws_UTF8::strtolower($term))

@@ -24,60 +24,84 @@ class Users_Account_Default_Login extends Users_Account_Default
      *
      * @access  public
      * @param   string  $referrer   Referrer page url
+     * @return  array   $assigns    processed data for user-interface
+     */
+    function loginInterface($referrer)
+    {
+        $assigns = array();
+        $bad_try_count = 0;
+        $user = $this->gadget->session->temp_login_user;
+        $response = $this->gadget->session->pop('Login.Response');
+        if (!isset($response['data'])) {
+            $assigns['domain'] = $this->gadget->registry->fetch('default_domain');
+            $assigns['username'] = '';
+            $assigns['loginstep'] = 'user';
+            $assigns['remember'] = '';
+            $assigns['usecrypt'] = 1;
+            $assigns['referrer'] = $referrer;
+        } else {
+            $assigns = $response['data'];
+            $assigns['response'] = array(
+                'text' => $response['text'],
+                'type' => $response['type'],
+            );
+            if (!empty($user)) {
+                $assigns['domain'] = $user['domain'];
+                $assigns['username'] = $user['username'];
+
+                $bad_try_cache_key = Jaws_Cache::key("loginstep.{$assigns['loginstep']}.{$user['username']}");
+                $bad_try_count = (int)$this->app->cache->get($bad_try_cache_key);
+            }
+        }
+
+        // we need this for enabling captch for IPs trying fetch user's name/email/mobile
+        if ($assigns['loginstep'] == 'user') {
+            $addr = Jaws_Utils::GetRemoteAddress();
+            $ipAddr = $addr['public']? $addr['client'] : $addr['proxy'];
+            $bad_try_cache_key = Jaws_Cache::key('loginstep.user.'. $ipAddr);
+            $bad_try_count = (int)$this->app->cache->get($bad_try_cache_key);
+        }
+
+        $JCrypt = Jaws_Crypt::getInstance();
+        if (!Jaws_Error::IsError($JCrypt)) {
+            $assigns['pubkey'] = $JCrypt->getPublic();
+        }
+
+        // domain
+        if ($this->gadget->registry->fetch('multi_domain') == 'true') {
+            $assigns['domains'] = $this->gadget->model->load('Domains')->getDomains();
+            if (Jaws_Error::IsError($assigns['domains'])) {
+                $assigns['domains'] = array();
+            }
+        }
+
+        // captcha
+        $assigns['captcha'] = Jaws_Gadget::getInstance('Policy')
+            ->action
+            ->load('Captcha')
+            ->xloadCaptcha();
+
+        $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
+        if ($bad_try_count >= $max_captcha_login_bad_count) {
+            $assigns['captcha']['enabled'] = true;
+        }
+
+        return $assigns;
+    }
+
+    /**
+     * Builds the front-end login box
+     *
+     * @access  public
+     * @param   string  $referrer   Referrer page url
      * @return  string  XHTML content
      */
     function IndexLogin($referrer)
     {
         $this->AjaxMe('index.js');
-        if ($this->app->requestedActionMode === 'normal') {
-            $tFilename = 'Login.html';
-        } else {
-            $tFilename = 'Login0.html';
-        }
+        $assigns = $this->loginInterface($referrer);
 
-        $tpl = $this->gadget->template->load($tFilename);
-        $tpl->SetBlock('login');
-
-        $response = $this->gadget->session->pop('Login.Response');
-        if (!isset($response['data'])) {
-            $reqpost['domain'] = $this->gadget->registry->fetch('default_domain');
-            $reqpost['username'] = '';
-            $reqpost['loginstep'] = 1;
-            $reqpost['remember'] = '';
-            $reqpost['usecrypt'] = '';
-            $reqpost['referrer'] = $referrer;
-        } else {
-            $reqpost = $response['data'];
-            $reqpost['loginstep'] = (int)$reqpost['loginstep'];
-        }
-
-        $tpl->SetVariable('title', $this::t("login_title_step_{$reqpost['loginstep']}"));
-        $tpl->SetBlock("login/login_step_{$reqpost['loginstep']}");
-        $tpl->SetVariable('referrer', $reqpost['referrer']);
-        $backURL = $referrer;
-        $backTitle = Jaws::t('BACK_TO', Jaws::t('PREVIOUSPAGE'));
-
-        switch ($reqpost['loginstep']) {
-            case 2:
-                $this->LoginBoxStep2($tpl, $reqpost, $backURL, $backTitle);
-                break;
-
-            case 3:
-                $this->LoginBoxStep3($tpl, $reqpost, $backURL, $backTitle);
-                break;
-
-            default:
-                $this->LoginBoxStep1($tpl, $reqpost, $backURL, $backTitle);
-        }
-
-        if (!empty($response)) {
-            $tpl->SetVariable('response_type', $response['type']);
-            $tpl->SetVariable('response_text', $response['text']);
-        }
-
-        $tpl->ParseBlock("login/login_step_{$reqpost['loginstep']}");
-        $tpl->ParseBlock('login');
-        return $tpl->Get();
+        return $this->gadget->template->xLoad('Login.html')->render($assigns);
     }
 
     /**
@@ -91,207 +115,18 @@ class Users_Account_Default_Login extends Users_Account_Default
     {
         $this->AjaxMe('script.js');
         // Init layout
-        $this->app->layout->Load('gadgets/Users/Templates/Admin', 'Login.html');
+        $this->app->layout->Load('gadgets/Users/Templates/Admin', 'LoginLayout.html');
         $ltpl =& $this->app->layout->_Template;
         $ltpl->SetVariable('admin-script', BASE_SCRIPT);
         $ltpl->SetVariable('control-panel', Jaws::t('CONTROLPANEL'));
 
-        $response = $this->gadget->session->pop('Login.Response');
-        if (!isset($response['data'])) {
-            $reqpost['domain'] = $this->gadget->registry->fetch('default_domain');
-            $reqpost['username'] = '';
-            $reqpost['loginstep'] = 1;
-            $reqpost['remember'] = '';
-            $reqpost['usecrypt'] = '';
-            $reqpost['referrer'] = $referrer;
-        } else {
-            $reqpost = $response['data'];
-            $reqpost['loginstep'] = (int)$reqpost['loginstep'];
-        }
-
-        //
-        $ltpl->SetBlock("layout/login_step_{$reqpost['loginstep']}");
-        $ltpl->SetVariable('legend_title', $this::t("login_title_step_{$reqpost['loginstep']}"));
-        $ltpl->SetVariable('referrer', $reqpost['referrer']);
-        $backURL = $this->app->getSiteURL();
-        $backTitle = Jaws::t('VIEW_SITE');
-
-        switch ($reqpost['loginstep']) {
-            case 2:
-                $this->LoginBoxStep2($ltpl, $reqpost, $backURL, $backTitle);
-                break;
-
-            case 3:
-                $this->LoginBoxStep3($ltpl, $reqpost, $backURL, $backTitle);
-                break;
-
-            default:
-                $this->LoginBoxStep1($ltpl, $reqpost, $backURL, $backTitle);
-        }
-
-        $ltpl->ParseBlock("layout/login_step_{$reqpost['loginstep']}");
-        if (!empty($response)) {
-            $ltpl->SetVariable('response_type', $response['type']);
-            $ltpl->SetVariable('response_text', $response['text']);
-        }
+        $assigns = $this->loginInterface($referrer);
+        $ltpl->SetVariable(
+            'login-interface',
+            $this->gadget->template->xloadAdmin('Login.html')->render($assigns)
+        );
 
         return $this->app->layout->Get();
-    }
-
-    /**
-     * Get HTML login form
-     *
-     * @access  public
-     * @return  string  XHTML template of the login form
-     */
-    public function LoginBoxStep1(&$tpl, $reqpost, $backURL, $backTitle)
-    {
-        http_response_code(401);
-
-        $block = $tpl->GetCurrentBlockPath();
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-
-        $JCrypt = Jaws_Crypt::getInstance();
-        if (!Jaws_Error::IsError($JCrypt)) {
-            $tpl->SetBlock("$block/encryption");
-            $tpl->SetVariable('pubkey', $JCrypt->getPublic());
-            $tpl->ParseBlock("$block/encryption");
-
-            // usecrypt
-            $tpl->SetBlock("$block/usecrypt");
-            $tpl->SetVariable('lbl_usecrypt', Jaws::t('LOGIN_SECURE'));
-            if (empty($reqpost['username']) || !empty($reqpost['usecrypt'])) {
-                $tpl->SetBlock("$block/usecrypt/selected");
-                $tpl->ParseBlock("$block/usecrypt/selected");
-            }
-            $tpl->ParseBlock("$block/usecrypt");
-        }
-
-        // domain
-        if ($this->gadget->registry->fetch('multi_domain') == 'true') {
-            $domains = $this->gadget->model->load('Domains')->getDomains();
-            if (!Jaws_Error::IsError($domains) && !empty($domains)) {
-                $tpl->SetBlock("$block/multi_domain");
-                $tpl->SetVariable('lbl_domain', $this::t('DOMAIN'));
-                array_unshift($domains, array('id' => 0, 'title' => $this::t('NODOMAIN')));
-                foreach ($domains as $domain) {
-                    $tpl->SetBlock("$block/multi_domain/domain");
-                    $tpl->SetVariable('id', $domain['id']);
-                    $tpl->SetVariable('title', $domain['title']);
-                    $tpl->SetVariable('selected', ($domain['id'] == $reqpost['domain'])? 'selected="selected"': '');
-                    $tpl->ParseBlock("$block/multi_domain/domain");
-                }
-                $tpl->ParseBlock("$block/multi_domain");
-            }
-        }
-
-        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
-        $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
-        $tpl->SetVariable('lbl_password', Jaws::t('PASSWORD'));
-
-        // remember
-        $tpl->SetBlock("$block/remember");
-        $tpl->SetVariable('lbl_remember', Jaws::t('REMEMBER_ME'));
-        if (!empty($reqpost['remember'])) {
-            $tpl->SetBlock("$block/remember/selected");
-            $tpl->ParseBlock("$block/remember/selected");
-        }
-        $tpl->ParseBlock("$block/remember");
-
-        // display captcha?
-        $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
-        if ($this->gadget->action->load('Login')->BadLogins($reqpost['username']) >= $max_captcha_login_bad_count) {
-            $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-            $mPolicy->loadCaptcha($tpl, 'login');
-        }
-
-        // global variables
-        $tpl->SetVariable('login', Jaws::t('LOGIN'));
-        $tpl->SetVariable('url_back', $backURL);
-        $tpl->SetVariable('lbl_back', $backTitle);
-
-        // anon_register
-        if ($this->gadget->registry->fetch('anon_register') == 'true') {
-            $tpl->SetVariable('lbl_register',  $this::t('REGISTER'));
-            $tpl->SetVariable('url_register', $this->gadget->urlMap('Registration'));
-        } else {
-            $tpl->SetVariable('hidden_register', 'hidden');
-        }
-
-        // password_recovery
-        if ($this->gadget->registry->fetch('password_recovery') == 'true') {
-            $tpl->SetVariable('lbl_forgot', $this::t('FORGOT_LOGIN'));
-            $tpl->SetVariable('url_forgot', $this->gadget->urlMap('LoginForgot'));
-        } else {
-            $tpl->SetVariable('hidden_forgot', 'hidden');
-        }
-    }
-
-    /**
-     * Get HTML login form
-     *
-     * @access  public
-     * @return  string  XHTML template of the login form
-     */
-    public function LoginBoxStep2(&$tpl, $reqpost, $backURL, $backTitle)
-    {
-        $block = $tpl->GetCurrentBlockPath();
-
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('remember', isset($reqpost['remember'])? $reqpost['remember'] : '');
-        $tpl->SetVariable('username', isset($reqpost['username'])? $reqpost['username'] : '');
-
-        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
-        $tpl->SetVariable('lbl_loginkey', Jaws::t('LOGINKEY'));
-
-        // display captcha
-        $mPolicy = Jaws_Gadget::getInstance('Policy')->action->load('Captcha');
-        $mPolicy->loadCaptcha($tpl, 'login');
-
-        // global variables
-        $tpl->SetVariable('login', Jaws::t('LOGIN'));
-        $tpl->SetVariable('url_back', $backURL);
-        $tpl->SetVariable('lbl_back', $backTitle);
-    }
-
-    /**
-     * Get HTML login form
-     *
-     * @access  public
-     * @return  string  XHTML template of the login form
-     */
-    public function LoginBoxStep3(&$tpl, $reqpost, $backURL, $backTitle)
-    {
-        $block = $tpl->GetCurrentBlockPath();
-
-        $tpl->SetVariable('base_script', BASE_SCRIPT);
-        $tpl->SetVariable('remember', $reqpost['remember']);
-        $tpl->SetVariable('username', $reqpost['username']);
-
-        $tpl->SetVariable('lbl_username', Jaws::t('USERNAME'));
-        $tpl->SetVariable('lbl_password', Jaws::t('PASSWORD'));
-        $tpl->SetVariable('lbl_old_password', $this::t('USERS_PASSWORD_OLD'));
-
-        $JCrypt = Jaws_Crypt::getInstance();
-        if (!Jaws_Error::IsError($JCrypt)) {
-            $tpl->SetBlock("$block/encryption");
-            $tpl->SetVariable('pubkey', $JCrypt->getPublic());
-            $tpl->ParseBlock("$block/encryption");
-
-            // usecrypt
-            $tpl->SetBlock("$block/usecrypt");
-            $tpl->SetVariable('lbl_usecrypt', Jaws::t('LOGIN_SECURE'));
-            if (empty($reqpost['pubkey']) || !empty($reqpost['usecrypt'])) {
-                $tpl->SetBlock("$block/usecrypt/selected");
-                $tpl->ParseBlock("$block/usecrypt/selected");
-            }
-            $tpl->ParseBlock("$block/usecrypt");
-        }
-
-        // global variables
-        $tpl->SetVariable('login', Jaws::t('LOGIN'));
-        $tpl->SetVariable('url_back', $backURL);
-        $tpl->SetVariable('lbl_back', $backTitle);
     }
 
 }

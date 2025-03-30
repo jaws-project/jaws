@@ -1,219 +1,38 @@
-<!DOCTYPE html>
-<!-- BEGIN layout -->
-<html lang="{{site_languages}}">
- <head>
-  <title>{{site-name}}</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <base href="{{base_url}}" />
-  <link rel="icon" type="image/png" href="images/jaws.png" />
-  <!-- BEGIN metas -->{{elements}}<!-- END metas -->
-  <link rel="stylesheet" type="text/css" href="libraries/bootstrap.fuelux/css/bootstrap.fuelux.min.rtl.css" />
-  <link href="gadgets/ControlPanel/Resources/style{{.dir}}.css?{{cpanel_version}}" type="text/css" rel="stylesheet" >
-  <!-- BEGIN links -->{{elements}}<!-- END links -->
- </head>
- <body>
-  <div id="header">
-   <h1><a href="{{admin-script}}">{{site-name}}: {{control-panel}}</a></h1>
-   <p>{{site-slogan}}</p>
-  </div>
-  <hr />
-  <div id="container" class="clearfix">
-   <div id="main-section" class="clearfix">
+<form method="post" onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password', 'old_password']);">
+  <input type="hidden" name="reqGadget" value="Users" />
+  <input type="hidden" name="reqAction" value="Authenticate" />
+  <input type="hidden" name="referrer" value="{{referrer}}" />
+  <input type="hidden" name="loginstep" value="{{ loginstep | downcase }}" />
+  <input type="hidden" name="defaults" value="" />
+  {%- if pubkey %}
+    <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" disabled />
+  {%- endif %}
+  <div class="gadget-content">
     <div id="login" data-loading-container="users.login">
-<!-- BEGIN login_step_1 -->
-      <form name="loginBox" action="{{base_script}}" method="post"
-        onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password']);">
-        <input type="hidden" name="reqGadget" value="Users" />
-        <input type="hidden" name="reqAction" value="Authenticate" />
-        <input type="hidden" name="referrer" value="{{referrer}}" />
-        <input type="hidden" name="loginstep" value="1" />
-        <input type="hidden" name="defaults" value="" />
-        <!-- BEGIN encryption -->
-        <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
-        <!-- END encryption -->
-        <fieldset id="loginbox">
-          <legend><span>{{legend_title}}</span></legend>
-          <!-- BEGIN multi_domain -->
-          <div>
-            <label for="domain">{{lbl_domain}}:</label>
-            <select class="form-control" name="domain" id="domain">
-              <!-- BEGIN domain -->
-              <option value="{{id}}" {{selected}}>{{title}}</option>
-              <!-- END domain -->
-            </select>
-          </div>
-          <!-- END multi_domain -->
-          <div>
-            <label for="username">{{lbl_username}}:</label>
-            <input class="form-control ltr" name="username" id="username"
-                   type="text"
-                   value="{{username}}"
-                   required
-            />
-          </div>
-          <div>
-            <label for="password">{{lbl_password}}:</label>
-            <input class="form-control ltr" name="password" id="password"
-               type="password"
-               autocomplete="off"
-               value=""
-               required
-            />
-          </div>
-          <!-- BEGIN remember -->
-          <div>
-            <label class="form-check-label" for="remember">
-              <input class="form-check-input" type="checkbox"
-                name="remember"
-                id="remember"
-                value="true"
-                <!-- BEGIN selected -->
-                checked="checked"
-                <!-- END selected -->
-              />
-              {{lbl_remember}}
-            </label>
-          </div>
-          <!-- END remember -->
-          <!-- BEGIN usecrypt -->
-          <div>
-            <label class="form-check-label" for="usecrypt">
-              <input class="form-check-input" type="checkbox"
-                name="usecrypt"
-                id="usecrypt"
-                value="true"
-                <!-- BEGIN selected -->
-                checked="checked"
-                <!-- END selected -->
-              />
-              {{lbl_usecrypt}}
-             </label>
-          </div>
-          <!-- END usecrypt -->
-          <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
-          <div class="buttons">
-            <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
-            <div>{{forgot-password}}</div>
-            <div>{{user-register}}</div>
-            <div class="login-footer"><a href="{{url_back}}">{{lbl_back}}</a></div>
-          </div>
-        </fieldset>
-      </form>
-<!-- END login_step_1 -->
+      <fieldset id="loginbox">
+        <legend><span>{{ loginstep | lower | prepend: 'users.login_title_step_' | t }}</span></legend>
+        {%- case loginstep %}
+          {%- when 'user' %}
+            {% include 'LoginStep.User.html' %}
 
-<!-- BEGIN login_step_2 -->
-      <form name="loginBox" action="{{base_script}}" method="post">
-        <input type="hidden" name="reqGadget" value="Users" />
-        <input type="hidden" name="reqAction" value="Authenticate" />
-        <input type="hidden" name="referrer" value="{{referrer}}" />
-        <input type="hidden" name="loginstep" value="2" />
-        <input type="hidden" name="remember" value="{{remember}}" />
-        <fieldset id="loginbox">
-          <legend><span>{{legend_title}}</span></legend>
-          <div>
-            <label for="login_username">{{lbl_username}}:</label>
-            <input class="form-control ltr" name="username" id="username"
-                   type="text"
-                   value="{{username}}"
-                   readonly
-            />
-          </div>
-          <div>
-            <label for="loginkey">{{lbl_loginkey}}:</label>
-            <input class="form-control ltr" name="loginkey" id="loginkey"
-                   type="text"
-                   autocomplete="off"
-                   value=""
-            />
-          </div>
-          <div>
-            <br/>
-          </div>
-          <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
-          <div class="buttons">
-            <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
-            <div class="login-footer"><a href="{{url_back}}">{{lbl_back}}</a></div>
-          </div>
-        </fieldset>
-      </form>
-<!-- END login_step_2 -->
+          {%- when 'password' %}
+            {% include 'LoginStep.Password.html' %}
 
-<!-- BEGIN login_step_3 -->
-      <form name="loginBox" action="{{base_script}}" method="post"
-        onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password', 'chkpassword']);">
-        <input type="hidden" name="reqGadget" value="Users" />
-        <input type="hidden" name="reqAction" value="Authenticate" />
-        <input type="hidden" name="referrer" value="{{referrer}}" />
-        <input type="hidden" name="loginstep" value="3" />
-        <input type="hidden" name="remember" value="{{remember}}" />
-        <!-- BEGIN encryption -->
-        <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
-        <!-- END encryption -->
-        <fieldset id="loginbox">
-          <legend><span>{{legend_title}}</span></legend>
-          <div>
-            <label for="login_username">{{lbl_username}}:</label>
-            <input class="form-control ltr" name="username" id="username"
-                   type="text"
-                   value="{{username}}"
-                   readonly
-            />
-          </div>
-          <div>
-            <label for="password">{{lbl_password}}:</label>
-            <input class="form-control ltr" name="password" id="password"
-                   type="password"
-                   autocomplete="off"
-                   value=""
-                   required
-            />
-          </div>
-          <div>
-            <label for="chkpassword">{{lbl_chkpassword}}:</label>
-            <input class="form-control ltr" name="chkpassword" id="chkpassword"
-                   type="password"
-                   autocomplete="off"
-                   value=""
-                   required
-            />
-          </div>
-          <!-- BEGIN usecrypt -->
-          <div>
-            <label class="form-check-label" for="usecrypt">
-            <input class="form-check-input" type="checkbox"
-                   name="usecrypt"
-                   id="usecrypt"
-                   <!-- BEGIN selected --> checked="checked"<!-- END selected -->
-                   value="true" />
-              {{lbl_usecrypt}}
-            </label>
-          </div>
-          <!-- END usecrypt -->
-          <div class="buttons">
-            <button class="btn btn-primary" type="submit" value="{{login}}">{{login}}</button>
-            <div class="login-footer"><a href="{{url_back}}">{{lbl_back}}</a></div>
-          </div>
-        </fieldset>
-      </form>
-<!-- END login_step_3 -->
+          {%- when 'key' %}
+            {% include 'LoginStep.Key.html' %}
 
-    </div>
-    <div class="text-center">
-      <div class="alert {{response_type}}" role="alert">
-        {{response_text}}
+          {%- when 'expiry' %}
+            {% include 'LoginStep.Expiry.html' %}
+
+        {%- endcase %}
+      </fieldset>
+      <div class="text-center">
+        {%- if response.text %}
+          <div class="alert {{ response.type }}" role="alert">
+            {{- response.text -}}
+          </div>
+        {%- endif %}
       </div>
     </div>
-   </div>
-   <hr />
-   <div id="footer" style="margin-top: 100px;">
-    <p><strong>{{site-name}}</strong><br />
-    {{site-slogan}}</p>
-    <p>Powered by the <a href="http://jaws-project.com" rel="external">Jaws Project</a></p>
-   </div>
   </div>
-  <!-- BEGIN scripts -->
-  {{elements}}
-  <!-- END scripts -->
- </body>
-</html>
-<!-- END layout -->
+</form>

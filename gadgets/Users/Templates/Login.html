@@ -1,200 +1,36 @@
-<!-- BEGIN login -->
 <div class="gadget-header d-flex align-items-center mb-2">
-  <h5 class="m-0 me-2 py-1">{{title}}</h5>
+  <h5 class="m-0 me-2 py-1">
+    {{ loginstep | lower | prepend: 'users.login_title_step_' | t }}
+  </h5>
 </div>
 <div class="gadget-container" data-loading-container="users.login">
-<!-- BEGIN login_step_1 -->
-  <form name="loginBox" method="post"
-    onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password']);" >
+  <form method="post" onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password', 'old_password']);">
     <input type="hidden" name="reqGadget" value="Users" />
     <input type="hidden" name="reqAction" value="Authenticate" />
     <input type="hidden" name="referrer" value="{{referrer}}" />
-    <input type="hidden" name="loginstep" value="1" />
+    <input type="hidden" name="loginstep" value="{{ loginstep | downcase }}" />
     <input type="hidden" name="defaults" value="" />
-    <!-- BEGIN encryption -->
-    <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
-    <!-- END encryption -->
+    {%- if pubkey %}
+      <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" disabled />
+    {%- endif %}
     <div class="gadget-content">
       <div class="row g-2">
-        <!-- BEGIN multi_domain -->
-        <div class="col-12 col-md-8 col-lg-6">
-          <label for="domain">{{lbl_domain}}:</label>
-          <select class="form-control" name="domain" id="domain">
-            <!-- BEGIN domain -->
-            <option value="{{id}}" {{selected}}>{{title}}</option>
-            <!-- END domain -->
-          </select>
-        </div>
-        <div class="w-100 m-0"></div>
-        <!-- END multi_domain -->
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="input-group">
-            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_username}}:</span>
-            <input type="text" name="username" class="form-control" value="{{username}}" dir="ltr" required />
-          </div>
-        </div>
-        <div class="w-100 m-0"></div>
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="input-group">
-            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_password}}:</span>
-            <input class="form-control" type="password" role="password" name="password" dir="ltr"
-              autocomplete="off" data-toggle="password" required
-            />
-            <span title="Click here to show/hide password" class="input-group-text" style="cursor: pointer;">
-              <i class="fas fa-eye"></i>
-            </span>
-          </div>
-        </div>
-        <div class="w-100 m-0"></div>
-        <!-- BEGIN remember -->
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="input-group">
-            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_remember}}</span>
-            <input type="checkbox" name="remember" class="form-check-input fs-2 m-0 rounded align-self-center" value="true"
-              <!-- BEGIN selected -->checked="checked"<!-- END selected -->
-            />
-          </div>
-        </div>
-        <div class="w-100 m-0"></div>
-        <!-- END remember -->
-        <!-- BEGIN usecrypt -->
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="input-group">
-            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_usecrypt}}</span>
-            <input type="checkbox" name="usecrypt" class="form-check-input fs-2 m-0 rounded align-self-center" value="true"
-              <!-- BEGIN selected -->checked="checked"<!-- END selected -->
-            />
-          </div>
-        </div>
-        <div class="w-100 m-0"></div>
-        <!-- END usecrypt -->
-        <div class="col-12 col-md-8 col-lg-6">
-        <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
-        </div>
-        <div class="w-100 m-0"></div>
-        <div class="gadget-actions col-12 col-md-8 col-lg-6 text-end mt-3">
-          <div class="d-flex justify-content-between">
-            <div class="w-100 alert {{response_type}} text-start my-0 py-1 me-2" role="alert">{{response_text}}</div>
-            <button class="btn btn-primary text-nowrap" type="submit">{{login}}</button>
-          </div>
-          <a class="d-block text-decoration-none mt-2" href="{{url_forgot}}" {{hidden_forgot}}>{{lbl_forgot}}</a>
-          <a class="d-block text-decoration-none mt-1" href="{{url_register}}" {{hidden_register}}>{{lbl_register}}</a>
-          <a class="d-block text-decoration-none mt-1"href="{{url_back}}">{{lbl_back}}</a>
-        </div>
+        {%- case loginstep %}
+          {%- when 'user' %}
+            {% include 'LoginStep.User.html' %}
+
+          {%- when 'password' %}
+            {% include 'LoginStep.Password.html' %}
+
+          {%- when 'key' %}
+            {% include 'LoginStep.Key.html' %}
+
+          {%- when 'expiry' %}
+            {% include 'LoginStep.Expiry.html' %}
+
+        {%- endcase %}
       </div>
     </div>
   </form>
-<!-- END login_step_1 -->
-
-<!-- BEGIN login_step_2 -->
-  <form name="loginBox" action="{{base_script}}" method="post">
-    <input type="hidden" name="reqGadget" value="Users" />
-    <input type="hidden" name="reqAction" value="Authenticate" />
-    <input type="hidden" name="referrer" value="{{referrer}}" />
-    <input type="hidden" name="loginstep" value="2" />
-    <input type="hidden" name="remember" value="{{remember}}" />
-    <div class="gadget-content">
-      <div class="row g-2">
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="input-group">
-            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_username}}:</span>
-            <input type="text" class="form-control bg-body-secondary" name="username" value="{{username}}" dir="ltr" required readonly />
-          </div>
-        </div>
-        <div class="w-100 m-0"></div>
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="input-group">
-            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_loginkey}}:</span>
-            <input type="text" class="form-control" name="loginkey" value="" dir="ltr" autocomplete="off" required />
-          </div>
-        </div>
-        <div class="w-100 m-0"></div>
-        <div class="col-12 col-md-8 col-lg-6">
-        <!-- INCLUDE Captcha.html gadgets/Policy/Templates -->
-        </div>
-        <div class="w-100 m-0"></div>
-        <div class="gadget-actions col-12 col-md-8 col-lg-6 text-end mt-3">
-          <div class="d-flex justify-content-between">
-            <div class="w-100 alert {{response_type}} text-start my-0 py-1 me-2" role="alert">{{response_text}}</div>
-            <button class="btn btn-primary text-nowrap" type="submit">{{login}}</button>
-          </div>
-          <a class="d-block text-decoration-none mt-1"href="{{url_back}}">{{lbl_back}}</a>
-        </div>
-
-      </div>
-    </div>
-  </form>
-<!-- END login_step_2 -->
-
-<!-- BEGIN login_step_3 -->
-  <form name="loginBox" action="{{base_script}}" method="post"
-    onsubmit="return Jaws_Gadget.getInstance('Users').encryptFormSubmit(this, ['password', 'old_password']);" >
-    <input type="hidden" name="reqGadget" value="Users" />
-    <input type="hidden" name="reqAction" value="Authenticate" />
-    <input type="hidden" name="referrer" value="{{referrer}}" />
-    <input type="hidden" name="loginstep" value="3" />
-    <input type="hidden" name="remember" value="{{remember}}" />
-    <!-- BEGIN encryption -->
-    <input type="hidden" name="pubkey" id="pubkey" value="{{pubkey}}" />
-    <!-- END encryption -->
-    <div class="gadget-content">
-      <div class="row g-2">
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="input-group">
-            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_username}}:</span>
-            <input type="text" class="form-control bg-body-secondary" name="username" value="{{username}}" dir="ltr" required readonly />
-          </div>
-        </div>
-        <div class="w-100 m-0"></div>
-        <!-- old password -->
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="input-group">
-            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_old_password}}:</span>
-            <input class="form-control" type="password" name="old_password" dir="ltr"
-              autocomplete="off" data-toggle="password" required
-            />
-            <span title="Click here to show/hide password" class="input-group-text" style="cursor: pointer;">
-              <i class="fas fa-eye"></i>
-            </span>
-          </div>
-        </div>
-        <div class="w-100 m-0"></div>
-        <!-- new password -->
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="input-group">
-            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_password}}:</span>
-            <input class="form-control" type="password" name="password" dir="ltr"
-              autocomplete="off" data-toggle="password" required
-            />
-            <span title="Click here to show/hide password" class="input-group-text" style="cursor: pointer;">
-              <i class="fas fa-eye"></i>
-            </span>
-          </div>
-        </div>
-        <div class="w-100 m-0"></div>
-        <!-- BEGIN usecrypt -->
-        <div class="col-12 col-md-8 col-lg-6">
-          <div class="input-group">
-            <span class="input-group-text min-w-12rem justify-content-center">{{lbl_usecrypt}}</span>
-            <input type="checkbox" name="usecrypt" class="form-check-input fs-2 m-0 rounded align-self-center" value="true"
-              <!-- BEGIN selected -->checked="checked"<!-- END selected -->
-            />
-          </div>
-        </div>
-        <div class="w-100 m-0"></div>
-        <!-- END usecrypt -->
-        <div class="gadget-actions col-12 col-md-8 col-lg-6 text-end mt-3">
-          <div class="d-flex justify-content-between">
-            <div class="w-100 alert {{response_type}} text-start my-0 py-1 me-2" role="alert">{{response_text}}</div>
-            <button class="btn btn-primary text-nowrap" type="submit">{{login}}</button>
-          </div>
-          <a class="d-block text-decoration-none mt-1"href="{{url_back}}">{{lbl_back}}</a>
-        </div>
-      </div>
-    </div>
-  </form>
-<!-- END login_step_3 -->
-
 </div>
 <div class="gadget-footer" hidden></div>
-<!-- END login -->

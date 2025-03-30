@@ -1,0 +1,31 @@
+{%- if domains %}
+ <div>
+   <label>{{ 'users.domain' | t }}:</label>
+   <select class="form-control form-select" name="domain">
+     <option value="0">{{ 'users.nodomain' | t }}</option>
+     {%- for _domain in domains %}
+       <option value="{{ _domain.id }}" {{- _domain.id | equal: domain, ' selected', '' }}>{{ _domain.title }}</option>
+     {%- endfor %}
+   </select>
+ </div>
+{%- endif %}
+
+<div>
+  <label>{{ 'global.username' | t }}:</label>
+  <input class="form-control ltr" name="username" id="username" type="text"  value="{{username}}" required />
+</div>
+
+{%- if captcha.enabled %}
+  {% include 'XCaptcha.html' path 'gadgets/Policy/Templates' with captcha %}
+{%- endif %}
+
+<div class="gadget-actions buttons mt-2">
+  <div class="d-flex justify-content-between">
+    <button class="btn btn-primary text-nowrap ms-auto" type="submit">{{ 'global.login' | t }}</button>
+  </div>
+  <div class="text-end mt-2">
+    <a class="text-decoration-none mt-1" href="{{ 'site_url' | global }}">
+      {{- 'global.view_site' | t -}}
+    </a>
+  </div>
+</div>

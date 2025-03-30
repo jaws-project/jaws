@@ -1,0 +1,56 @@
+{%- if domains %}
+  <div class="col-12 col-md-8 col-lg-6">
+    <div class="input-group">
+      <span class="input-group-text min-w-12rem justify-content-center position-relative">{{ 'users.domain' | t }}:</span>
+      <select class="form-control form-select" name="domain">
+        <option value="0">{{ 'users.nodomain' | t }}</option>
+        {%- for _domain in domains %}
+          <option value="{{ _domain.id }}" {{- _domain.id | equal: domain, ' selected', '' }}>{{ _domain.title }}</option>
+        {%- endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="w-100 m-0"></div>
+{%- endif %}
+<div class="col-12 col-md-8 col-lg-6">
+  <div class="input-group">
+    <span class="input-group-text min-w-12rem justify-content-center">{{ 'global.username' | t }}:</span>
+    <input type="text" name="username" class="form-control" value="{{username}}" dir="ltr" required />
+  </div>
+</div>
+<div class="w-100 m-0"></div>
+
+{%- if captcha.enabled %}
+  <div class="col-12 col-md-8 col-lg-6">
+    {% include 'XCaptcha.html' path 'gadgets/Policy/Templates' with captcha %}
+  </div>
+  <div class="w-100 m-0"></div>
+{%- endif %}
+
+<div class="gadget-actions col-12 col-md-8 col-lg-6 text-end mt-3">
+  <div class="d-flex justify-content-between">
+    {%- if response.text %}
+      <div class="w-100 alert {{ response.type }} text-start my-0 py-1 me-2" role="alert">
+        {{- response.text -}}
+      </div>
+    {%- endif %}
+    <button class="btn btn-primary text-nowrap ms-auto" type="submit">{{ 'global.login' | t }}</button>
+  </div>
+  <div class="text-end mt-2">
+    {%- if 'Users.password_recovery' | registry | equal: 'true' %}
+      <a class="text-decoration-none" href="{{ 'Users' | urlmap: 'LoginForgot' }}">
+        {{- 'users.forgot_login' | t -}}
+      </a>
+      <div class="w-100 mt-1"></div>
+    {%- endif %}
+    {%- if 'Users.anon_register' | registry | equal: 'true' %}
+      <a class="text-decoration-none" href="{{ 'Users' | urlmap: 'Registration' }}">
+        {{- 'users.register' | t -}}
+      </a>
+      <div class="w-100 mt-1"></div>
+    {%- endif %}
+    <a class="text-decoration-none mt-1" href="{{ referrer }}">
+      {{- 'global.back_to' | t: 'global.previouspage' -}}
+    </a>
+  </div>
+</div>

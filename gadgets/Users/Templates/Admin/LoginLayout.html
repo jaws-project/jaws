@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!-- BEGIN layout -->
+<html lang="{{site_languages}}">
+ <head>
+  <title>{{site-name}}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <base href="{{base_url}}" />
+  <link rel="icon" type="image/png" href="images/jaws.png" />
+  <!-- BEGIN metas -->{{elements}}<!-- END metas -->
+  <link rel="stylesheet" type="text/css" href="libraries/bootstrap.fuelux/css/bootstrap.fuelux.min.rtl.css" />
+  <link href="gadgets/ControlPanel/Resources/style{{.dir}}.css?{{cpanel_version}}" type="text/css" rel="stylesheet" >
+  <!-- BEGIN links -->{{elements}}<!-- END links -->
+ </head>
+ <body>
+  <div id="header">
+   <h1><a href="{{admin-script}}">{{site-name}}: {{control-panel}}</a></h1>
+   <p>{{site-slogan}}</p>
+  </div>
+  <hr />
+  <div id="container" class="clearfix">
+   <div id="main-section" class="clearfix">
+    {{login-interface}}
+   </div>
+   <hr />
+   <div id="footer" style="margin-top: 100px;">
+    <p><strong>{{site-name}}</strong><br />
+    {{site-slogan}}</p>
+    <p>Powered by the <a href="http://jaws-project.com" rel="external">Jaws Project</a></p>
+   </div>
+  </div>
+  <!-- BEGIN scripts -->
+  {{elements}}
+  <!-- END scripts -->
+ </body>
+</html>
+<!-- END layout -->

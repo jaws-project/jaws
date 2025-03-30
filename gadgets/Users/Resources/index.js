@@ -1429,12 +1429,17 @@ function Jaws_Gadget_Users() { return {
      */
     encryptFormSubmit: function(form, elements)
     {
-        if ($(form).find('[name="usecrypt"]').prop('checked') && (elements.length > 0) && form.pubkey) {
+        let $pubkey = $(form).find('[name="pubkey"]');
+        let $usecrypt = $(form).find('[name="usecrypt"]');
+        if ($usecrypt.length && $pubkey.length && $usecrypt.prop('checked') && elements.length) {
             $.loadScript('libraries/js/jsencrypt.min.js', function() {
-                var objRSACrypt = new JSEncrypt();
-                objRSACrypt.setPublicKey(form.pubkey.value);
-                $.each(elements, function( k, el ) {
-                    form.elements[el].value = objRSACrypt.encrypt(form.elements[el].value);
+                let objRSACrypt = new JSEncrypt();
+                objRSACrypt.setPublicKey($pubkey.val());
+                $.each(elements, function(k, elName) {
+                    $el = $(form).find(`[name="${elName}"]`);
+                    if ($el.length) {
+                        $el.val(objRSACrypt.encrypt($el.val()));
+                    }
                 });
                 form.submit();
             });
@@ -1443,6 +1448,16 @@ function Jaws_Gadget_Users() { return {
         }
 
         return true;
+    },
+
+    /**
+     *
+     */
+    switch2step: function(el, step)
+    {
+        let $form = $(el).closest('form');
+        $form.find('[name="loginstep"]').val(step);
+        $form.submit();
     },
 
     /**

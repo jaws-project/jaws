@@ -33,7 +33,7 @@ class Users_Account_LDAP_Authenticate extends Users_Account_LDAP
                 }
             }
 
-            $max_lockedout_login_bad_count = $this->app->registry->fetch('password_bad_count', 'Policy');
+            $max_lockedout_login_bad_count = $this->app->registry->fetch('login_bad_count', 'Policy');
             if ($bad_logins >= $max_lockedout_login_bad_count) {
                 // forbidden access event logging
                 $this->gadget->event->shout(
