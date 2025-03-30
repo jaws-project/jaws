@@ -1,4 +1,4 @@
-<div class="files-interface accordion accordion-flush" id="" data-accordion="id">
+<div class="row gy-2 files-interface accordion accordion-flush" id="" data-accordion="id">
   <template>
   <div class="col-6 col-md-4 col-lg-3 files-interface-item" data-input-file-uid="">
     <div class="card position-relative">
@@ -36,34 +36,32 @@
   />
   </template>
 
-  <div class="accordion-item border-0">
-    <h5 class="row accordion-header gx-0 gx-md-4">
-      <div class="col-12" data-grid-role="col">
-        <div class="input-group" >
-          <span class="input-group-text min-w-12rem justify-content-center" data-label="title">
-            {{ files.labels.title }}
-          </span>
-          <span class="input-group-text w-icon px-2 d-none" data-label="description">
-            <i tabindex="-1" class="fas fa-circle-info align-middle fs-5" data-bs-toggle="tooltip" data-bs-trigger="focus" data-bs-placement="top"
-              title="{{ files.labels.description }}">
-            </i>
-          </span>
-          <button class="btn border text-bg-light" type="button"
-            data-mincount="{{ files.mincount }}"
-            data-maxcount="{{ files.maxcount }}" data-initialize="fileuploader"
-            onclick="Jaws_Gadget.getInstance('Files').browseFile(this)">
-            <span class="fas fa-file-circle-plus fs-5 align-middle" data-label="browse">{{ files.labels.browse }}</span>
-          </button>
-          <span class="form-control bg-body-secondary" data-role="count"></span>
-          <button class="btn accordion-button shadow-none w-auto py-0 px-1 border text-bg-light collapsed"
-            type="button" data-bs-toggle="collapse" data-bs-target="" data-accordion="item-id">
-            <span class="far fa-file-lines fs-5 px-1"></span>
-          </button>
-        </div>
-      </div>
+  <div class="col-12 col-md-6 accordion-item border-0" data-grid-role="col">
+    <h5 class="accordion-header">
+    <div class="input-group" >
+      <span class="input-group-text min-w-12rem justify-content-center" data-label="title">
+        {{ files.labels.title }}
+      </span>
+      <span class="input-group-text w-icon px-2 d-none" data-label="description">
+        <i tabindex="-1" class="fas fa-circle-info align-middle fs-5" data-bs-toggle="tooltip" data-bs-trigger="focus" data-bs-placement="top"
+          title="{{ files.labels.description }}">
+        </i>
+      </span>
+      <button class="btn btn-light border border-1" type="button"
+        data-mincount="{{ files.mincount }}"
+        data-maxcount="{{ files.maxcount }}" data-initialize="fileuploader"
+        onclick="Jaws_Gadget.getInstance('Files').browseFile(this)">
+        <span class="fas fa-file-circle-plus fs-5 align-middle" data-label="browse">{{ files.labels.browse }}</span>
+      </button>
+      <span class="form-control bg-body-secondary" data-role="count"></span>
+      <button class="btn btn-light accordion-button shadow-none w-auto border border-1 py-0 px-1 collapsed"
+        type="button" data-bs-toggle="collapse" data-bs-target="" data-accordion="item-id">
+        <span class="far fa-file-lines fs-5 px-1"></span>
+      </button>
+    </div>
     </h5>
   </div>
-  <div id="" class="accordion-collapse collapse" data-bs-parent="" data-accordion="item-body">
+  <div id="" class="col-12 accordion-collapse collapse" data-bs-parent="" data-accordion="item-body">
     <div class="row gy-2 accordion-body px-0 files-interface-items">
       {%- indent -2 %}
       <input type="hidden" name="files_upload_interface" value="1" />
