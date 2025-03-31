@@ -1253,23 +1253,6 @@ class Jaws_ORM
                 $result = $this->jawsdb->query($sql);
                 break;
 
-            case 'igsert':
-                if (empty($this->_columns)) {
-                    $this->select($this->_pk_field. ':'. $this->_pk_field_type);
-                }
-                $sql = 'select '. implode(', ', $this->_columns) . "\n";
-                $sql.= 'from '. $this->_tablesIdentifier. "\n";
-                $sql.= $this->_build_where();
-                if (count($this->_columns) == 1) {
-                    $result = $this->jawsdb->dbc->queryone($sql, $this->_types);
-                } else {
-                    $result = $this->jawsdb->dbc->queryRow($sql, $this->_types);
-                }
-                if (!MDB2::isError($result) && empty($result)) {
-                    goto insert;
-                }
-                break;
-
             case 'upsert':
                 if (empty($this->_columns)) {
                     $this->select($this->_pk_field. ':'. $this->_pk_field_type);
@@ -1291,6 +1274,7 @@ class Jaws_ORM
 
             // insert a rows
             case 'insert':
+            case 'igsert':
                 insert:
                 $values  = '';
                 $columns = '';
@@ -1344,7 +1328,20 @@ class Jaws_ORM
                             }
                         }
                     }
+                } elseif ($this->_query_command == 'igsert' && $result->getCode() == MDB2_ERROR_CONSTRAINT) {
+                    if (empty($this->_columns)) {
+                        $this->select($this->_pk_field. ':'. $this->_pk_field_type);
+                    }
+                    $sql = 'select '. implode(', ', $this->_columns) . "\n";
+                    $sql.= 'from '. $this->_tablesIdentifier. "\n";
+                    $sql.= $this->_build_where();
+                    if (count($this->_columns) == 1) {
+                        $result = $this->jawsdb->dbc->queryone($sql, $this->_types);
+                    } else {
+                        $result = $this->jawsdb->dbc->queryRow($sql, $this->_types);
+                    }
                 }
+
                 break;
 
             case 'update':
