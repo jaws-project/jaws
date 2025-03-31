@@ -65,7 +65,7 @@
     <button class="btn btn-primary text-nowrap ms-auto" type="submit">{{ 'global.login' | t }}</button>
   </div>
   <div class="text-end mt-2">
-    <a class="text-decoration-none mt-1" href="{{ referrer }}">
+    <a class="text-decoration-none mt-1" href="{{ referrer | hex2bin }}">
       {{- 'global.back_to' | t: 'global.previouspage' -}}
     </a>
   </div>
