@@ -218,6 +218,14 @@ class Jaws_Gadget
                 }
             }
 
+            if (!self::IsGadgetInstalled($gadget)) {
+                return Jaws_Error::raiseError(
+                    Jaws::t('ERROR_GADGET_NOT_INSTALLED', $gadget),
+                    __FUNCTION__,
+                    JAWS_ERROR_INFO
+                );
+            }
+
             require_once $file;
             $classname = $gadget. '_Info';
             $instances[$gadget] = new $classname($gadget);
