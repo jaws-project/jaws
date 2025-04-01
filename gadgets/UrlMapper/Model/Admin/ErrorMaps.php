@@ -291,6 +291,10 @@ class UrlMapper_Model_Admin_ErrorMaps extends UrlMapper_Model_ErrorMaps
      */
     function GetHTTPError($reqURL, $code)
     {
+        if (Jaws_UTF8::strlen($reqURL) > 2048) {
+            $reqURL = '';
+            $code = 400;
+        }
         $errorsTable = Jaws_ORM::getInstance()->table('url_errors');
         $errorsTable->select('id:integer', 'new_url as url', 'new_code as code:integer');
         $errorMap = $errorsTable->where('url_hash', md5($reqURL))->fetchRow();
