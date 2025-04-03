@@ -58,7 +58,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                     false
                 );
                 if (Jaws_Error::IsError($result)) {
-                    throw new Exception($result->getMessage(), 206);
+                    throw new Exception($result->getMessage(), 500);
                 }
 
                 // remove temp user data
@@ -83,7 +83,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 }
 
                 $user['groups'] = $groups;
-                $user['avatar'] = $this->gadget->model->load('User')->getAvatar($user['id'], $user['domain']);
+                $user['avatar'] = $this->gadget->urlMap('Avatar', array('user'  => $user['username']));
                 $user['internal'] = true;
                 $user['remember'] = false;
                 // force user to change his password
@@ -175,7 +175,11 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
                 $rcvryData
             );
 
-            return Jaws_Error::raiseError($error->getMessage(), $error->getCode());
+            return Jaws_Error::raiseError(
+                $error->getMessage(),
+                $error->getCode(),
+                ($error->getCode() == 500)? JAWS_ERROR_ERROR : JAWS_ERROR_NOTICE
+            );
         }
     }
 
