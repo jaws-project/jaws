@@ -115,7 +115,7 @@ class Jaws_HTTPRequest
     {
         $this->request_cache_key = Jaws_Cache::key($url);
         if ($this->refresh ||
-            false === $result = $this->app->cache->get($this->request_cache_key, true)
+            is_null($result = $this->app->cache->get($this->request_cache_key, true))
         ) {
             $headers = $this->httpRequest->getHeaders();
             // user agent
@@ -162,7 +162,7 @@ class Jaws_HTTPRequest
     {
         $this->request_cache_key = Jaws_Cache::key($url, $params);
         if ($this->refresh ||
-            false === $result = $this->app->cache->get($this->request_cache_key, true)
+            is_null($result = $this->app->cache->get($this->request_cache_key, true))
         ) {
             $headers = $this->httpRequest->getHeaders();
             // detect data need url-encoding
@@ -220,7 +220,7 @@ class Jaws_HTTPRequest
     {
         $this->request_cache_key = Jaws_Cache::key($url, $data);
         if ($this->refresh ||
-            false === $result = $this->app->cache->get($this->request_cache_key, true)
+            is_null($result = $this->app->cache->get($this->request_cache_key, true))
         ) {
             $headers = $this->httpRequest->getHeaders();
             // user agent

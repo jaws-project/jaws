@@ -65,7 +65,7 @@ class Jaws_Soap_Client extends Jaws_Soap
 
         try {
             if ($this->refresh ||
-                false === $result = $this->app->cache->get($this->request_cache_key, true)
+                is_null($result = $this->app->cache->get($this->request_cache_key, true))
             ) {
                 $result = call_user_func_array(array($this->SoapClient, $method), $arguments);
                 if (is_soap_fault($result)) {
