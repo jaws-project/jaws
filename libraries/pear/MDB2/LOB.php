@@ -59,6 +59,7 @@ require_once 'MDB2.php';
  * @category Database
  * @author Lukas Smith <smith@pooteeweet.org>
  */
+#[\AllowDynamicProperties]
 class MDB2_LOB
 {
     /**
