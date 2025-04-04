@@ -19,6 +19,7 @@ class Notification_Info extends Jaws_Gadget
     const MESSAGE_STATUS_SENDING = 2;
     const MESSAGE_STATUS_SENT = 3;
     const MESSAGE_STATUS_EXPIRED = 4;
+    const MESSAGE_STATUS_REJECTED = 5;
 
     /**
      * Gadget version
@@ -26,7 +27,7 @@ class Notification_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '3.1.0';
+    var $version = '3.2.0';
 
     /**
      * Is this gadget core gadget?

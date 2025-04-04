@@ -67,16 +67,21 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                     $model->UpdateNotificationsStatusById(
                         $dType,
                         array_column($messages, 'id'),
-                        Notification_Info::MESSAGE_STATUS_SENDING,
-                        true
+                        array(
+                            'status' => Notification_Info::MESSAGE_STATUS_SENDING,
+                            'incAttempts' => true,
+                        )
                     );
 
                     // group notifications by message id
                     $messages = $this->GroupByMessages($messages);
                     foreach ($messages as $msgid => $message) {
+                        $updateParams = array();
                         // if expired
                         if (!empty($message['expiry']) && $message['expiry'] <= time()) {
-                            $new_status = Notification_Info::MESSAGE_STATUS_EXPIRED;
+                            $updateParams = array(
+                                'status' => Notification_Info::MESSAGE_STATUS_EXPIRED
+                            );
                         } else {
                             $res = $objDriver->notify(
                                 $message['shouter'],
@@ -90,15 +95,24 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
                                 $message['callback'],
                                 $message['image']
                             );
-                            $new_status = Jaws_Error::IsError($res)?
-                                Notification_Info::MESSAGE_STATUS_PENDING : Notification_Info::MESSAGE_STATUS_SENT;
+                            if (Jaws_Error::IsError($res)) {
+                                $updateParams = array(
+                                    'status' => $res->getCode(),
+                                    'comment' => $res->getMessage(),
+                                );
+                            } else {
+                                $updateParams = array(
+                                    'status' => Notification_Info::MESSAGE_STATUS_SENT,
+                                    'comment' => '',
+                                );
+                            }
                         }
 
                         // set notifications status
                         $model->UpdateNotificationsStatusById(
                             $dType,
                             $message['ids'],
-                            $new_status
+                            $updateParams
                         );
                     }
                 }

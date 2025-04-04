@@ -172,12 +172,6 @@
                 <default>1</default>
             </field>
 
-            <field>
-                <name>status_comment</name>
-                <type>text</type>
-                <length>255</length>
-            </field>
-
             <index>
                 <name><variable>table_prefix</variable>notification_r_drv</name>
                 <field>

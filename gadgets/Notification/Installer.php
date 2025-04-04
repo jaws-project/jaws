@@ -302,6 +302,13 @@ class Notification_Installer extends Jaws_Gadget_Installer
             $this->gadget->registry->insert('app_fetch_limit', 100);
         }
 
+        if (version_compare($old, '3.2.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '2.9.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
         return true;
     }
 

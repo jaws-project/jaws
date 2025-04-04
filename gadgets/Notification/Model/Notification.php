@@ -490,25 +490,37 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @access  public
      * @param   string  $contactType    Contact type (email, mobile, ...)
      * @param   array   $ids            Notifications Id
-     * @param   int     $status         Message status(1: not send, 2: sending, 3: sent)
-     * @param   bool    $incAttempts    Increase attempts count
+     * @param   array   $options        array include status(1: not send, 2: sending, 3: sent), incAttempts, comment
      * @return  bool    True or error
      */
-    function UpdateNotificationsStatusById($contactType, $ids, $status = 3, $incAttempts = false)
+    function UpdateNotificationsStatusById($contactType, $ids, $options = array())
     {
         if (empty($ids)) {
             return true;
         }
 
+        $defaultOptions = array(
+            'status' => 3,
+            'comment' => '',
+            'incAttempts' => false,
+        );
+        $options = array_filter(array_merge($defaultOptions, $options));
+
+        $data = array(
+            'time' => time(),
+            'status' => (int)$options['status']
+        );
+        if (isset($options['comment'])) {
+            $data['comment'] = $options['comment'];
+        }
+
+        if (isset($options['incAttempts']) && (bool)$options['incAttempts']) {
+            $data['attempts'] = Jaws_ORM::getInstance()->expr('attempts + ?', 1);
+        }
+
         return Jaws_ORM::getInstance()
             ->table('notification_recipient')
-            ->update(
-                array(
-                    'attempts' => Jaws_ORM::getInstance()->expr('attempts + ?', $incAttempts? 1 : 0),
-                    'time'     => time(),
-                    'status'   => (int)$status
-                )
-            )
+            ->update($data)
             ->where('id', $ids, 'in')
             ->and()
             ->where('driver', $contactType)
