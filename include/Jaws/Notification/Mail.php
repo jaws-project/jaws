@@ -97,7 +97,7 @@ class Jaws_Notification_Mail extends Jaws_Notification
         $result = $this->object->send();
         if (Jaws_Error::IsError($result)) {
             return Jaws_Error::raiseError(
-                $result=>getMessage(),
+                $result->getMessage(),
                 Notification_Info::MESSAGE_STATUS_REJECTED
             );
         }
