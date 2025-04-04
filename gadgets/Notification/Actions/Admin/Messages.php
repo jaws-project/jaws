@@ -52,6 +52,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $tpl->SetVariable('lbl_insert_time', Jaws::t('TIME'));
         $tpl->SetVariable('lbl_attempts', $this::t('MESSAGE_ATTEMPTS'));
         $tpl->SetVariable('lbl_attempt_time', $this::t('MESSAGE_ATTEMPT_TIME'));
+        $tpl->SetVariable('lbl_status_comment', $this::t('MESSAGE_STATUS_COMMENT'));
         $tpl->SetVariable('lbl_from_date', $this::t('FROM_DATE'));
         $tpl->SetVariable('lbl_to_date', $this::t('TO_DATE'));
         $tpl->SetVariable('lbl_contact', $this::t('CONTACT'));

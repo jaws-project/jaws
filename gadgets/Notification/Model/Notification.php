@@ -49,7 +49,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         return Jaws_ORM::getInstance()->table('notification_message', 'nm')
             ->select(
                 'shouter', 'name', 'title', 'summary', 'verbose',
-                'callback', 'image', 'nr.driver:integer', 'nr.status:integer',
+                'callback', 'image', 'nr.driver:integer', 'nr.status:integer', 'nr.status_comment',
                 'nr.contact', 'nm.time:integer',
                 'nr.attempts:integer', 'nr.time as attempt_time:integer'
             )->join('notification_recipient as nr', 'nr.message', 'nm.id')
@@ -511,7 +511,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             'status' => (int)$options['status']
         );
         if (isset($options['comment'])) {
-            $data['comment'] = $options['comment'];
+            $data['status_comment'] = $options['comment'];
         }
 
         if (isset($options['incAttempts']) && (bool)$options['incAttempts']) {
