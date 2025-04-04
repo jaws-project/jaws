@@ -221,10 +221,9 @@ class Jaws_Notification_FCMHTTPv1 extends Jaws_Notification
 
         } catch (Exception $error) {
             return Jaws_Error::raiseError(
-                "FCM send failed({$error->getMessage()})",
-                __CLASS__
+                $error->getMessage(),
+                Notification_Info::MESSAGE_STATUS_REJECTED
             );
-            return $error;
         }
 
         return true;

@@ -322,7 +322,10 @@ class Jaws_Mail
                 $mail = Mail::factory('smtp', $this->params);
                 break;
             default:
-                return false;
+                return Jaws_Error::raiseError(
+                    'unknown mailer!',
+                    404
+                );
         }
 
         $realbody = $this->mail_mime->get(
@@ -342,7 +345,7 @@ class Jaws_Mail
         $headers = $this->mail_mime->headers($this->headers);
         $res = $mail->send($this->recipient, $headers, $realbody);
         if (PEAR::isError($res)) {
-            return Jaws_Error::raiseError($res->getMessage(), __FUNCTION__);
+            return Jaws_Error::raiseError($res->getMessage(), 500);
         }
 
         return true;

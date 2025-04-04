@@ -155,7 +155,10 @@ class Jaws_Notification
     function notify(
         $shouter, $name, $contacts, $title, $summary, $verbose, array $variables, $time, $callback_url, $image
     ) {
-        return Jaws_Error::raiseError('notify() method not supported by this driver.', __CLASS__);
+        return Jaws_Error::raiseError(
+            'notify() method not supported by this driver.',
+            Notification_Info::MESSAGE_STATUS_REJECTED
+        );
     }
 
     /**
