@@ -101,6 +101,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
             Notification_Info::MESSAGE_STATUS_SENDING => $this::t('MESSAGE_STATUS_SENDING'),
             Notification_Info::MESSAGE_STATUS_SENT => $this::t('MESSAGE_STATUS_SENT'),
             Notification_Info::MESSAGE_STATUS_EXPIRED => $this::t('MESSAGE_STATUS_EXPIRED'),
+            Notification_Info::MESSAGE_STATUS_REJECTED => $this::t('MESSAGE_STATUS_REJECTED'),
         );
         foreach ($sendStatuses as $value => $title) {
             $tpl->SetBlock('Messages/filter_status');
@@ -165,6 +166,9 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
                     break;
                 case Notification_Info::MESSAGE_STATUS_EXPIRED:
                     $sendStatus = $this::t('MESSAGE_STATUS_EXPIRED');
+                    break;
+                case Notification_Info::MESSAGE_STATUS_REJECTED:
+                    $sendStatus = $this::t('MESSAGE_STATUS_REJECTED');
                     break;
             }
             $message['status'] = $sendStatus;
