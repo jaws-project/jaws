@@ -157,7 +157,7 @@ class Comments_Actions_Feeds extends Jaws_Gadget_Action
         $url = $this->gadget->urlMap(
             $feed_type == 'atom'? 'RecentCommentsAtom' : 'RecentCommentsRSS',
             $params,
-            true
+            array('absolute' => true)
         );
 
         $commentAtom->SetTitle($this->gadget->registry->fetch('site_name', 'Settings'));
