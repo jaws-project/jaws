@@ -184,7 +184,7 @@ class Jaws_Date_Jalali extends Jaws_Date
             $format = isset($args[1])? $args[1] : '';
         }
 
-        $date = $this->jd_to_gregorian($this->persian_to_jd($year, $month, $day));
+        $date = $this->jd_to_gregorian($this->persian_to_jd((int)$year, (int)$month, (int)$day));
         $date = mktime((int)$hour, (int)$minute, (int)$second, $date['month'], $date['day'], $date['year']);
         return !empty($format)?
             date($format, $date) :
