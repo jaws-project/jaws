@@ -64,6 +64,217 @@ class Jaws_FileManagement
      * Upload Files
      *
      * @access  public
+     * @param   array   $files      $_FILES array
+     * @param   string  $dest       destination directory(include end directory separator)
+     * @param   array   $options    upload behavior options
+     * @return  mixed   Returns uploaded files array on success or Jaws_Error/FALSE on failure
+     */
+    static function uploadFilesX($files, $dest = '', array $options = array())
+    {
+        $defaultOptions = array(
+            'filename' => '',
+            'allow_formats' => '',
+            'overwrite' => true,
+            'move_files'  => true,
+            'max_size' => null,
+            'dimension' => '',
+            'format' => '',
+        );
+        $options = array_merge($defaultOptions, $options);
+        $options['allow_formats'] = array_filter(explode(',', $options['allow_formats']));
+        $options['dimension'] = preg_split('/\*|x/', $options['dimension'], -1, PREG_SPLIT_NO_EMPTY);
+
+        if (empty($files) || !is_array($files)) {
+            return false;
+        }
+
+        $result = array();
+        if (isset($files['tmp_name'])) {
+            $files = array($files);
+        }
+
+        $dest = $dest?: static::upload_tmp_dir();
+        $dest = rtrim($dest, "\\/"). '/';
+        if (!static::mkdir($dest, 0, 2)) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_FAILED_CREATING_DIR'. $dest),
+                500
+            );
+        }
+
+        try {
+            foreach($files as $key => $listFiles) {
+                if (!is_array($listFiles['tmp_name'])) {
+                    $listFiles = array_map(
+                        function($item) {
+                            return array($item);
+                        },
+                        $listFiles
+                    );
+                }
+
+                for($i=0; $i < count($listFiles['name']); ++$i) {
+                    $file = array();
+                    $file['name']     = $listFiles['name'][$i];
+                    $file['tmp_name'] = $listFiles['tmp_name'][$i];
+                    $file['size']     = $listFiles['size'][$i];
+                    if (isset($listFiles['error'])) {
+                        $file['error'] = $listFiles['error'][$i];
+                    }
+
+                    if (isset($file['error']) && !empty($file['error']) && $file['error'] != 4) {
+                        throw new Jaws_Exception(
+                            Jaws::t('ERROR_UPLOAD_CORRUPTED', $host_filename),
+                            406,
+                            JAWS_NOTICE
+                        );
+                    }
+
+                    if (empty($file['tmp_name'])) {
+                        continue;
+                    }
+
+                    // Check if the file has been altered or is corrupted
+                    if (filesize($file['tmp_name']) != $file['size']) {
+                        @unlink($file['tmp_name']);
+                        throw new Jaws_Exception(
+                            Jaws::t('ERROR_UPLOAD_CORRUPTED', $host_filename),
+                            406,
+                            JAWS_NOTICE
+                        );
+                    }
+
+                    // resize image file
+                    if (!empty($options['dimension']) || !empty($options['format'])) {
+                        $objImage = Jaws_Image::getInstance()->load($file['tmp_name']);
+                        if (!empty($options['dimension'])) {
+                            $objImage->resize($options['dimension'][0], $options['dimension'][1]);
+                        }
+                        $objImage->save($file['tmp_name'], $options['format'])->free();
+                        if (Jaws_Error::IsError($objImage)) {
+                            throw new Jaws_Exception(
+                                Jaws::t('HTTP_ERROR_CONTENT_500'),
+                                $objImage->getCode(),
+                                JAWS_NOTICE
+                            );
+                        }
+                    }
+
+                    $user_filename = isset($file['name']) ? $file['name'] : '';
+                    $host_filename = strtolower(preg_replace('/[^[:alnum:]_\.\-]/', '', $user_filename));
+                    // remove deny_formats extension, even double extension
+                    $host_filename = implode(
+                        '.',
+                        array_diff(explode('.', $host_filename), self::$deny_formats)
+                    );
+
+                    if (!empty($options['filename'])) {
+                        $host_filename = $options['filename'] . (string)strrchr($host_filename, '.');
+                    }
+
+                    // resize image file
+                    if (!empty($options['format'])) {
+                        // rename file extension
+                        if (false !== $extPos = strrpos($host_filename, '.')) {
+                            $host_filename = substr($host_filename, 0, $extPos);
+                        }
+                        $host_filename.= '.'. $options['format'];
+
+                        // set new file size
+                        clearstatcache();
+                        $file['size'] = filesize($file['tmp_name']);
+                    }
+
+                    // file category type
+                    $fileExtType = static::mime_extension_type($host_filename);
+                    $file['type'] = $fileExtType['type'];
+
+                    // file mime-type
+                    $file['mime'] = @mime_content_type($file['tmp_name']);
+                    $file['mime'] = $file['mime']?: $fileExtType['mime'];
+
+                    // Check if the file size exceeds defined max file size
+                    if (!empty($options['max_size']) && $file['size'] > $options['max_size']) {
+                        @unlink($file['tmp_name']);
+                        throw new Jaws_Exception(
+                            Jaws::t('ERROR_UPLOAD_MAX_SIZE', $host_filename),
+                            406,
+                            JAWS_NOTICE
+                        );
+                    }
+
+                    $fileinfo = pathinfo($host_filename);
+                    if (isset($fileinfo['extension'])) {
+                        if (!empty($options['allow_formats']) && !in_array($fileinfo['extension'], $options['allow_formats'])) {
+                            throw new Jaws_Exception(
+                                Jaws::t('ERROR_UPLOAD_INVALID_FORMAT', $host_filename),
+                                406,
+                                JAWS_NOTICE
+                            );
+                        }
+                        $fileinfo['extension'] = '.'. $fileinfo['extension'];
+                    } else {
+                        $fileinfo['extension'] = '';
+                    }
+
+                    if (is_null($options['filename']) || empty($fileinfo['filename'])) {
+                        $host_filename = time(). mt_rand() . $fileinfo['extension'];
+                    } elseif (!$options['overwrite'] && static::file_exists($dest . $host_filename)) {
+                        $host_filename = $fileinfo['filename']. '_'. time(). mt_rand(). $fileinfo['extension'];
+                    }
+
+                    $uploadfile = $dest . $host_filename;
+                    // On windows-systems can't rename a file to an existing destination,
+                    // So we must delete destination file
+                    if (file_exists($uploadfile)) {
+                        @unlink($uploadfile);
+                    }
+                    $res = $options['move_files']?
+                        static::rename_from_file($file['tmp_name'], $uploadfile):
+                        static::copy_from_file($file['tmp_name'], $uploadfile);
+                    if (!$res) {
+                        throw new Jaws_Exception(
+                            Jaws::t('ERROR_UPLOAD', $host_filename),
+                            500,
+                            JAWS_NOTICE
+                        );
+                    }
+
+                    static::chmod($uploadfile);
+                    $result[$key][$i]['user_filename'] = $user_filename;
+                    $result[$key][$i]['host_filename'] = $host_filename;
+                    $result[$key][$i]['host_mimetype'] = $file['mime'];
+                    $result[$key][$i]['host_filetype'] = $file['type'];
+                    $result[$key][$i]['host_filesize'] = $file['size'];
+                }
+            }
+        } catch (Jaws_Exception $error) {
+            // delete orphaned files
+            array_walk_recursive(
+                $result,
+                function($val, $key, $dest) {
+                    if ($key == 'host_filename') {
+                        static::delete($dest . $val, true);
+                    }
+                },
+                $dest
+            );
+
+            return Jaws_Error::raiseError(
+                $error->getMessage(),
+                $error->getCode(),
+                $error->getSeverity(),
+                1
+            );
+        }
+
+        return $result;
+    }
+
+    /**
+     * Upload Files
+     *
+     * @access  public
      * @param   array   $files          $_FILES array
      * @param   string  $dest           destination directory(include end directory separator)
      * @param   string  $allow_formats  permitted file format
