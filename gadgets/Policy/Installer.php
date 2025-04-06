@@ -90,6 +90,10 @@ class Policy_Installer extends Jaws_Gadget_Installer
             @file_get_contents(ROOT_JAWS_PATH. 'gadgets/Policy/Resources/blocked.domains.txt')
         );
 
+        // install captcha driver
+        $objCaptcha = Jaws_Captcha::getInstance('Math');
+        $objCaptcha->install();
+
         return true;
     }
 
