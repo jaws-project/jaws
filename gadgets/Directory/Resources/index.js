@@ -140,7 +140,7 @@ function Jaws_Gadget_Directory() { return {
         var repeater = $('#dirExplorer');
         repeater.repeater({
             defaultView: 'thumbnail',
-            dataSource: directoryDataSource,
+            dataSource: $.proxy(this.directoryDataSource, this),
             staticHeight: 600,
             thumbnail_selectable: true,
             list_direction: $('.repeater-canvas').css('direction'),
