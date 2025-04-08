@@ -21,6 +21,11 @@ class Jaws_Date_Jalali extends Jaws_Date
      */
     private static function gregorian_to_jdn($gy, $gm, $gd)
     {
+        // Adjust year if month greater than 12
+        $gy += intdiv($gm - 1, 12);
+        // Adjust month
+        $gm = ($gm % 12)?: 12;
+
         // Adjust month and year for January and February (they are treated as months 13 and 14 of the previous year)
         if ($gm <= 2) {
             $gm += 12;
@@ -109,8 +114,6 @@ class Jaws_Date_Jalali extends Jaws_Date
             1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178
         ];
 
-        $breaksCount = count($breaks);
-
         $jump = 0;
         $leapJ = -14;
         $lastBreak = $breaks[0];
@@ -185,12 +188,12 @@ class Jaws_Date_Jalali extends Jaws_Date
     private static function jdn_to_persian($jdn)
     {
         $gDate = self::jdn_to_gregorian($jdn);
-        $leap = false;
+        $jLeap = false;
         $jy = $gDate['year'] - 621;
 
         jdn1f:
         // JDN of day 1 month 1 of Jalali year
-        $jy_jdn1f = self::persian_to_jdn($jy, 1, 1, $leap);
+        $jy_jdn1f = self::persian_to_jdn($jy, 1, 1, $jLeap);
 
         $remain_days = $jdn - $jy_jdn1f;
         if ($remain_days < 0) {
@@ -211,7 +214,7 @@ class Jaws_Date_Jalali extends Jaws_Date
             'year' => $jy,
             'month' => $jm,
             'day' => $jd,
-            'leap' => $leap,
+            'leap' => $jLeap,
         );
     }
 
@@ -251,7 +254,8 @@ class Jaws_Date_Jalali extends Jaws_Date
      */
     protected function persian_to_gregorian(int $jy, int $jm, int $jd): array
     {
-        $gDate = self::jdn_to_gregorian(self::persian_to_jdn($jy, $jm, $jd));
+        $jLeap = false;
+        $gDate = self::jdn_to_gregorian(self::persian_to_jdn($jy, $jm, $jd, $jLeap));
 
         // Days in Gregorian months
         $g_d_m = [31, $gDate['leap']? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
