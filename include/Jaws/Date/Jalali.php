@@ -21,11 +21,6 @@ class Jaws_Date_Jalali extends Jaws_Date
      */
     private static function gregorian_to_jdn($gy, $gm, $gd)
     {
-        // Adjust year if month greater than 12
-        $gy += intdiv($gm - 1, 12);
-        // Adjust month
-        $gm = ($gm % 12)?: 12;
-
         // Adjust month and year for January and February (they are treated as months 13 and 14 of the previous year)
         if ($gm <= 2) {
             $gm += 12;
@@ -104,11 +99,6 @@ class Jaws_Date_Jalali extends Jaws_Date
      */
     private static function persian_to_jdn($jy, $jm, $jd, &$leap = false)
     {
-        // Adjust year if month greater than 12
-        $jy += intdiv($jm - 1, 12);
-        // Adjust month
-        $jm = ($jm % 12)?: 12;
-
         $breaks = [
             -61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210,
             1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178
@@ -229,6 +219,11 @@ class Jaws_Date_Jalali extends Jaws_Date
      */
     protected function gregorian_to_persian(int $gy, int $gm, int $gd)
     {
+        // Adjust year if month greater than 12 or lesser than 1
+        $gy = $gy + (($gm <= 0)? -1 : ($gm > 12 ? 1 : 0));
+        // Adjust month
+        $gm = (($gm + 12) % 12)?: 12;
+
         $jDate = self::jdn_to_persian(self::gregorian_to_jdn($gy, $gm, $gd));
 
         // start day of week, 0 = Sunday, 6 = Saturday
@@ -254,6 +249,11 @@ class Jaws_Date_Jalali extends Jaws_Date
      */
     protected function persian_to_gregorian(int $jy, int $jm, int $jd): array
     {
+        // Adjust year if month greater than 12 or lesser than 1
+        $jy = $jy + (($jm <= 0)? -1 : ($jm > 12 ? 1 : 0));
+        // Adjust month
+        $jm = (($jm + 12) % 12)?: 12;
+
         $jLeap = false;
         $gDate = self::jdn_to_gregorian(self::persian_to_jdn($jy, $jm, $jd, $jLeap));
 
