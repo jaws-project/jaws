@@ -10,157 +10,261 @@
  */
 class Jaws_Date_Jalali extends Jaws_Date
 {
-    protected static $jalaliEpoch = 1948320.5;
-    protected static $gregorianEpoch = 1721425.5;
-
     /**
-     * @var     array
+     * Converts a Gregorian date to Julian Day Number.
+     *
      * @access  private
+     * @param   int $gy Gregorian year
+     * @param   int $gm Gregorian month (1–12)
+     * @param   int $gd Gregorian day (1–31)
+     * @return  int Julian Day Number
      */
-    var $_JalaliDaysInMonthes = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29);
-
-    /*
-     *
-     */
-    public function leap_persian($year)
+    private static function gregorian_to_jdn($gy, $gm, $gd)
     {
-        return (((((($year - (($year > 0) ? 474 : 473)) % 2820) + 474) + 38) * 682) % 2816) < 682;
-    }
-
-    /*
-     *
-     */
-    public function leap_gregorian($year)
-    {
-        return (($year % 4) == 0) && ((($year % 100) != 0) || (($year % 400) == 0));
-    }
-
-    /*
-     *
-     */
-    function persian_to_jd($year, $month, $day)
-    {
-        $epbase = $epyear = 0;
-        $exyear = floor(($month - 1) / 12);
-        $year   = $year + $exyear;
-        $month  = $month - $exyear * 12;
-
-        $epbase = $year - (($year >= 0)? 474 : 473);
-        $epyear = 474 + ($epbase % 2820);
-
-        return $day +
-            (($month <= 7)? (($month - 1) * 31) : ((($month - 1) * 30) + 6)) +
-            floor((($epyear * 682) - 110) / 2816) +
-            ($epyear - 1) * 365 +
-            floor($epbase / 2820) * 1029983 +
-            (self::$jalaliEpoch - 1);
-    }
-
-    /*
-     *
-     */
-    public function gregorian_to_jd($year, $month, $day)
-    {
-        return (self::$gregorianEpoch - 1) +
-            (365 * ($year - 1)) +
-            floor(($year - 1) / 4) +
-            (-floor(($year - 1) / 100)) +
-            floor(($year - 1) / 400) +
-            floor(
-                (((367 * $month) - 362) / 12) +
-                (($month <= 2)? 0 : ($this->leap_gregorian($year) ? -1 : -2)) +
-                $day
-            );
-    }
-
-    /*
-     *
-     */
-    public function jd_to_gregorian($jd)
-    {
-        $wjd = floor($jd - 0.5) + 0.5;
-        $depoch = $wjd - self::$gregorianEpoch;
-        $quadricent = floor($depoch / 146097);
-        $dqc = $depoch % 146097;
-        $cent = floor($dqc / 36524);
-        $dcent = $dqc % 36524;
-        $quad = floor($dcent / 1461);
-        $dquad = $dcent % 1461;
-        $yindex = floor($dquad / 365);
-        $year = ($quadricent * 400) + ($cent * 100) + ($quad * 4) + $yindex;
-        if (!(($cent == 4) || ($yindex == 4))) {
-            $year++;
+        // Adjust month and year for January and February (they are treated as months 13 and 14 of the previous year)
+        if ($gm <= 2) {
+            $gm += 12;
+            $gy--;
         }
-        $yearday = $wjd - $this->gregorian_to_jd($year, 1, 1);
-        $leapadj = (($wjd < $this->gregorian_to_jd($year, 3, 1))? 0 : ($this->leap_gregorian($year) ? 1 : 2));
-        $month = floor(((($yearday + $leapadj) * 12) + 373) / 367);
-        $day = ($wjd - $this->gregorian_to_jd($year, $month, 1)) + 1;
 
-        return array(
-            'year'  => $year,
-            'month' => $month,
-            'day'   => $day
-        );
+        // Century correction (account for the 100-year rule in Gregorian leap years)
+        $A = floor($gy / 100);
+        // This corrects the leap year discrepancies in the Gregorian calendar
+        $B = 2 - $A + floor($A / 4);
+
+        // JDN formula based on Gregorian calendar rules
+        return floor(365.25 * ($gy + 4716)) + floor(30.6001 * ($gm + 1)) + $gd + $B - 1524.5;
     }
 
-    /*
+    /**
+     * Converts a Julian Day Number (JDN) to Gregorian date.
      *
+     * @param   float   $jdn    Julian Day Number
+     * @return  array   Gregorian date (year, month, day)
      */
-    public function jd_to_persian($jd)
+    private static function jdn_to_gregorian($jdn)
     {
-        $jd = floor($jd) + 0.5;
-        $jwday = floor($jd + 1.5) % 7;
+        // Step 1: Adjust JDN to account for fractional days
+        $N = $jdn + 0.5;  // Add 0.5 to account for fractional days in JDN.
 
-        $depoch = $jd - $this->persian_to_jd(475, 1, 1);
-        $cycle = floor($depoch / 1029983);
-        $cyear = $depoch % 1029983;
-        if ($cyear == 1029982) {
-            $ycycle = 2820;
+        // Step 2: Extract the integer part of the Julian Day Number (Z) and the fractional part (F)
+        $Z = floor($N);  // The integer part represents the Julian date number.
+        $F = $N - $Z;  // The fractional part represents the time of day.
+
+        // Step 3: Calculate the number of days since a given reference date
+        // The constants below are used for corrections in the Julian calendar system:
+        $A = floor(($Z - 1867216.25) / 36524.25);  // Adjust for the leap year cycle difference between Julian and Gregorian calendars
+        $B = $Z + 1 + $A - floor($A / 4);  // Apply further correction for leap years and century adjustments.
+
+        // Step 4: Calculate the Julian year (D) and convert Julian Day to Gregorian date
+        $C = $B + 1524;  // Get the final value after all corrections
+        $D = floor(($C - 122.1) / 365.25);  // Calculate the year by considering the leap years and regular years
+        $E = floor(365.25 * $D);  // Number of days in the year
+        $G = floor(($C - $E) / 30.6001);  // Calculate month and adjust based on the fractional days
+
+        // Step 5: Convert to day, month, and year
+        $gd = $C - $E - floor(30.6001 * $G) + $F;  // Calculate the day of the month based on the remaining days
+
+        // Step 6: Determine the month
+        if ($G < 14) {
+            $gm = $G - 1;  // If month is less than 14, it's between March and December
         } else {
-            $aux1 = floor($cyear / 366);
-            $aux2 = $cyear % 366;
-            $ycycle = floor(((2134 * $aux1) + (2816 * $aux2) + 2815) / 1028522) +
-            $aux1 + 1;
+            $gm = $G - 13;  // If month is greater than or equal to 14, it's January or February
         }
-        $year = $ycycle + (2820 * $cycle) + 474;
-        if ($year <= 0) {
-            $year--;
-        }
-        $yday = ($jd - $this->persian_to_jd($year, 1, 1)) + 1;
-        $month = ($yday <= 186) ? ceil($yday / 31) : ceil(($yday - 6) / 30);
-        $day = ($jd - $this->persian_to_jd($year, $month, 1)) + 1;
 
+        // Step 7: Adjust the year based on the month
+        if ($gm > 2) {
+            $gy = $D - 4716;  // For months March to December, adjust based on the Julian year calculation
+        } else {
+            $gy = $D - 4715;  // For months January and February, adjust the year for leap years and calendar transitions
+        }
+
+        // Return the final Gregorian date
         return array(
-            'year'      => $year,
-            'month'     => $month,
-            'day'       => $day,
-            'weekDay'   => $jwday,
-            'monthDays' =>
-                $this->_JalaliDaysInMonthes[$month - 1] +
-                ($month == 12 ? (int)$this->leap_persian($year) : 0),
-            'yearDay'   => $yday,
+            'year'  => $gy,
+            'month' => $gm,
+            'day'   => floor($gd),
+            'leap'  => (($gy % 4) == 0) && ((($gy % 100) != 0) || (($gy % 400) == 0)),
         );
     }
 
     /**
-     * Gregorian to Jalali Converter
+     * Converts a Persian (Jalali) date to Julian Day Number.
      *
-     * @param   int $year  Gregorian year
-     * @param   int $month Gregorian month
-     * @param   int $day   Gregorian day
-     * @access  protected
-     * @return  array   Converted time
+     * @access  private
+     * @param   int $gy Gregorian year
+     * @param   int $gm Gregorian month (1–12)
+     * @param   int $gd Gregorian day (1–31)
+     * @return  int Julian Day Number
      */
-    function gregorian_to_persian($year, $month, $day)
+    private static function persian_to_jdn($jy, $jm, $jd, &$leap = false)
     {
-        $date = $this->jd_to_persian($this->gregorian_to_jd($year, $month, $day));
+        // Adjust year if month greater than 12
+        $jy += intdiv($jm - 1, 12);
+        // Adjust month
+        $jm = ($jm % 12)?: 12;
+
+        $breaks = [
+            -61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210,
+            1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178
+        ];
+
+        $breaksCount = count($breaks);
+
+        $jump = 0;
+        $leapJ = -14;
+        $lastBreak = $breaks[0];
+
+        if ($jy < $lastBreak || $jy >= end($breaks)) {
+            throw new \InvalidArgumentException('Invalid Persian/Jalali year : ' . $jy);
+        }
+
+        // Loop to determine leap years in the Jalali cycle
+        for ($i = 1; $i < count($breaks); $i += 1) {
+            $breakYear = $breaks[$i];
+            $jump = $breakYear - $lastBreak;
+            if ($jy < $breakYear) {
+                break;
+            }
+
+            $leapJ = $leapJ +  intdiv($jump, 33) * 8 + intdiv($jump % 33, 4);
+            $lastBreak = $breakYear;
+        }
+
+        // Calculate the leap years from the start of Jalali epoch to the current year
+        $n = $jy - $lastBreak;
+        $leapJ = $leapJ + intdiv($n, 33) * 8 + intdiv(($n % 33) + 3, 4);
+
+        // Special adjustment
+        if (($jump % 33) == 4 && ($jump - $n) == 4) {
+            $leapJ += 1;
+        }
+
+        // Initialize Gregorian year and leap year count
+        $gy = $jy + 621;
+
+        // Calculate the leap years in the Gregorian calendar
+        $leapG = intdiv($gy, 4) - intdiv((intdiv($gy, 100) + 1) * 3, 4) - 150;
+
+        // differ days between year's first day of two calendar
+        $day1f = 20 + $leapJ - $leapG;
+
+        // determine this Persian/Jalali year is leap?
+        if ($jump - $n < 6) {
+            $n = $n - $jump + intdiv($jump + 4, 33) * 33;
+        }
+        $leap = (int)fmod(fmod($n + 1, 33) - 1, 4) == 0;
+
+        // JDN of day 1 month 1 of Jalali year
+        $jy_jdn1f = self::gregorian_to_jdn($gy, 3, $day1f);
+
+        // Standard days in Persian/Jalali calendar
+        $j_d_m = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+
+        // Calculate the number of days for the current year
+        $days_in_year = 0;
+
+        // Add the days in the months of the current year
+        for ($i = 0; $i < $jm - 1; $i++) {
+            $days_in_year += $j_d_m[$i];
+        }
+
+        // Add given day
+        $days_in_year += $jd - 1;
+
+        return $jy_jdn1f + $days_in_year;
+    }
+
+    /**
+     * Converts Julian Day Number to Persian/Jalali date.
+     *
+     * @access  private
+     * @param   int     $jdn    Julian Day Number
+     * @return  array   Persian date (year, month, day)
+     */
+    private static function jdn_to_persian($jdn)
+    {
+        $gDate = self::jdn_to_gregorian($jdn);
+        $leap = false;
+        $jy = $gDate['year'] - 621;
+
+        jdn1f:
+        // JDN of day 1 month 1 of Jalali year
+        $jy_jdn1f = self::persian_to_jdn($jy, 1, 1, $leap);
+
+        $remain_days = $jdn - $jy_jdn1f;
+        if ($remain_days < 0) {
+            $jy = $jy - 1;
+            goto jdn1f;
+        }
+
+        if ($remain_days <= 185) {
+            $jm = 1 + intdiv($remain_days, 31);
+            $jd = ($remain_days % 31) + 1;
+        } else {
+            $remain_days = $remain_days - 186;
+            $jm = 7 + intdiv($remain_days, 30);
+            $jd = ($remain_days % 30) + 1;
+        }
+
         return array(
-            'year'      => $date['year'],
-            'month'     => $date['month'],
-            'day'       => $date['day'],
-            'weekDay'   => $date['weekDay'],
-            'monthDays' => $date['monthDays'],
-            'yearDay'   => $date['yearDay']
+            'year' => $jy,
+            'month' => $jm,
+            'day' => $jd,
+            'leap' => $leap,
+        );
+    }
+
+    /**
+     * Converts a Gregorian date to a Jalali (Persian) date.
+     *
+     * @access  protected
+     * @param   int $gy Gregorian year
+     * @param   int $gm Gregorian month (1–12)
+     * @param   int $gd Gregorian day (1–31)
+     * @return  array   Jalali date
+     */
+    protected function gregorian_to_persian(int $gy, int $gm, int $gd)
+    {
+        $jDate = self::jdn_to_persian(self::gregorian_to_jdn($gy, $gm, $gd));
+
+        // start day of week, 0 = Sunday, 6 = Saturday
+        $wday = (int)date('w', mktime(0, 0, 0, $gm, $gd, $gy));
+
+        return array(
+            'year'  => $jDate['year'],
+            'month' => $jDate['month'],
+            'day'   => $jDate['day'],
+            'wday'  => $wday,
+            'mday'  => ($jDate['month'] < 7)? 31 : (($jDate['month'] < 12)? 30 : ($jDate['leap']? 30 : 29)),
+        );
+    }
+
+    /**
+     * Converts a Jalali (Persian) date to a Gregorian date.
+     *
+     * @access  protected
+     * @param   int $jy Jalali year
+     * @param   int $jm Jalali month (1–12)
+     * @param   int $jd Jalali day (1–31)
+     * @return  array   Gregorian date
+     */
+    protected function persian_to_gregorian(int $jy, int $jm, int $jd): array
+    {
+        $gDate = self::jdn_to_gregorian(self::persian_to_jdn($jy, $jm, $jd));
+
+        // Days in Gregorian months
+        $g_d_m = [31, $gDate['leap']? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        // start day of week, 0 = Sunday, 6 = Saturday
+        $wday = (int)date('w', mktime(0, 0, 0, $gDate['month'], $gDate['day'], $gDate['year']));
+
+        return array(
+            'year'  => $gDate['year'],
+            'month' => $gDate['month'],
+            'day'   => $gDate['day'],
+            'wday'  => $wday,
+            'mday'  => $g_d_m[$gDate['month'] - 1],
         );
     }
 
@@ -184,20 +288,21 @@ class Jaws_Date_Jalali extends Jaws_Date
             $format = isset($args[1])? $args[1] : '';
         }
 
-        $date = $this->jd_to_gregorian($this->persian_to_jd((int)$year, (int)$month, (int)$day));
+        $date = $this->persian_to_gregorian((int)$year, (int)$month, (int)$day);
         $date = mktime((int)$hour, (int)$minute, (int)$second, $date['month'], $date['day'], $date['year']);
         return !empty($format)?
             date($format, $date) :
-            array('timestamp' => $date,
-                  'year'      => date("Y", $date),
-                  'month'     => date("m", $date),
-                  'day'       => date("d", $date),
-                  'hour'      => date("H", $date),
-                  'minute'    => date("i", $date),
-                  'second'    => date("s", $date),
-                  'monthDays' => date("t", $date),
-                  'yearDay'   => date("z", $date)
-                );
+            array(
+                'timestamp' => $date,
+                'year'      => date("Y", $date),
+                'month'     => date("m", $date),
+                'day'       => date("d", $date),
+                'hour'      => date("H", $date),
+                'minute'    => date("i", $date),
+                'second'    => date("s", $date),
+                'mday'      => date("t", $date),
+                'yearDay'   => date("z", $date),
+            );
     }
 
     /**
@@ -231,7 +336,7 @@ class Jaws_Date_Jalali extends Jaws_Date
         $minute = $grdate[4];
         $hour   = $grdate[3];
         $day    = $prdate['day'];
-        $wday   = $prdate['weekDay'];
+        $wday   = $prdate['wday'];
         $month  = $prdate['month'];
         $year   = $prdate['year'];
         $yday   = $prdate['yearDay'];
@@ -245,26 +350,9 @@ class Jaws_Date_Jalali extends Jaws_Date
                 'mon'     => $month,
                 'year'    => $year,
                 'yday'    => $yday,
-                'weekday' => $this->DayString($wday),
+                'wday'     => $this->DayString($wday),
                 'month'   => $this->MonthString($month),
             );
-    }
-
-    /**
-     * Gets count of Month(s) days
-     *
-     * @access  public
-     * @param   int     $year   Year
-     * @param   int     $month  Month
-     * @return  mixed   Count of Month days or array of count all months days 
-     */
-    function MonthDays($year, $month = 0)
-    {
-        $result = $this->_JalaliDaysInMonthes;
-        if ($this->leap_persian($year)) {
-            $result[11]++;
-        }
-        return empty($month)? $result : $result[$month-1];
     }
 
     /**
@@ -369,10 +457,10 @@ class Jaws_Date_Jalali extends Jaws_Date
 
                 case 'E':
                     if (substr($format, $i, 4) === 'EEEE') {
-                        $return.= $this->DayString($date['weekDay']);
+                        $return.= $this->DayString($date['wday']);
                         $i+=3;
                     } else {
-                        $return.= $this->DayShortString($date['weekDay']);
+                        $return.= $this->DayShortString($date['wday']);
                     }
                     break;
 
