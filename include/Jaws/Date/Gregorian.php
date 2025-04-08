@@ -12,23 +12,6 @@
 class Jaws_Date_Gregorian extends Jaws_Date
 {
     /**
-     * Gets count of Month(s) days
-     *
-     * @access  public
-     * @param   int     $year   Gregorian year
-     * @param   int     $month  Gregorian month
-     * @return  mixed   Count of Month days or array of count all months days 
-     */
-    function MonthDays($year, $month = 0)
-    {
-        $result = $this->_GregorianDaysInMonthes;
-        if ($this->_IsLeapYear($year)) {
-            $result[1]++;
-        }
-        return empty($month)? $result : $result[$month-1];
-    }
-
-    /**
      *
      * @access  public
      * @param   int     $year   Gregorian year
@@ -48,18 +31,20 @@ class Jaws_Date_Gregorian extends Jaws_Date
             $format = isset($args[1])? $args[1] : '';
         }
 
-        $dt = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
-        return !empty($format)? date($format, $dt) :
-                                array('timestamp' => $dt,
-                                      'year'      => date("Y", $dt),
-                                      'month'     => date("m", $dt),
-                                      'day'       => date("d", $dt),
-                                      'hour'      => date("H", $dt),
-                                      'minute'    => date("i", $dt),
-                                      'second'    => date("s", $dt),
-                                      'monthDays' => date("t", $dt),
-                                      'yearDay'   => date("z", $dt)
-                                    );
+        $date = mktime((int)$hour, (int)$minute, (int)$second, (int)$month, (int)$day, (int)$year);
+        return !empty($format)?
+            date($format, $date) :
+            array(
+                'timestamp' => $date,
+                'year'      => date("Y", $date),
+                'month'     => date("m", $date),
+                'day'       => date("d", $date),
+                'hour'      => date("H", $date),
+                'minute'    => date("i", $date),
+                'second'    => date("s", $date),
+                'mday'      => date("t", $date),
+                'yearDay'   => date("z", $date),
+            );
     }
 
     /**
@@ -95,7 +80,7 @@ class Jaws_Date_Gregorian extends Jaws_Date
                 'mon'     => str_pad($date['mon'],  2, '0', STR_PAD_LEFT),
                 'year'    => str_pad($date['year'], 4, '0', STR_PAD_LEFT),
                 'yday'    => $date['yday'],
-                'weekday' => $this->DayString($date['wday']),
+                'wday'    => $this->DayString($date['wday']),
                 'month'   => $this->MonthString($date['mon']),
             );
     }
