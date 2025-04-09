@@ -133,6 +133,10 @@ class Jaws_Request
 
         // Prevent user interface redress attack(Click-jacking)
         header('X-Frame-Options: SAMEORIGIN');
+        /*
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Headers: *');
+        */
 
         $this->_filters  = array();
         $this->_params   = array();
