@@ -179,10 +179,11 @@ class Jaws_Gadget
      * Creates the Jaws_Gadget instance
      *
      * @access  public
-     * @param   string  $gadget Gadget name
+     * @param   string  $gadget         Gadget name
+     * @param   bool    $operational    Operational means exists, available and installed
      * @return  object returns the instance
      */
-    static function getInstance($gadget)
+    static function getInstance($gadget, bool $operational = true)
     {
         static $instances = array();
         $gadget = preg_replace('/[^[:alnum:]_]/', '', $gadget);
@@ -218,7 +219,7 @@ class Jaws_Gadget
                 }
             }
 
-            if (!self::IsGadgetInstalled($gadget)) {
+            if ($operational && !self::IsGadgetInstalled($gadget)) {
                 return Jaws_Error::raiseError(
                     Jaws::t('ERROR_GADGET_NOT_INSTALLED', $gadget),
                     __FUNCTION__,
