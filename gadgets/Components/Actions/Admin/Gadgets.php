@@ -85,7 +85,7 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
      */
     function GadgetInfo($gadget)
     {
-        $objGadget = Jaws_Gadget::getInstance($gadget);
+        $objGadget = Jaws_Gadget::getInstance($gadget, false);
         if (Jaws_Error::IsError($objGadget)) {
             return $objGadget->getMessage();
         }

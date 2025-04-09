@@ -50,7 +50,7 @@ class Components_Model_Gadgets extends Jaws_Gadget_Model
                     continue;
                 }
 
-                $objGadget = Jaws_Gadget::getInstance($gadget);
+                $objGadget = Jaws_Gadget::getInstance($gadget, false);
                 if (Jaws_Error::IsError($objGadget)) {
                     continue;
                 }

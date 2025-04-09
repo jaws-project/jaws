@@ -27,7 +27,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
             $gadget = $this->gadget->request->fetch('comp', 'get');
         }
 
-        $objGadget = Jaws_Gadget::getInstance($gadget);
+        $objGadget = Jaws_Gadget::getInstance($gadget, false);
         if (Jaws_Error::IsError($objGadget)) {
             $this->app->session->pushResponse(
                 $this::t('GADGETS_INSTALL_FAILURE', $gadget),
@@ -71,7 +71,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
         }
 
         if (!Jaws_Gadget::IsGadgetUpdated($gadget)) {
-            $objGadget = Jaws_Gadget::getInstance($gadget);
+            $objGadget = Jaws_Gadget::getInstance($gadget, false);
             $installer = $objGadget->installer->load();
             $return = $installer->UpgradeGadget();
             if (Jaws_Error::IsError($return)) {
@@ -104,7 +104,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
             $gadget = $this->gadget->request->fetch('comp', 'get');
         }
 
-        $objGadget = Jaws_Gadget::getInstance($gadget);
+        $objGadget = Jaws_Gadget::getInstance($gadget, false);
         if (Jaws_Error::IsError($objGadget)) {
             $this->gadget->session->push($objGadget->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -138,7 +138,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
             $gadget = $this->gadget->request->fetch('comp', 'get');
         }
 
-        $objGadget = Jaws_Gadget::getInstance($gadget);
+        $objGadget = Jaws_Gadget::getInstance($gadget, false);
         if (Jaws_Error::IsError($objGadget)) {
             $this->gadget->session->push($objGadget->GetMessage(), RESPONSE_ERROR);
         } else {
@@ -172,7 +172,7 @@ class Components_Actions_Admin_GadgetInstaller extends Jaws_Gadget_Action
             $gadget = $this->gadget->request->fetch('comp', 'get');
         }
 
-        $objGadget = Jaws_Gadget::getInstance($gadget);
+        $objGadget = Jaws_Gadget::getInstance($gadget, false);
         if (Jaws_Error::IsError($objGadget)) {
             $this->gadget->session->push($objGadget->GetMessage(), RESPONSE_ERROR);
         } else {

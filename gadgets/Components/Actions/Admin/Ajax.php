@@ -301,7 +301,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $acls = array();
         $result = $this->app->acl->fetchAll($comp);
         if (!$is_plugin && !empty($result)) {
-            $info = Jaws_Gadget::getInstance($comp);
+            $info = Jaws_Gadget::getInstance($comp, false);
             foreach ($result as $key_name => $acl) {
                 foreach ($acl as $subkey => $value) {
                     $acls[] = array(
