@@ -459,6 +459,19 @@ if (!function_exists('str_putcsv')) {
 }
 
 /**
+ * Sign of number
+ *
+ * @param   int|float   $num    The numeric value to process
+ * @return  int         Returns 1 if num is positive, -1 if num is negative, and 0 if num is zero
+ * @see     https://www.php.net/manual/en/function.gmp-sign.php
+ */
+if (!function_exists('sign')) {
+    function sign($num) {
+        return ($num > 0)? 1 : (($num < 0)? -1 : 0);
+    }
+}
+
+/**
  * Generate a globally unique identifier (GUID)
  *
  * @return  string
