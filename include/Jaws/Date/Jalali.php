@@ -305,7 +305,6 @@ class Jaws_Date_Jalali extends Jaws_Date
                 'minute'    => date("i", $date),
                 'second'    => date("s", $date),
                 'mday'      => date("t", $date),
-                'yearDay'   => date("z", $date),
             );
     }
 
@@ -343,7 +342,6 @@ class Jaws_Date_Jalali extends Jaws_Date
         $wday   = $prdate['wday'];
         $month  = $prdate['month'];
         $year   = $prdate['year'];
-        $yday   = $prdate['yearDay'];
 
         return array(
                 'seconds' => $second,
@@ -353,7 +351,6 @@ class Jaws_Date_Jalali extends Jaws_Date
                 'wday'    => $wday,
                 'mon'     => $month,
                 'year'    => $year,
-                'yday'    => $yday,
                 'wday'     => $this->DayString($wday),
                 'month'   => $this->MonthString($month),
             );

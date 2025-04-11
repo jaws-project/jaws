@@ -43,7 +43,6 @@ class Jaws_Date_Gregorian extends Jaws_Date
                 'minute'    => date("i", $date),
                 'second'    => date("s", $date),
                 'mday'      => date("t", $date),
-                'yearDay'   => date("z", $date),
             );
     }
 
