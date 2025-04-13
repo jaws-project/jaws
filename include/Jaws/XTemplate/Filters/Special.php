@@ -196,6 +196,10 @@ class Jaws_XTemplate_Filters_Special extends Jaws_XTemplate_Filters
             $globalVariables['main_layout'] = strtolower(str_replace('.', '_', $layout));
         }
 
+        // these global variables not static 
+        $globalVariables['req_gadget'] = strtolower($thisApp->requestedGadget);
+        $globalVariables['req_action'] = strtolower($thisApp->requestedAction);
+
         return array_key_exists($var, $globalVariables)? $globalVariables[$var] : '';
     }
 
