@@ -219,20 +219,20 @@ class Jaws_Gadget
                 }
             }
 
-            if ($operational && !self::IsGadgetInstalled($gadget)) {
-                return Jaws_Error::raiseError(
-                    Jaws::t('ERROR_GADGET_NOT_INSTALLED', $gadget),
-                    __FUNCTION__,
-                    JAWS_ERROR_INFO
-                );
-            }
-
             require_once $file;
             $classname = $gadget. '_Info';
             $instances[$gadget] = new $classname($gadget);
             if (!Jaws_Error::IsError($instances[$gadget])) {
                 $GLOBALS['log']->Log(JAWS_DEBUG, "Loaded gadget: $gadget");
             }
+        }
+
+        if ($operational && !self::IsGadgetInstalled($gadget)) {
+            return Jaws_Error::raiseError(
+                Jaws::t('ERROR_GADGET_NOT_INSTALLED', $gadget),
+                __FUNCTION__,
+                JAWS_ERROR_INFO
+            );
         }
 
         return $instances[$gadget];
