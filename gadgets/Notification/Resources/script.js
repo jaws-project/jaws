@@ -31,6 +31,10 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
                 'sortable': true
             },
             {
+                'label': this.gadget.defines.lbl_driver,
+                'property': 'driver_title',
+            },
+            {
                 'label': this.gadget.defines.lbl_message_type,
                 'property': 'message_type',
             },
@@ -63,7 +67,8 @@ function Jaws_Gadget_Notification_Action_Messages() { return {
                 'filters': {
                     status: $('#filter_status').val(),
                     shouter: $('#filter_shouter').val(),
-                    driver: $('#filter_message_type').val(),
+                    driver: $('#filter_driver').val(),
+                    type: $('#filter_message_type').val(),
                     from_date: $('#datepicker_filter_from_date_input').val(),
                     to_date: $('#datepicker_filter_to_date_input').val(),
                     contact: $('#filter_contact').val(),

@@ -130,11 +130,6 @@
             <field>
                 <name>driver</name>
                 <type>integer</type>
-            </field>
-
-            <field>
-                <name>type</name>
-                <type>integer</type>
                 <length>2</length>
                 <notnull>true</notnull>
             </field>
@@ -191,13 +186,6 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>notification_r_type</name>
-                <field>
-                    <name>type</name>
-                </field>
-            </index>
-
-            <index>
                 <name><variable>table_prefix</variable>notification_r_ds</name>
                 <field>
                     <name>driver</name>
@@ -227,39 +215,17 @@
             </index>
 
             <index>
-                <name><variable>table_prefix</variable>notification_r_dts</name>
-                <field>
-                    <name>driver</name>
-                </field>
-
-                <field>
-                    <name>time</name>
-                </field>
-
-                <field>
-                    <name>status</name>
-                </field>
-            </index>
-
-            <index>
                 <name><variable>table_prefix</variable>notification_r_mh</name>
                 <unique>true</unique>
 
                 <field>
                     <name>message</name>
                 </field>
-
                 <field>
                     <name>hash</name>
                 </field>
             </index>
 
-            <index>
-                <name><variable>table_prefix</variable>notification_r_status</name>
-                <field>
-                    <name>status</name>
-                </field>
-            </index>
 
         </declaration>
     </table>

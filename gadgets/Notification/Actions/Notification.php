@@ -33,88 +33,84 @@ class Notification_Actions_Notification extends Jaws_Gadget_Action
             // send notification to drivers
             $objDModel = $this->gadget->model->load('Drivers');
             $drivers = $objDModel->GetNotificationDrivers(true);
+            if (Jaws_Error::IsError($drivers)) {
+                throw new Exception($drivers->getMessage(), $drivers->getCode());
+            }
+
+            $fetch_limits = array(
+                Jaws_Notification::EML_DRIVER => (int)$this->gadget->registry->fetch('eml_fetch_limit'),
+                Jaws_Notification::SMS_DRIVER => (int)$this->gadget->registry->fetch('sms_fetch_limit'),
+                Jaws_Notification::WEB_DRIVER => (int)$this->gadget->registry->fetch('web_fetch_limit'),
+                Jaws_Notification::APP_DRIVER => (int)$this->gadget->registry->fetch('app_fetch_limit'),
+            );
 
             $model = $this->gadget->model->load('Notification');
             foreach ($drivers as $driver) {
                 $objDriver = $objDModel->LoadNotificationDriver($driver['name']);
-                $dType = $objDriver->getType();
-                switch ($dType) {
-                    case Jaws_Notification::EML_DRIVER:
-                        $limit = (int)$this->gadget->registry->fetch('eml_fetch_limit');
-                        break;
-
-                    case Jaws_Notification::SMS_DRIVER:
-                        $limit = (int)$this->gadget->registry->fetch('sms_fetch_limit');
-                        break;
-
-                    case Jaws_Notification::WEB_DRIVER:
-                        $limit = (int)$this->gadget->registry->fetch('web_fetch_limit');
-                        break;
-
-                    case Jaws_Notification::APP_DRIVER:
-                        $limit = (int)$this->gadget->registry->fetch('app_fetch_limit');
-                        break;
+                if (Jaws_Error::IsError($objDriver)) {
+                    continue;
                 }
+                $dType = $objDriver->getType();
 
                 // fetch notifications
-                $messages = $model->GetNotifications($dType, 1, $limit);
+                $messages = $model->GetNotifications($driver['id'], $dType, 1, $fetch_limits[$dType]);
                 if (Jaws_Error::IsError($messages)) {
-                    return $messages;
+                    throw new Exception($messages->getMessage(), $messages->getCode());
                 }
 
-                if (!empty($messages)) {
-                    // set notifications status to sending
-                    $model->UpdateNotificationsStatusById(
-                        $dType,
-                        array_column($messages, 'id'),
-                        array(
-                            'status' => Notification_Info::MESSAGE_STATUS_SENDING,
-                            'incAttempts' => true,
-                        )
-                    );
+                if (empty($messages)) {
+                    continue;
+                }
 
-                    // group notifications by message id
-                    $messages = $this->GroupByMessages($messages);
-                    foreach ($messages as $msgid => $message) {
-                        $updateParams = array();
-                        // if expired
-                        if (!empty($message['expiry']) && $message['expiry'] <= time()) {
+                // set notifications status to sending
+                $model->UpdateNotificationsStatusById(
+                    array_column($messages, 'id'),
+                    array(
+                        'status' => Notification_Info::MESSAGE_STATUS_SENDING,
+                        'incAttempts' => true,
+                    )
+                );
+
+                // group notifications by message id
+                $messages = $this->GroupByMessages($messages);
+                foreach ($messages as $msgid => $message) {
+                    $updateParams = array();
+                    // if expired
+                    if (!empty($message['expiry']) && $message['expiry'] <= time()) {
+                        $updateParams = array(
+                            'status' => Notification_Info::MESSAGE_STATUS_EXPIRED
+                        );
+                    } else {
+                        $res = $objDriver->notify(
+                            $message['shouter'],
+                            $message['name'],
+                            $message['contacts'],
+                            $message['title'],
+                            $message['summary'],
+                            $message['verbose'],
+                            json_decode($message['variables'], true),
+                            $message['time'],
+                            $message['callback'],
+                            $message['image']
+                        );
+                        if (Jaws_Error::IsError($res)) {
                             $updateParams = array(
-                                'status' => Notification_Info::MESSAGE_STATUS_EXPIRED
+                                'status' => $res->getCode(),
+                                'comment' => $res->getMessage(),
                             );
                         } else {
-                            $res = $objDriver->notify(
-                                $message['shouter'],
-                                $message['name'],
-                                $message['contacts'],
-                                $message['title'],
-                                $message['summary'],
-                                $message['verbose'],
-                                json_decode($message['variables'], true),
-                                $message['time'],
-                                $message['callback'],
-                                $message['image']
+                            $updateParams = array(
+                                'status' => Notification_Info::MESSAGE_STATUS_SENT,
+                                'comment' => '',
                             );
-                            if (Jaws_Error::IsError($res)) {
-                                $updateParams = array(
-                                    'status' => $res->getCode(),
-                                    'comment' => $res->getMessage(),
-                                );
-                            } else {
-                                $updateParams = array(
-                                    'status' => Notification_Info::MESSAGE_STATUS_SENT,
-                                    'comment' => '',
-                                );
-                            }
                         }
-
-                        // set notifications status
-                        $model->UpdateNotificationsStatusById(
-                            $dType,
-                            $message['ids'],
-                            $updateParams
-                        );
                     }
+
+                    // set notifications status
+                    $model->UpdateNotificationsStatusById(
+                        $message['ids'],
+                        $updateParams
+                    );
                 }
             }
         } catch (Exception $e) {

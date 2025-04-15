@@ -18,6 +18,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $this->gadget->CheckPermission('Messages');
         $this->AjaxMe('script.js');
         $this->gadget->define('lbl_message_title', Jaws::t('TITLE'));
+        $this->gadget->define('lbl_driver', $this::t('DRIVER'));
         $this->gadget->define('lbl_message_type', $this::t('MESSAGE_TYPE'));
         $this->gadget->define('lbl_shouter', Jaws::t('GADGET'));
         $this->gadget->define('lbl_insert_time', Jaws::t('CREATETIME'));
@@ -85,10 +86,22 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
             }
         }
 
+        $drivers = $this->gadget->model->load('Drivers')->GetNotificationDrivers();
+        if (Jaws_Error::IsError($drivers)) {
+            $drivers = array();
+        }
+        foreach ($drivers as $driver) {
+            $tpl->SetBlock('Messages/filter_driver');
+            $tpl->SetVariable('value', $driver['id']);
+            $tpl->SetVariable('title', $driver['title']);
+            $tpl->ParseBlock('Messages/filter_driver');
+        }
+
         $messageTypes = array(
             Notification_Info::MESSAGE_TYPE_EMAIL => $this::t('MESSAGE_TYPE_EMAIL'),
             Notification_Info::MESSAGE_TYPE_SMS => $this::t('MESSAGE_TYPE_SMS'),
             Notification_Info::MESSAGE_TYPE_WEB => $this::t('MESSAGE_TYPE_WEB'),
+            Notification_Info::MESSAGE_TYPE_APP => $this::t('MESSAGE_TYPE_APP'),
         );
         foreach ($messageTypes as $value => $title) {
             $tpl->SetBlock('Messages/filter_message_type');
@@ -141,7 +154,7 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
         $objDate = Jaws_Date::getInstance();
         foreach ($messages as &$message) {
             $messageType = '';
-            switch ($message['driver']) {
+            switch ($message['type']) {
                 case Notification_Info::MESSAGE_TYPE_EMAIL:
                     $messageType = $this::t('MESSAGE_TYPE_EMAIL');
                     break;
@@ -150,6 +163,9 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
                     break;
                 case Notification_Info::MESSAGE_TYPE_WEB:
                     $messageType = $this::t('MESSAGE_TYPE_WEB');
+                    break;
+                case Notification_Info::MESSAGE_TYPE_APP:
+                    $messageType = $this::t('MESSAGE_TYPE_APP');
                     break;
             }
             $message['message_type'] = $messageType;

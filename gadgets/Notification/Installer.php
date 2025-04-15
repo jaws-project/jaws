@@ -309,6 +309,20 @@ class Notification_Installer extends Jaws_Gadget_Installer
             }
         }
 
+        if (version_compare($old, '3.3.0', '<')) {
+            $result = $this->installSchema('3.3.0.xml', array(), '3.2.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
+        if (version_compare($old, '3.4.0', '<')) {
+            $result = $this->installSchema('schema.xml', array(), '3.3.0.xml');
+            if (Jaws_Error::IsError($result)) {
+                return $result;
+            }
+        }
+
         return true;
     }
 

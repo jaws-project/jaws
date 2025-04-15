@@ -11,24 +11,27 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * Get notifications
      *
      * @access  public
-     * @param   string      $contactType    Notification type (email, mobile, ...)
-     * @param   int         $status         Message status(0: all status)
-     * @param   bool|int    $limit          Count of messages to be returned
-     * @param   int         $offset         Offset of data array
+     * @param   integer     $driver     Driver Id
+     * @param   string      $type       Notification type (email, mobile, ...)
+     * @param   int         $status     Message status(0: all status)
+     * @param   bool|int    $limit      Count of messages to be returned
+     * @param   int         $offset     Offset of data array
      * @return bool True or error
      */
-    function GetNotifications($contactType, $status = 0, $limit = false, $offset = null)
+    function GetNotifications($driver, $type, $status = 0, $limit = false, $offset = null)
     {
         return Jaws_ORM::getInstance()
             ->table('notification_recipient', 'nr')
             ->select(
-                'nr.id:integer', 'message', 'contact', 'nm.time:integer', 'nm.expiry:integer',
+                'nr.id:integer', 'nr.driver:integer', 'nr.type:integer', 'message', 'contact', 'nm.time:integer', 'nm.expiry:integer',
                 'nm.shouter', 'nm.name', 'nm.title',
                 'nm.summary', 'nm.verbose', 'nm.variables', 'nm.callback',
                 'nm.image'
             )
             ->join('notification_message as nm', 'nm.id', 'nr.message')
-            ->where('driver', $contactType)
+            ->where('driver', $driver)
+            ->and()
+            ->where('type', $type)
             ->and()
             ->where('nr.status', (int)$status, '=', empty($status))
             ->and()
@@ -49,7 +52,7 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         return Jaws_ORM::getInstance()->table('notification_message', 'nm')
             ->select(
                 'shouter', 'name', 'title', 'summary', 'verbose',
-                'callback', 'image', 'nr.driver:integer', 'nr.status:integer', 'nr.status_comment',
+                'callback', 'image', 'nr.driver:integer', 'nr.type:integer', 'nr.status:integer', 'nr.status_comment',
                 'nr.contact', 'nm.time:integer',
                 'nr.attempts:integer', 'nr.time as attempt_time:integer'
             )->join('notification_recipient as nr', 'nr.message', 'nm.id')
@@ -87,15 +90,17 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
         }
 
         return Jaws_ORM::getInstance()
-            ->table('notification_message', 'nm')
+            ->table('notification_recipient', 'nr')
             ->select(
-                'nr.id:integer','shouter', 'name', 'title as message_title',
-                'summary', 'callback', 'image', 'nr.driver:integer',
-                'nr.attempts:integer', 'nr.status:integer',
-                'nm.time:integer', 'nm.expiry:integer'
-            )->join('notification_recipient as nr', 'nr.message', 'nm.id')
+                'nr.id:integer','nm.shouter', 'nm.name', 'nm.title as message_title',
+                'nm.summary', 'nm.callback', 'nm.image', 'nr.driver:integer', 'nr.type:integer',
+                'nr.attempts:integer', 'nr.status:integer','nm.time:integer', 'nm.expiry:integer',
+                'nd.title as driver_title'
+            )
+            ->join('notification_message as nm', 'nm.id', 'nr.message')
+            ->join('notification_driver as nd', 'nd.id', 'nr.driver', 'left')
             ->and()->where(
-                'shouter',
+                'nm.shouter',
                 $filters['shouter'],
                 '=',
                 empty($filters['shouter'])
@@ -174,6 +179,11 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 '=',
                 empty($filters['driver'])
             )->and()->where(
+                'nr.type',
+                (int)$filters['type'],
+                '=',
+                empty($filters['type'])
+            )->and()->where(
                 'nr.status',
                 (int)$filters['status'],
                 '=',
@@ -205,7 +215,6 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * Insert notifications to db
      *
      * @access  public
-     * @param   array       $notifications      Notifications items (for example array('emails'=>array(...))
      * @param   string      $shouter            Shouter(gadget) name
      * @param   string      $name               Notifications name
      * @param   string      $key                Notifications key
@@ -217,26 +226,15 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * @param   integer     $expiry             Expire time
      * @param   string      $callback           Callback URL
      * @param   string      $image              Path of image
-     * @return  bool        True or error
+     * @return  mixed       Message Id or Jaws_Error
      */
-    function InsertNotifications(
-        $notifications, $shouter, $name, $key, $title, $summary,
+    function addMessage(
+        $shouter, $name, $key, $title, $summary,
         $verbose, $variables, $time, $expiry, $callback, $image
     ) {
-        if (empty($notifications) || (
-            empty($notifications['emails']) &&
-            empty($notifications['webpush']) &&
-            empty($notifications['mobiles']) &&
-            empty($notifications['devices'])
-        )) {
-            return false;
-        }
-
         $key = hash64($name.'.'.(string)$key);
-        $objORM = Jaws_ORM::getInstance()->beginTransaction();
-        $mTable = $objORM->table('notification_message');
-        $messageId = $mTable->upsert(
-            array(
+        return Jaws_ORM::getInstance()->table('notification_message')
+            ->upsert(array(
                 'hash'     => $key,
                 'shouter'  => $shouter,
                 'name'     => $name,
@@ -248,105 +246,50 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
                 'image'    => $image,
                 'time'     => $time,
                 'expiry'   => $expiry
-            )
-        )->and()->where('hash', $key)->and()->where('time', time(), '>')->exec();
-        if (Jaws_Error::IsError($messageId)) {
-            return $messageId;
+            ))
+            ->where('hash', $key)
+            ->and()
+            ->where('time', time(), '>')
+            ->exec();
+    }
+
+    /**
+     * Add notification contacts to db
+     *
+     * @access  public
+     * @param   integer     $messageId  Message Id
+     * @param   integer     $driverId   Driver Id
+     * @param   integer     $driverType Driver type
+     * @param   array       $contacts   Notification contacts
+     * @return  bool        True or error
+     */
+    function addNotifications($messageId, $driverId, $driverType, $contacts)
+    {
+        if (empty($contacts) || empty($driverId) || empty($messageId)) {
+            return false;
         }
 
-        // insert email items
-        if (!empty($notifications['emails'])) {
-            $objORM = $objORM->table('notification_recipient');
-            foreach ($notifications['emails'] as $email) {
-                // FIXME : increase performance by adding upsertAll method in core
-                $hash = hash64($email);
-                $res = $objORM->upsert(
-                        array(
-                            'message' => $messageId, 'driver' => Jaws_Notification::EML_DRIVER,
-                            'contact' => $email, 'hash' => $hash
-                        )
-                    )->and()
-                    ->where('message', $messageId)
-                    ->and()
-                    ->where('hash', $hash)
-                    ->exec();
-                if (Jaws_Error::IsError($res)) {
-                    return $res;
-                }
+        $objORM = Jaws_ORM::getInstance()->table('notification_recipient');
+        foreach ($contacts as $contact) {
+            // FIXME : increase performance by adding upsertAll method in core
+            $hash = hash64($contact);
+            $res = $objORM->upsert(
+                    array(
+                        'message' => $messageId,
+                        'driver'  => $driverId,
+                        'type'    => $driverType,
+                        'contact' => $contact,
+                        'hash' => $hash
+                    )
+                )->and()
+                ->where('message', $messageId)
+                ->and()
+                ->where('hash', $hash)
+                ->exec();
+            if (Jaws_Error::IsError($res)) {
+                return $res;
             }
         }
-
-        // insert mobile items
-        if(!empty($notifications['mobiles'])) {
-            $objORM = $objORM->table('notification_recipient');
-            foreach ($notifications['mobiles'] as $mobile) {
-                // FIXME : increase performance by adding upsertAll method in core
-                $hash = hash64($mobile);
-                $row['message'] = $messageId;
-                $res = $objORM->upsert(
-                        array(
-                            'message' => $messageId, 'driver' => Jaws_Notification::SMS_DRIVER,
-                            'contact' => $mobile, 'hash' => $hash
-                        )
-                    )->and()
-                    ->where('message', $messageId)
-                    ->and()
-                    ->where('hash', $hash)
-                    ->exec();
-                if (Jaws_Error::IsError($res)) {
-                    return $res;
-                }
-            }
-        }
-
-        // insert web_push items
-        if(!empty($notifications['webpush'])) {
-            $objORM = $objORM->table('notification_recipient');
-            foreach ($notifications['webpush'] as $webpush) {
-                // FIXME : increase performance by adding upsertAll method in core
-                $hash = hash64($webpush);
-                $row['message'] = $messageId;
-                $res = $objORM->upsert(
-                        array(
-                            'message' => $messageId, 'driver' => Jaws_Notification::WEB_DRIVER,
-                            'contact' => $webpush, 'hash' => $hash
-                        )
-                    )->and()
-                    ->where('message', $messageId)
-                    ->and()
-                    ->where('hash', $hash)
-                    ->exec();
-                if (Jaws_Error::IsError($res)) {
-                    return $res;
-                }
-            }
-        }
-
-        // insert device items
-        if(!empty($notifications['devices'])) {
-            $objORM = $objORM->table('notification_recipient');
-            foreach ($notifications['devices'] as $device) {
-                // FIXME : increase performance by adding upsertAll method in core
-                $hash = hash64($device);
-                $row['message'] = $messageId;
-                $res = $objORM->upsert(
-                        array(
-                            'message' => $messageId, 'driver' => Jaws_Notification::APP_DRIVER,
-                            'contact' => $device, 'hash' => $hash
-                        )
-                    )->and()
-                    ->where('message', $messageId)
-                    ->and()
-                    ->where('hash', $hash)
-                    ->exec();
-                if (Jaws_Error::IsError($res)) {
-                    return $res;
-                }
-            }
-        }
-
-        //Commit Transaction
-        $objORM->commit();
 
         return true;
     }
@@ -488,12 +431,11 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
      * Update notifications status by id
      *
      * @access  public
-     * @param   string  $contactType    Contact type (email, mobile, ...)
      * @param   array   $ids            Notifications Id
      * @param   array   $options        array include status(1: not send, 2: sending, 3: sent), incAttempts, comment
      * @return  bool    True or error
      */
-    function UpdateNotificationsStatusById($contactType, $ids, $options = array())
+    function UpdateNotificationsStatusById($ids, $options = array())
     {
         if (empty($ids)) {
             return true;
@@ -522,8 +464,6 @@ class Notification_Model_Notification extends Jaws_Gadget_Model
             ->table('notification_recipient')
             ->update($data)
             ->where('id', $ids, 'in')
-            ->and()
-            ->where('driver', $contactType)
             ->exec();
     }
 }

@@ -26,13 +26,13 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
             return false;
         }
 
-        $model = $this->gadget->model->load('Notification');
+        $notifModel = $this->gadget->model->load('Notification');
         $shouter = empty($params['gadget'])? $shouter : $params['gadget'];
 
         $params['time'] = !isset($params['time']) ? (time() + 1) : $params['time'];
         // if time < 0 then delete the notifications
         if ($params['time'] < 0) {
-            return $model->DeleteNotificationsByKey($params['name'], $params['key']);
+            return $notifModel->DeleteNotificationsByKey($params['name'], $params['key']);
         }
 
         // expire time
@@ -126,92 +126,93 @@ class Notification_Events_Notify extends Jaws_Gadget_Event
 
         // get gadget driver settings
         $configuration = unserialize($this->gadget->registry->fetch('configuration'));
-        $notificationsEmails  = array();
-        $notificationsMobiles = array();
-        $notificationsWebPush = array();
-        $notificationsDevices = array();
 
         // notification for this shouter was disabled
         if (empty($configuration[$shouter])) {
             return false;
         }
 
-        if (array_key_exists('driver', $params) || $configuration[$shouter] != 1) {
-            if (array_key_exists('driver', $params)) {
-                $driverType = $params['driver'];
-            } else {
-                $objDModel = $this->gadget->model->load('Drivers');
-                $objDriver = $objDModel->LoadNotificationDriver($configuration[$shouter]);
-                if (Jaws_Error::IsError($objDriver)) {
-                    return false;
-                }
-                $driverType = $objDriver->getType();
-            }
+        if (array_key_exists('driver', $params)) {
+            $driverName = $params['driver'];
+        } else {
+            $driverName = $configuration[$shouter];
+        }
 
+        // get driver/drivers
+        if ($driverName != 1) {
+            $driver = $this->gadget->model->load('Drivers')->GetNotificationDriver($driverName);
+            if (Jaws_Error::IsError($driver) || empty($driver) || !$driver['enabled']) {
+                return false;
+            }
+            $activeDrivers = [$driver];
+        } else {
+            $activeDrivers = $this->gadget->model->load('Drivers')->GetNotificationDrivers(true);
+            if (Jaws_Error::IsError($activeDrivers) || empty($activeDrivers)) {
+                return false;
+            }
+        }
+
+        $messageId = $notifModel->addMessage(
+            $shouter,
+            $params['name'],
+            $params['key'],
+            strip_tags($params['title']),
+            $params['summary'],
+            $params['verbose'],
+            json_encode($params['variables']?? []),
+            $params['time'],
+            $params['expiry'],
+            $params['callback']?? '',
+            $params['image']?? ''
+        );
+        if (Jaws_Error::IsError($messageId)) {
+            return $messageId;
+        }
+
+        foreach ($activeDrivers as $driver) {
+            $objDriver = $this->gadget->model->load('Drivers')->LoadNotificationDriver($driver['name']);
+            if (Jaws_Error::IsError($objDriver)) {
+                return false;
+            }
+            $driverType = $objDriver->getType();
+
+            $notifications = array();
             switch ($driverType) {
                 case Jaws_Notification::EML_DRIVER:
                     // generate email array
-                    $notificationsEmails = array_filter(array_column($users, 'email'));
+                    $notifications = array_filter(array_column($users, 'email'));
                     break;
 
                 case Jaws_Notification::SMS_DRIVER:
                     // generate mobile array
-                    $notificationsMobiles = array_filter(array_column($users, 'mobile'));
+                    $notifications = array_filter(array_column($users, 'mobile'));
                     break;
 
                 case Jaws_Notification::WEB_DRIVER:
                     // generate webpush array
-                    $notificationsWebPush = array_filter(array_column($users, 'webpush'));
+                    $notifications = array_filter(array_column($users, 'webpush'));
                     break;
 
                 case Jaws_Notification::APP_DRIVER:
                     // generate devices array
-                    $notificationsDevices = array_filter(array_column($users, 'device'));
+                    $notifications = array_filter(array_column($users, 'device'));
                     break;
-
-                default:
-                    return false;
             }
-        } else {
-            $notificationsEmails  = array_filter(array_column($users, 'email'));
-            $notificationsMobiles = array_filter(array_column($users, 'mobile'));
-            $notificationsWebPush = array_filter(array_column($users, 'webpush'));
-            $notificationsDevices = array_filter(array_column($users, 'device'));
+
+            if (!empty($notifications)) {
+                $res = $notifModel->addNotifications(
+                    $messageId,
+                    $driver['id'],
+                    $driverType,
+                    $notifications
+                );
+                if (Jaws_Error::IsError($res)) {
+                    return $res;
+                }
+            }
         }
 
-        if (!empty($notificationsEmails) || !empty($notificationsMobiles) ||
-            !empty($notificationsWebPush) || !empty($notificationsDevices)
-        ) {
-            // initiate variables if not exist
-            if (!array_key_exists('variables', $params)) {
-                $params['variables'] = array();
-            }
-
-            $res = $model->InsertNotifications(
-                array(
-                    'emails'  => $notificationsEmails,
-                    'mobiles' => $notificationsMobiles,
-                    'webpush' => $notificationsWebPush,
-                    'devices' => $notificationsDevices,
-                ),
-                $shouter,
-                $params['name'],
-                $params['key'],
-                strip_tags($params['title']),
-                $params['summary'],
-                $params['verbose'],
-                json_encode($params['variables']),
-                $params['time'],
-                $params['expiry'],
-                isset($params['callback'])? $params['callback'] : '',
-                isset($params['image'])? $params['image'] : ''
-            );
-            if (Jaws_Error::IsError($res)) {
-                return $res;
-            }
-            return true;
-        }
-
-        return false;
+        return true;
     }
+
 }

@@ -14,6 +14,7 @@ class Notification_Info extends Jaws_Gadget
     const MESSAGE_TYPE_EMAIL = 1;
     const MESSAGE_TYPE_SMS = 2;
     const MESSAGE_TYPE_WEB = 3;
+    const MESSAGE_TYPE_APP = 4;
 
     const MESSAGE_STATUS_PENDING = 1;
     const MESSAGE_STATUS_SENDING = 2;
@@ -27,7 +28,7 @@ class Notification_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '3.2.0';
+    var $version = '3.4.0';
 
     /**
      * Is this gadget core gadget?
