@@ -17,7 +17,7 @@ class Users_Account_Default_LoginRecovery extends Users_Account_Default
     {
         $rcvryData = $this->gadget->request->fetch(
             array(
-                'domain', 'account', 'rcvstep', 'resend', 'rcvkey',
+                'domain?null', 'account', 'rcvstep', 'resend', 'rcvkey',
                 'pubkey', 'password', 'usecrypt', 'remember'
             ),
             'post'
