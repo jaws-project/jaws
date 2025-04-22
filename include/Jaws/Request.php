@@ -336,7 +336,7 @@ class Jaws_Request
         }
 
         // unset key if it's type is integer/float and empty string passed to it and also null cast is set
-        if (in_array($cast_type, ['int', 'integer', 'float']) && !empty($null_type) &&
+        if (in_array($cast_type, ['int', 'integer', 'float', 'text', null]) && !empty($null_type) &&
             isset($dataRepository[$key]) && $dataRepository[$key] === ''
         ) {
             $exists = true;
