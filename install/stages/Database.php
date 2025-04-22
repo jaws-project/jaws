@@ -347,7 +347,7 @@ class Installer_Database extends JawsInstaller
         );
 
         foreach ($gadgets as $gadget) {
-            $objGadget = Jaws_Gadget::getInstance($gadget);
+            $objGadget = Jaws_Gadget::getInstance($gadget, false);
             if (Jaws_Error::IsError($objGadget)) {
                 _log(JAWS_DEBUG,"There was a problem installing core gadget: ".$gadget);
                 return $objGadget;

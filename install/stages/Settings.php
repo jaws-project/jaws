@@ -205,7 +205,7 @@ class Installer_Settings extends JawsInstaller
 
         // Install gadgets
         foreach ($gadgets as $gadget) {
-            $objGadget = Jaws_Gadget::getInstance($gadget);
+            $objGadget = Jaws_Gadget::getInstance($gadget, false);
             if (Jaws_Error::IsError($objGadget)) {
                 _log(JAWS_DEBUG, "There was a problem while loading sample gadget: $gadget");
                 _log(JAWS_DEBUG, $objGadget->getMessage());
