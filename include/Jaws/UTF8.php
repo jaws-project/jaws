@@ -63,7 +63,7 @@ class Jaws_UTF8
      * @see http://www.php.net/strlen
      */
     static function strlen($str) {
-        return strlen(mb_convert_encoding($str, 'ISO-8859-1', 'UTF-8'));
+        return strlen(mb_convert_encoding((string)$str, 'ISO-8859-1', 'UTF-8'));
     }
 
     /**
