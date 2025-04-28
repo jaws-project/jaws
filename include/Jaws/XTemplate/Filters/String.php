@@ -571,7 +571,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      */
     public static function bin2hex($input)
     {
-        return bin2hex($input);
+        return bin2hex((string)$input);
     }
 
     /**
@@ -583,7 +583,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      */
     public static function hex2bin($input)
     {
-        return hex2bin($input);
+        return hex2bin((string)$input);
     }
 
     /**
