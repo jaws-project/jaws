@@ -79,7 +79,7 @@ class Users_Account_Default_Login extends Users_Account_Default
         $assigns['captcha'] = Jaws_Gadget::getInstance('Policy')
             ->action
             ->load('Captcha')
-            ->xloadCaptcha();
+            ->xloadCaptcha('login');
 
         $max_captcha_login_bad_count = (int)$this->gadget->registry->fetch('login_captcha_status', 'Policy');
         if ($bad_try_count >= $max_captcha_login_bad_count) {
