@@ -81,10 +81,16 @@ class Users_Account_Default_Register extends Users_Account_Default
                 }
 
                 if (empty($rgstrData['password'])) {
-                    throw new Exception($this::t('USERS_INCOMPLETE_FIELDS'), 401);
-                }
-
-                if (array_key_exists('usecrypt', $rgstrData) && $rgstrData['usecrypt']) {
+                    $rgstrData['password'] = Jaws_Utils::RandomText(
+                        8,
+                        array(
+                            'lower' => true,
+                            'upper' => true,
+                            'number' => true,
+                            'special' => true
+                        )
+                    );
+                } else if (array_key_exists('usecrypt', $rgstrData) && $rgstrData['usecrypt']) {
                     $JCrypt = Jaws_Crypt::getInstance();
                     if (!Jaws_Error::IsError($JCrypt)) {
                         $rgstrData['password'] = $JCrypt->decrypt($rgstrData['password']);
@@ -92,6 +98,7 @@ class Users_Account_Default_Register extends Users_Account_Default
                 } else {
                     $rgstrData['password'] = Jaws_XSS::defilter($rgstrData['password']);
                 }
+
                 // birthday
                 $dob = null;
                 if (!empty($rgstrData['dob'])) {
