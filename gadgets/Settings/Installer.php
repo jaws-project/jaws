@@ -96,7 +96,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('holder', ''),
         array('parent', ''),
         array('health_status', '1'),
-        array('cache_driver', ''),
+        array('cache_driver', 'Database'),
         array('service_worker_enabled', false),
         array('pwa_enabled', false),
         array('pwa_version', '1.0.0'),
