@@ -330,7 +330,7 @@ class Components_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $data = $this->gadget->request->fetch('1:array', 'post');
         foreach ($data as $key => $value) {
             list($key, $subkey) = explode(':', $key);
-            $res = $this->app->acl->update($key, $subkey, $value, $comp);
+            $res = $this->app->acl->update($key, $subkey, $value == 'true', $comp);
             if (Jaws_Error::IsError($res)) {
                 $this->gadget->session->push($this::t('ACL_NOT_UPDATED'), RESPONSE_ERROR);
             }
