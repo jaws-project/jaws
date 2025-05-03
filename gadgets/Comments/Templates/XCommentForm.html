@@ -30,10 +30,8 @@
                 <input class="form-control" name="url2" id="comment_url2" value="{{url2_value}}" type="text" />
             </div>
 
-            {% include 'XCaptcha.html' path 'gadgets/Policy/Templates' with comment_form.captcha %}
-
             <div><label for="message{{comment_form.rand}}">{{ "comments.message" | t }}:</label>
-                <textarea class="form-control" id="message{{comment_form.rand}}" class="x-large" rows="7" name="message">{{message}}</textarea>
+                <textarea class="form-control w-100" id="message{{comment_form.rand}}" rows="7" name="message">{{message}}</textarea>
             </div>
             <div>
               <label class="form-check-label" for="private_comments{{comment_form.rand}}">
@@ -41,6 +39,8 @@
                 {{ "comments.private" | t }}
               </label>
             </div>
+
+            {% include 'XCaptcha.html' path 'gadgets/Policy/Templates' with comment_form.captcha as captcha %}
         </div>
         <div class="gadget_actions">
             <button class="btn btn-primary" type="submit" name="submit" value="{{ "comments.send" | t }}">{{ "comments.send" | t }}</button>

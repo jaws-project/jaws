@@ -180,10 +180,10 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $assigns['allow_comments_config'] = $allow_comments_config;
 
         $assigns['urlvalue'] = empty($data['url'])? 'http://' : $data['url'];
-        $assigns['namevalue'] =  $data['name'];
-        $assigns['emailvalue'] =  $data['email'];
-        $assigns['url2_value'] =  $data['url2'];
-        $assigns['message'] =  $data['message'];
+        $assigns['namevalue'] = $data['name'];
+        $assigns['emailvalue'] = $data['email'];
+        $assigns['url2_value'] = $data['url2'];
+        $assigns['message'] = $data['message'];
 
         // captcha
         $assigns['captcha'] = Jaws_Gadget::getInstance('Policy')
@@ -693,8 +693,8 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
     {
         $post  = $this->gadget->request->fetch(
             array(
-                'message', 'name', 'email', 'url', 'url2', 'requested_gadget',
-                'requested_action', 'reference', 'is_private'
+                'message|text', 'name|text', 'email?null', 'url?null', 'url2?null', 'requested_gadget|text',
+                'requested_action|text', 'reference|text', 'is_private|boolean?boolean'
             ),
             'post'
         );
@@ -704,7 +704,7 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
             $post['email'] = $this->app->session->user->email;
         }
 
-        if (trim($post['message']) == ''|| trim($post['name']) == '') {
+        if (trim($post['message']) == '' || trim($post['name']) == '') {
             $this->gadget->session->push(
                 $this::t('COMMENT_INCOMPLETE_FIELDS'),
                 RESPONSE_ERROR,
