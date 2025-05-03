@@ -237,7 +237,7 @@ class StaticPage_Model_Admin_Page extends StaticPage_Model_Page
         );
         $spgTable->join('static_pages_groups as spg',  'sp.group_id',  'spg.id', 'left');
         $spgTable->join('static_pages_translation as spt',  'sp.page_id',  'spt.base_id', 'left');
-        $spgTable->where('sp.base_language', array('spt.language', 'expr'));
+        $spgTable->where('sp.base_language', Jaws_ORM::getInstance()->expr('spt.language'));
 
         if (trim($search) != '') {
             $searchdata = array_filter(array_map('trim', explode(' ', $search)));
