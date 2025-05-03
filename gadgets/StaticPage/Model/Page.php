@@ -31,7 +31,7 @@ class StaticPage_Model_Page extends Jaws_Gadget_Model
         $spTable->join('static_pages_translation as spt',  'sp.page_id',  'spt.base_id');
 
         if (empty($language)) {
-            $spTable->where('spt.language', array('sp.base_language', 'expr'));
+            $spTable->where('spt.language', Jaws_ORM::getInstance()->expr('sp.base_language'));
         } else {
             $spTable->where('spt.language', $language);
         }
@@ -113,7 +113,7 @@ class StaticPage_Model_Page extends Jaws_Gadget_Model
             'spt.content', 'spt.language', 'spt.published:boolean', 'spt.updated'
         );
         $spTable->join('static_pages_translation as spt',  'sp.page_id',  'spt.base_id');
-        $spTable->where('sp.base_language', array('spt.language', 'expr'));
+        $spTable->where('sp.base_language', Jaws_ORM::getInstance()->expr('spt.language'));
 
         if (!is_null($gid)) {
             $spTable->and()->where('sp.group_id', $gid);
