@@ -70,6 +70,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
                         $qPos++;
                         $tpl->SetBlock('faq/summary/category/item');
                         $tpl->SetVariable('id',  $q['id']);
+                        $tpl->SetVariable('category', $q['category']);
                         $tpl->SetVariable('pos', $qPos);
                         $tpl->SetVariable('question', $q['question'], 'Faq', false);
                         $qurl = $view_answers? $this->gadget->urlMap('View') : $curl;

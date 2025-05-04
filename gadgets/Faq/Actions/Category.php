@@ -58,6 +58,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
             $tpl = $this->gadget->template->load('Category.html');
             foreach ($questions as $cat) {
                 $tpl->SetBlock('faq_category');
+                $tpl->SetVariable('id', $cat['id']);
                 $tpl->SetVariable('title', $this::t('TITLE'));
                 $tpl->SetVariable('category', $cat['category']);
                 $tpl->SetVariable('description', $this->gadget->plugin->parseAdmin($cat['description']));
@@ -69,6 +70,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
                     $qPos++;
                     $tpl->SetBlock('faq_category/question');
                     $tpl->SetVariable('id',  $q['id']);
+                    $tpl->SetVariable('category',  $cat_id);
                     $tpl->SetVariable('pos', $qPos);
                     $tpl->SetVariable('question', $q['question'], 'Faq', false);
                     $tpl->SetVariable('url', $this->gadget->urlMap('ViewCategory', array('id' => $cat_id)));
@@ -85,6 +87,7 @@ class Faq_Actions_Category extends Jaws_Gadget_Action
                     $tpl->SetVariable('top_label', $this::t('GO_TO_TOP'));
                     $tpl->SetVariable('top_link', $this->gadget->urlMap('ViewCategory', array('id' => $cat_id)).'#topfaq');
                     $tpl->SetVariable('id', $q['id']);
+                    $tpl->SetVariable('category',  $cat_id);
                     $tpl->SetVariable('pos', $qPos);
                     $qid = empty($q['fast_url']) ? $q['id'] : $q['fast_url'];
                     $tpl->SetVariable('url', $this->gadget->urlMap('ViewQuestion', array('id' => $qid)));
