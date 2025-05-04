@@ -1,0 +1,181 @@
+<div class="dropdown">
+  {%- if 'user.logged' | session %}
+    {%- assign loggedUser = 'user' | session %}
+    <a class="icon-link text-decoration-none p-2" href="#" data-bs-toggle="dropdown">
+      {%- if user.avatar %}
+        <img class="d-block w-10 rounded-circle"
+          src="{{ 'Users' | urlmap: 'Avatar', 'user', loggedUser.username }}"
+          alt="{{ loggedUser.nickname }}"
+        />
+      {%- else %}
+        <i class="fas fa-user h-aut fs-2"></i>
+      {%- endif %}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end w-64">
+      <li>
+        <a class="dropdown-item fw-bold" href="{{ 'Users' | urlmap: 'Profile', 'user', loggedUser.username }}">
+          <i class="fas fa-user me-1"></i>{{ loggedUser.nickname }}
+        </a>
+      </li>
+      <li><hr class="dropdown-divider" /></li>
+
+      {%- assign account_links_separator = false %}
+      {%- if 'Users.EditUserName,EditUserNickname,EditUserEmail,EditUserMobile' | permission: '', false %}
+        {%- comment %} <!-- user account --> {%- endcomment %}
+        {%- indent -2 %}
+        {%- assign account_links_separator = true %}
+        <li>
+          <a class="dropdown-item" href="{{ 'Users' | urlmap: 'Account' }}">
+            <i class="fas fa-user-pen me-1"></i>{{ 'users.actions_account_title' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+      {%- endif %}
+
+      {%- if 'Users.EditUserPassword' | permission: '', false %}
+        {%- comment %} <!-- user password --> {%- endcomment %}
+        {%- indent -2 %}
+        {%- assign account_links_separator = true %}
+        <li>
+          <a class="dropdown-item" href="{{ 'Users' | urlmap: 'Password' }}">
+            <i class="fas fa-key me-1"></i>{{ 'users.actions_password_title' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+      {%- endif %}
+
+      {%- if 'Users.EditUserPersonal' | permission: '', false %}
+        {%- comment %} <!-- user personal information --> {%- endcomment %}
+        {%- indent -2 %}
+        {%- assign account_links_separator = true %}
+        <li>
+          <a class="dropdown-item" href="{{ 'Users' | urlmap: 'Personal' }}">
+            <i class="fas fa-pen-to-square me-1"></i>{{ 'users.actions_personal_title' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+      {%- endif %}
+
+      {%- if 'Users.EditUserPreferences' | permission: '', false %}
+        {%- comment %} <!-- user preferences --> {%- endcomment %}
+        {%- indent -2 %}
+        {%- assign account_links_separator = true %}
+        <li>
+          <a class="dropdown-item" href="{{ 'Users' | urlmap: 'Preferences' }}">
+            <i class="fas fa-gears me-1"></i>{{ 'users.actions_preferences_title' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+      {%- endif %}
+
+      {%- if 'Users.EditUserContact' | permission: '', false %}
+        {%- comment %} <!-- user contacts --> {%- endcomment %}
+        {%- indent -2 %}
+        {%- assign account_links_separator = true %}
+        <li>
+          <a class="dropdown-item" href="{{ 'Users' | urlmap: 'Contact' }}">
+            <i class="fas fa-address-card me-1"></i>{{ 'users.actions_contact_title' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+      {%- endif %}
+
+      {%- if account_links_separator %}
+        {%- indent -2 %}
+        <li><hr class="dropdown-divider" /></li>
+        {%- endindent %}
+      {%- endif %}
+
+      {%- assign layout_links_separator = true %}
+      {%- if 'Layout.MainLayoutManage' | permission %}
+        {%- comment %} <!-- main layout --> {%- endcomment %}
+        {%- indent -2 %}
+        <li>
+          <a class="dropdown-item" href="{{ 'Layout' | urlmap: 'Layout' }}">
+            <i class="fas fa-table-columns me-1"></i>{{ 'layout.layout' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+
+      {%- elseif 'Users.ManageUserLayout' | permission %}
+        {%- comment %} <!-- user layout --> {%- endcomment %}
+        {%- indent -2 %}
+        <li>
+          <a class="dropdown-item" href="{{ 'Layout' | urlmap: 'Layout', 'layout', 'Index.User' }}">
+            <i class="fas fa-table-columns me-1"></i>{{ 'layout.layout' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+
+      {%- else %}
+        {%- assign layout_links_separator = false %}
+      {%- endif %}
+
+      {%- if 'Users.AccessUserLayout' | permission or 'Users.AccessUsersLayout' | permission %}
+        {%- comment %} <!-- switch between users/main layouts --> {%- endcomment %}
+        {%- indent -2 %}
+        {%- assign layout_links_separator = true %}
+        {%- assign layout = 'layout_type' | session: 'Layout' | true: 0, 1 %}
+        <li>
+          <a class="dropdown-item" href="{{ 'Layout' | urlmap: 'LayoutType', 'type', layout }}">
+            <i class="fas fa-gauge me-1"></i>{{ 'users.dashboard_' | append: layout | t }}
+          </a>
+        </li>
+        {%- endindent %}
+      {%- endif %}
+
+      {%- if layout_links_separator %}
+        {%- indent -2 %}
+        <li><hr class="dropdown-divider" /></li>
+        {%- endindent %}
+      {%- endif %}
+
+      {%- if 'ControlPanel.default_admin' | permission %}
+        {%- indent -2 %}
+        <li>
+          {%- assign admin_script = 'Settings.admin_script' | registry %}
+          <a class="dropdown-item fw-bold" href="{{ admin_script | empty: 'admin.php' : admin_script }}">
+            <i class="fas fa-screwdriver-wrench me-1"></i>{{ 'users.controlpanel' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+      {%- endif %}
+      <li>
+        <a class="dropdown-item" href="{{ 'Users' | urlmap: 'Logout' }}">
+          <i class="fas fa-arrow-right-from-bracket me-1"></i>{{ 'global.logout' | t }}
+        </a>
+      </li>
+    </ul>
+  {%- else %}
+    <a class="icon-link text-decoration-none p-2" href="#" data-bs-toggle="dropdown">
+      <i class="fas fa-user h-aut fs-2"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li>
+        <a class="dropdown-item" href="{{ 'Users' | urlmap: 'Login', 'referrer', referrer }}">
+          <i class="fas fa-arrow-right-to-bracket me-1"></i>{{ 'users.login_title' | t }}
+        </a>
+      </li>
+
+      {%- if 'Users.anon_register' | registry | equal: 'true' %}
+        {%- indent -2 %}
+        <li>
+          <a class="dropdown-item" href="{{ 'Users' | urlmap: 'Registration' }}">
+            <i class="fas fa-user-plus me-1"></i>{{ 'users.register' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+      {%- endif %}
+
+      {%- if 'Users.password_recovery' | registry | equal: 'true' %}
+        {%- indent -2 %}
+        <li>
+          <a class="dropdown-item" href="{{ 'Users' | urlmap: 'LoginForgot' }}">
+            <i class="fas fa-key me-1"></i>{{ 'users.forgot_login' | t }}
+          </a>
+        </li>
+        {%- endindent %}
+      {%- endif %}
+    </ul>
+  {%- endif %}
+</div>

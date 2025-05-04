@@ -8,15 +8,32 @@
 class Users_Actions_Login extends Jaws_Gadget_Action
 {
     /**
+     * Get AboutUser action params(superadmin users list)
+     *
+     * @access  public
+     * @return  array list of AboutUser action params(superadmin users list)
+     */
+    function linksLayoutParams()
+    {
+        $result = array();
+        $result[] = array(
+            'title' => $this::t('links_display_compact'),
+            'value' => false
+        );
+
+        return $result;
+    }
+
+    /**
      * Builds the login/user links
      *
      * @access  public
      * @return  string  XHTML content
      */
-    function links()
+    function links($displayCompact = false)
     {
         $assigns = array();
-        return $this->gadget->template->xLoad('Links.html')->render($assigns);
+        return $this->gadget->template->xLoad($displayCompact? 'LinksCompact.html' : 'Links.html')->render($assigns);
     }
 
     /**

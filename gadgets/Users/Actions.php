@@ -18,6 +18,7 @@ $actions['Login'] = array(
 $actions['links'] = array(
     'layout' => true,
     'file' => 'Login',
+    'parametric' => true,
 );
 $actions['LoginLinks'] = array(
     'layout' => true,
