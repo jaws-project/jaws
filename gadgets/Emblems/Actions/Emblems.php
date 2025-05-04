@@ -29,7 +29,11 @@ class Emblems_Actions_Emblems extends Jaws_Gadget_Action
             $page   = urlencode(Jaws_Utils::getRequestURL(false));
             $name   = urlencode($this->gadget->registry->fetch('site_name', 'Settings'));
             $slogan = urlencode($this->gadget->registry->fetch('site_slogan', 'Settings'));
-            $title  = $this->app->layout->GetTitle();
+            if (!empty($this->app->mainAction)) {
+                $title = $this->app->mainAction->getAttribute($this->app->mainRequest['action'], 'title');
+            } else {
+                $title = $name;
+            }
 
             foreach ($emblems as $e) {
                 $e['url'] = str_replace(
