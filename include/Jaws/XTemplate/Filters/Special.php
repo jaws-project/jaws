@@ -175,6 +175,8 @@ class Jaws_XTemplate_Filters_Special extends Jaws_XTemplate_Filters
 
         static $globalVariables = array();
         if (empty($globalVariables)) {
+            $attributes = $thisApp->registry->fetchAll('Settings', false);
+
             $globalVariables['dir']      = Jaws::t('LANG_DIRECTION') == 'rtl'? 'rtl' : 'ltr';
             $globalVariables['.dir']     = Jaws::t('LANG_DIRECTION') == 'rtl'? '.rtl' : '';
             $globalVariables['site_url'] = Jaws_Utils::getBaseURL('/', false);
@@ -185,6 +187,13 @@ class Jaws_XTemplate_Filters_Special extends Jaws_XTemplate_Filters
             $globalVariables['main_index']  = $thisApp->mainIndex? 'index' : '';
             $globalVariables['main_gadget'] = strtolower($thisApp->mainRequest['gadget']);
             $globalVariables['main_action'] = strtolower($thisApp->mainRequest['action']);
+
+            // add some site setting to global variables
+            $globalVariables['site-name'] = $attributes['site_name'];
+            $globalVariables['site-slogan'] = $attributes['site_name'];
+            $globalVariables['site-comment'] = nl2br($attributes['site_name']);
+            $globalVariables['site-name'] = $attributes['site_name'];
+
             // browser flag
             $browser = $thisApp->GetBrowserFlag();
             $globalVariables['.browser'] = empty($browser)? '' : ".$browser";

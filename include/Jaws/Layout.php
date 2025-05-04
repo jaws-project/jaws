@@ -270,7 +270,7 @@ class Jaws_Layout
         $this->_Template->SetVariable('admin-script',   $this->attributes['admin_script']);
         $this->_Template->SetVariable('site-name',      $this->attributes['site_name']);
         $this->_Template->SetVariable('site-slogan',    $this->attributes['site_slogan']);
-        $this->_Template->SetVariable('site-comment',   $this->attributes['site_comment']);
+        $this->_Template->SetVariable('site-comment',   nl2br($this->attributes['site_comment']));
         $this->_Template->SetVariable('site-author',    $this->attributes['site_author']);
         $this->_Template->SetVariable('site-license',   $this->attributes['site_license']);
         $this->_Template->SetVariable('site-copyright', $this->attributes['site_copyright']);
