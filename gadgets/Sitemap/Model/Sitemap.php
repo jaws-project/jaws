@@ -155,6 +155,13 @@ class Sitemap_Model_Sitemap extends Jaws_Gadget_Model
                 return array();
             }
             return unserialize($data);
+        } else {
+            $data = $this->gadget->model->loadAdmin('Sitemap')->SyncSitemapData($gadget);
+            if (Jaws_Error::IsError($data) || empty($data)) {
+                return array();
+            }
+            return $data;
         }
     }
+
 }

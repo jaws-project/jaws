@@ -8,7 +8,7 @@
  * @copyright   2008-2024 Jaws Development Group
  * @license    http://www.gnu.org/copyleft/gpl.html
  */
-class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
+class Sitemap_Model_Admin_Sitemap extends Jaws_Gadget_Model
 {
     /**
      * Get a gadget category properties
@@ -91,7 +91,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         $defaultStatus      = Sitemap_Info::SITEMAP_CATEGORY_SHOW_IN_BOTH;
 
         // Fetch gadget sitemap config
-        $gadgetProperties = $this->GetGadgetProperties($gadget);
+        $gadgetProperties = $this->gadget->model->load('Sitemap')->GetGadgetProperties($gadget);
         $gadgetPriority = null;
         $gadgetFrequency = null;
         $gadgetStatus = null;
@@ -133,7 +133,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         $allItems = array_merge(array($allItems['/']), $allItems['levels'], $allItems['items']);
 
         $allCategories = $objHook->Execute(1);
-        $gadgetCategory = $this->GetGadgetCategoryProperties($gadget);
+        $gadgetCategory = $this->gadget->model->load('Sitemap')->GetGadgetCategoryProperties($gadget);
         $finalCategory = array();
         // Detect all gadget's categories properties(priority | frequency | status)
         foreach($allCategories['levels'] as $cat) {
@@ -236,7 +236,7 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         }
 
         // Change gadget update time
-        $gadgetProperties = $this->GetGadgetProperties($gadget);
+        $gadgetProperties = $this->gadget->model->load('Sitemap')->GetGadgetProperties($gadget);
         $gadgetProperties['update_time'] = time();
         $this->UpdateGadgetProperties($gadget, $gadgetProperties);
 
@@ -254,17 +254,17 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
     {
         $objGadget = Jaws_Gadget::getInstance($gadget);
         if (Jaws_Error::IsError($objGadget)) {
-            return '';
+            return false;
         }
         $objHook = $objGadget->hook->load('Sitemap');
         if (Jaws_Error::IsError($objHook)) {
-            return '';
+            return false;
         }
 
         $result[$gadget] = array();
         $gResult = $objHook->Execute(1);
         if (Jaws_Error::IsError($gResult) || empty($gResult)) {
-            return '';
+            return false;
         }
 
         // Check gadget directory in sitemap
@@ -277,6 +277,8 @@ class Sitemap_Model_Admin_Sitemap extends Sitemap_Model_Sitemap
         if (!Jaws_FileManagement_File::file_put_contents($cache_file, serialize($gResult))) {
             return false;
         }
-        return true;
+
+        return $gResult;
     }
+
 }
