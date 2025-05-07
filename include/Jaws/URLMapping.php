@@ -275,8 +275,11 @@ class Jaws_URLMapping
 
                     $url = $requestedURL;
                     $ext = ($map['extension'] == '.')? $this->_extension : $map['extension'];
+
                     if (substr($url, - strlen($ext)) == $ext) {
                         $url = substr($url, 0, - strlen($ext));
+                    } else if (!empty($ext) && $map['extension'] != '.') {
+                        continue;
                     }
 
                     if (preg_match($regexp, $url, $matches, PREG_UNMATCHED_AS_NULL) == 1) {
