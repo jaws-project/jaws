@@ -235,6 +235,12 @@ class Sitemap_Model_Admin_Sitemap extends Jaws_Gadget_Model
             Jaws_FileManagement_File::delete($xml_file);
         }
 
+        // remove Main sitemap.xml cached file
+        $cache_file = $gadget_dir . '/sitemap.bin';
+        if (Jaws_FileManagement_File::file_exists($cache_file)) {
+            Jaws_FileManagement_File::delete($cache_file);
+        }
+
         // Change gadget update time
         $gadgetProperties = $this->gadget->model->load('Sitemap')->GetGadgetProperties($gadget);
         $gadgetProperties['update_time'] = time();
