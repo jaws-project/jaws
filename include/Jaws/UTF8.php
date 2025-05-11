@@ -347,7 +347,7 @@ class Jaws_UTF8
             );
         }
 
-        return strtr($str, $UTF8_UPPER_TO_LOWER);
+        return strtr((string)$str, $UTF8_UPPER_TO_LOWER);
     }
 
     /**
