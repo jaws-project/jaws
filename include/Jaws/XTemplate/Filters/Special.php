@@ -190,9 +190,8 @@ class Jaws_XTemplate_Filters_Special extends Jaws_XTemplate_Filters
 
             // add some site setting to global variables
             $globalVariables['site-name'] = $attributes['site_name'];
-            $globalVariables['site-slogan'] = $attributes['site_name'];
-            $globalVariables['site-comment'] = nl2br($attributes['site_name']);
-            $globalVariables['site-name'] = $attributes['site_name'];
+            $globalVariables['site-slogan'] = $attributes['site_slogan'];
+            $globalVariables['site-comment'] = nl2br($attributes['site_comment']);
 
             // browser flag
             $browser = $thisApp->GetBrowserFlag();
