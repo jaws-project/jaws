@@ -146,8 +146,10 @@ class Jaws_Gadget_Actions_PageNavigation extends Jaws_Gadget_Class
 
         // Previous
         if ($page == 1) {
+            $pages['first'] = false;
             $pages['previous'] = false;
         } else {
+            $pages['first'] = 1;
             $pages['previous'] = $page - 1;
         }
 
@@ -216,8 +218,10 @@ class Jaws_Gadget_Actions_PageNavigation extends Jaws_Gadget_Class
         // Next
         if ($page == $npages) {
             $pages['next'] = false;
+            $pages['last'] = false;
         } else {
             $pages['next'] = $page + 1;
+            $pages['last'] = $npages;
         }
 
         $pages['total'] = $total;
