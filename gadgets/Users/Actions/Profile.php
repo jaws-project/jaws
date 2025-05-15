@@ -59,67 +59,12 @@ class Users_Actions_Profile extends Users_Actions_Default
             array('default' => true, 'account' => true, 'personal' => true)
         );
         if (Jaws_Error::IsError($user) || empty($user)) {
-            return Jaws_HTTPError::Get(404);
+            return false;
         }
 
-        // Avatar
-        $user['avatar'] = $this->gadget->urlMap('Avatar', array('user'  => $user['username']));
-
-        // Gender
-        $user['gender'] = $this::t('USERS_GENDER_'.$user['gender']);
-
-        // Date of birth
-        $objDate = Jaws_Date::getInstance();
-        $user['dob'] = $objDate->Format($user['dob'], 'dd MMMM yyyy');
-
-        if (!empty($user['registered_date'])) {
-            $user['registered_date'] = $objDate->Format($user['registered_date'], 'dd MMMM yyyy');
-        } else {
-            $user['registered_date'] = '';
-        }
-
-        // Load the template
-        $tpl = $this->gadget->template->load('AboutUser.html');
-        $tpl->SetBlock('aboutuser');
-        $tpl->SetVariable('title',  $this::t('ACTIONS_ABOUTUSER'));
-        $tpl->SetVariable('avatar', $user['avatar']);
-        // username
-        $tpl->SetVariable('lbl_username', $this::t('USERS_USERNAME'));
-        $tpl->SetVariable('username',     $user['username']);
-        // nickname
-        $tpl->SetVariable('lbl_nickname', $this::t('USERS_NICKNAME'));
-        $tpl->SetVariable('nickname',     $user['nickname']);
-        // registered_date
-        $tpl->SetVariable('lbl_registered_date', $this::t('USERS_REGISTRATION_DATE'));
-        $tpl->SetVariable('registered_date',     $user['registered_date']);
-
-        // auto paragraph content
-        $user['about'] = Jaws_String::AutoParagraph($user['about']);
-        $user = $user + array(
-            'lbl_private'     => $this::t('USERS_PRIVATE'),
-            'lbl_fname'       => $this::t('USERS_FIRSTNAME'),
-            'lbl_lname'       => $this::t('USERS_LASTNAME'),
-            'lbl_gender'      => $this::t('USERS_GENDER'),
-            'lbl_ssn'         => $this::t('USERS_SSN'),
-            'lbl_dob'         => $this::t('USERS_BIRTHDAY'),
-            'lbl_public'      => $this::t('USERS_PUBLIC'),
-            'lbl_url'         => Jaws::t('URL'),
-            'lbl_about'       => $this::t('USERS_ABOUT'),
-            'lbl_experiences' => $this::t('USERS_EXPERIENCES'),
-            'lbl_occupations' => $this::t('USERS_OCCUPATIONS'),
-            'lbl_interests'   => $this::t('USERS_INTERESTS'),
-        );
-
-        if (!$this->app->session->user->superadmin &&
-            $this->app->session->user->id != $user['id'])
-        {
-            $user['ssn'] = Jaws::t('ERROR_ACCESS_DENIED');
-        }
-
-        $tpl->SetVariablesArray($user);
-
-        $tpl->ParseBlock('aboutuser');
-        return $tpl->Get();
+        $assigns = array();
+        $assigns['user'] = $user;
+        return $this->gadget->template->xLoad('AboutUser.html')->render($assigns);
     }
 
     /**
