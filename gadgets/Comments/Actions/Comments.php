@@ -403,11 +403,10 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         $interface = array_merge($defaultInterface, $interface);
 
         $max_size = 52;
-        $compactView = $this->app->requestedActionMode == ACTION_MODE_LAYOUT;
         $rqst = $this->gadget->request->fetch(array('order', 'page'), 'get');
         $page = empty($rqst['page']) ? 1 : (int)$rqst['page'];
 
-        if ($this->app->requestedActionMode == ACTION_MODE_NORMAL && !empty($rqst['order'])) {
+        if (!empty($rqst['order'])) {
             $options['order_by'] = (int)$rqst['order'];
         }
 
@@ -417,8 +416,6 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
 
         // initiate assign with option array
         $assigns = array();
-        $assigns['gadget'] = $interface['gadget'];
-        $assigns['compact_view'] = $compactView;
 
         $cModel = $this->gadget->model->load('Comments');
         $comments = $cModel->GetComments(
@@ -442,139 +439,23 @@ class Comments_Actions_Comments extends Jaws_Gadget_Action
         );
 
         if (!Jaws_Error::IsError($comments) && $comments != null) {
-            foreach ($comments as &$comment) {
+            foreach ($comments as $key => $comment) {
                 $comment['nickname'] = empty($comment['nickname']) ? $comment['name'] : $comment['nickname'];
                 $comment['email'] = empty($comment['user_email']) ? $comment['email'] : $comment['user_email'];
-                $comment['avatar'] = Jaws_Gadget::getInstance('Users')->urlMap('Avatar', array('user'  => $comment['username']));
+                $comment['avatar'] = $comment['avatar'];
                 $comment['message_abbr'] = (Jaws_UTF8::strlen($comment['msg_txt']) >= $max_size)?
                     Jaws_UTF8::substr($comment['msg_txt'], 0, $max_size).'...' :
                     $comment['msg_txt'];
+                $comments[$key] = $comment;
             }
+
         }
 
-//        $tpl->SetVariable('title', $this::t('COMMENTS'));
         $assigns['comments'] = $comments;
         $assigns['gadget'] = $interface['gadget'];
         $assigns['action'] = $interface['action'];
         $assigns['reference'] = $interface['reference'];
 
-
-/*        $objDate = Jaws_Date::getInstance();
-        if (!Jaws_Error::IsError($comments) && $comments != null) {
-            foreach ($comments as $entry) {
-                $tpl->SetBlock($block . '/entry');
-
-                $tpl->SetVariable('postedby_lbl', $this::t('POSTEDBY'));
-
-                if ($entry['user_registered_date']) {
-                    $tpl->SetBlock($block . '/entry/registered_date');
-                    $tpl->SetVariable('registered_date_lbl', $this::t('USERS_REGISTERED_DATE'));
-                    $tpl->SetVariable('registered_date', $objDate->Format($entry['user_registered_date'], 'dd MMMM yyyy'));
-                    $tpl->ParseBlock($block . '/entry/registered_date');
-                }
-
-                if (!empty($entry['username'])) {
-                    // user's profile
-                    $tpl->SetVariable(
-                        'user_url',
-                        $this->app->map->GetMappedURL(
-                            'Users',
-                            'Profile',
-                            array('user' => $entry['username'])
-                        )
-                    );
-
-                } else {
-                    $tpl->SetVariable('user_url', Jaws_XSS::filter($entry['url']));
-                }
-
-                $nickname = empty($entry['nickname']) ? $entry['name'] : $entry['nickname'];
-                $email = empty($entry['user_email']) ? $entry['email'] : $entry['user_email'];
-
-                $tpl->SetVariable('nickname', Jaws_XSS::filter($nickname));
-                $tpl->SetVariable('email', Jaws_XSS::filter($email));
-                $tpl->SetVariable('username', Jaws_XSS::filter($entry['username']));
-                // user's avatar
-                $tpl->SetVariable(
-                    'avatar',
-                    Jaws_Gadget::getInstance('Users')->urlMap('Avatar', array('user'  => $entry['username']))
-                );
-                $tpl->SetVariable('insert_time', $objDate->Format($entry['insert_time']));
-                $tpl->SetVariable('insert_time_iso', $objDate->ToISO($entry['insert_time']));
-                $tpl->SetVariable('message', $this->gadget->plugin->parse($entry['msg_txt']));
-                $tpl->SetVariable('message_abbr', (Jaws_UTF8::strlen($entry['msg_txt']) >= $max_size)?
-                    Jaws_UTF8::substr($entry['msg_txt'], 0, $max_size).'...' :
-                    $entry['msg_txt']
-                );
-
-                // Show like rating
-                if (Jaws_Gadget::IsGadgetInstalled('Rating')) {
-                    $ratingHTML = Jaws_Gadget::getInstance('Rating')->action->load('RatingTypes');
-                    $ratingHTML->loadReferenceLike('Comments', 'comment', $entry['id'], 0, $tpl, 'comments/entry');
-                }
-
-                $tpl->SetBlock($block . '/entry/read_more');
-                $tpl->SetVariable('read_more', $this::t('READ_MORE'));
-
-                $tpl->SetVariable('read_more_url', $entry['reference_link']);
-                $tpl->ParseBlock($block . '/entry/read_more');
-
-                if (!empty($entry['reply'])) {
-                    $tpl->SetBlock($block . '/entry/reply');
-                    $tpl->SetVariable('lbl_replier', $this::t('REPLIER'));
-                    $tpl->SetVariable('replier', $entry['replier_nickname']);
-                    // user's profile
-                    $tpl->SetVariable(
-                        'replier_url',
-                        $this->app->map->GetMappedURL(
-                            'Users',
-                            'Profile',
-                            array('user' => $entry['replier_username'])
-                        )
-                    );
-                    $tpl->SetVariable('reply', $entry['reply']);
-                    $tpl->ParseBlock($block . '/entry/reply');
-                }
-
-                $reply_url = & Piwi::CreateWidget('Link', $this::t('REPLY_TO_COMMENT'),
-                                                  'javascript:replyComment();');
-                $tpl->SetVariable('reply-link', $reply_url->Get());
-
-                $tpl->ParseBlock($block . '/entry');
-            }
-        }
-
-        if (!$compactView) {
-            $options['pagination_data']['params']['order'] = $orderBy;
-            // pagination
-            $this->gadget->action->load('PageNavigation')->pagination(
-                $tpl,
-                $page,
-                $options['per_page'],
-                $comments_count,
-                $options['pagination_data']['action'],
-                $options['pagination_data']['params'],
-                $this::t('COMMENTS_COUNT', $comments_count),
-                $interface['gadget']
-            );
-
-            // feeds actions
-            $tpl->SetVariable('lbl_feeds', $this::t('COMMENTS_XML'));
-            $tpl->SetVariable(
-                'atom_url',
-                $this->gadget->urlMap(
-                    'RecentCommentsAtom',
-                    array('gadgetname' => $interface['gadget'], 'actionname' => $interface['action'], 'reference' => $interface['reference'])
-                )
-            );
-            $tpl->SetVariable(
-                'rss_url',
-                $this->gadget->urlMap(
-                    'RecentCommentsRSS',
-                    array('gadgetname' => $interface['gadget'], 'actionname' => $interface['action'], 'reference' => $interface['reference'])
-                )
-            );
-        }*/
         return $assigns;
     }
 

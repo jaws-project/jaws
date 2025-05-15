@@ -1,75 +1,61 @@
-{% unless comments.compact_view %}
-<div class="gadget_section {{comments.gadget}}_comments">
-  {% for comment in comments.comments %}
-  <div class="comments_post">
-
-    <div class="post_profile">
-      <ul>
-        <li><span class="user_avatar"><img src="{{comment.avatar}}" alt="{{comment.username}}" title="{{comment.nickname}}"/></span></li>
-        {% if comment.user_registered_date %}
-        <li><span class="user_register_date">{{ "comments.users_registered_date" | t }}: <span>{{ comment.user_registered_date | date }}</span></span></li>
-        {% endif %}
-      </ul>
-    </div>
-    <div class="post_body">
-      <div class="post_meta">
-        {{ "comments.postedby" | t }}:
-        <a href="{{ 'Users' | urlmap: 'Profile', 'user', comment.username }}"
-                                          title="{{comment.username}}">{{comment.nickname}}</a>
-        &raquo; <abbr title="{{ comment.insert_time | date: 'c', 'gregorian' }}">{{ comment.insert_time | date }}</abbr>
-      </div>
-      <div class="post_content">{{comment.msg_txt}}</div>
-      
-      <!-- INCLUDE Like.html gadgets/Rating/Templates -->
-
-      {% unless comment.reply | empty %}
-      <div class="reply_content" id="reply_content">
-        <blockquote> 
-          <cite>{{ "comments.replier" | t }}
-          <a href="{{ 'Users' | urlmap: 'Profile', 'user', comment.replier_username }}">{{comment.replier_nickname}}</a> :
-          </cite>
-          <div>{{comment.reply}}</div>
-        </blockquote>
-      </div>
-      {% endunless %}
-
-    </div>
-
-    <div class="post_actions">[ <a href="javascript:void(0);" onclick="javascript:replyComment();">{{ "comments.reply_to_comment" | t }}</a> ]</div>
+<div class="card-header d-flex flex-wrap justify-content-between gap-4">
+  <h5 class="mb-0">{{ 'comments.comments' | t }}</h5>
+  <div class="align-content-center">
+    <span class="badge bg-label-primary">
+      <a class="text-decoration-none"
+        href="{{ 'Comments' | urlmap: 'RecentCommentsAtom', 'gadgetname', gadget, 'actionname', action, 'reference', reference }}">Atom</a>
+    </span>
+    <span class="badge bg-label-primary">
+      <a class="text-decoration-none"
+        href="{{ 'Comments' | urlmap: 'RecentCommentsRSS', 'gadgetname', gadget, 'actionname', action, 'reference', reference }}">RSS</a>
+    </span>
   </div>
+</div>
+<div class="card-body">
+  {% for comment in comments.comments %}
+      <div class="row">
+        <div class="col-md-3 col-sm-4 text-center">
+          {%- if user.avatar %}
+            <img class="d-block rounded-circle"
+              src="{{ 'Users' | urlmap: 'Avatar', 'user', comment.username }}"
+              width="120"
+              alt="{{ comment.nickname }}"
+            />
+          {%- else %}
+            <img class="rounded-circle" src="{{'theme_url' | global}}assets/img/avatar.png" width="64" alt="avatar" />
+          {%- endif %}
+          <span class="d-block my-2">{{comment.nickname}}</span>
+          <span class="d-block my-2"><bdi>{{ comment.insert_time | date2str: 'yyyy/MM/dd HH:mm' }}</bdi></span>
+        </div>
+        <div class="col-md-9 col-sm-8 row">
+          <div class="w-100">
+            {{comment.msg_txt}}
+          </div>
+          {% unless comment.reply | empty %}
+          <div class="reply_content" id="reply_content">
+            <blockquote class="blockquote card shadow-none bg-label-primary mt-5">
+              <div class="card-body">
+                <cite class="card-title text-primary">
+                  {{ "comments.replier" | t }} <a href="{{ 'Users' | urlmap: 'Profile', 'user', comment.replier_username }}">{{comment.replier_nickname}}</a>
+                </cite>
+                <p class="card-text">{{comment.reply}}</p>
+              </div>
+            </blockquote>
+          </div>
+          {% endunless %}
+          <!--
+          <div class="w-100 align-self-end mt-4">
+            <button class="btn btn-label-primary waves-effect"
+              type="button"
+              onclick="javascript:replyComment();">
+              {{ "comments.reply_to_comment" | t }}
+            </button>
+          </div>
+          -->
+        </div>
+      </div>
+      <hr class="my-6">
 
-  <hr style="clear: both; visibility: hidden;"/>
   {% endfor %}
 
-  <!-- INCLUDE Navigation.html include/Jaws/Resources -->
-
-  <hr style="clear: both; visibility: hidden;"/>
-  <div class="gadget_actions">
-    <span class="comments_feed">{{ "comments.comments_xml" | t }}:
-      <a href="{{ 'Comments' | urlmap: 'RecentCommentsAtom', 'gadgetname', gadget, 'actionname', action, 'reference', reference }}">RSS</a> |
-      <a href="{{ 'Comments' | urlmap: 'RecentCommentsRSS', 'gadgetname', gadget, 'actionname', action, 'reference', reference }}">Atom</a></span>
-  </div>
-
 </div>
-
-{% else %}
-<div class="{{gadget}}_comments">
-  {% for comment in comments.comments %}
-  <div class="comments_post">
-
-    <div class="post_body">
-      <div class="post_meta">
-        <a href="{{ 'Users' | urlmap: 'Profile', 'user', comment.username }}" title="{{comment.username}}">{{comment.nickname}}</a>
-        &raquo; <abbr title="{{ comment.insert_time | date: 'c', 'gregorian' }}">{{ comment.insert_time | date }}</abbr> :
-      </div>
-      <div class="post_content">{{comment.message_abbr}}
-        <a href="{{comment.reference_link}}" title="{{ "comments.read_more" | t }}">{{ "comments.read_more" | t }}</a>
-      </div>
-    </div>
-
-  </div>
-
-  <hr/>
-  {% endfor %}
-</div>
-{% endunless %}
