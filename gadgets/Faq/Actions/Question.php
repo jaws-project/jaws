@@ -101,6 +101,7 @@ class Faq_Actions_Question extends Jaws_Gadget_Action
                         $tpl->SetVariable('top_label', $this::t('GO_TO_TOP'));
                         $tpl->SetVariable('top_link', $this->gadget->urlMap('View').'#topfaq');
                         $tpl->SetVariable('id',  $q['id']);
+                        $tpl->SetVariable('category', $q['category']);
                         $tpl->SetVariable('pos', $qPos);
                         $qid = empty($q['fast_url']) ? $q['id'] : $q['fast_url'];
                         $tpl->SetVariable('url', $this->gadget->urlMap('ViewQuestion', array('id' => $qid)));
