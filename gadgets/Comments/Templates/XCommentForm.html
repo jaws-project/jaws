@@ -14,15 +14,15 @@
         <div class="gadget-content card-body">
             {% unless "user.logged" | session %}
             <div><label for="name_comments{{comment_form.rand}}">{{ "global.name" | t }}:</label>
-                <input class="form-control" name="name" class="large name" id="name_comments{{comment_form.rand}}" type="text" maxlength="20" value="{{comment_form.namevalue}}"/>
+                <input class="form-control" name="name" id="name_comments{{comment_form.rand}}" type="text" maxlength="20" value="{{comment_form.namevalue}}"/>
             </div>
 
             <div><label for="email_comments{{comment_form.rand}}">{{ "global.email" | t }}:</label>
-                <input class="form-control" name="email" class="large email ltr" id="email_comments{{comment_form.rand}}" type="text" value="{{comment_form.emailvalue}}"/>
+                <input class="form-control" name="email" id="email_comments{{comment_form.rand}}" type="text" value="{{comment_form.emailvalue}}"/>
             </div>
 
             <div><label for="url_comments{{comment_form.rand}}">{{ "global.url" | t }}:</label>
-                <input class="form-control" name="url" class="large url ltr" id="url_comments{{comment_form.rand}}" type="text" maxlength="100" value="{{comment_form.urlvalue}}" />
+                <input class="form-control" name="url" id="url_comments{{comment_form.rand}}" type="text" maxlength="100" value="{{comment_form.urlvalue}}" />
             </div>
             {% endunless %}
 
