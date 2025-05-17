@@ -191,7 +191,9 @@ class Jaws_Gadget
             if (!is_dir(ROOT_JAWS_PATH . "gadgets/$gadget")) {
                 return Jaws_Error::raiseError(
                     Jaws::t('ERROR_GADGET_DOES_NOT_EXIST', $gadget),
-                    __FUNCTION__
+                    404,
+                    JAWS_ERROR_ERROR,
+                    1
                 );
             }
 
@@ -199,7 +201,7 @@ class Jaws_Gadget
             if (!file_exists($file)) {
                 return Jaws_Error::raiseError(
                     Jaws::t('ERROR_GADGET_DOES_NOT_EXIST', $gadget),
-                    __FUNCTION__
+                    404
                 );
             }
 
