@@ -1578,6 +1578,7 @@ class Jaws_ORM
             case 'random':
             case 'concat':
             case 'replace':
+            case 'listagg':
             case 'coalesce':
             case 'substring':
                 return new Jaws_ORM_Function($this, $method, $params);
@@ -1782,6 +1783,16 @@ class Jaws_ORM_Function
                 }
 
                 $func_str = call_user_func_array(array($this->orm->jawsdb->dbc->function, $method), $params);
+                break;
+
+            case 'listagg':
+                @list($column, $orderBy, $delimiter) = $params;
+                $delimiter = $delimiter?? ',';
+
+                $column = $this->orm->quoteIdentifier($column);
+                $orderBy = $this->orm->quoteIdentifier($orderBy);
+
+                $func_str = call_user_func(array($this->orm->jawsdb->dbc->function, $method), $column, $orderBy, $delimiter);
                 break;
 
             case 'substring':
