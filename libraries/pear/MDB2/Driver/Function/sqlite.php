@@ -123,6 +123,26 @@ class MDB2_Driver_Function_sqlite extends MDB2_Driver_Function_Common
     }
 
     // }}}
+    // {{{ GROUP_CONCAT()
+
+    /**
+     * Returns concatenate rows of strings into one string with a specified separator
+     *
+     * @param string $expression
+     * @param string $orderBy
+     * @param string $delimiter...
+     * @return string string with concatenated rows of strings with a specified separator
+     * @access public
+     **/
+    function listagg($expression, $orderBy = null, $delimiter = ',')
+    {
+        $sql = $expression;
+        $delimiter = $delimiter? ", '$delimiter'" : '';
+
+        return "GROUP_CONCAT($expression $delimiter)";
+    }
+
+    // }}}
     // {{{ random()
 
     /**

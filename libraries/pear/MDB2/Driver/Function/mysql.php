@@ -117,6 +117,27 @@ class MDB2_Driver_Function_mysql extends MDB2_Driver_Function_Common
         return "CONCAT(".implode(', ', $args).")";
     }
 
+    // }}}
+    // {{{ GROUP_CONCAT()
+
+    /**
+     * Returns a string with concatenated non-NULL value from a group
+     *
+     * @param string $expression
+     * @param string $orderBy
+     * @param string $delimiter...
+     * @return string string from a group concatenated values with a specified separator
+     * @access public
+     **/
+    function listagg($expression, $orderBy = null, $delimiter = ',')
+    {
+        $sql = $expression;
+        $orderBy = $orderBy? "ORDER BY $orderBy" : '';
+        $delimiter = $delimiter? "SEPARATOR '$delimiter'" : '';
+
+        return "GROUP_CONCAT($expression $orderBy $delimiter)";
+    }
+
     /**
      * return math truncate of expression
      *

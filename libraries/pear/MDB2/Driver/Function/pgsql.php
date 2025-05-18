@@ -114,6 +114,27 @@ class MDB2_Driver_Function_pgsql extends MDB2_Driver_Function_Common
     }
 
     // }}}
+    // {{{ string_agg()
+
+    /**
+     * Returns concatenate rows of strings into one string with a specified separator
+     *
+     * @param string $expression
+     * @param string $orderBy
+     * @param string $delimiter...
+     * @return string string with concatenated rows of strings with a specified separator
+     * @access public
+     **/
+    function listagg($expression, $orderBy = null, $delimiter = ',')
+    {
+        $sql = $expression;
+        $orderBy = $orderBy? "ORDER BY $orderBy" : '';
+        $delimiter = $delimiter? "'$delimiter'" : "','";
+
+        return "string_agg($expression, $delimiter $orderBy)";
+    }
+
+    // }}}
     // {{{ random()
 
     /**
