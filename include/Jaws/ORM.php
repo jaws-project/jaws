@@ -276,6 +276,18 @@ class Jaws_ORM
     private $reserved_words = array('as', 'desc', 'asc', 'distinct');
 
     /**
+     * implemented functions
+     *
+     * @var     array
+     * @access  private
+     */
+    static public $functions = array(
+        'now', 'abs', 'sign', 'mod', 'div', 'quote', 'expr', 'ceil', 'lower', 'upper', 'floor',
+        'round', 'trunc', 'power', 'length', 'random', 'concat', 'replace',
+        'listagg', 'coalesce', 'substring'
+    );
+
+    /**
      * save nested transactions and auto rollback state for each levels
      *
      * @var     array
@@ -1560,32 +1572,12 @@ class Jaws_ORM
             case 'get':
                 return $this->fetch('raw');
 
-            case 'now':
-            case 'abs':
-            case 'sign':
-            case 'mod':
-            case 'div':
-            case 'quote':
-            case 'expr':
-            case 'ceil':
-            case 'lower':
-            case 'upper':
-            case 'floor':
-            case 'round':
-            case 'trunc':
-            case 'power':
-            case 'length':
-            case 'random':
-            case 'concat':
-            case 'replace':
-            case 'listagg':
-            case 'coalesce':
-            case 'substring':
-                return new Jaws_ORM_Function($this, $method, $params);
-                break;
-
             default:
-                // trigger an error
+                if (in_array($method, self::$functions)) {
+                    return new Jaws_ORM_Function($this, $method, $params);
+                } else {
+                    throw new BadMethodCallException("Method $method does not exist");
+                }
         }
     }
 
@@ -1732,12 +1724,100 @@ class Jaws_ORM_Function
     }
 
     /**
+     * Safely splits a comma-separated argument list while respecting nested parentheses.
+     *
+     * For example: "a, b(c, d), e" → ["a", "b(c, d)", "e"]
+     *
+     * @param   string  $argString The argument string to parse.
+     * @return  array An array of arguments.
+     */
+    private function parseArguments($argString)
+    {
+        $args = [];
+        $depth = 0;
+        $buffer = '';
+        $len = strlen($argString);
+
+        for ($i = 0; $i < $len; $i++) {
+            $char = $argString[$i];
+
+            if ($char === ',' && $depth === 0) {
+                $args[] = $buffer;
+                $buffer = '';
+            } else {
+                if ($char === '(') $depth++;
+                if ($char === ')') $depth--;
+                $buffer .= $char;
+            }
+        }
+
+        if (trim($buffer) !== '') {
+            $args[] = $buffer;
+        }
+
+        return $args;
+    }
+
+    /**
+     * Calls a function with evaluated arguments.
+     *
+     * @param   string  $funcName   The name of the function to call.
+     * @param   string  $argsString The raw string of arguments (e.g., "a, b").
+     * @return  mixed The return value of the function if exists, or the original call as a string.
+     */
+    private function callFunction($funcName, $argsString)
+    {
+        // Split arguments safely into an array
+        $args = $this->parseArguments($argsString);
+
+        // Recursively process each argument
+        $evaluatedArgs = array_map(function ($arg) {
+            return $this->processExpression(trim($arg));
+        }, $args);
+
+        // If method exists, call it
+        if (in_array($funcName, Jaws_ORM::$functions)) {
+            $funcORM = call_user_func_array([$this->orm, $funcName], $evaluatedArgs);
+            return $funcORM->get(false);
+        }
+
+        // Return the original call if method doesn't exist
+        return "{$funcName}(" . implode(', ', $args) . ")";
+    }
+
+    /**
+     * Recursively processes a string expression and replaces function calls with the result of method
+     *
+     * @param   string  $input      The string expression to process.
+     * @return  string The processed expression with callable methods evaluated.
+     */
+    private function processExpression($input)
+    {
+        // Match function calls with optional nested calls
+        return preg_replace_callback('/
+            (\w+)\s*           # Capture the function name
+            \((                # Capture the opening parenthesis
+                (?:            # Start non-capturing group
+                    [^()]+     # Match anything except parentheses
+                    |(?R)      # Or recursively match the same pattern (nested calls)
+                )*
+            )\)                # Closing parenthesis
+        /x', function ($matches) {
+            $funcName = $matches[1];
+            $args = $matches[2];
+
+            // Evaluate the function call
+            return $this->callFunction($funcName, $args);
+        }, $input);
+    }
+
+    /**
      * Builds function string
      *
      * @access  public
      * @return  string  Function string
      */
-    public function get()
+    public function get($quote = true)
     {
         $params = $this->params;
         $method = $this->method;
@@ -1745,13 +1825,19 @@ class Jaws_ORM_Function
         $func_str = '';
         switch ($method) {
             case 'quote':
-                $func_str = $this->orm->quoteValue($params[0]);
+                if ($quote) {
+                    $func_str = $this->orm->quoteValue($params[0]);
+                } else {
+                    $func_str = $params[0];
+                }
                 break;
 
             case 'lower':
             case 'upper':
             case 'length':
-                $params[0] = $this->orm->quoteIdentifier($params[0]);
+                if ($quote) {
+                    $params[0] = $this->orm->quoteIdentifier($params[0]);
+                }
                 $func_str = $this->orm->jawsdb->dbc->function->$method($params[0]);
                 break;
 
@@ -1761,11 +1847,13 @@ class Jaws_ORM_Function
                 break;
 
             case 'coalesce':
-                foreach ($params as &$param) {
-                    if (is_object($param)) {
-                        $param = '('. $param->get(). ')';
-                    } else {
-                        $param = $this->orm->quoteIdentifier($param);
+                if ($quote) {
+                    foreach ($params as &$param) {
+                        if (is_object($param)) {
+                            $param = '('. $param->get(). ')';
+                        } else {
+                            $param = $this->orm->quoteIdentifier($param);
+                        }
                     }
                 }
 
@@ -1774,11 +1862,13 @@ class Jaws_ORM_Function
 
             case 'concat':
             case 'replace':
-                foreach ($params as &$param) {
-                    if (is_array($param)) {
-                        $param = $this->orm->quoteValue($param);
-                    } else {
-                        $param = $this->orm->quoteIdentifier($param);
+                if ($quote) {
+                    foreach ($params as &$param) {
+                        if (is_array($param)) {
+                            $param = $this->orm->quoteValue($param);
+                        } else {
+                            $param = $this->orm->quoteIdentifier($param);
+                        }
                     }
                 }
 
@@ -1789,14 +1879,18 @@ class Jaws_ORM_Function
                 @list($column, $orderBy, $delimiter) = $params;
                 $delimiter = $delimiter?? ',';
 
-                $column = $this->orm->quoteIdentifier($column);
-                $orderBy = $this->orm->quoteIdentifier($orderBy);
+                if ($quote) {
+                    $column = $this->orm->quoteIdentifier($column);
+                    $orderBy = $this->orm->quoteIdentifier($orderBy);
+                }
 
                 $func_str = call_user_func(array($this->orm->jawsdb->dbc->function, $method), $column, $orderBy, $delimiter);
                 break;
 
             case 'substring':
-                $params[0] = $this->orm->quoteIdentifier($params[0]);
+                if ($quote) {
+                    $params[0] = $this->orm->quoteIdentifier($params[0]);
+                }
                 $func_str = call_user_func_array(array($this->orm->jawsdb->dbc->function, 'substring'), $params);
                 break;
 
@@ -1813,6 +1907,7 @@ class Jaws_ORM_Function
                     $func_str = preg_replace('/\?/', $param, $func_str, 1);
                 }
 
+                $func_str = $this->processExpression($func_str);
                 break;
 
             case 'abs':
