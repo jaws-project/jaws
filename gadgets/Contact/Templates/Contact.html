@@ -15,8 +15,11 @@
     {% unless "user.logged" | session %}
       {% if name | isset %}
         <div class="input-group mb-3">
-          <label class="input-group-text">{{ "global.name" | t }}</label>
-          <input class="form-control" name="name" type="text" value="{{name}}" />
+          <label class="input-group-text">
+            {{ "global.name" | t }}
+            <i class="fas fa-star-of-life text-danger" style="font-size:x-small;"></i>
+          </label>
+          <input class="form-control" name="name" type="text" value="{{name}}" required />
         </div>
       {% endif %}
       {% if email | isset %}
@@ -79,13 +82,19 @@
     {% endif %}
 
       <div class="input-group mb-3">
-        <label class="input-group-text">{{ "contact.subject" | t }}</label>
-        <input class="form-control" name="subject" type="text" value="{{subject}}" />
+        <label class="input-group-text">
+          {{ "contact.subject" | t }}
+          <i class="fas fa-star-of-life text-danger" style="font-size:x-small;"></i>
+        </label>
+        <input class="form-control" name="subject" type="text" value="{{subject}}" required />
       </div>
 
       <div class="input-group mb-3">
-        <label class="input-group-text">{{ "contact.message" | t }}</label>
-        <textarea class="form-control" name="message" rows="6">{{message}}</textarea>
+        <label class="input-group-text">
+          {{ "contact.message" | t }}
+          <i class="fas fa-star-of-life text-danger" style="font-size:x-small;"></i>
+        </label>
+        <textarea class="form-control" name="message" rows="6" required>{{message}}</textarea>
       </div>
 
     {% if attachment %}
