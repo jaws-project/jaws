@@ -36,7 +36,7 @@
       {% if url | isset %}
         <div class="input-group mb-3">
           <label class="input-group-text">{{ "global.url" | t }}</label>
-          <input class="form-control" dir="ltr" name="url" type="text" value="{{url}}" />
+          <input class="form-control" dir="ltr" name="url" type="text" value="{{url}}" placeholder="https://" />
         </div>
       {% endif %}
     {% endunless %}

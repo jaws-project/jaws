@@ -102,7 +102,7 @@ class Contact_Actions_Contact extends Jaws_Gadget_Action
             $message = array(
                 'name'      => $this->app->session->getCookie('visitor_name')?: '',
                 'email'     => $this->app->session->getCookie('visitor_email')?: '',
-                'url'       => $this->app->session->getCookie('visitor_url')?: 'http://',
+                'url'       => $this->app->session->getCookie('visitor_url')?: '',
                 'company'   => '',
                 'tel'       => '',
                 'fax'       => '',
