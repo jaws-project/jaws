@@ -233,10 +233,6 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
                 isset($url['gadget'])? $url['gadget'] : ''
             );
         }
-        // symbol
-        if (empty($menu['symbol'])) {
-            $menu['symbol'] = 'hide';
-        }
 
         return true;
     }

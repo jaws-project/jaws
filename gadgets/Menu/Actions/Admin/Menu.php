@@ -351,7 +351,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
 
         $objImage = Jaws_Image::factory();
         if (!Jaws_Error::IsError($objImage)) {
-            if (is_null($params['file'])) {
+            if (!isset($params['file'])) {
                 $model = $this->gadget->model->load('Menu');
                 $result = $model->GetMenuImage($params['id']);
                 if (!Jaws_Error::IsError($result)) {
