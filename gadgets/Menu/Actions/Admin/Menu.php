@@ -179,6 +179,7 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_1'), 1);
         $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_2'), 2);
         $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_3'), 3);
+        $viewType->AddOption($this::t('GROUPS_VIEW_TYPE_4'), 4);
         $tpl->SetVariable('lbl_view_type', $this::t('GROUPS_VIEW_TYPE'));
         $tpl->SetVariable('view_type', $viewType->Get());
 

@@ -1,0 +1,24 @@
+<div class="d-inline-block">
+  <ul class="list-group list-group-horizontal">
+    {%- if home %}
+      <li class="list-group-item border-0">
+        <a href="{{home.url}}">
+          <i class="{{home.symbol}}"></i><span>{{home.title}}</span>
+        </a>
+      </li>
+    {%- endif %}
+    {%- for menu in levels %}
+      <li class="list-group-item p-2 border-0">
+        <a href="{{menu.url}}">
+          {%- if menu.symbol %}
+            <i class="{{menu.symbol}}"></i>
+          {%- endif %}
+          {%- if menu.image %}
+            <img width="32" src="menu/image/{{menu.id}}" />
+          {%- endif %}
+          <span>{{menu.title}}</span>
+        </a>
+      </li>
+    {%- endfor %}
+  </ul>
+</div>
