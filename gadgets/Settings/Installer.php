@@ -35,6 +35,10 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('editor_tinymce_backend_toolbar', ''),
         array('editor_ckeditor_frontend_toolbar', ''),
         array('editor_ckeditor_backend_toolbar', ''),
+        array('editor_quill_frontend_toolbar', ''),
+        array('editor_quill_backend_toolbar', ''),
+        array('editor_summernote_frontend_toolbar', ''),
+        array('editor_summernote_backend_toolbar', ''),
         array('browsers_flag', 'opera,firefox,ie7up,ie,safari,nav,konq,gecko,text'),
         array('show_viewsite', 'true'),
         array('robots', ''),
@@ -96,7 +100,7 @@ class Settings_Installer extends Jaws_Gadget_Installer
         array('holder', ''),
         array('parent', ''),
         array('health_status', '1'),
-        array('cache_driver', 'Database'),
+        array('cache_driver', ''),
         array('service_worker_enabled', false),
         array('pwa_enabled', false),
         array('pwa_version', '1.0.0'),
@@ -180,6 +184,30 @@ class Settings_Installer extends Jaws_Gadget_Installer
             ',JustifyCenter,JustifyRight,JustifyBlock,-,BidiLtr,BidiRtl,|'.
             ',Link,Unlink,Anchor,|,Image,Flash,Table,HorizontalRule,SpecialChar,PageBreak,|'.
             ',TextColor,BGColor,|,Styles,Format,Font,FontSize,|,Maximize,ShowBlocks,'
+        );
+
+        // Quill frontend toolbar
+        $this->gadget->registry->update(
+            'editor_quill_frontend_toolbar',
+            ''
+        );
+
+        // Quill backend toolbar
+        $this->gadget->registry->update(
+            'editor_quill_backend_toolbar',
+            ''
+        );
+
+        // Summernote frontend toolbar
+        $this->gadget->registry->update(
+            'editor_summernote_frontend_toolbar',
+            ''
+        );
+
+        // Summernote backend toolbar
+        $this->gadget->registry->update(
+            'editor_summernote_backend_toolbar',
+            ''
         );
 
         return true;

@@ -1102,14 +1102,109 @@ function tinymce_file_picker_callback(callback, value, meta)
 /**
  * Prepares the editor with basic data
  */
-function initEditor(selector)
+function initEditor(elEditor)
 {
-    var objEditor = $(selector);
+    var objEditor = $(elEditor);
     var editorType = objEditor.data('editor') || Jaws.defines.editor || 'textarea';
 
     switch(editorType) {
+        case 'summernote':
+        case 'Summernote':
+            $.loadScript('libraries/editors/summernote/summernote-bs5.min.js?' + Jaws.defines.buildnumber, function() {
+                $(elEditor).summernote({
+                    toolbar: [
+                      ['style', ['style']],
+                      ['font', ['bold', 'underline', 'clear']],
+                      ['fontname', ['fontname']],
+                      ['color', ['color']],
+                      ['para', ['ul', 'ol', 'paragraph']],
+                      ['table', ['table']],
+                      ['insert', ['link', 'picture', 'video']],
+                      ['view', ['fullscreen', 'codeview', 'help']],
+                    ]
+                });
+            });
+
+            break;
+
+        case 'quill':
+        case 'Quill':
+            $.loadScript('libraries/editors/quill/quill.js?' + Jaws.defines.buildnumber, function() {
+                let value = elEditor.value;
+                divEditor = document.createElement('div');
+                divEditor.style.direction = 'ltr';
+                divEditor.innerHTML = value;
+                elEditor.parentNode.insertBefore(divEditor, elEditor.nextSibling);
+                elEditor.style.display = "none";
+                var placeholder = elEditor.placeholder;
+
+                const toolbarOptions = [
+                  [{ 'direction': 'rtl' }],                         // text direction
+                  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                  ['blockquote', 'code-block'],
+                  ['link', 'image', 'video', 'formula'],
+
+                  [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+                  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+
+                  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                  [{ 'font': [] }],
+                  [{ 'align': [] }],
+
+                  ['clean']                                         // remove formatting button
+                ];
+
+                const quillEditor =  new Quill(divEditor, {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: toolbarOptions
+                    }
+                });
+
+                quillEditor.on('text-change', function() {
+                    elEditor.value = quillEditor.root.innerHTML;
+                });
+            });
+
+            break;
+
         case 'ckeditor':
         case 'CKEditor':
+/*
+            $.loadScript('libraries/ckeditor5/ckeditor5.umd.js?' + Jaws.defines.buildnumber, function() {
+                const {
+                    ClassicEditor,
+                    Essentials,
+                    Bold,
+                    Italic,
+                    Font,
+                    Paragraph
+                } = CKEDITOR;
+
+                ClassicEditor.create(elEditor, {
+                    licenseKey: 'GPL',
+                    plugins: [ Essentials, Bold, Italic, Font, Paragraph ],
+                    toolbar: [
+                        'undo', 'redo', '|', 'bold', 'italic', '|',
+                        'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                    ],
+                    language: {
+                        ui: objEditor.data('language') || Jaws.defines.language || 'en',
+                        content: objEditor.data('language') || Jaws.defines.language || 'en'
+                    },
+                })
+                .then( editor => {
+                    if (objEditor.data('readonly') == '1') {
+                        editor.enableReadOnlyMode('feature-id');
+                    }
+                })
+                .catch();
+            });
+*/
+
             $.loadScript('libraries/ckeditor/ckeditor.js?' + Jaws.defines.buildnumber, function() {
                 CKEDITOR.env.cssClass = 'form-control float-none';
                 objEditor.ckeditor({
@@ -1133,6 +1228,7 @@ function initEditor(selector)
                     'indentOffset': '1'
                 });
             });
+
             break;
 
         case 'tinymce':
@@ -1140,7 +1236,7 @@ function initEditor(selector)
             $.loadScript('libraries/tinymce/tinymce.min.js', function() {
                 // find and remove old tinymce editor instance
                 tinyMCE.editors.forEach(function(editor, index) {
-                    if ($(editor.targetElm).is(selector)) {
+                    if ($(editor.targetElm).is(elEditor)) {
                         editor.remove();
                     }
                 });
