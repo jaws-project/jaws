@@ -1797,22 +1797,45 @@ class Jaws_ORM_Function
      */
     private function processExpression($input)
     {
-        // Match function calls with optional nested calls
-        return preg_replace_callback('/
-            (\w+)\s*           # Capture the function name
-            \((                # Capture the opening parenthesis
-                (?:            # Start non-capturing group
-                    [^()]+     # Match anything except parentheses
-                    |(?R)      # Or recursively match the same pattern (nested calls)
-                )*
-            )\)                # Closing parenthesis
-        /x', function ($matches) {
-            $funcName = $matches[1];
-            $args = $matches[2];
+        // Define a named pattern for matching any balanced parentheses.
+        // This pattern can recurse into itself.
+        // It's defined within the main pattern to be self-contained for the current preg_replace_callback.
+        $balanced_parens_pattern = '
+            (?P<balanced_group> # Named group for general balanced parentheses
+                \(              # Literal opening parenthesis
+                    (?:         # Non-capturing group for content inside
+                        [^()]++ # Match non-parentheses characters possessively
+                        |       # OR
+                        (?P>balanced_group) # Recursively match balanced_group itself
+                    )*+         # Repeat content possessively
+                \)              # Literal closing parenthesis
+            )
+        ';
 
-            // Evaluate the function call
-            return $this->callFunction($funcName, $args);
-        }, $input);
+        // Main regex: Match a function call
+        return preg_replace_callback(
+            '/
+                (\w+) \s* # $matches[1]: Function name
+                \(               # Literal opening parenthesis
+                (                # $matches[2]: Capture the ENTIRE arguments string
+                    (?:          # Non-capturing group for argument content alternatives
+                        [^()]+   # Match characters that are not parentheses (e.g., literals, operators, backticks)
+                        |        # OR
+                        ' . $balanced_parens_pattern . ' # Match general balanced parentheses (like arithmetic expressions)
+                        |        # OR
+                        (?R)     # Match nested function calls (this refers to the ENTIRE outer pattern)
+                    )*+          # Repeat the content alternatives possessively
+                )
+                \)               # Literal closing parenthesis
+            /x',
+            function ($matches) {
+                $funcName = $matches[1];
+                $argsString = $matches[2]; // This is the raw string of arguments inside the function call
+
+                return $this->callFunction($funcName, $argsString);
+            },
+            $input
+        );
     }
 
     /**
