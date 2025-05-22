@@ -1,16 +1,47 @@
-<!-- BEGIN aboutuser -->
 <div class="gadget-header card-header d-flex align-items-center justify-content-between">
   <h5 class="m-0 me-2 py-1">{{title}}</h5>
 </div>
 <div class="gadget-container">
   <div class="gadget-content card-body">
-    <p><img src="{{avatar}}" alt="{{nickname}}" /></p>
-    <p><label>{{lbl_fname}}: </label>{{fname}}</p>
-    <p><label>{{lbl_lname}}: </label>{{lname}}</p>
-    <p><label>{{lbl_nickname}}: </label>{{nickname}}</p>
-    <hr/>
-    <p><label>{{lbl_about}}: </label><br/>{{about}}</p>
+    <div class="d-flex flex-column">
+      {%- if user.avatar %}
+        <img
+          class="d-block rounded-circle"
+          src="{{ 'Users' | urlmap: 'Avatar', 'user', user.username }}"
+          width="128"
+          alt="{{ user.nickname }}"
+        />
+      {%- else %}
+        <i class="fas fa-circle-user h-auto fs-1"></i>
+      {%- endif %}
+      <div class="mb-4">
+        <a href="{{ 'Users' | urlmap: 'Profile', 'user', user.username }}">{{ user.nickname }}</a>
+      </div>
+    </div>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">{{ 'global.name' | t }}: {{user.fname}} {{user.lname}}</li>
+      <li class="list-group-item">{{ 'users.users_nickname' | t }}: {{user.nickname}}</li>
+      <li class="list-group-item">{{ 'global.email' | t }}: {{ user.email | default: '-'}}</li>
+      <li class="list-group-item">{{ 'users.contacts_mobile_number' | t }}: {{ user.mobile | default: '-'}}</li>
+      {%- if 'Users.EditUserName,EditUserNickname,EditUserEmail,EditUserMobile' | permission: '', false %}
+        <li class="list-group-item">
+          <a href="{{ 'Users' | urlmap: 'Account' }}">
+            <i class="fas fa-user-pen me-1"></i>{{ 'users.actions_account_title' | t }}
+          </a>
+        </li>
+      {%- endif %}
+      {%- if 'Users.EditUserPersonal' | permission: '', false %}
+        <li class="list-group-item">
+          <a href="{{ 'Users' | urlmap: 'Personal' }}">
+            <i class="fas fa-pen-to-square me-1"></i>{{ 'users.actions_personal_title' | t }}
+          </a>
+        </li>
+      {%- endif %}
+      <li class="list-group-item">
+        {{user.about}}
+      </li>
+    </ul>
   </div>
 </div>
 <div class="gadget-footer card-footer" hidden></div>
-<!-- END aboutuser -->
