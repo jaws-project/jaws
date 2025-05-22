@@ -1340,17 +1340,21 @@ class Jaws_ORM
                             }
                         }
                     }
-                } elseif ($this->_query_command == 'igsert' && $result->getCode() == MDB2_ERROR_CONSTRAINT) {
-                    if (empty($this->_columns)) {
-                        $this->select($this->_pk_field. ':'. $this->_pk_field_type);
-                    }
-                    $sql = 'select '. implode(', ', $this->_columns) . "\n";
-                    $sql.= 'from '. $this->_tablesIdentifier. "\n";
-                    $sql.= $this->_build_where();
-                    if (count($this->_columns) == 1) {
-                        $result = $this->jawsdb->dbc->queryone($sql, $this->_types);
+                } elseif ($result->getCode() == MDB2_ERROR_CONSTRAINT) {
+                    if ($this->_query_command == 'igsert') {
+                        if (empty($this->_columns)) {
+                            $this->select($this->_pk_field. ':'. $this->_pk_field_type);
+                        }
+                        $sql = 'select '. implode(', ', $this->_columns) . "\n";
+                        $sql.= 'from '. $this->_tablesIdentifier. "\n";
+                        $sql.= $this->_build_where();
+                        if (count($this->_columns) == 1) {
+                            $result = $this->jawsdb->dbc->queryone($sql, $this->_types);
+                        } else {
+                            $result = $this->jawsdb->dbc->queryRow($sql, $this->_types);
+                        }
                     } else {
-                        $result = $this->jawsdb->dbc->queryRow($sql, $this->_types);
+                        $error_level = JAWS_ERROR_NOTICE;
                     }
                 }
 
@@ -1742,7 +1746,7 @@ class Jaws_ORM_Function
             $char = $argString[$i];
 
             if ($char === ',' && $depth === 0) {
-                $args[] = $buffer;
+                $args[] = trim($buffer);
                 $buffer = '';
             } else {
                 if ($char === '(') $depth++;
@@ -1752,7 +1756,7 @@ class Jaws_ORM_Function
         }
 
         if (trim($buffer) !== '') {
-            $args[] = $buffer;
+            $args[] = trim($buffer);
         }
 
         return $args;
