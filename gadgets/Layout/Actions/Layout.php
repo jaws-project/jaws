@@ -186,12 +186,12 @@ class Layout_Actions_Layout extends Jaws_Gadget_Action
                     $t_item->SetVariable('controls', $controls);
                     $t_item->SetVariable('void_link', '');
                     $t_item->SetVariable('lbl_when', $this::t('DISPLAY_IN'));
-                    if ($gadget['when'] == '*') {
+                    if ($gadget['when_gadget'] == '*') {
                         $t_item->SetVariable('when', Jaws::t('ALWAYS'));
-                    } elseif (empty($gadget['when'])) {
+                    } elseif (empty($gadget['when_gadget'])) {
                         $t_item->SetVariable('when', $this::t('NEVER'));
                     } else {
-                        $t_item->SetVariable('when', str_replace(',', ', ', $gadget['when']));
+                        $t_item->SetVariable('when', str_replace(',', ', ', $gadget['when_gadget']));
                     }
                     $t_item->ParseBlock('item');
                 }

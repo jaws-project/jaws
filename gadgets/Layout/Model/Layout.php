@@ -24,7 +24,7 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select(
             'id', 'title', 'gadget', 'action', 'params',
-            'filename', 'when', 'section', 'position'
+            'filename', 'when_gadget', 'when_action', 'section', 'position'
         );
         $lyTable->where('user', (int)$user)
             ->and()
@@ -51,7 +51,8 @@ class Layout_Model_Layout extends Jaws_Gadget_Model
                 'action'   => '[REQUESTEDACTION]',
                 'params'   => '',
                 'filename' => '',
-                'when'     => '*',
+                'when_gadget' => '*',
+                'when_action' => '*',
                 'section'  => 'main',
                 'position' => 0,
             );

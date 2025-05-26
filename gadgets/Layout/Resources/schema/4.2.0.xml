@@ -74,18 +74,8 @@
         </field>
 
         <field>
-            <name>when_gadget</name>
-            <was>when</was>
+            <name>when</name>
             <type>text</type>
-            <length>32</length>
-            <default>*</default>
-        </field>
-
-        <field>
-            <name>when_action</name>
-            <type>text</type>
-            <length>32</length>
-            <default>*</default>
         </field>
 
         <field>

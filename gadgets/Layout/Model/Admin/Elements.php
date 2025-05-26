@@ -59,7 +59,8 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
             'action'    => $action,
             'params'    => serialize($params),
             'filename'  =>  empty($filename)? '' : $filename,
-            'when'      => '*',
+            'when_gadget' => '*',
+            'when_action' => '*',
             'position'  => $pos,
             'published' => true
         ));
@@ -212,7 +213,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
     {
         $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         $lyTable = Jaws_ORM::getInstance()->table('layout');
-        return $lyTable->update(array('when' => $when))
+        return $lyTable->update(array('when_gadget' => $when))
             ->where('id', $item)
             ->and()
             ->where('user', $user)
@@ -274,7 +275,7 @@ class Layout_Model_Admin_Elements extends Jaws_Gadget_Model
         $lyTable = Jaws_ORM::getInstance()->table('layout');
         $lyTable->select(
             'id', 'gadget', 'action', 'params', 'filename',
-            'when', 'position', 'section', 'published'
+            'when_gadget', 'when_action', 'position', 'section', 'published'
         );
         return $lyTable->where('id', $id)->fetchRow();
     }

@@ -431,7 +431,8 @@ class Jaws_Layout
             'action'   => '[REQUESTEDACTION]',
             'params'   => '',
             'filename' => '',
-            'when'     => '*',
+            'when_gadget' => '*',
+            'when_action' => '*',
             'section'  => 'main',
             'position' => 0
         );
@@ -444,18 +445,16 @@ class Jaws_Layout
      * @access  public
      * @return  bool
      */
-    function IsDisplayable($gadget, $action, $when, $index)
+    function IsDisplayable($gadget, $action, $when_gadgets, $when_actions, $index)
     {
-        $displayWhen = array_filter(explode(',', $when));
-        if ($when == '*' || ($index && in_array('index', $displayWhen))) {
+        $displayWhenGadget = array_filter(explode(',', $when_gadgets));
+        if ($when_gadgets == '*' || ($index && in_array('index', $displayWhenGadget))) {
             return true;
         }
 
-        foreach ($displayWhen as $item) {
-            $gActions = explode(';', $item);
-            $g = array_shift($gActions);
-            if ($g == $gadget) {
-                if (empty($gActions) || in_array($action, $gActions)) {
+        foreach ($displayWhenGadget as $when_gadget) {
+            if ($when_gadget == $gadget) {
+                if ($when_actions == '*' || in_array($action, explode(',', $when_actions))) {
                     return true;
                 }
                 break;
@@ -494,7 +493,8 @@ class Jaws_Layout
                     if ($this->IsDisplayable(
                         $this->app->mainRequest['gadget'],
                         $this->app->mainRequest['action'],
-                        $item['when'],
+                        $item['when_gadget'],
+                        $item['when_action'],
                         $this->app->mainIndex)
                     ) {
                         if ($this->app->session->GetPermission($item['gadget'], $default_acl)) {

@@ -47,7 +47,7 @@ class Layout_Actions_DisplayWhen extends Jaws_Gadget_Action
 
         $layoutElement = $model->GetElement($rqst['id']);
         if (is_array($layoutElement) && !empty($layoutElement)) {
-            $dw_value = $layoutElement['when'];
+            $dw_value = $layoutElement['when_gadget'];
         }
 
         $displayCombo =& Piwi::CreateWidget('Combo', 'display_in');

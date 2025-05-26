@@ -44,7 +44,7 @@ class Layout_Model_Admin_Layout extends Jaws_Gadget_Model
     {
         $user = ($layout == 'Index.Dashboard')? $this->gadget->user : 0;
         $lyTable = Jaws_ORM::getInstance()->table('layout');
-        $lyTable->select('id', 'gadget', 'action', 'when', 'position', 'published')
+        $lyTable->select('id', 'gadget', 'action', 'when_gadget', 'when_action', 'position', 'published')
             ->where('user', (int)$user)
             ->and()
             ->where('theme', $this->gadget->theme)
