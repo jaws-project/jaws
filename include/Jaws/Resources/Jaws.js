@@ -384,6 +384,35 @@ jQuery.extend({
         }
     };
 
+    /*
+     * runtime load link
+    */
+    var loadedLinks = {};
+    jQuery.loadLink = function(path, fn, obj) {
+        if (loadedLinks[path]) {
+            fn.call(obj);
+            return;
+        }
+
+        loadingLink = $('head link[href="'+path+'"]');
+        if (loadingLink.length) {
+            loadingLink.on('load', function() {
+                fn.call(obj);
+            });
+        } else {
+            $('<link>').appendTo('head')
+                .prop('async', true)
+                .attr({'href': path, 'type' : 'text/css', 'rel': 'stylesheet'})
+                .on('load', function() {
+                    $(this).off('load');
+                    loadedLinks[path] = true;
+                    fn.call(obj);
+                }).on('error', function() {
+                    //on error
+                });
+        }
+    };
+
 })(jQuery);
 
 
@@ -1110,64 +1139,80 @@ function initEditor(elEditor)
     switch(editorType) {
         case 'summernote':
         case 'Summernote':
-            $.loadScript('libraries/editors/summernote/summernote-bs5.min.js?' + Jaws.defines.buildnumber, function() {
-                $(elEditor).summernote({
-                    toolbar: [
-                      ['style', ['style']],
-                      ['font', ['bold', 'underline', 'clear']],
-                      ['fontname', ['fontname']],
-                      ['color', ['color']],
-                      ['para', ['ul', 'ol', 'paragraph']],
-                      ['table', ['table']],
-                      ['insert', ['link', 'picture', 'video']],
-                      ['view', ['fullscreen', 'codeview', 'help']],
-                    ]
-                });
-            });
+            $.loadScript(
+                'libraries/editors/summernote/summernote-bs5.min.js?' + Jaws.defines.buildnumber,
+                function() {
+                    $.loadLink(
+                        'libraries/editors/summernote/summernote-bs5.min.css?' + Jaws.defines.buildnumber,
+                        function() {
+                            $(elEditor).summernote({
+                                toolbar: [
+                                  ['style', ['style']],
+                                  ['font', ['bold', 'underline', 'clear']],
+                                  ['fontname', ['fontname']],
+                                  ['color', ['color']],
+                                  ['para', ['ul', 'ol', 'paragraph']],
+                                  ['table', ['table']],
+                                  ['insert', ['link', 'picture', 'video']],
+                                  ['view', ['fullscreen', 'codeview', 'help']],
+                                ]
+                            });
+                        }
+                    );
+                }
+            );
 
             break;
 
         case 'quill':
         case 'Quill':
-            $.loadScript('libraries/editors/quill/quill.js?' + Jaws.defines.buildnumber, function() {
-                let value = elEditor.value;
-                divEditor = document.createElement('div');
-                divEditor.style.direction = 'ltr';
-                divEditor.innerHTML = value;
-                elEditor.parentNode.insertBefore(divEditor, elEditor.nextSibling);
-                elEditor.style.display = "none";
-                var placeholder = elEditor.placeholder;
+            $.loadScript(
+                'libraries/editors/quill/quill.js?' + Jaws.defines.buildnumber,
+                function() {
+                    $.loadLink(
+                        'libraries/editors/quill/quill.snow.css?' + Jaws.defines.buildnumber,
+                        function() {
+                            let value = elEditor.value;
+                            divEditor = document.createElement('div');
+                            divEditor.style.direction = 'ltr';
+                            divEditor.innerHTML = value;
+                            elEditor.parentNode.insertBefore(divEditor, elEditor.nextSibling);
+                            elEditor.style.display = "none";
+                            var placeholder = elEditor.placeholder;
 
-                const toolbarOptions = [
-                  [{ 'direction': 'rtl' }],                         // text direction
-                  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-                  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                  ['blockquote', 'code-block'],
-                  ['link', 'image', 'video', 'formula'],
+                            const toolbarOptions = [
+                              [{ 'direction': 'rtl' }],                         // text direction
+                              [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                              [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                              ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                              ['blockquote', 'code-block'],
+                              ['link', 'image', 'video', 'formula'],
 
-                  [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-                  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-                  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                              [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+                              [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                              [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
 
-                  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-                  [{ 'font': [] }],
-                  [{ 'align': [] }],
+                              [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                              [{ 'font': [] }],
+                              [{ 'align': [] }],
 
-                  ['clean']                                         // remove formatting button
-                ];
+                              ['clean']                                         // remove formatting button
+                            ];
 
-                const quillEditor =  new Quill(divEditor, {
-                    theme: 'snow',
-                    modules: {
-                        toolbar: toolbarOptions
-                    }
-                });
+                            const quillEditor =  new Quill(divEditor, {
+                                theme: 'snow',
+                                modules: {
+                                    toolbar: toolbarOptions
+                                }
+                            });
 
-                quillEditor.on('text-change', function() {
-                    elEditor.value = quillEditor.root.innerHTML;
-                });
-            });
+                            quillEditor.on('text-change', function() {
+                                elEditor.value = quillEditor.root.innerHTML;
+                            });
+                        }
+                    );
+                }
+            );
 
             break;
 
