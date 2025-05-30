@@ -165,6 +165,7 @@ class Jaws
         $this->define('', 'relDataURL', $this->getDataURL('', true));
         $this->define('', 'absDataURL', $this->getDataURL('', false));
         $this->define('', 'requestedURL', Jaws_Utils::getRequestURL());
+        $this->define('', 'gzip', $this->GZipEnabled());
 
         // FileSystem management
         $this->fileManagement = Jaws_FileManagement::getInstance(

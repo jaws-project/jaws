@@ -674,7 +674,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         // url
         options.url  = baseScript + '?reqGadget=' + gadget + '&reqAction=' + action;
         if (!callOptions.hasOwnProperty('restype')) {
-            callOptions.restype = 'json';
+            callOptions.restype = Jaws.defines.gzip? 'gzjson' : 'json';
         }
         options.url+= '&restype=' + callOptions.restype;
 
@@ -683,7 +683,10 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         options.timeout = 10 * 60 * 1000; /* 10 minutes */
         options.callOptions = callOptions;
         // prevent auto redirect, we handle it manually if required
-        options.headers = {'Auto-Redirects': '0'}
+        options.headers = {
+            'Auto-Redirects': '0',
+            'Accept-Encoding': 'gzip, deflate'
+        };
 
         options.xhr = function() {
             let xhr = $.ajaxSettings.xhr();
@@ -691,6 +694,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
                 case 'json':
                 case 'text':
                 case 'print':
+                case 'gzjson':
                     xhr.responseType = '';
                     options.dataType = 'text';
                     break;
@@ -798,7 +802,7 @@ function JawsAjax(gadget, callbackFunctions, callbackObject, defaultOptions)
         this.callbackObject.gadget.loading.hide(reqOptions.callOptions.loading_container);
 
         let response = jqXHR.responseText;
-        if (reqOptions.callOptions.restype == 'json') {
+        if (['json', 'gzjson'].includes(reqOptions.callOptions.restype)) {
             // temporary fix json parse big numbers
             response = eval('(' + response.replace (/:(\d{15,})([,\}])/g, ':"$1"$2') + ')');
         }
