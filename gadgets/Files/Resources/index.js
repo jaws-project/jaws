@@ -190,11 +190,14 @@ function Jaws_Gadget_Files() { return {
                         fReader.onload = $.proxy(async function (event) {
                             $item.find('[data-type="image"]').attr('src', event.target.result);
                         }, this.gadget);
+
                         // resize the image
-                        file = await this.resizeImage(file, {
-                            'type': file.type,
-                            'dimension': dimension
-                        });
+                        if (!['image/svg'].some(keyword => file.type.includes(keyword))) {
+                            file = await this.resizeImage(file, {
+                                'type': file.type,
+                                'dimension': dimension
+                            });
+                        }
 
                         $item.find('[data-type="size"]').html(Jaws.filters.apply(['formatNumber:filesize'], file.size));
                         fReader.readAsDataURL(file);
