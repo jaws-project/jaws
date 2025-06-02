@@ -52,6 +52,10 @@ class Jaws_Payment
             return Jaws_Error::raiseError("[$payDriver]: Loading payment driver failed.", __CLASS__);
         }
 
+        if (!empty($options['callback']) && false !== $urlParts = parse_url($callback)) {
+            $callback = str_replace($urlParts['host'], $options['callback'], $callback);
+        }
+
         include_once $payDriverFile;
         $className = 'Jaws_Payment_' . $payDriver;
         $obj = new $className($options, $callback);
