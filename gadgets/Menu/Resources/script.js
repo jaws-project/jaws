@@ -134,6 +134,7 @@ function saveMenus()
                     $('#variables').val(),
                     $('#options').val(),
                     $('#symbol').val(),
+                    $('#mega').val(),
                     $('#target').val(),
                     $('#order').val(),
                     $('#status').val(),
@@ -160,6 +161,7 @@ function saveMenus()
                     $('#variables').val(),
                     $('#options').val(),
                     $('#symbol').val(),
+                    $('#mega').val(),
                     $('#target').val(),
                     $('#order').val(),
                     $('#status').val(),
@@ -371,6 +373,7 @@ function editMenu(mid)
     $('#variables').val(menuInfo['variables']);
     $('#options').val(menuInfo['options']);
     $('#symbol').val(menuInfo['symbol']);
+    $('#mega').val(menuInfo['mega']? 1 : 0);
     $('#target').val(menuInfo['target']);
     $('#permission').val(menuInfo['permission']);
     setOrderCombo($('#gid').val(), $('#pid').val());

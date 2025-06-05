@@ -190,7 +190,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($mid, $pid, $gid, $gadget, $permission, $title, $url, $variables, $options, $symbol, $target,
+        @list($mid, $pid, $gid, $gadget, $permission, $title, $url, $variables, $options, $symbol, $mega, $target,
             $order, $status, $image
         ) = $this->gadget->request->fetchAll('post');
 
@@ -222,6 +222,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             'variables'  => $variables,
             'options'    => $options,
             'symbol'     => $symbol,
+            'mega'       => $mega,
             'target'     => $target,
             'order'      => $order, 
             'status'     => (int)$status,

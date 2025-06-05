@@ -282,6 +282,15 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
         $symbolEntry->SetStyle('direction: ltr;width: 256px;');
         $tpl->SetVariable('symbol', $symbolEntry->Get());
 
+        $tpl->SetVariable('lbl_mega', Jaws::t('MEGA'));
+        $mega =& Piwi::CreateWidget('Combo', 'mega');
+        $mega->SetID('mega');
+        $mega->SetStyle('width: 128px;');
+        $mega->AddOption(Jaws::t('NO'),  0);
+        $mega->AddOption(Jaws::t('YES'), 1);
+        $mega->SetDefault(0);
+        $tpl->SetVariable('mega', $mega->Get());
+
         $target =& Piwi::CreateWidget('Combo', 'target');
         $target->SetID('target');
         $target->setStyle('width: 128px;');

@@ -16,7 +16,7 @@ class Menu_Info extends Jaws_Gadget
      * @var     string
      * @access  private
      */
-    var $version = '2.0.0';
+    var $version = '2.1.0';
 
     /**
      * Default front-end action name

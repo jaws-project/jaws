@@ -84,13 +84,6 @@
         </field>
 
         <field>
-            <name>mega</name>
-            <type>integer</type>
-            <length>1</length>
-            <default>0</default>
-        </field>
-
-        <field>
             <name>status</name>
             <type>integer</type>
             <default>1</default>
