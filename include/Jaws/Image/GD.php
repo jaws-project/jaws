@@ -42,6 +42,9 @@ class Jaws_Image_GD extends Jaws_Image
         if ($types & IMG_WEBP) {
             $this->_supported_image_types['webp'] = 'rw';
         }
+        if ($types & IMG_AVIF) {
+            $this->_supported_image_types['avif'] = 'rw';
+        }
         if ($types & IMG_XPM) {
             $this->_supported_image_types['xpm'] = 'r';
         }

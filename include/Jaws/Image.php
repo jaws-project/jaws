@@ -88,6 +88,7 @@ class Jaws_Image
         16 => 'xbm',
         17 => 'ico',
         18 => 'webp',
+        19 => 'avif',
     );
  
     /**
