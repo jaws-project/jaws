@@ -192,7 +192,7 @@ function Jaws_Gadget_Files() { return {
                         }, this.gadget);
 
                         // resize the image
-                        if (!['image/svg'].some(keyword => file.type.includes(keyword))) {
+                        if (dimension && !['image/svg'].some(keyword => file.type.includes(keyword))) {
                             file = await this.resizeImage(file, {
                                 'type': file.type,
                                 'dimension': dimension
