@@ -120,7 +120,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertMenu()
     {
         $this->gadget->CheckPermission('ManageMenus');
-        @list($pid, $gid, $gadget, $permission, $title, $url, $variables, $options, $symbol, $target,
+        @list($pid, $gid, $gadget, $permission, $title, $url, $variables, $options, $symbol, $mega, $target,
             $order, $status, $image
         ) = $this->gadget->request->fetchAll('post');
 
@@ -152,6 +152,7 @@ class Menu_Actions_Admin_Ajax extends Jaws_Gadget_Action
             'variables'  => $variables,
             'options'    => $options,
             'symbol'     => $symbol,
+            'mega'       => $mega,
             'target'     => $target,
             'order'      => $order, 
             'status'     => (int)$status,
