@@ -170,13 +170,13 @@ class Jaws_Translate
                 break;
 
             default:
-                return $string;
+                return "$module.$string";
         }
 
         // autoload not loaded module language
         if (!isset($this->translates[$lang][$type][$module])) {
             if (!$this->LoadTranslation($module, $type, $lang)) {
-                return $string;
+                return "$module.$string";
             }
         }
 
