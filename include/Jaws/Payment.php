@@ -58,6 +58,7 @@ class Jaws_Payment
 
         include_once $payDriverFile;
         $className = 'Jaws_Payment_' . $payDriver;
+
         $obj = new $className($options, $callback);
         return $obj;
     }
