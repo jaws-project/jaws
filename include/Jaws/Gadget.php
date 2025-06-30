@@ -765,6 +765,7 @@ class Jaws_Gadget
                 break;
 
             case 'title':
+            case 'image':
             case 'description':
                 return $this::t($property);
                 break;
