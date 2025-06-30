@@ -70,6 +70,7 @@ class Jaws_Gadget_Actions_SocialMedia extends Jaws_Gadget_Class
             $options
         );
         $assigns = array_map('rawurlencode', $options);
+        $assigns['url'] = $options['url'];
 
         return $assigns;
     }
