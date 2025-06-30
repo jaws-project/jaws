@@ -353,6 +353,22 @@ class Jaws_Layout
     }
 
     /**
+     * Assign the right page's image
+     *
+     * @access  public
+     */
+    function PutImage()
+    {
+        if (!empty($this->app->mainAction)) {
+            $pageImage = $this->app->mainAction->getAttribute($this->app->mainRequest['action'], 'image');
+        }
+        if (empty($pageImage)) {
+            $pageImage = $this->attributes['site_favicon'];
+        }
+        $this->_Template->ResetVariable('site-image', $pageImage, 'layout');
+    }
+
+    /**
      * Add keywords to meta keywords tag
      *
      * @access  public
@@ -703,6 +719,7 @@ class Jaws_Layout
             }
             $this->PutTitle();
             $this->PutDescription();
+            $this->PutImage();
             $this->PutMetaKeywords();
             $this->PutMetaLanguages();
         }
