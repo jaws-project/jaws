@@ -255,10 +255,13 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
      */
     public static function metaURL($string)
     {
-        return preg_replace(
-            array('#[^\p{L}[:digit:]_\.\-\s]#u', '#[\s_\-]#u', '#\-\+#u'),
-            array('', '-', '-'),
-            Jaws_UTF8::strtolower($string)
+        return Jaws_UTF8::trim(
+            preg_replace(
+                array('#[^\p{L}[:digit:]_\.\-\s\x{200C}]#u', '#[\s_\-\x{200C}]#u', '#\-\+#u'),
+                array('', '-', '-'),
+                Jaws_UTF8::strtolower($string)
+            ),
+            '-'
         );
     }
 
