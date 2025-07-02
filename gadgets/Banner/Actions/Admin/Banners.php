@@ -324,7 +324,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $res = Jaws_FileManagement_File::uploadFiles(
             $_FILES,
             ROOT_DATA_PATH . $this->gadget->DataDirectory,
-            'jpg,gif,swf,png,jpeg,bmp,svg',
+            'jpg,gif,swf,png,jpeg,bmp,svg,webp',
             false
         );
         if (Jaws_Error::IsError($res)) {
