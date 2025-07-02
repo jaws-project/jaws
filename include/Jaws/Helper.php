@@ -159,6 +159,20 @@ if (!function_exists('strristr')) {
 }
 
 /**
+ * URL encode only special ascii characters, avoiding encoding of Unicode/UTF-8 characters
+ *
+ * @param   string  $string     The URL to be encoded
+ * @return  string  Returns a string in which "unreserved" set defined by RFC 3986
+ *                  have been replaced with a percent(%) sign followed by two hex digits.
+ */
+function ascii_rawurlencode($string) {
+    return preg_replace_callback('/[^A-Za-z0-9\-_.~:\/\?#\[\]@!$&\'()*+,;=\p{L}\p{N}]/u', 
+        function($matches) {
+            return rawurlencode($matches[0]);
+        }, $string);
+}
+
+/**
  * Remove a portion of the array and replace it with something else
  *
  * @param   array   $array

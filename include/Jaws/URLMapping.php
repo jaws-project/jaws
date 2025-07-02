@@ -410,7 +410,7 @@ class Jaws_URLMapping
         if (is_array($params)) {
             //params should be in pairs
             foreach ($params as $key => $value) {
-                $value = implode('/', array_map('rawurlencode', explode('/', $value)));
+                $value = ascii_rawurlencode($value);
                 $url.= '&' . $key . '=' . $value;
             }
         }
@@ -458,9 +458,7 @@ class Jaws_URLMapping
                 if (!is_null($value)) {
                     $values = is_array($value)? $value : [$value];
                     foreach ($values as $idx => $val) {
-                        $values[$idx] = implode('/', array_map('rawurlencode', explode('/', $val)));
-                        // prevent encode comma
-                        $values[$idx] = str_replace('%2C', ',', $values[$idx]);
+                        $values[$idx] = ascii_rawurlencode($val);
                     }
                     $value = implode(',', $values);
                     if (strpos($url, '{' . $key . '}') !== false) {
