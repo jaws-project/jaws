@@ -181,6 +181,8 @@ class Jaws_XTemplate_Filters_Special extends Jaws_XTemplate_Filters
             $globalVariables['.dir']     = Jaws::t('LANG_DIRECTION') == 'rtl'? '.rtl' : '';
             $globalVariables['site_url'] = Jaws_Utils::getBaseURL('/', false);
             $globalVariables['base_url'] = Jaws_Utils::getBaseURL('/');
+            $globalVariables['rel_base_url'] = Jaws_Utils::getBaseURL('/');
+            $globalVariables['abs_base_url'] = Jaws_Utils::getBaseURL('/', false);
             $globalVariables['requested_url'] = Jaws_Utils::getRequestURL();
             $globalVariables['base_script']   = BASE_SCRIPT;
             $globalVariables['data_url']    = $thisApp->getDataURL();

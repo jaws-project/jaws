@@ -90,7 +90,9 @@ class Jaws_Template
 
         $this->globalVariables['dir'] = Jaws::t('LANG_DIRECTION') == 'rtl'? 'rtl' : 'ltr';
         $this->globalVariables['.dir'] = Jaws::t('LANG_DIRECTION') == 'rtl'? '.rtl' : '';
-        $this->globalVariables['base_url']      = Jaws_Utils::getBaseURL('/');
+        $this->globalVariables['base_url'] = Jaws_Utils::getBaseURL('/');
+        $this->globalVariables['rel_base_url'] = Jaws_Utils::getBaseURL('/');
+        $this->globalVariables['abs_base_url'] = Jaws_Utils::getBaseURL('/', false);
         $this->globalVariables['requested_url'] = Jaws_Utils::getRequestURL();
         $this->globalVariables['base_script']   = BASE_SCRIPT;
 
@@ -334,6 +336,8 @@ class Jaws_Template
                     case '.browser':
                     case 'theme_url':
                     case 'base_url':
+                    case 'rel_base_url':
+                    case 'abs_base_url':
                     case 'data_url':
                     case 'main_index':
                     case 'base_script':
