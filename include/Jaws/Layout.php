@@ -349,7 +349,7 @@ class Jaws_Layout
         } else {
             $pageDescription = $this->app->mainAction->getAttribute($this->app->mainRequest['action'], 'description');
         }
-        $this->_Template->ResetVariable('site-description', $pageDescription, 'layout');
+        $this->_Template->ResetVariable('site-description', strip_tags((string)$pageDescription), 'layout');
     }
 
     /**
