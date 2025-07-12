@@ -68,6 +68,15 @@ class Entry extends Bin
     var $_autocomplete = '';
 
     /**
+     * HTML element attributes
+     *
+     * @var      array $_attributes
+     * @access   private
+     * @see      setAttribute()
+     */
+    var $_attributes = [];
+
+    /**
      *
      * @var    string $_validate
      * @access private
@@ -170,6 +179,18 @@ class Entry extends Bin
     }
 
     /**
+     * Set the element attribute value
+     *
+     * @param   string $attr    attribute name
+     * @param   string $value   attribute value
+     * @access  public
+     */
+    function setAttribute($attr, $value)
+    {
+        $this->_attributes[$attr] = $value;
+    }
+
+    /**
      * Build the piwiXML data.
      *
      * @access    public
@@ -248,6 +269,11 @@ class Entry extends Bin
 
         if (!empty($this->_autocomplete)) {
         $this->_XHTML .= " autocomplete='{$this->_autocomplete}'";
+        }
+
+        // set extra attributees
+        foreach ($this->_attributes as $attr => $value) {
+            $this->_XHTML .= " {$attr}='{$value}'";
         }
 
         $this->_XHTML .= $this->buildBasicXHTML();
