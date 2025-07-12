@@ -257,7 +257,7 @@ class Jaws_XTemplate_Filters_Default extends Jaws_XTemplate_Filters
     {
         return Jaws_UTF8::trim(
             preg_replace(
-                array('#[^\p{L}[:digit:]_\.\-\s\x{200C}]#u', '#[\s_\-\x{200C}]#u', '#\-\+#u'),
+                array('#[^\p{L}[:digit:]_\.\-\s\x{200C}]#u', '#[\s_\-\x{200C}]#u', '#[\-|\+]+#u'),
                 array('', '-', '-'),
                 Jaws_UTF8::strtolower($string)
             ),
