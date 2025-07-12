@@ -170,17 +170,18 @@ class Jaws_UTF8
      * Case-insensitive strstr
      * @see http://www.php.net/stristr
      */
-    static function stristr($str, $search)
+    static function stristr($str, $needle, $before_needle = false)
     {
-        if (strlen($search) == 0) {
-            return $str;
+        if (strlen($needle) == 0) {
+            return $needle;
         }
-        $lstr = Jaws_UTF8::strtolower($str);
-        $lsearch = Jaws_UTF8::strtolower($search);
-        preg_match('/^(.*)'.preg_quote($lsearch, '/').'/Us',$lstr, $matches);
-        if (count($matches) == 2) {
-            return substr($str, strlen($matches[1]));
+
+        $needle = Jaws_UTF8::strtolower($needle); // case insensitive 
+        $escaped = preg_quote($needle, '/');
+        if (preg_match("/^([^$escaped]*)([$escaped].*)$/Us", $str, $matches)) {
+            return $before_needle? $matches[1] : $matches[2];
         }
+
         return false;
     }
 
