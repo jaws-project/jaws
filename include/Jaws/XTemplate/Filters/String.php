@@ -107,9 +107,9 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      *
      * @return string
      */
-    public static function lstrip($input)
+    public static function lstrip($input, $characters = " \n\r\t\v\x00")
     {
-        return ltrim($input);
+        return ltrim($input, $characters);
     }
 
     /**
@@ -231,13 +231,27 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Find the first occurrence of a string
+     *
+     * @param   string  $input
+     * @param   string  $needle     The string to search for
+     * @param   bool    $before_needle
+     *
+     * @return false|string Returns the portion of string, or false if needleis not found
+     */
+    public static function strstr($input, $needle, $before_needle = false)
+    {
+        return Jaws_UTF8::stristr($input, $needle, $before_needle);
+    }
+
+    /**
      * @param string $input
      *
      * @return string
      */
-    public static function rstrip($input)
+    public static function rstrip($input, $characters = " \n\r\t\v\x00")
     {
-        return rtrim($input);
+        return rtrim($input, $characters);
     }
 
     /**
@@ -307,9 +321,9 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      *
      * @return string
      */
-    public static function strip($input)
+    public static function strip($input, $characters = " \n\r\t\v\x00")
     {
-        return trim($input);
+        return trim($input, $characters);
     }
 
     /**
