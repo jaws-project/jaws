@@ -474,8 +474,8 @@ class Jaws
             $url = ROOT_DATA_PATH_URL;
         }
 
-        $suffix = is_bool($suffix)? array() : explode('/', $suffix);
-        $suffix = implode('/', array_map('rawurlencode', $suffix));
+        //$suffix = is_bool($suffix)? array() : explode('/', $suffix);
+        //$suffix = implode('/', array_map('rawurlencode', $suffix));
         return $url . $suffix;
     }
 
@@ -500,8 +500,8 @@ class Jaws
             $url = JAWS_THEMES_URL;
         }
 
-        $suffix = is_bool($suffix)? array() : explode('/', $suffix);
-        $suffix = implode('/', array_map('rawurlencode', $suffix));
+        //$suffix = is_bool($suffix)? array() : explode('/', $suffix);
+        //$suffix = implode('/', array_map('rawurlencode', $suffix));
         return $url . $suffix;
     }
 
