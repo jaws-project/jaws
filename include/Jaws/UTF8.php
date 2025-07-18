@@ -545,10 +545,10 @@ class Jaws_UTF8
     static function ltrim($str, $charlist='')
     {
         if($charlist == '') {
-            return ltrim($str);
+            return ltrim((string)$str);
         }
         $charlist = preg_replace('!([\\\\\\-\\]\\[/])!','\\\${1}',$charlist);
-        return preg_replace('/^['.$charlist.']+/u','',$str);
+        return preg_replace('/^['.$charlist.']+/u','', (string)$str);
     }
  
     /**
@@ -558,10 +558,10 @@ class Jaws_UTF8
     static function rtrim($str, $charlist='')
     {
         if($charlist == '') {
-            return rtrim($str);
+            return rtrim((string)$str);
         }
         $charlist = preg_replace('!([\\\\\\-\\]\\[/])!','\\\${1}',$charlist);
-        return preg_replace('/['.$charlist.']+$/u','',$str);
+        return preg_replace('/['.$charlist.']+$/u','', (string)$str);
     }
  
     /**
@@ -571,7 +571,7 @@ class Jaws_UTF8
     static function trim($str, $charlist='')
     {
         if($charlist == '') {
-            return trim($str);
+            return trim((string)$str);
         }
         return Jaws_UTF8::ltrim(Jaws_UTF8::rtrim($str));
     }
