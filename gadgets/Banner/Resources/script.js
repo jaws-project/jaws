@@ -135,12 +135,6 @@ function makeBigBannerEntry()
     $('#banner').css('height', height + 'px');
 }
 
-function setTemplate(template)
-{
-    $('#template').val(template);
-    $('#template').focus();
-}
-
 function changeThroughUpload(checked) {
     if (checked) {
         $('#banner').css('display', 'none');
@@ -197,7 +191,6 @@ function submit_banner()
 function saveBanner()
 {
     if (!$('#title').val() ||
-        !$('#template').val() ||
         $('#gid').val() == 0)
     {
         alert(Jaws.gadgets.Banner.defines.incompleteBannerFields);
@@ -217,7 +210,6 @@ function saveBanner()
                     $('#url').val(),
                     $('#gid').val(),
                     $('#banner').val(),
-                    $('#template').val(),
                     $('#views_limit').val(),
                     $('#clicks_limit').val(),
                     $('#datepicker_start_time_input').val(),
@@ -235,7 +227,6 @@ function saveBanner()
                     $('#url').val(),
                     $('#gid').val(),
                     $('#banner').val(),
-                    $('#template').val(),
                     $('#views_limit').val(),
                     $('#clicks_limit').val(),
                     $('#datepicker_start_time_input').val(),
@@ -377,9 +368,6 @@ function editBanner(element, bid)
     $('#gid').val(banner['gid']);
     document.getElementsByName('through_upload[]').item(0).checked = false;
     $('#banner').val(banner['banner'].defilter());
-    defaultTemplate = banner['template'];
-    $('#template').val(defaultTemplate);
-    defaultTemplate = banner['template'];
     $('#views_limit').val(banner['views_limitation']);
     $('#clicks_limit').val(banner['clicks_limitation']);
     if (banner['start_time'] == null) banner['start_time'] = '';
@@ -503,13 +491,11 @@ function stopAction()
     switch(currentAction) {
     case 'Banners':
         $('#legend_title').html(Jaws.gadgets.Banner.defines.addBanner_title);
-        defaultTemplate = '';
         $('#bid').val(0);
         $('#title').val('');
         $('#url').val('http://');
         $('#banner').val('');
         $('#upload_banner').val('');
-        $('#template').val('');
         $('#views_limit').val('');
         $('#clicks_limit').val('');
         $('#datepicker_start_time_input').val('');
@@ -618,5 +604,3 @@ var currentAction = null;
 //Which row selected in DataGrid
 var selectedRow = null;
 var selectedRowColor = null;
-
-var defaultTemplate        = "";

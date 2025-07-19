@@ -111,10 +111,9 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function InsertBanner()
     {
         $this->gadget->CheckPermission('ManageBanners');
-        @list($domain, $title, $url, $gid, $banner, $template, $views_limit,
+        @list($domain, $title, $url, $gid, $banner, $views_limit,
             $clicks_limit, $start_time, $stop_time, $random, $published
         ) = $this->gadget->request->fetchAll('post');
-        $template = $this->gadget->request->fetch(5, 'post', false, array('filters' => 'strip_crlf'));
         if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
             $domain = 0;
         }
@@ -123,7 +122,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $url = Jaws_XSS::filterURL($url);
 
         $model = $this->gadget->model->loadAdmin('Banners');
-        $model->InsertBanner($domain, $title, $url, $gid, $banner, $template, $views_limit,
+        $model->InsertBanner($domain, $title, $url, $gid, $banner, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
 
         return $this->gadget->session->pop();
@@ -138,10 +137,9 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
     function UpdateBanner()
     {
         $this->gadget->CheckPermission('ManageBanners');
-        @list($bid, $domain, $title, $url, $gid, $banner, $template, $views_limit,
+        @list($bid, $domain, $title, $url, $gid, $banner, $views_limit,
             $clicks_limit, $start_time, $stop_time, $random, $published
         ) = $this->gadget->request->fetchAll('post');
-        $template = $this->gadget->request->fetch(6, 'post', false, array('filters' => 'strip_crlf'));
         if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
             $domain = 0;
         }
@@ -150,7 +148,7 @@ class Banner_Actions_Admin_Ajax extends Jaws_Gadget_Action
         $url = Jaws_XSS::filterURL($url);
 
         $model = $this->gadget->model->loadAdmin('Banners');
-        $model->UpdateBanner($bid, $domain, $title, $url, $gid, $banner, $template, $views_limit,
+        $model->UpdateBanner($bid, $domain, $title, $url, $gid, $banner, $views_limit,
                                     $clicks_limit, $start_time, $stop_time, $random, $published);
 
         return $this->gadget->session->pop();

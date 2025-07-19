@@ -19,7 +19,7 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
     {
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         $bannersTable->select(
-            'id:integer', 'domain:integer', 'title', 'url', 'gid:integer', 'banner', 'template', 'views:integer',
+            'id:integer', 'domain:integer', 'title', 'url', 'gid:integer', 'banner', 'views:integer',
             'views_limitation:integer', 'clicks:integer', 'clicks_limitation:integer', 'start_time',
             'stop_time', 'rank:integer', 'random:integer', 'published:boolean'
         );
@@ -43,7 +43,7 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
     {
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
         if (empty($columns)) {
-            $columns = array('id:integer', 'domain:integer', 'title', 'url', 'gid:integer', 'banner', 'template', 'views:integer',
+            $columns = array('id:integer', 'domain:integer', 'title', 'url', 'gid:integer', 'banner', 'views:integer',
                 'views_limitation:integer', 'clicks:integer', 'clicks_limitation:integer', 'start_time',
                 'stop_time', 'createtime', 'updatetime', 'random:integer', 'published:boolean');
         }
@@ -81,7 +81,7 @@ class Banner_Model_Banners extends Jaws_Gadget_Model
     function GetEnableBanners($gid = 0, $domain = -1, $random = 0)
     {
         $bannersTable = Jaws_ORM::getInstance()->table('banners');
-        $bannersTable->select('id:integer', 'domain:integer', 'title', 'url', 'banner', 'template');
+        $bannersTable->select('id:integer', 'domain:integer', 'title', 'url', 'banner');
 
         $bannersTable->where('published', true)->and()->where('random', $random)->and();
         $bannersTable->openWhere('views_limitation', 0)->or();

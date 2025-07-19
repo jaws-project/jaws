@@ -16,7 +16,6 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
      * @param    string  $url          banner url
      * @param    int     $gid          group ID
      * @param    string  $banner
-     * @param    string  $template
      * @param    int     $views_limit
      * @param    int     $clicks_limit
      * @param    long    $start_time
@@ -25,7 +24,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
      * @param    bool    $published
      * @return   bool    True on Success, False on Failure
      */
-    function InsertBanner($domain, $title, $url, $gid, $banner, $template, $views_limit,
+    function InsertBanner($domain, $title, $url, $gid, $banner, $views_limit,
                           $clicks_limit, $start_time, $stop_time, $random, $published)
     {
         $date = Jaws_Date::getInstance();
@@ -34,7 +33,6 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $bData['url']               = $url;
         $bData['gid']               = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
         $bData['banner']            = $banner;
-        $bData['template']          = $template;
         $bData['views']             = 0;
         $bData['views_limitation']  = ((empty($views_limit)  || !is_numeric($views_limit)) ? 0: $views_limit);
         $bData['clicks']            = 0;
@@ -77,7 +75,6 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
      * @param    string  $url
      * @param    int     $gid         group ID
      * @param    string  $banner
-     * @param    string  $template
      * @param    int     $views_limit
      * @param    int     $clicks_limit
      * @param    string  $start_time
@@ -86,7 +83,7 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
      * @param    bool    $published
      * @return   bool    True on Success, False on Failure
      */
-    function UpdateBanner($bid, $domain, $title, $url, $gid, $banner, $template, $views_limit,
+    function UpdateBanner($bid, $domain, $title, $url, $gid, $banner, $views_limit,
                           $clicks_limit, $start_time, $stop_time, $random, $published)
     {
         $date = Jaws_Date::getInstance();
@@ -95,7 +92,6 @@ class Banner_Model_Admin_Banners extends Jaws_Gadget_Model
         $bData['url']               = $url;
         $bData['gid']               = ((empty($gid) || !is_numeric($gid)) ? 0: $gid);
         $bData['banner']            = $banner;
-        $bData['template']          = $template;
         $bData['views_limitation']  = ((empty($views_limit)  || !is_numeric($views_limit)) ? 0: $views_limit);
         $bData['clicks_limitation'] = ((empty($clicks_limit) || !is_numeric($clicks_limit))? 0: $clicks_limit);
 

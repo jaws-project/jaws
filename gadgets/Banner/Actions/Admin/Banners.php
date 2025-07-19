@@ -100,10 +100,6 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $this->gadget->define('addBanner_title',        $this::t('BANNERS_ADD'));
         $this->gadget->define('editBanner_title',       $this::t('BANNERS_EDIT'));
 
-        $this->gadget->define('textTemplate',  $text_banner);
-        $this->gadget->define('imageTemplate', $image_banner);
-        $this->gadget->define('flashTemplate', $flash_banner);
-
         $tpl->ParseBlock('Banners');
         return $tpl->Get();
     }
@@ -169,31 +165,6 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $upload_bannerEntry->setAttribute('multiple', 'multiple');
         $upload_bannerEntry->SetStyle('width: 256px; display: none;');
         $tpl->SetVariable('upload_banner', $upload_bannerEntry->Get());
-
-        $template =& Piwi::CreateWidget('TextArea', 'template', '');
-        $template->SetID('template');
-        $template->SetRows(6);
-        $tpl->SetVariable('lbl_template', $this::t('BANNERS_TEMPLATE'));
-        $tpl->SetVariable('template', $template->Get());
-
-        $btnText =& Piwi::CreateWidget('Button','btn_text', '', 'gadgets/Banner/Resources/images/text.png');
-        $btnText->SetTitle($this::t('BANNERS_BANNERTYPE_TEXT'));
-        $btnText->AddEvent(ON_CLICK, 'javascript:setTemplate(Jaws.gadgets.Banner.defines.textTemplate);');
-        $tpl->SetVariable('btn_text', $btnText->Get());
-
-        $btnImage =& Piwi::CreateWidget('Button','btn_image', '', 'gadgets/Banner/Resources/images/image.png');
-        $btnImage->SetTitle($this::t('BANNERS_BANNERTYPE_IMAGE'));
-        $btnImage->AddEvent(ON_CLICK, 'javascript:setTemplate(Jaws.gadgets.Banner.defines.imageTemplate);');
-        $tpl->SetVariable('btn_image', $btnImage->Get());
-
-        $btnFlash =& Piwi::CreateWidget('Button','btn_flash', '', 'gadgets/Banner/Resources/images/flash.png');
-        $btnFlash->SetTitle($this::t('BANNERS_BANNERTYPE_FLASH'));
-        $btnFlash->AddEvent(ON_CLICK, 'javascript:setTemplate(Jaws.gadgets.Banner.defines.flashTemplate);');
-        $tpl->SetVariable('btn_flash', $btnFlash->Get());
-
-        $btnReset =& Piwi::CreateWidget('Button','btn_reset', '', STOCK_UNDO);
-        $btnReset->AddEvent(ON_CLICK, 'javascript:setTemplate(defaultTemplate);');
-        $tpl->SetVariable('btn_reset', $btnReset->Get());
 
         $tpl->SetVariable('lbl_limits', $this::t('BANNERS_LIMITATIONS'));
         $viewsLimitEntry =& Piwi::CreateWidget('Entry', 'views_limit', '');
@@ -319,7 +290,6 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
                 'stop_time', 'random', 'published'
             ), 'post'
         );
-        $post['template'] = $this->gadget->request->fetch('template', 'post', false, array('filters' => 'strip_crlf'));
 
         $model = $this->gadget->model->loadAdmin('Banners');
         $res = Jaws_FileManagement_File::uploadFiles(
@@ -344,7 +314,6 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
                     $post['url'],
                     $post['gid'],
                     $filenames,
-                    $post['template'],
                     $post['views_limit'],
                     $post['clicks_limit'],
                     $post['start_time'],
@@ -358,7 +327,6 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
                     $post['url'],
                     $post['gid'],
                     $filenames,
-                    $post['template'],
                     $post['views_limit'],
                     $post['clicks_limit'],
                     $post['start_time'],
