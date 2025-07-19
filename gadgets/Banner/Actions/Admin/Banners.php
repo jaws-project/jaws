@@ -159,13 +159,14 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $check_upload->AddOption($this::t('BANNERS_THROUGH_UPLOADING'), '0');
         $tpl->SetVariable('th_upload', $check_upload->Get());
 
-        $bannerEntry =& Piwi::CreateWidget('Entry', 'banner', '');
+        $bannerEntry =& Piwi::CreateWidget('TextArea', 'banner', '');
         $bannerEntry->SetID('banner');
         $tpl->SetVariable('lbl_banner', $this::t('BANNERS_BANNER'));
         $tpl->SetVariable('banner', $bannerEntry->Get());
 
-        $upload_bannerEntry =& Piwi::CreateWidget('FileEntry', 'upload_banner', '');
+        $upload_bannerEntry =& Piwi::CreateWidget('FileEntry', 'upload_banner[]', '');
         $upload_bannerEntry->SetID('upload_banner');
+        $upload_bannerEntry->setAttribute('multiple', 'multiple');
         $upload_bannerEntry->SetStyle('width: 256px; display: none;');
         $tpl->SetVariable('upload_banner', $upload_bannerEntry->Get());
 
@@ -335,14 +336,14 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
             if ($this->gadget->registry->fetch('multi_domain', 'Users') != 'true') {
                 $post['domain'] = 0;
             }
-            $filename = $res['upload_banner'][0]['host_filename'];
+            $filenames = implode("\n", array_column($res['upload_banner'], 'host_filename'));
             if ($post['bid']!=0) {
                 $model->UpdateBanner($post['bid'],
                     $post['domain'],
                     $post['title'],
                     $post['url'],
                     $post['gid'],
-                    $filename,
+                    $filenames,
                     $post['template'],
                     $post['views_limit'],
                     $post['clicks_limit'],
@@ -356,7 +357,7 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
                     $post['title'],
                     $post['url'],
                     $post['gid'],
-                    $filename,
+                    $filenames,
                     $post['template'],
                     $post['views_limit'],
                     $post['clicks_limit'],

@@ -20,11 +20,26 @@
       <div class="carousel-inner">
         {%-for banner in banners %}
           <div class="carousel-item {%- if forloop.first %} active{%- endif %}">
-            {%- if banner.banner | contains: '://' %}
-              <img src="{{banner.banner}}" class="d-block w-100" alt="{{banner.title}}">
-            {%- else %}
-              <img src="{{banner.banner | prepend: 'banners/' | dataURL}}" class="d-block w-100" alt="{{banner.title}}">
-            {%- endif %}
+            <picture>
+              {%- assign chr10 = 10 | chr %}
+              {%- assign files = banner.banner | split: chr10 %}
+              {%- assign srcFallback = '' %}
+
+              {%- for file in files %}
+                {%- assign src = file | strstr: ' ', true | default: file %}
+                {%- assign media = file | strstr: ' ', false | strip %}
+
+                {%- if src | contains: '://' | false -%}
+                  {%- assign src = src | prepend: 'banners/' | dataURL %}
+                {%- endif -%}
+
+                {%- if forloop.first %}
+                  {%- assign srcFallback = src %}
+                {%- endif %}
+                <source srcset="{{ src }}" {{- media | formatString: ' media="{0}"', media }} />
+              {%- endfor %}
+              <img src="{{ srcFallback }}" class="d-block w-100" alt="{{ banner.title }}" />
+            </picture>
             <div class="carousel-caption d-none d-md-block">
               <h5><a {{- banner.url | formatString: ' href="{0}"', banner.url }}>{{banner.title}}</a></h5>
             </div>
