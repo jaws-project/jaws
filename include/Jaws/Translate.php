@@ -189,7 +189,7 @@ class Jaws_Translate
         }
 
         foreach ($params as $key => $value) {
-            $string = str_replace('{' . $key . '}', $value, $string);
+            $string = str_replace('{' . $key . '}', (string)$value, $string);
         }
 
         if (strpos($string, '{') !== false) {
