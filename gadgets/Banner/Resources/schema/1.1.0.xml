@@ -47,6 +47,12 @@
             </field>
 
             <field>
+                <name>template</name>
+                <type>text</type>
+                <notnull>false</notnull>
+            </field>
+
+            <field>
                 <name>views</name>
                 <type>integer</type>
                 <default>0</default>
