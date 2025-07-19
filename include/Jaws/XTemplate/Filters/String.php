@@ -103,16 +103,6 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
     }
 
     /**
-     * @param string $input
-     *
-     * @return string
-     */
-    public static function lstrip($input, $characters = " \n\r\t\v\x00")
-    {
-        return ltrim($input, $characters);
-    }
-
-    /**
      * Replace each newline (\n) with html break
      *
      * @param string $input
@@ -245,16 +235,6 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
     }
 
     /**
-     * @param string $input
-     *
-     * @return string
-     */
-    public static function rstrip($input, $characters = " \n\r\t\v\x00")
-    {
-        return rtrim($input, $characters);
-    }
-
-    /**
      * @param array|\Iterator|string $input
      * @param int $offset
      * @param int $length
@@ -321,9 +301,41 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      *
      * @return string
      */
-    public static function strip($input, $characters = " \n\r\t\v\x00")
+    public static function lstrip($input, $characters = null)
     {
-        return trim($input, $characters);
+        if (!is_string($input)) {
+            return $input;
+        }
+
+        return is_null($characters)? ltrim($input) : Jaws_UTF8::ltrim($input, $characters);
+    }
+
+    /**
+     * @param string $input
+     *
+     * @return string
+     */
+    public static function rstrip($input, $characters = null)
+    {
+        if (!is_string($input)) {
+            return $input;
+        }
+
+        return is_null($characters)? rtrim($input) : Jaws_UTF8::rtrim($input, $characters);
+    }
+
+    /**
+     * @param string $input
+     *
+     * @return string
+     */
+    public static function strip($input, $characters = null)
+    {
+        if (!is_string($input)) {
+            return $input;
+        }
+
+        return is_null($characters)? trim($input) : Jaws_UTF8::trim($input, $characters);
     }
 
     /**
@@ -335,7 +347,7 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      */
     public static function strip_html($input)
     {
-        return is_string($input) ? strip_tags($input) : $input;
+        return is_string($input)? strip_tags($input) : $input;
     }
 
     /**
