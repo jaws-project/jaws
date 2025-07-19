@@ -118,7 +118,11 @@ class Search_Model_Search extends Jaws_Gadget_Model
                 }
 
                 array_push($result['items'], ...$gResult);
-                $result['gadgets'][$gadget] = ['name' => $gadget, 'count' => count($gResult)];
+                $result['gadgets'][$gadget] = array(
+                    'name' => $gadget,
+                    'title' => $objHook->gadget->title,
+                    'count' => count($gResult)
+                );
                 $result['total'] += $result['gadgets'][$gadget]['count'];
                 continue;
             }
@@ -128,7 +132,11 @@ class Search_Model_Search extends Jaws_Gadget_Model
                 continue;
             }
 
-            $result['gadgets'][$gadget] = ['name' => $gadget, 'count' => 0];
+            $result['gadgets'][$gadget] = array(
+                'name' => $gadget,
+                'title' => $objHook->gadget->title,
+                'count' => 0
+            );
             foreach($searchFields as $table => $fields) {
                 $objORM = Jaws_ORM::getInstance();
                 foreach($phrases as $part => $words) {
