@@ -254,6 +254,34 @@ class Jaws_XTemplate_Filters_Special extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Sets page title
+     *
+     * @param   string   $input
+     *
+     * @return string
+     */
+    public static function pageTitle($input)
+    {
+        $thisApp = Jaws::getInstance();
+        $thisApp->mainAction->setAttribute($thisApp->mainRequest['action'], 'title', $input);
+        return $input;
+    }
+
+    /**
+     * Sets page description
+     *
+     * @param   string   $input
+     *
+     * @return string
+     */
+    public static function pageDescription($input)
+    {
+        $thisApp = Jaws::getInstance();
+        $thisApp->mainAction->setAttribute($thisApp->mainRequest['action'], 'description', $input);
+        return $input;
+    }
+
+    /**
      * prints a variable in a human readable form to the jaws log specified
      *
      * @param   mixed   $input
