@@ -292,7 +292,7 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
         if (method_exists($objAction, $action)) {
             $objAction->name = $action;
             $objAction->title = $this->gadget::t('ACTIONS_'.$action.'_TITLE');
-            $objAction->description = $this->gadget::t('ACTIONS_'.$action.'_DESC');
+            $objAction->description = $this->gadget::t('ACTIONS_'.$action.'_DESCRIPTION');
 
             if ($privateAccess &&
                 !$this->app->session->user->logged &&
