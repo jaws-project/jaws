@@ -5,8 +5,8 @@
 </div>
 
 <div class="gadget-container">
-  <div class="row d-flex mb-3 gy-2">
-    <div class="col-12">
+  <div class="mb-3">
+    <div class="alert alert-info" role="alert">
       {%- if result.error %}
         {{ result.error }}
       {%- elseif result.total == 0 %}
@@ -15,10 +15,16 @@
         {{ 'search.results_subtitle' | t: result.total, phrases }}
       {%- endif %}
     </div>
+    <div>
     {%- for gadget in result.gadgets %}
-      <div class="col-12">{{ 'search.results_in_gadgets' | t: gadget.count, gadget.name }}</div>
+      <span class="badge text-bg-secondary">
+        {{gadget.title }}
+        <span class="badge bg-dark rounded-pill">{{gadget.count}}</span>
+      </span>
     {%- endfor %}
+    </div>
   </div>
+
   <div class="gadget-content mb-3">
     {%- for item in result.items %}
       <div class="card mb-3 pt-3">
@@ -26,7 +32,7 @@
           <div class="col-md-4 col-lg-3 d-flex justify-content-center">
             <div class="w-100 text-center">
               <a class="w-100" href="{{ item.url }}">
-                <img src="{{ item.image }}" class="card-img-top w-75" alt="no-image" />
+                <img src="{{ item.image }}" class="card-img-top w-75" alt="{{ item.title | metaURL }}" />
               </a>
             </div>
           </div>
@@ -36,8 +42,8 @@
                 <a href="{{ item.url }}">{{ item.title }}</a>
               </h5>
             </div>
-            <p class="card-text d-none">{{ item.snippet }}</p>
-            <div class="card-footer text-body-secondary d-none">{{ item.date }}</div>
+            <p class="card-text">{{ item.snippet }}</p>
+            <div class="card-footer text-body-secondary">{{ item.date | date2str }}</div>
           </div>
         </div>
       </div>

@@ -47,7 +47,7 @@ class Search_Model_Search extends Jaws_Gadget_Model
         }
 
         $min_key_len = (int)$this->gadget->registry->fetch('min_key_len');
-        foreach ($result as &$partPhrases) {
+        foreach ($result as $part => $partPhrases) {
             if (!is_array($partPhrases)) {
                 $partPhrases = [$partPhrases];
             }
@@ -55,9 +55,11 @@ class Search_Model_Search extends Jaws_Gadget_Model
             $partPhrases = array_filter(
                 $partPhrases,
                 static function($val) use ($min_key_len){
-                    return !empty($val) && (Jaws_UTF8::strlen($val) > $min_key_len);
+                    return !empty($val) && (Jaws_UTF8::strlen($val) >= $min_key_len);
                 }
             );
+
+            $result[$part] = $partPhrases;
         }
 
         return array_filter($result);

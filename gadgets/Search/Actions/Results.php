@@ -68,9 +68,18 @@ class Search_Actions_Results extends Jaws_Gadget_Action
                 'Results',
                 $reqPhrases
             );
+
+            // meta description
+            $this->description = $this::t('results_subtitle', $assigns['result']['total'], $assigns['phrases']);
+
         } catch (Exception $e) {
             $assigns['result']['error'] = $e->getMessage();
+            // meta description
+            $this->description = $assigns['result']['error'];
+
         } finally {
+            // page title
+            $this->title = $this::t('results');
             return $this->gadget->template->xLoad('Results.html')->render($assigns);
         }
     }
