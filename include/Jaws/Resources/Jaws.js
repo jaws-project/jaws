@@ -2306,7 +2306,8 @@ Jaws = {
     },
 
     // define t method
-    t: function(string, params, module) {
+    t: function(input, params, module) {
+        let string = input;
         if (string.indexOf('.') >= 0) {
             [module , string] = string.split('.');
         }
@@ -2329,9 +2330,11 @@ Jaws = {
                 string = string.replace('{'+key+'}', val);
             });
             string = string.replace(/\s*\{[0-9]+\}/g, '');
+
+            return string;
         }
 
-        return string;
+        return input;
     },
 
     // call methods that listening the shouted event
