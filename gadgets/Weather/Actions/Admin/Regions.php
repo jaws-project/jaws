@@ -23,9 +23,9 @@ class Weather_Actions_Admin_Regions extends Weather_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageRegions');
         $this->AjaxMe('script.js');
-        $this->gadget->define('base_script', BASE_SCRIPT);
-        $this->gadget->define('confirmDelete', $this::t('CONFIRM_DELETE'));
-        $this->gadget->define('incompleteFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->export('base_script', BASE_SCRIPT);
+        $this->gadget->export('confirmDelete', $this::t('CONFIRM_DELETE'));
+        $this->gadget->export('incompleteFields', $this::t('INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('Weather.html');
         $tpl->SetBlock('Weather');

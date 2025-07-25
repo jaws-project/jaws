@@ -278,14 +278,14 @@ class Weather_Actions_RegionWeather extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
-        $this->gadget->define('lbl_published', $this::t('PUBLISHED'));
-        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
-        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('lbl_geo_position', $this::t('GEOPOSITION'));
-        $this->gadget->define('lbl_search', Jaws::t('SEARCH'));
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('base_script', BASE_SCRIPT);
+        $this->gadget->export('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->export('lbl_published', $this::t('PUBLISHED'));
+        $this->gadget->export('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->export('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->export('lbl_geo_position', $this::t('GEOPOSITION'));
+        $this->gadget->export('lbl_search', Jaws::t('SEARCH'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('base_script', BASE_SCRIPT);
 
         $tpl = $this->gadget->template->load('UserRegions.html');
         $tpl->SetBlock('UserRegions');
