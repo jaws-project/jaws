@@ -23,7 +23,7 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
-        $this->gadget->define('noImageURL', $this->app->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif'));
+        $this->gadget->export('noImageURL', $this->app->getSiteURL('/gadgets/Blog/Resources/images/no-image.gif'));
 
         $tpl = $this->gadget->template->loadAdmin('Categories.html');
         $tpl->SetBlock('categories');
@@ -105,10 +105,10 @@ class Blog_Actions_Admin_Categories extends Blog_Actions_Admin_Default
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
         $tpl->SetVariable('addCategory_title',$this::t('NEW_CATEGORY'));
-        $this->gadget->define('addCategory_title',$this::t('NEW_CATEGORY'));
-        $this->gadget->define('deleteMessage',$this::t('DELETE_CONFIRM_CATEGORY'));
-        $this->gadget->define('incompleteCategoryFields',$this::t('CATEGORY_INCOMPLETE_FIELDS'));
-        $this->gadget->define('editCategory_title',$this::t('EDIT_CATEGORY'));
+        $this->gadget->export('addCategory_title',$this::t('NEW_CATEGORY'));
+        $this->gadget->export('deleteMessage',$this::t('DELETE_CONFIRM_CATEGORY'));
+        $this->gadget->export('incompleteCategoryFields',$this::t('CATEGORY_INCOMPLETE_FIELDS'));
+        $this->gadget->export('editCategory_title',$this::t('EDIT_CATEGORY'));
 
         $tpl->ParseBlock('categories');
         return $tpl->Get();
