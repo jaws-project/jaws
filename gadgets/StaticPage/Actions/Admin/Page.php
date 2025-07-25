@@ -131,8 +131,8 @@ class StaticPage_Actions_Admin_Page extends StaticPage_Actions_Admin_Default
     function ManagePages()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmPageDelete', Jaws::t('CONFIRM_DELETE', $this::t('PAGE')));
-        $this->gadget->define('confirmMassiveDelete', $this::t('CONFIRM_MASIVE_DELETE_PAGE'));
+        $this->gadget->export('confirmPageDelete', Jaws::t('CONFIRM_DELETE', $this::t('PAGE')));
+        $this->gadget->export('confirmMassiveDelete', $this::t('CONFIRM_MASIVE_DELETE_PAGE'));
 
         $tpl = $this->gadget->template->loadAdmin('StaticPage.html');
         $tpl->SetBlock('static_page');

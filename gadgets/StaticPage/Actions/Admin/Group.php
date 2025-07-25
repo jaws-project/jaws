@@ -24,10 +24,10 @@ class StaticPage_Actions_Admin_Group extends StaticPage_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
         // set default value of javascript variables
-        $this->gadget->define('add_group_title',      $this::t('GROUP_ADD'));
-        $this->gadget->define('edit_group_title',     $this::t('GROUP_EDIT'));
-        $this->gadget->define('confirm_group_delete', $this::t('GROUP_CONFIRM_DELETE'));
-        $this->gadget->define('incomplete_fields',    $this::t('GROUP_INCOMPLETE_FIELDS'));
+        $this->gadget->export('add_group_title',      $this::t('GROUP_ADD'));
+        $this->gadget->export('edit_group_title',     $this::t('GROUP_EDIT'));
+        $this->gadget->export('confirm_group_delete', $this::t('GROUP_CONFIRM_DELETE'));
+        $this->gadget->export('incomplete_fields',    $this::t('GROUP_INCOMPLETE_FIELDS'));
 
         $tpl = $this->gadget->template->loadAdmin('Groups.html');
         $tpl->SetBlock('Groups');
