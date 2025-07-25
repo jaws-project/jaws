@@ -79,8 +79,8 @@ class Contact_Actions_Admin_Recipients extends Contact_Actions_Admin_Default
         $btnSave->AddEvent(ON_CLICK, 'updateRecipient();');
         $tpl->SetVariable('btn_save', $btnSave->Get());
 
-        $this->gadget->define('incompleteRecipientFields', $this::t('INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmRecipientDelete',    $this::t('CONFIRM_DELETE_RECIPIENT'));
+        $this->gadget->export('incompleteRecipientFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmRecipientDelete',    $this::t('CONFIRM_DELETE_RECIPIENT'));
 
         $tpl->ParseBlock('recipients');
 
