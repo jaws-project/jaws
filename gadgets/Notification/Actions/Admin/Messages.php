@@ -17,17 +17,17 @@ class Notification_Actions_Admin_Messages extends Notification_Actions_Admin_Def
     {
         $this->gadget->CheckPermission('Messages');
         $this->AjaxMe('script.js');
-        $this->gadget->define('lbl_message_title', Jaws::t('TITLE'));
-        $this->gadget->define('lbl_driver', $this::t('DRIVER'));
-        $this->gadget->define('lbl_message_type', $this::t('MESSAGE_TYPE'));
-        $this->gadget->define('lbl_shouter', Jaws::t('GADGET'));
-        $this->gadget->define('lbl_insert_time', Jaws::t('CREATETIME'));
-        $this->gadget->define('lbl_status', Jaws::t('STATUS'));
-        $this->gadget->define('lbl_view', $this::t('VIEW'));
-        $this->gadget->define('lbl_delete_message', $this::t('DELETE_MESSAGE'));
-        $this->gadget->define('lbl_delete_similar_message', $this::t('DELETE_SIMILAR_MESSAGE'));
-        $this->gadget->define('confirmDeleteMessage', Jaws::t('CONFIRM_DELETE', $this::t('MESSAGE')));
-        $this->gadget->define('confirmDeleteSimilarMessage', Jaws::t('CONFIRM_DELETE', $this::t('MESSAGES_SIMILAR')));
+        $this->gadget->export('lbl_message_title', Jaws::t('TITLE'));
+        $this->gadget->export('lbl_driver', $this::t('DRIVER'));
+        $this->gadget->export('lbl_message_type', $this::t('MESSAGE_TYPE'));
+        $this->gadget->export('lbl_shouter', Jaws::t('GADGET'));
+        $this->gadget->export('lbl_insert_time', Jaws::t('CREATETIME'));
+        $this->gadget->export('lbl_status', Jaws::t('STATUS'));
+        $this->gadget->export('lbl_view', $this::t('VIEW'));
+        $this->gadget->export('lbl_delete_message', $this::t('DELETE_MESSAGE'));
+        $this->gadget->export('lbl_delete_similar_message', $this::t('DELETE_SIMILAR_MESSAGE'));
+        $this->gadget->export('confirmDeleteMessage', Jaws::t('CONFIRM_DELETE', $this::t('MESSAGE')));
+        $this->gadget->export('confirmDeleteSimilarMessage', Jaws::t('CONFIRM_DELETE', $this::t('MESSAGES_SIMILAR')));
 
         $tpl = $this->gadget->template->loadAdmin('Messages.html');
         $tpl->SetBlock('Messages');

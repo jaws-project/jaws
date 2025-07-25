@@ -15,18 +15,18 @@ class Notification_Hooks_Autoload extends Jaws_Gadget_Hook
      */
     function Execute()
     {
-        $this->gadget->define(
+        $this->gadget->export(
             'webpush_enabled',
             $this->gadget->registry->fetch('webpush_enabled')
         );
         // set webpush public key for using in webpush subscription
-        $this->gadget->define(
+        $this->gadget->export(
             'webpush_pub_key',
             $this->gadget->registry->fetch('webpush_pub_key')
         );
 
         // is webpush subscription available?
-        $this->gadget->define(
+        $this->gadget->export(
             'webpush_subscription',
             !empty($this->app->session->webpush)
         );

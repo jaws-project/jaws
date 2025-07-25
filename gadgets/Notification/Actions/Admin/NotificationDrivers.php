@@ -17,12 +17,12 @@ class Notification_Actions_Admin_NotificationDrivers extends Notification_Action
     {
         $this->gadget->CheckPermission('NotificationDrivers');
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteFields', $this::t('INCOMPLETE_FIELDS'));
-        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
-        $this->gadget->define('lbl_status', Jaws::t('STATUS'));
-        $this->gadget->define('lbl_install', $this::t('INSTALL'));
-        $this->gadget->define('lbl_uninstall', $this::t('UNINSTALL'));
-        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->export('incompleteFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->export('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->export('lbl_status', Jaws::t('STATUS'));
+        $this->gadget->export('lbl_install', $this::t('INSTALL'));
+        $this->gadget->export('lbl_uninstall', $this::t('UNINSTALL'));
+        $this->gadget->export('lbl_edit', Jaws::t('EDIT'));
 
         $tpl = $this->gadget->template->loadAdmin('NotificationDrivers.html');
         $tpl->SetBlock('drivers');
