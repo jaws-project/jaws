@@ -199,26 +199,29 @@ class Jaws_Widgets_CKEditor extends Container
                 break;
         }
 
-        $this->app->define('', 'editorPlugins', $plugins);
-        $this->app->define('', 'editorToolbar', $this->toolbars);
+        $this->app->export('', JAWS_EXPORT_UNTYPE,'editorPlugins', $plugins);
+        $this->app->export('', JAWS_EXPORT_UNTYPE,'editorToolbar', $this->toolbars);
 
         $this->_Container->PackStart($this->TextArea);
         $this->_XHTML .= $this->_Container->Get();
 
         if (JAWS_SCRIPT == 'index') {
             if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorImageBrowser',
                     $this->app->map->GetRawURL('Directory', 'DirExplorer', array('type' => '3'))
                 );
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorFileBrowser',
                     $this->app->map->GetRawURL('Directory', 'DirExplorer', array('type' => '1,6'))
                 );
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorMediaBrowser',
                     $this->app->map->GetRawURL('Directory', 'DirExplorer', array('type' => '4,5'))
                 );
@@ -226,21 +229,24 @@ class Jaws_Widgets_CKEditor extends Container
         } else {
             // Phoo
             if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorImageBrowser',
                     $this->app->map->GetRawURL('Phoo', 'BrowsePhoo')
                 );
             }
             // Directory
             if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorFileBrowser',
                     $this->app->map->GetRawURL('Directory', 'Directory', array('standalone' => '1'))
                 );
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorMediaBrowser',
                     $this->app->map->GetRawURL('Directory', 'DirExplorer')
                 );

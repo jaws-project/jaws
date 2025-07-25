@@ -149,26 +149,29 @@ class Jaws_Widgets_TinyMCE extends Container
             $toolbars = $this->app->registry->fetch('editor_tinymce_frontend_toolbar', 'Settings');
         }
 
-        $this->app->define('', 'editorPlugins', $plugins);
-        $this->app->define('', 'editorToolbar', $toolbars);
+        $this->app->export('', JAWS_EXPORT_UNTYPE, 'editorPlugins', $plugins);
+        $this->app->export('', JAWS_EXPORT_UNTYPE, 'editorToolbar', $toolbars);
 
         $this->_Container->PackStart($this->TextArea);
         $this->_XHTML .= $this->_Container->Get();
 
         if (JAWS_SCRIPT == 'index') {
             if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorImageBrowser',
                     $this->app->map->GetRawURL('Directory', 'DirExplorer', array('type' => '3'))
                 );
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorFileBrowser',
                     $this->app->map->GetRawURL('Directory', 'DirExplorer', array('type' => '1,6'))
                 );
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorMediaBrowser',
                     $this->app->map->GetRawURL('Directory', 'DirExplorer', array('type' => '4,5'))
                 );
@@ -176,22 +179,24 @@ class Jaws_Widgets_TinyMCE extends Container
         } else {
             // Phoo
             if (Jaws_Gadget::IsGadgetInstalled('Phoo')) {
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorImageBrowser',
                     $this->app->map->GetRawURL('Phoo', 'BrowsePhoo')
                 );
             }
             // Directory
             if (Jaws_Gadget::IsGadgetInstalled('Directory')) {
-                
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorFileBrowser',
                     $this->app->map->GetRawURL('Directory', 'Directory', array('standalone' => '1'))
                 );
-                $this->app->define(
+                $this->app->export(
                     '',
+                    JAWS_EXPORT_UNTYPE,
                     'editorMediaBrowser',
                     $this->app->map->GetRawURL('Directory', 'DirExplorer')
                 );

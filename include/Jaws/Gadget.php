@@ -308,8 +308,8 @@ class Jaws_Gadget
                         $reqError = '403';
                     }
 
-                    $jawsApp->define('', 'mainGadget', $reqGadget);
-                    $jawsApp->define('', 'mainAction', $reqAction);
+                    $jawsApp->export('', JAWS_EXPORT_UNTYPE, 'mainGadget', $reqGadget);
+                    $jawsApp->export('', JAWS_EXPORT_UNTYPE, 'mainAction', $reqAction);
                 } else {
                     $reqError = '404';
                     $reqGadget = null;
@@ -421,13 +421,14 @@ class Jaws_Gadget
      * Sets a define
      *
      * @access  public
-     * @param   string $key     Define name
-     * @param   string $value   Define value
+     * @param   string  $key    Define name
+     * @param   string  $value  Define value
+     * @param   int     $type   Export data type(1: registry key, 2: ACL key, 3: session key, 5: un-type)
      * @return  void
      */
-    function define($key, $value = '')
+    function export($key, $value = '', $type = JAWS_EXPORT_UNTYPE)
     {
-        $this->app->define($this->name, $key, $value);
+        $this->app->export($this->name, $type, $key, $value);
     }
 
     /**
@@ -436,9 +437,9 @@ class Jaws_Gadget
      * @access  public
      * @return  array   Defines of the gadget
      */
-    function defines()
+    function exports()
     {
-        return $this->app->defines($this->name);
+        return $this->app->exports($this->name);
     }
 
     /**

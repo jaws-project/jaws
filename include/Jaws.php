@@ -81,12 +81,12 @@ class Jaws
     var $requestedActionMode = '';
 
     /**
-     * Defines of the Jaws
+     * Shared data with clients(browsers, apps, ...)
      *
      * @var     array
      * @access  private
      */
-    private $defines = array();
+    private $exports = array();
 
     /**
      * Hierarchical structure navigation parts
@@ -158,14 +158,14 @@ class Jaws
      */
     function init()
     {
-        $this->define('', 'script', JAWS_SCRIPT);
-        $this->define('', 'base', Jaws_Utils::getBaseURL('/'));
-        $this->define('', 'relBase', Jaws_Utils::getBaseURL('/'));
-        $this->define('', 'absBase', Jaws_Utils::getBaseURL('/', false));
-        $this->define('', 'relDataURL', $this->getDataURL('', true));
-        $this->define('', 'absDataURL', $this->getDataURL('', false));
-        $this->define('', 'requestedURL', Jaws_Utils::getRequestURL());
-        $this->define('', 'gzip', $this->GZipEnabled());
+        $this->export('', JAWS_EXPORT_UNTYPE, 'script', JAWS_SCRIPT);
+        $this->export('', JAWS_EXPORT_UNTYPE, 'base', Jaws_Utils::getBaseURL('/'));
+        $this->export('', JAWS_EXPORT_UNTYPE, 'relBase', Jaws_Utils::getBaseURL('/'));
+        $this->export('', JAWS_EXPORT_UNTYPE, 'absBase', Jaws_Utils::getBaseURL('/', false));
+        $this->export('', JAWS_EXPORT_UNTYPE, 'relDataURL', $this->getDataURL('', true));
+        $this->export('', JAWS_EXPORT_UNTYPE, 'absDataURL', $this->getDataURL('', false));
+        $this->export('', JAWS_EXPORT_UNTYPE, 'requestedURL', Jaws_Utils::getRequestURL());
+        $this->export('', JAWS_EXPORT_UNTYPE, 'gzip', $this->GZipEnabled());
 
         // FileSystem management
         $this->fileManagement = Jaws_FileManagement::getInstance(
@@ -178,7 +178,7 @@ class Jaws
 
         $JCrypt = Jaws_Crypt::getInstance();
         if (!Jaws_Error::IsError($JCrypt)) {
-            $this->define('', 'pubkey', base64_encode($JCrypt->getPublic()));
+            $this->export('', JAWS_EXPORT_UNTYPE, 'pubkey', base64_encode($JCrypt->getPublic()));
         }
     }
 
@@ -229,7 +229,23 @@ class Jaws
         Jaws_Translate::getInstance()->init($this->_Preferences['language']);
 
         // pass preferences to client
-        $this->define('', $this->_Preferences);
+        $this->export('', JAWS_EXPORT_UNTYPE, $this->_Preferences);
+
+        // pass user session data to client
+        $this->export(
+            '',
+            JAWS_EXPORT_SESSION,
+            array(
+                'user' => array(
+                    'id'        => $this->session->user->id,
+                    'username'  => $this->session->user->username,
+                    'superadmin'=> $this->session->user->superadmin,
+                    'nickname'  => $this->session->user->nickname,
+                    'logged'    => $this->session->user->logged,
+                    'avatar'    => $this->session->user->avatar,
+                ),
+            )
+        );
     }
 
     /**
@@ -548,40 +564,45 @@ class Jaws
     }
 
     /**
-     * Sets a define
+     * Sets a export data
      *
      * @access  public
      * @param   string  $component  Component name
-     * @param   string  $key        Define name
-     * @param   string  $value      Define value
+     * @param   int     $type       Export data type(1: registry key, 2: ACL key, 3: session key, 5: un-type)
+     * @param   string  $key        Key name
+     * @param   mixed   $value      Key value
      * @return  void
      */
-    function define($component, $key = null, $value = '')
+    function export($component, $type, $key = null, $value = '')
     {
-        if (!array_key_exists($component, $this->defines)) {
-            $this->defines[$component] = array();
+        if (!array_key_exists($component, $this->exports)) {
+            $this->exports[$component] = array();
+        }
+
+        if (!array_key_exists($type, $this->exports[$component])) {
+            $this->exports[$component][$type] = array();
         }
 
         if (is_array($key)) {
-            $this->defines[$component] = array_merge($this->defines[$component], $key);
-        } elseif(!empty($key)) {
-            $this->defines[$component][$key] = $value;
+            $this->exports[$component][$type] = array_merge($this->exports[$component][$type], $key);
+        } elseif(isset($key)) {
+            $this->exports[$component][$type][$key] = $value;
         }
     }
 
     /**
-     * Get all defines of the gadget
+     * Get all exports data of the given component/gadget
      *
      * @access  public
      * @param   string  $component  (Optional) Component name
-     * @return  array   Defines of the gadget
+     * @return  array   export data
      */
-    function defines($component = null)
+    function exports($component = null)
     {
         if (is_null($component)) {
-            return $this->defines;
+            return $this->exports;
         } else {
-            return $this->defines[$component];
+            return $this->exports[$component];
         }
     }
 

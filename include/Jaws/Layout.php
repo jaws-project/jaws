@@ -119,12 +119,13 @@ class Jaws_Layout
 
         // set default site language
         $this->_Languages[] = $this->app->GetLanguage();
-        $this->app->define('', 'buildnumber', $this->attributes['buildnumber']);
-        $this->app->define('', 'direction', Jaws::t('LANG_DIRECTION'));
-        $this->app->define('', 'loadingMessage', Jaws::t('LOADING'));
-        $this->app->define('', 'reloadMessage', Jaws::t('RELOAD_MESSAGE'));
-        $this->app->define(
+        $this->app->export('', JAWS_EXPORT_UNTYPE, 'buildnumber', $this->attributes['buildnumber']);
+        $this->app->export('', JAWS_EXPORT_UNTYPE, 'direction', Jaws::t('LANG_DIRECTION'));
+        $this->app->export('', JAWS_EXPORT_UNTYPE, 'loadingMessage', Jaws::t('LOADING'));
+        $this->app->export('', JAWS_EXPORT_UNTYPE, 'reloadMessage', Jaws::t('RELOAD_MESSAGE'));
+        $this->app->export(
             '',
+            JAWS_EXPORT_UNTYPE,
             'service_worker_enabled',
             @$this->attributes['service_worker_enabled']
         );
@@ -604,42 +605,50 @@ class Jaws_Layout
     function initializeScript()
     {
         $result = '';
-        $allDefines = $this->app->defines();
-
-        $result.= "\tJaws.gadgets = {};\n";
-        $result.= "\tJaws.session = ". '$.parseJSON(\''. json_encode(
-            array(
-                'user' => array(
-                    'id'        => $this->app->session->user->id,
-                    'username'  => $this->app->session->user->username,
-                    'superadmin'=> $this->app->session->user->superadmin,
-                    'nickname'  => $this->app->session->user->nickname,
-                    'logged'    => $this->app->session->user->logged,
-                    'avatar'    => $this->app->session->user->avatar,
-                ),
-            ),
-            JSON_HEX_APOS
-        ). '\');'. "\n";
-
-        $result.= "\tJaws.permissions = ". '$.parseJSON(\''. json_encode(
-            $this->app->acl->fetchAllPermissions(),
-            JSON_HEX_APOS
-        ). '\');'. "\n";
-
-        $result.= "\tJaws.defines = ". '$.parseJSON(\''. json_encode($allDefines[''], JSON_HEX_APOS). '\');'. "\n";
-        unset($allDefines['']);
-
-        foreach ($allDefines as $component => $defines) {
-            $objGadget = Jaws_Gadget::getInstance($component);
-            $actions = array_keys($objGadget->loaded_actions);
-            $result.= "\tJaws.gadgets.$component = {};\n";
-            $result.= "\tJaws.gadgets.$component.defines = ".
-                '$.parseJSON(\''. json_encode($defines, JSON_HEX_APOS). '\');'. "\n";
-            $result.= "\tJaws.gadgets.$component.actions = ".
-                '$.parseJSON(\''. json_encode(
-                    array_combine($actions, array_fill(0, count($actions), false)),
+        foreach ($this->app->exports() as $component => $typeExports) {
+            if (empty($component)) {
+                $objvar = 'Jaws';
+                $result.= "\t$objvar.gadgets = {};\n";
+                $result.= "\t$objvar.permissions = ". '$.parseJSON(\''. json_encode(
+                    $this->app->acl->fetchAllPermissions(),
                     JSON_HEX_APOS
                 ). '\');'. "\n";
+            } else {
+                $objGadget = Jaws_Gadget::getInstance($component);
+                $actions = array_keys($objGadget->loaded_actions);
+
+                $objvar = "Jaws.gadgets.$component";
+                $result.= "\t$objvar = {};\n";
+                $result.= "\t$objvar.actions = ".
+                    '$.parseJSON(\''. json_encode(
+                        array_combine($actions, array_fill(0, count($actions), false)),
+                        JSON_HEX_APOS
+                    ). '\');'. "\n";
+            }
+
+            foreach ($typeExports as $type => $exports) {
+                switch ($type) {
+                    case JAWS_EXPORT_REGISTRY:
+                        $result.= "\t$objvar.registry = ".
+                            '$.parseJSON(\''. json_encode($exports, JSON_HEX_APOS). '\');'. "\n";
+                        break;
+
+                    case JAWS_EXPORT_ACL:
+                        $result.= "\t$objvar.permission = ".
+                            '$.parseJSON(\''. json_encode($exports, JSON_HEX_APOS). '\');'. "\n";
+                        break;
+
+                    case JAWS_EXPORT_SESSION:
+                        $result.= "\t$objvar.session = ".
+                            '$.parseJSON(\''. json_encode($exports, JSON_HEX_APOS). '\');'. "\n";
+                        break;
+
+                    default:
+                        $result.= "\t$objvar.defines = ".
+                            '$.parseJSON(\''. json_encode($exports, JSON_HEX_APOS). '\');'. "\n";
+                }
+            }
+
         }
 
         return $result;

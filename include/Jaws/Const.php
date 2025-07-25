@@ -21,6 +21,12 @@ define('JAWS_COMPONENT_UPGRADE', 5);
 define('JAWS_VERSION', '2.0.0');
 define('JAWS_VERSION_CODENAME', '20 years celebration');
 
+// Jaws export data type
+define('JAWS_EXPORT_REGISTRY', 1);
+define('JAWS_EXPORT_ACL',      2);
+define('JAWS_EXPORT_SESSION',  3);
+define('JAWS_EXPORT_UNTYPE',   5);
+
 define('JAWS_EMERG',     1);  // System is unusable
 define('JAWS_EMERGENCY', 1);  // System is unusable
 define('JAWS_ALERT',     2);  // Immediate action required

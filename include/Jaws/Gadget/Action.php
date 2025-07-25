@@ -185,7 +185,7 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
     public function AjaxMe($file = '')
     {
         if (!empty($file)) {
-            $this->app->define($this->gadget->name, false);
+            $this->app->export($this->gadget->name, JAWS_EXPORT_UNTYPE, false);
             $this->app->layout->addScript(
                 'gadgets/'.$this->gadget->name.'/Resources/'. $file.'?'.$this->gadget->version
             );
@@ -302,7 +302,7 @@ class Jaws_Gadget_Action extends Jaws_Gadget_Class
                 return Jaws_HTTPError::Get(403);
             }
 
-            $this->app->define($this->gadget->name, false);
+            $this->app->export($this->gadget->name, JAWS_EXPORT_UNTYPE, false);
             $this->gadget->loaded_actions[$action] = true;
             $this->app->requestedGadget  = $this->gadget->name;
             $this->app->requestedAction  = $action;
