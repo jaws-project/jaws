@@ -104,17 +104,17 @@ class Glossary_Actions_Admin_Terms extends Jaws_Gadget_Action
         $tpl->SetVariable('edit_button', $edit->Get());
 
         // Messages
-        $this->gadget->define('incompleteGlossaryFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('retrieving_message',       $this::t('MSGRETRIEVING'));
-        $this->gadget->define('updating_message',         $this::t('MSGUPDATING'));
-        $this->gadget->define('deleting_message',         $this::t('MSGDELETING'));
-        $this->gadget->define('saving_message',           $this::t('MSGSAVING'));
-        $this->gadget->define('sending_message',          $this::t('MSGSENDING'));
+        $this->gadget->export('incompleteGlossaryFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->export('retrieving_message',       $this::t('MSGRETRIEVING'));
+        $this->gadget->export('updating_message',         $this::t('MSGUPDATING'));
+        $this->gadget->export('deleting_message',         $this::t('MSGDELETING'));
+        $this->gadget->export('saving_message',           $this::t('MSGSAVING'));
+        $this->gadget->export('sending_message',          $this::t('MSGSENDING'));
 
         // Acl
-        $this->gadget->define('aclAddTerm', $this->gadget->GetPermission('AddTerm') ? 'true' : 'false');
-        $this->gadget->define('aclEditTerm', $this->gadget->GetPermission('EditTerm') ? 'true' : 'false');
-        $this->gadget->define('aclDeleteTerm', $this->gadget->GetPermission('DeleteTerm') ? 'true' : 'false');
+        $this->gadget->export('aclAddTerm', $this->gadget->GetPermission('AddTerm') ? 'true' : 'false');
+        $this->gadget->export('aclEditTerm', $this->gadget->GetPermission('EditTerm') ? 'true' : 'false');
+        $this->gadget->export('aclDeleteTerm', $this->gadget->GetPermission('DeleteTerm') ? 'true' : 'false');
 
         $tpl->ParseBlock('Glossary');
         return $tpl->Get();
