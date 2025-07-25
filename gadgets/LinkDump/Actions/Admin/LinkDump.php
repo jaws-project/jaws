@@ -48,18 +48,18 @@ class LinkDump_Actions_Admin_LinkDump extends Jaws_Gadget_Action
         $tpl->SetVariable('links_tree_image', 'gadgets/LinkDump/Resources/images/logo.mini.png');
         $tpl->SetVariable('links_tree_title', $this::t('LINKS_TITLE'));
 
-        $this->gadget->define('max_limit_count', $this->gadget->registry->fetch('max_limit_count'));
-        $this->gadget->define('addLinkTitle',     $this::t('LINKS_ADD'));
-        $this->gadget->define('editLinkTitle',    $this::t('LINKS_EDIT'));
-        $this->gadget->define('addGroupTitle',    $this::t('GROUPS_ADD'));
-        $this->gadget->define('editGroupTitle',   $this::t('GROUPS_EDIT'));
-        $this->gadget->define('linkImageSrc',     'gadgets/LinkDump/Resources/images/logo.mini.png');
-        $this->gadget->define('linksListCloseImageSrc', STOCK_REMOVE);
-        $this->gadget->define('linksListOpenImageSrc',  STOCK_ADD);
-        $this->gadget->define('incompleteFields',   $this::t('INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmGroupDelete', $this::t('GROUPS_DELETE_CONFIRM'));
-        $this->gadget->define('confirmLinkDelete',  $this::t('LINKS_DELETE_CONFIRM'));
-        $this->gadget->define('noLinkExists',       $this::t('LINKS_NOEXISTS'));
+        $this->gadget->export('max_limit_count', $this->gadget->registry->fetch('max_limit_count'));
+        $this->gadget->export('addLinkTitle',     $this::t('LINKS_ADD'));
+        $this->gadget->export('editLinkTitle',    $this::t('LINKS_EDIT'));
+        $this->gadget->export('addGroupTitle',    $this::t('GROUPS_ADD'));
+        $this->gadget->export('editGroupTitle',   $this::t('GROUPS_EDIT'));
+        $this->gadget->export('linkImageSrc',     'gadgets/LinkDump/Resources/images/logo.mini.png');
+        $this->gadget->export('linksListCloseImageSrc', STOCK_REMOVE);
+        $this->gadget->export('linksListOpenImageSrc',  STOCK_ADD);
+        $this->gadget->export('incompleteFields',   $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmGroupDelete', $this::t('GROUPS_DELETE_CONFIRM'));
+        $this->gadget->export('confirmLinkDelete',  $this::t('LINKS_DELETE_CONFIRM'));
+        $this->gadget->export('noLinkExists',       $this::t('LINKS_NOEXISTS'));
 
         $tpl->ParseBlock('linkdump/links_base');
         $tpl->ParseBlock('linkdump');
