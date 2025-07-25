@@ -63,7 +63,7 @@ class Directory_Actions_Directory extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->define('confirmDelete', $this::t('CONFIRM_DELETE'));
+        $this->gadget->export('confirmDelete', $this::t('CONFIRM_DELETE'));
 
         $standalone = (bool)$this->gadget->request->fetch('standalone');
         if ($standalone) {

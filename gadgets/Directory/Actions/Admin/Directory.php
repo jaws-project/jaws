@@ -32,7 +32,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
 
         if ($standalone) {
             $tpl->SetVariable('standalone', 'standalone');
-            $this->gadget->define('currentAction', 'Browse');
+            $this->gadget->export('currentAction', 'Browse');
             $tpl->SetVariable('home_url', $this->gadget->url('Directory', array('standalone' => '1')));
 
             $tpl->SetBlock('workspace/standalone');
@@ -47,11 +47,11 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
                                '&amp;langCode=' . $getParams['langCode'];
 
                 $ckFuncIndex = $this->gadget->request->fetch('CKEditorFuncNum', 'get');
-                $this->gadget->define('ckFuncIndex', $ckFuncIndex);
+                $this->gadget->export('ckFuncIndex', $ckFuncIndex);
             }
         } else {
             $tpl->SetVariable('menubar', $this->MenuBar('Directory'));
-            $this->gadget->define('currentAction', 'Directory');
+            $this->gadget->export('currentAction', 'Directory');
             $tpl->SetVariable('home_url', BASE_SCRIPT . '?reqGadget=Directory');
         }
 
@@ -90,7 +90,7 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('img_search', STOCK_SEARCH);
 
         $dir_id = (int)$this->gadget->request->fetch('id');
-        $this->gadget->define('currentDir', $dir_id);
+        $this->gadget->export('currentDir', $dir_id);
         $tpl->SetVariable('home_title', $this::t('HOME'));
         $tpl->SetVariable('lbl_title', $this::t('FILE_TITLE'));
         $tpl->SetVariable('lbl_created', $this::t('FILE_CREATED'));
@@ -105,13 +105,13 @@ class Directory_Actions_Admin_Directory extends Directory_Actions_Admin_Common
         $tpl->SetVariable('lbl_size', $this::t('FILE_SIZE'));
         $tpl->SetVariable('lbl_start_date', $this::t('FILE_FROM_DATE'));
         $tpl->SetVariable('lbl_end_date', $this::t('FILE_TO_DATE'));
-        $this->gadget->define('confirmDelete', $this::t('CONFIRM_DELETE'));
+        $this->gadget->export('confirmDelete', $this::t('CONFIRM_DELETE'));
         $tpl->SetVariable('confirmFileDelete', $this::t('CONFIRM_FILE_DELETE'));
-        $this->gadget->define('imgDeleteFile', STOCK_DELETE);
+        $this->gadget->export('imgDeleteFile', STOCK_DELETE);
         $theme = $this->app->GetTheme();
         $icon_url = is_dir($theme['url'] . 'mimetypes')?
             $theme['url'] . 'mimetypes/' : 'images/mimetypes/';
-        $this->gadget->define('icon_url', $icon_url);
+        $this->gadget->export('icon_url', $icon_url);
 
         // Start date
         $cal_type = $this->gadget->registry->fetch('calendar', 'Settings');
