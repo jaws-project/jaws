@@ -30,7 +30,7 @@ class Quotes_Actions_Admin_Quotes extends Quotes_Actions_Admin_Default
             Quotes_Info::CLASSIFICATION_TYPE_CONFIDENTIAL => $this::t('CLASSIFICATION_TYPE_4')
         );
         $assigns['classification'] = $classifications;
-        $this->gadget->define('classifications', $classifications);
+        $this->gadget->export('classifications', $classifications);
 
         // quotation editor
         $quotation =& $this->app->loadEditor('Quotes', 'quotation', '', '');
