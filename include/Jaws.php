@@ -573,7 +573,7 @@ class Jaws
      * @param   mixed   $value      Key value
      * @return  void
      */
-    function export($component, $type, $key = null, $value = '')
+    function export($component, $type = JAWS_EXPORT_UNTYPE, $key = null, $value = '')
     {
         if (!array_key_exists($component, $this->exports)) {
             $this->exports[$component] = array();
