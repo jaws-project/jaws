@@ -17,10 +17,10 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageZones');
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('datagridNoItems', Jaws::t('NOTFOUND'));
 
-        $this->gadget->define('LANGUAGE', array(
+        $this->gadget->export('LANGUAGE', array(
             'title'=> Jaws::t('TITLE'),
             'from'=> Jaws::t('FROM'),
             'to'=> Jaws::t('TO'),
@@ -298,10 +298,10 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageZoneActions');
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('datagridNoItems', Jaws::t('NOTFOUND'));
 
-        $this->gadget->define('LANGUAGE', array(
+        $this->gadget->export('LANGUAGE', array(
             'zone' => $this::t('ZONE'),
             'gadget' => Jaws::t('GADGET'),
             'action' => Jaws::t('ACTION'),
@@ -318,7 +318,7 @@ class Policy_Actions_Admin_Zone extends Policy_Actions_Admin_Default
         $cmpModel = Jaws_Gadget::getInstance('Components')->model->load('Gadgets');
         $gadgets = $cmpModel->GetGadgetsList(null, true, true);
 
-        $this->gadget->define('gadgetList', array_column($gadgets, 'title', 'name'));
+        $this->gadget->export('gadgetList', array_column($gadgets, 'title', 'name'));
 
         $assigns = array();
         $assigns['sidebar'] = $this->SideBar('ZoneActions');

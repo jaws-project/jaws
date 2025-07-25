@@ -88,8 +88,8 @@ class Policy_Actions_Admin_IP extends Policy_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('IPBlocking');
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteFields',     Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmIPRangeDelete', $this::t('RESPONSE_CONFIRM_DELETE_IP'));
+        $this->gadget->export('incompleteFields',     Jaws::t('ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmIPRangeDelete', $this::t('RESPONSE_CONFIRM_DELETE_IP'));
 
         $tpl = $this->gadget->template->loadAdmin('IPBlocking.html');
         $tpl->SetBlock('ipblocking');

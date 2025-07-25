@@ -85,8 +85,8 @@ class Policy_Actions_Admin_Agent extends Policy_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('AgentBlocking');
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteFields',   Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmAgentDelete', $this::t('RESPONSE_CONFIRM_DELETE_AGENT'));
+        $this->gadget->export('incompleteFields',   Jaws::t('ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmAgentDelete', $this::t('RESPONSE_CONFIRM_DELETE_AGENT'));
 
         $tpl = $this->gadget->template->loadAdmin('AgentBlocking.html');
         $tpl->SetBlock('agentblocking');
