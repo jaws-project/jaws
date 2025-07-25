@@ -20,14 +20,14 @@ class Forums_Actions_Admin_Forums extends Jaws_Gadget_Action
     {
         $this->AjaxMe('script.js');
         // set default value of javascript variables
-        $this->gadget->define('addGroupTitle',   $this::t('GROUP_NEW'));
-        $this->gadget->define('editGroupTitle',  $this::t('GROUP_EDIT'));
-        $this->gadget->define('addForumTitle',   $this::t('FORUM_NEW'));
-        $this->gadget->define('editForumTitle',  $this::t('FORUM_EDIT'));
-        $this->gadget->define('forumImageSrc',    'gadgets/Forums/Resources/images/menu-item.png');
-        $this->gadget->define('incompleteFields',   $this::t('INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmForumDelete', $this::t('CONFIRM_DELETE_FORUM'));
-        $this->gadget->define('confirmGroupDelete', $this::t('CONFIRM_DELETE_GROUP'));
+        $this->gadget->export('addGroupTitle',   $this::t('GROUP_NEW'));
+        $this->gadget->export('editGroupTitle',  $this::t('GROUP_EDIT'));
+        $this->gadget->export('addForumTitle',   $this::t('FORUM_NEW'));
+        $this->gadget->export('editForumTitle',  $this::t('FORUM_EDIT'));
+        $this->gadget->export('forumImageSrc',    'gadgets/Forums/Resources/images/menu-item.png');
+        $this->gadget->export('incompleteFields',   $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmForumDelete', $this::t('CONFIRM_DELETE_FORUM'));
+        $this->gadget->export('confirmGroupDelete', $this::t('CONFIRM_DELETE_GROUP'));
 
         $tpl = $this->gadget->template->loadAdmin('Forums.html');
         $tpl->SetBlock('forums');
