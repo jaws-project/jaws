@@ -59,7 +59,7 @@ class Users_Actions_Contacts extends Users_Actions_Default
 
         // load contact template
         $this->ContactTemplate($tpl);
-        $this->gadget->define('contact', $contact);
+        $this->gadget->export('contact', $contact);
 
         if (!empty($response)) {
             $tpl->SetVariable('response_type', $response['type']);
@@ -202,13 +202,13 @@ class Users_Actions_Contacts extends Users_Actions_Default
         }
         $this->gadget->CheckPermission('EditUserContacts');
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_name', Jaws::t('NAME'));
-        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('lbl_addContact', $this::t('CONTACTS_ADD'));
-        $this->gadget->define('lbl_editContact', $this::t('CONTACTS_EDIT'));
-        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
-        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->export('lbl_name', Jaws::t('NAME'));
+        $this->gadget->export('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('lbl_addContact', $this::t('CONTACTS_ADD'));
+        $this->gadget->export('lbl_editContact', $this::t('CONTACTS_EDIT'));
+        $this->gadget->export('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->export('lbl_delete', Jaws::t('DELETE'));
 
         // Load the template
         $tpl = $this->gadget->template->load('Contacts.html');

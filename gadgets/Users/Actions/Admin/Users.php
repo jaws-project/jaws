@@ -18,13 +18,13 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageUsers');
         $this->AjaxMe('script.js');
         $this->AjaxMe('script-users.js');
-        $this->gadget->define('is_superadmin', $this->app->session->user->superadmin);
+        $this->gadget->export('is_superadmin', $this->app->session->user->superadmin);
         $statusItems = array(
             0 => $this::t('USERS_STATUS_0'),
             1 => $this::t('USERS_STATUS_1'),
             2 => $this::t('USERS_STATUS_2'),
         );
-        $this->gadget->define('statusItems', $statusItems);
+        $this->gadget->export('statusItems', $statusItems);
 
         $assigns = array();
         $assigns['menubar'] =  empty($menubar)? $this->MenuBar('Users') : $menubar;
@@ -52,7 +52,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         if (!Jaws_Error::IsError($JCrypt)) {
             $assigns['pubkey'] = $JCrypt->getPublic();
             $assigns['usecrypt_selected'] = empty($reqpost['pubkey']) || !empty($reqpost['usecrypt']);
-//            $this->gadget->define('pubkey', $JCrypt->getPublic());
+//            $this->gadget->export('pubkey', $JCrypt->getPublic());
         }
 
         $assigns['is_superadmin'] = $this->app->session->user->superadmin;

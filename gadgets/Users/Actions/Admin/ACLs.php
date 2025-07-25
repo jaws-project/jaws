@@ -20,7 +20,7 @@ class Users_Actions_Admin_ACLs extends Users_Actions_Admin_Default
         $this->AjaxMe('script.js');
         $this->AjaxMe('script-acls.js');
         $gadgets = Jaws_Gadget::getInstance('Components')->model->load('Gadgets')->GetGadgetsList(null, true, true);
-        $this->gadget->define('GADGETS', array_column($gadgets, 'title', 'name'));
+        $this->gadget->export('GADGETS', array_column($gadgets, 'title', 'name'));
 
         $assigns = array();
         $assigns['menubar'] = empty($menubar) ? $this->MenuBar('ACLs') : $menubar;

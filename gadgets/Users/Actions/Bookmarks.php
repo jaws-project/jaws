@@ -84,12 +84,12 @@ class Users_Actions_Bookmarks extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('EditUserBookmarks');
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_gadget', Jaws::t('GADGET'));
-        $this->gadget->define('lbl_action', Jaws::t('ACTION'));
-        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
-        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
-        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('lbl_gadget', Jaws::t('GADGET'));
+        $this->gadget->export('lbl_action', Jaws::t('ACTION'));
+        $this->gadget->export('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->export('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->export('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('Bookmarks.html');
         $tpl->SetBlock('Bookmarks');

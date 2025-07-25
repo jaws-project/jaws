@@ -26,14 +26,14 @@ class Users_Actions_Friends extends Users_Actions_Default
 
         $this->gadget->CheckPermission('ManageFriends');
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
-        $this->gadget->define('lbl_name', Jaws::t('NAME'));
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('lbl_addFriend', $this::t('FRIENDS_ADD'));
-        $this->gadget->define('lbl_editFriend', $this::t('FRIENDS_EDIT'));
-        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
-        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('lbl_manageFriends', $this::t('FRIENDS_MANAGE'));
+        $this->gadget->export('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->export('lbl_name', Jaws::t('NAME'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('lbl_addFriend', $this::t('FRIENDS_ADD'));
+        $this->gadget->export('lbl_editFriend', $this::t('FRIENDS_EDIT'));
+        $this->gadget->export('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->export('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->export('lbl_manageFriends', $this::t('FRIENDS_MANAGE'));
 
         $response = $this->gadget->session->pop('Groups');
         // Load the template

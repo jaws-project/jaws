@@ -17,15 +17,15 @@ class Users_Actions_Groups extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
-        $this->gadget->define('lbl_name', Jaws::t('NAME'));
-        $this->gadget->define('lbl_add', Jaws::t('ADD'));
-        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('addGroup_title', $this::t('GROUPS_ADD'));
-        $this->gadget->define('editGroup_title', $this::t('GROUPS_EDIT'));
-        $this->gadget->define('editGroupUsers_title', $this::t('GROUPS_MEMBERS'));
-        $this->gadget->define('incompleteGroupFields', $this::t('GROUPS_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->export('lbl_name', Jaws::t('NAME'));
+        $this->gadget->export('lbl_add', Jaws::t('ADD'));
+        $this->gadget->export('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->export('addGroup_title', $this::t('GROUPS_ADD'));
+        $this->gadget->export('editGroup_title', $this::t('GROUPS_EDIT'));
+        $this->gadget->export('editGroupUsers_title', $this::t('GROUPS_MEMBERS'));
+        $this->gadget->export('incompleteGroupFields', $this::t('GROUPS_INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('ManageGroups.html');
         $tpl->SetBlock('Groups');

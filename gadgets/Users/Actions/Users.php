@@ -17,16 +17,16 @@ class Users_Actions_Users extends Users_Actions_Default
     {
         $this->gadget->CheckPermission('ManageUsers');
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_nickname', $this::t('USERS_NICKNAME'));
-        $this->gadget->define('lbl_username', $this::t('USERS_USERNAME'));
-        $this->gadget->define('addUser_title', $this::t('USERS_ADD'));
-        $this->gadget->define('editUser_title', $this::t('USERS_EDIT'));
-        $this->gadget->define('updatePassword_title', $this::t('USERS_PASSWORD'));
-        $this->gadget->define('deleteUser_title', $this::t('USERS_DELETE'));
-        $this->gadget->define('editUserGroups_title', $this::t('USERS_GROUPS'));
-        $this->gadget->define('incompleteUserFields', $this::t('MYACCOUNT_INCOMPLETE_FIELDS'));
-        $this->gadget->define('wrongPassword', $this::t('MYACCOUNT_PASSWORDS_DONT_MATCH'));
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('lbl_nickname', $this::t('USERS_NICKNAME'));
+        $this->gadget->export('lbl_username', $this::t('USERS_USERNAME'));
+        $this->gadget->export('addUser_title', $this::t('USERS_ADD'));
+        $this->gadget->export('editUser_title', $this::t('USERS_EDIT'));
+        $this->gadget->export('updatePassword_title', $this::t('USERS_PASSWORD'));
+        $this->gadget->export('deleteUser_title', $this::t('USERS_DELETE'));
+        $this->gadget->export('editUserGroups_title', $this::t('USERS_GROUPS'));
+        $this->gadget->export('incompleteUserFields', $this::t('MYACCOUNT_INCOMPLETE_FIELDS'));
+        $this->gadget->export('wrongPassword', $this::t('MYACCOUNT_PASSWORDS_DONT_MATCH'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('Users.html');
         $tpl->SetBlock('Users');
