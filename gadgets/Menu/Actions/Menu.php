@@ -56,7 +56,7 @@ class Menu_Actions_Menu extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->define('title', $group['title']);
+        $this->gadget->export('title', $group['title']);
         $this->_ReqURL = Jaws_Utils::getRequestURL();
         $this->_ReqURL = str_replace(BASE_SCRIPT, '', $this->_ReqURL);
 

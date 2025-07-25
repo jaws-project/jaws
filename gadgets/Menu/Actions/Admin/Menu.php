@@ -16,14 +16,14 @@ class Menu_Actions_Admin_Menu extends Jaws_Gadget_Action
     function Menu()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('addMenuTitle', $this::t('ADD_MENU'));
-        $this->gadget->define('editMenuTitle', $this::t('EDIT_MENU'));
-        $this->gadget->define('addGroupTitle', $this::t('ADD_GROUP'));
-        $this->gadget->define('editGroupTitle', $this::t('EDIT_GROUP'));
-        $this->gadget->define('incompleteFields', $this::t('INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmGroupDelete', $this::t('CONFIRM_DELETE_GROUP'));
-        $this->gadget->define('confirmMenuDelete', $this::t('CONFIRM_DELETE_MENU'));
-        $this->gadget->define('base_script', BASE_SCRIPT);
+        $this->gadget->export('addMenuTitle', $this::t('ADD_MENU'));
+        $this->gadget->export('editMenuTitle', $this::t('EDIT_MENU'));
+        $this->gadget->export('addGroupTitle', $this::t('ADD_GROUP'));
+        $this->gadget->export('editGroupTitle', $this::t('EDIT_GROUP'));
+        $this->gadget->export('incompleteFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmGroupDelete', $this::t('CONFIRM_DELETE_GROUP'));
+        $this->gadget->export('confirmMenuDelete', $this::t('CONFIRM_DELETE_MENU'));
+        $this->gadget->export('base_script', BASE_SCRIPT);
 
         $tpl = $this->gadget->template->loadAdmin('Menu.html');
         $tpl->SetBlock('menus');
