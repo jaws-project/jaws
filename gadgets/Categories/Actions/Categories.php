@@ -43,7 +43,7 @@ class Categories_Actions_Categories extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->define('no_results', Jaws::t('NOTFOUND'));
+        $this->gadget->export('no_results', Jaws::t('NOTFOUND'));
 
         // initiate assign with option array 
         $assigns = $options;

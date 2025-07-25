@@ -20,14 +20,14 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
     {
         $this->gadget->CheckPermission('ManageCategories');
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('lbl_gadget', $this::t('GADGET'));
-        $this->gadget->define('lbl_action', $this::t('ACTION'));
-        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
-        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
-        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('lbl_all', Jaws::t('ALL'));
-        $this->gadget->define('req_gadget', $req_gadget);
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('lbl_gadget', $this::t('GADGET'));
+        $this->gadget->export('lbl_action', $this::t('ACTION'));
+        $this->gadget->export('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->export('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->export('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->export('lbl_all', Jaws::t('ALL'));
+        $this->gadget->export('req_gadget', $req_gadget);
 
         $model = $this->gadget->model->load('Categories');
         $gadgets = $model->getHookedGadgets();
@@ -52,9 +52,9 @@ class Categories_Actions_Admin_Categories extends Categories_Actions_Admin_Defau
             }
         }
 
-        $this->gadget->define('gadgets', array_column($gadgets, 'title', 'name'));
-        $this->gadget->define('gadgets_actions', $gadgetsActions);
-        $this->gadget->define('req_action', $req_action);
+        $this->gadget->export('gadgets', array_column($gadgets, 'title', 'name'));
+        $this->gadget->export('gadgets_actions', $gadgetsActions);
+        $this->gadget->export('req_action', $req_action);
 
         $assigns = array();
         $assigns['menubar'] = empty($menubar) ? $this->MenuBar('Categories') : $menubar;
