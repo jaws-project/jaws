@@ -54,10 +54,10 @@ class Faq_Actions_Admin_Question extends Faq_Actions_Admin_Default
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
         $tpl->SetVariable('legend_title',                              $this::t('ADD_QUESTION'));
-        $this->gadget->define('incompleteQuestionFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmQuestionDelete',    $this::t('CONFIRM_DELETE_QUESTION'));
-        $this->gadget->define('addQuestion_title',        $this::t('ADD_QUESTION'));
-        $this->gadget->define('editQuestion_title',       $this::t('EDIT_QUESTION'));
+        $this->gadget->export('incompleteQuestionFields', Jaws::t('ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmQuestionDelete',    $this::t('CONFIRM_DELETE_QUESTION'));
+        $this->gadget->export('addQuestion_title',        $this::t('ADD_QUESTION'));
+        $this->gadget->export('editQuestion_title',       $this::t('EDIT_QUESTION'));
 
         $tpl->ParseBlock('Questions');
         return $tpl->Get();

@@ -65,10 +65,10 @@ class Faq_Actions_Admin_Category extends Faq_Actions_Admin_Default
 
         $tpl->SetVariable('legend_title',          $this::t('ADD_CATEGORY'));
 
-        $this->gadget->define('addCategory_title',     $this::t('ADD_CATEGORY'));
-        $this->gadget->define('editCategory_title',    $this::t('EDIT_CATEGORY'));
-        $this->gadget->define('confirmCategoryDelete', $this::t('CONFIRM_DELETE_CATEGORY'));
-        $this->gadget->define('incomplete_fields',     Jaws::t('ERROR_INCOMPLETE_FIELDS'));
+        $this->gadget->export('addCategory_title',     $this::t('ADD_CATEGORY'));
+        $this->gadget->export('editCategory_title',    $this::t('EDIT_CATEGORY'));
+        $this->gadget->export('confirmCategoryDelete', $this::t('CONFIRM_DELETE_CATEGORY'));
+        $this->gadget->export('incomplete_fields',     Jaws::t('ERROR_INCOMPLETE_FIELDS'));
 
         $tpl->ParseBlock('Categories');
         return $tpl->Get();
