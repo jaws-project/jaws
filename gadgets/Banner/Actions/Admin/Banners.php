@@ -95,10 +95,10 @@ class Banner_Actions_Admin_Banners extends Banner_Actions_Admin_Default
         $btnCancel->AddEvent(ON_CLICK, "javascript:stopAction();");
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $this->gadget->define('incompleteBannerFields', $this::t('BANNERS_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmBannerDelete',    $this::t('BANNERS_CONFIRM_DELETE'));
-        $this->gadget->define('addBanner_title',        $this::t('BANNERS_ADD'));
-        $this->gadget->define('editBanner_title',       $this::t('BANNERS_EDIT'));
+        $this->gadget->export('incompleteBannerFields', $this::t('BANNERS_INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmBannerDelete',    $this::t('BANNERS_CONFIRM_DELETE'));
+        $this->gadget->export('addBanner_title',        $this::t('BANNERS_ADD'));
+        $this->gadget->export('editBanner_title',       $this::t('BANNERS_EDIT'));
 
         $tpl->ParseBlock('Banners');
         return $tpl->Get();
