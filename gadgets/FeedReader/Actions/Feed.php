@@ -311,12 +311,12 @@ class FeedReader_Actions_Feed extends Jaws_Gadget_Action
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_title', Jaws::t('TITLE'));
-        $this->gadget->define('lbl_alias', Jaws::t('ALIAS'));
-        $this->gadget->define('lbl_published', Jaws::t('PUBLISHED'));
-        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
-        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('lbl_title', Jaws::t('TITLE'));
+        $this->gadget->export('lbl_alias', Jaws::t('ALIAS'));
+        $this->gadget->export('lbl_published', Jaws::t('PUBLISHED'));
+        $this->gadget->export('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->export('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('UserFeeds.html');
         $tpl->SetBlock('UserFeeds');

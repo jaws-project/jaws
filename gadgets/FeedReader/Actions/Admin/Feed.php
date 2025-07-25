@@ -177,8 +177,8 @@ class FeedReader_Actions_Admin_Feed extends Jaws_Gadget_Action
         $btnsave->AddEvent(ON_CLICK, 'updateFeed();');
         $tpl->SetVariable('btn_save', $btnsave->Get());
 
-        $this->gadget->define('incompleteFeedFields', $this::t('INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmFeedDelete',    $this::t('CONFIRM_DELETE_FEED'));
+        $this->gadget->export('incompleteFeedFields', $this::t('INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmFeedDelete',    $this::t('CONFIRM_DELETE_FEED'));
 
         $tpl->ParseBlock('feedreader');
 
