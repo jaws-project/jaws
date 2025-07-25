@@ -22,9 +22,9 @@ class Components_Actions_Admin_Plugins extends Components_Actions_Admin_Default
         $this->gadget->CheckPermission('ManagePlugins');
         $this->AjaxMe('script.js');
 
-        $this->gadget->define('lbl_uninstall', $this::t('UNINSTALL'));
-        $this->gadget->define('lbl_install', $this::t('INSTALL'));
-        $this->gadget->define('confirmUninstallPlugin', $this::t('PLUGINS_CONFIRM_UNINSTALL'));
+        $this->gadget->export('lbl_uninstall', $this::t('UNINSTALL'));
+        $this->gadget->export('lbl_install', $this::t('INSTALL'));
+        $this->gadget->export('confirmUninstallPlugin', $this::t('PLUGINS_CONFIRM_UNINSTALL'));
 
         $tpl = $this->gadget->template->loadAdmin('Plugins.html');
         $tpl->SetBlock('components');

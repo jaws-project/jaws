@@ -22,12 +22,12 @@ class Components_Actions_Admin_Gadgets extends Components_Actions_Admin_Default
         $this->gadget->CheckPermission('ManageGadgets');
         $this->AjaxMe('script.js');
 
-        $this->gadget->define('lbl_update', $this::t('UPDATE'));
-        $this->gadget->define('lbl_enable', $this::t('ENABLE'));
-        $this->gadget->define('lbl_install', $this::t('INSTALL'));
-        $this->gadget->define('lbl_uninstall', $this::t('UNINSTALL'));
-        $this->gadget->define('confirmUninstallGadget', $this::t('GADGETS_CONFIRM_UNINSTALL'));
-        $this->gadget->define('confirmDisableGadget', $this::t('GADGETS_CONFIRM_DISABLE'));
+        $this->gadget->export('lbl_update', $this::t('UPDATE'));
+        $this->gadget->export('lbl_enable', $this::t('ENABLE'));
+        $this->gadget->export('lbl_install', $this::t('INSTALL'));
+        $this->gadget->export('lbl_uninstall', $this::t('UNINSTALL'));
+        $this->gadget->export('confirmUninstallGadget', $this::t('GADGETS_CONFIRM_UNINSTALL'));
+        $this->gadget->export('confirmDisableGadget', $this::t('GADGETS_CONFIRM_DISABLE'));
 
         $tpl = $this->gadget->template->loadAdmin('Gadgets.html');
         $tpl->SetBlock('components');
