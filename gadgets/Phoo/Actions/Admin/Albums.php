@@ -25,7 +25,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     function NewAlbum()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('base_script', BASE_SCRIPT);
+        $this->gadget->export('base_script', BASE_SCRIPT);
 
         $this->gadget->CheckPermission('ManageAlbums');
 
@@ -148,7 +148,7 @@ class Phoo_Actions_Admin_Albums extends Phoo_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageAlbums');
         $this->AjaxMe('script.js');
-        $this->gadget->define('base_script', BASE_SCRIPT);
+        $this->gadget->export('base_script', BASE_SCRIPT);
         $model = $this->gadget->model->load('Albums');
 
         $get = $this->gadget->request->fetch(array('action?null', 'album?null'), 'get');
