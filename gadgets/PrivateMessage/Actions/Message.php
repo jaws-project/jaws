@@ -45,25 +45,25 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
         }
 
         $this->AjaxMe('index.js');
-        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('lbl_view', Jaws::t('VIEW'));
-        $this->gadget->define('lbl_archive', $this::t('ARCHIVE'));
-        $this->gadget->define('lbl_mark_as_read', $this::t('MARK_AS_READ'));
-        $this->gadget->define('lbl_mark_as_unread', $this::t('MARK_AS_UNREAD'));
-        $this->gadget->define('lbl_trash', $this::t('TRASH'));
-        $this->gadget->define('lbl_restore_trash', $this::t('RESTORE_TRASH'));
-        $this->gadget->define('lbl_unarchive', $this::t('UNARCHIVE'));
-        $this->gadget->define('lbl_view_message', $this::t('MESSAGE_VIEW'));
-        $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->export('lbl_view', Jaws::t('VIEW'));
+        $this->gadget->export('lbl_archive', $this::t('ARCHIVE'));
+        $this->gadget->export('lbl_mark_as_read', $this::t('MARK_AS_READ'));
+        $this->gadget->export('lbl_mark_as_unread', $this::t('MARK_AS_UNREAD'));
+        $this->gadget->export('lbl_trash', $this::t('TRASH'));
+        $this->gadget->export('lbl_restore_trash', $this::t('RESTORE_TRASH'));
+        $this->gadget->export('lbl_unarchive', $this::t('UNARCHIVE'));
+        $this->gadget->export('lbl_view_message', $this::t('MESSAGE_VIEW'));
+        $this->gadget->export('datagridNoItems', Jaws::t('NOTFOUND'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl = $this->gadget->template->load('Messages.html');
         $tpl->SetBlock('messages');
 
         $post = $this->gadget->request->fetch(array('folder', 'page', 'read', 'term', 'page_item'));
         $folder = is_null($folder) ? (int)$post['folder'] : $folder;
-        $this->gadget->define('folder', $folder);
-        $this->gadget->define('folders', array(
+        $this->gadget->export('folder', $folder);
+        $this->gadget->export('folders', array(
             'inbox' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX,
             'draft' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT,
             'outbox' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX,
@@ -151,7 +151,7 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             'property' => 'send_time',
         );
 
-        $this->gadget->define('grid', array('columns' => $gridColumns));
+        $this->gadget->export('grid', array('columns' => $gridColumns));
 
         $tpl->SetVariable('title', $title);
         // Menu navigation
@@ -314,8 +314,8 @@ class PrivateMessage_Actions_Message extends PrivateMessage_Actions_Default
             $model->MarkMessages($id, true, $user);
         }
 
-        $this->gadget->define('folder', $message['folder']);
-        $this->gadget->define('folders', array(
+        $this->gadget->export('folder', $message['folder']);
+        $this->gadget->export('folders', array(
             'inbox' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_INBOX,
             'draft' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_DRAFT,
             'outbox' => PrivateMessage_Info::PRIVATEMESSAGE_FOLDER_OUTBOX,

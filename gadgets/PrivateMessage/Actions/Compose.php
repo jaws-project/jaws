@@ -31,8 +31,8 @@ class PrivateMessage_Actions_Compose extends PrivateMessage_Actions_Default
         $user = $this->app->session->user->id;
         $this->AjaxMe('index.js');
         // set default value of javascript variables
-        $this->gadget->define('icon_add', STOCK_ADD);
-        $this->gadget->define('icon_remove', STOCK_REMOVE);
+        $this->gadget->export('icon_add', STOCK_ADD);
+        $this->gadget->export('icon_remove', STOCK_REMOVE);
         $defaultRecipientUser = 0;
 
         $data = $this->gadget->request->fetch(array('id', 'user', 'reply', 'users:array'));
