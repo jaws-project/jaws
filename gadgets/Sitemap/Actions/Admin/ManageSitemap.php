@@ -22,11 +22,11 @@ class Sitemap_Actions_Admin_ManageSitemap extends Sitemap_Actions_Admin_Default
     {
         $this->AjaxMe('script.js');
         // set default value of javascript variables
-        $this->gadget->define('editCategoryTitle',  $this::t('CATEGORY_EDIT'));
-        $this->gadget->define('editGadgetTitle',    $this::t('GADGET_EDIT'));
-        $this->gadget->define('sitemapListOpenImageSrc',  STOCK_ADD);
-        $this->gadget->define('sitemapListCloseImageSrc', STOCK_REMOVE);
-        $this->gadget->define('noCategoryExists', $this::t('CATEGORY_NOEXISTS'));
+        $this->gadget->export('editCategoryTitle',  $this::t('CATEGORY_EDIT'));
+        $this->gadget->export('editGadgetTitle',    $this::t('GADGET_EDIT'));
+        $this->gadget->export('sitemapListOpenImageSrc',  STOCK_ADD);
+        $this->gadget->export('sitemapListCloseImageSrc', STOCK_REMOVE);
+        $this->gadget->export('noCategoryExists', $this::t('CATEGORY_NOEXISTS'));
 
         $tpl = $this->gadget->template->loadAdmin('Sitemap.html');
         $tpl->SetBlock('sitemap');
