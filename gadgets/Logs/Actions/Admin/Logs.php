@@ -19,12 +19,12 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
     function Logs()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmLogsDelete', $this::t('CONFIRM_DELETE'));
-        $this->gadget->define('msgNoMatches', $this::t('COMBO_NO_MATCH_MESSAGE'));
-        $this->gadget->define('noMatchesMessage', Jaws::t('COMBO_NO_MATCH_MESSAGE'));
-        $this->gadget->define('datagridNoItems', Jaws::t('NOTFOUND'));
+        $this->gadget->export('confirmLogsDelete', $this::t('CONFIRM_DELETE'));
+        $this->gadget->export('msgNoMatches', $this::t('COMBO_NO_MATCH_MESSAGE'));
+        $this->gadget->export('noMatchesMessage', Jaws::t('COMBO_NO_MATCH_MESSAGE'));
+        $this->gadget->export('datagridNoItems', Jaws::t('NOTFOUND'));
 
-        $this->gadget->define('LANGUAGE', array(
+        $this->gadget->export('LANGUAGE', array(
             'gadget'=> Jaws::t('GADGETS'),
             'action'=> $this::t('ACTION'),
             'auth'=> Jaws::t('AUTHTYPE'),
@@ -36,7 +36,7 @@ class Logs_Actions_Admin_Logs extends Logs_Actions_Admin_Default
 
         $gadgetList = Jaws_Gadget::getInstance('Components')->model->load('Gadgets')->GetGadgetsList();
         $gadgetList = Jaws_Error::IsError($gadgetList) ? array() : $gadgetList;
-        $this->gadget->define('gadgetList', array_column($gadgetList, 'title', 'name'));
+        $this->gadget->export('gadgetList', array_column($gadgetList, 'title', 'name'));
 
         $assigns = array();
         $assigns['menubar'] = empty($menubar) ? $this->MenuBar('Logs') : $menubar;
