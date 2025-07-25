@@ -17,15 +17,15 @@ class AbuseReporter_Actions_Admin_Reports extends AbuseReporter_Actions_Admin_De
     {
         $this->gadget->CheckPermission('ManageReports');
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmDelete', Jaws::t('CONFIRM_DELETE'));
-        $this->gadget->define('lbl_gadget', $this::t('GADGET'));
-        $this->gadget->define('lbl_action', $this::t('ACTION'));
-        $this->gadget->define('lbl_type', $this::t('TYPE'));
-        $this->gadget->define('lbl_priority', $this::t('PRIORITY'));
-        $this->gadget->define('lbl_status', Jaws::t('STATUS'));
-        $this->gadget->define('lbl_edit', Jaws::t('EDIT'));
-        $this->gadget->define('lbl_delete', Jaws::t('DELETE'));
-        $this->gadget->define('lbl_editReport', $this::t('REPORT_EDIT'));
+        $this->gadget->export('confirmDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('lbl_gadget', $this::t('GADGET'));
+        $this->gadget->export('lbl_action', $this::t('ACTION'));
+        $this->gadget->export('lbl_type', $this::t('TYPE'));
+        $this->gadget->export('lbl_priority', $this::t('PRIORITY'));
+        $this->gadget->export('lbl_status', Jaws::t('STATUS'));
+        $this->gadget->export('lbl_edit', Jaws::t('EDIT'));
+        $this->gadget->export('lbl_delete', Jaws::t('DELETE'));
+        $this->gadget->export('lbl_editReport', $this::t('REPORT_EDIT'));
 
         $tpl = $this->gadget->template->loadAdmin('Reports.html');
         $tpl->SetBlock('Reports');
