@@ -40,9 +40,9 @@ class EventsCalendar_Actions_ManageEvents extends Jaws_Gadget_Action
         $siteUrl = $this->app->getSiteURL('/');
         $eventsUrl = $siteUrl . $this->gadget->urlMap('ManageEvents', array('user' => $user));
 
-        $this->gadget->define('events_url', $eventsUrl);
-        $this->gadget->define('confirmDelete', $this::t('WARNING_DELETE_EVENTS'));
-        $this->gadget->define('errorShortQuery', $this::t('ERROR_SHORT_QUERY'));
+        $this->gadget->export('events_url', $eventsUrl);
+        $this->gadget->export('confirmDelete', $this::t('WARNING_DELETE_EVENTS'));
+        $this->gadget->export('errorShortQuery', $this::t('ERROR_SHORT_QUERY'));
 
         $tpl = $this->gadget->template->load('ManageEvents.html');
         $tpl->SetBlock('events');

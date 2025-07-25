@@ -88,7 +88,7 @@ class EventsCalendar_Actions_Admin_EventsCalendar extends EventsCalendar_Actions
         for ($i = 0; $i <= 2; $i++) {
             $const['priorities'][$i] = $this::t('EVENT_PRIORITY_' . $i);
         }
-        $this->gadget->define('CONST', $const);
+        $this->gadget->export('CONST', $const);
 
         if ($mode == 'public') {
             $tpl->SetBlock('ec/addBtn');
