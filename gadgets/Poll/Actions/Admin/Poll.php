@@ -94,13 +94,13 @@ class Poll_Actions_Admin_Poll extends Poll_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManagePolls');
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompletePollsFields', $this::t('POLLS_INCOMPLETE_FIELDS'));
-        $this->gadget->define('requiresTwoAnswers',    $this::t('ERROR_REQUIRES_TWO_ANSWERS'));
-        $this->gadget->define('confirmPollDelete',     $this::t('POLLS_CONFIRM_DELETE'));
-        $this->gadget->define('addPoll_title',         $this::t('POLLS_ADD_TITLE'));
-        $this->gadget->define('editPoll_title',        $this::t('POLLS_EDIT_TITLE'));
-        $this->gadget->define('editAnswers_title',     $this::t('POLLS_ANSWERS_TITLE'));
-        $this->gadget->define('legend_title',          $this::t('POLLS_ADD_TITLE'));
+        $this->gadget->export('incompletePollsFields', $this::t('POLLS_INCOMPLETE_FIELDS'));
+        $this->gadget->export('requiresTwoAnswers',    $this::t('ERROR_REQUIRES_TWO_ANSWERS'));
+        $this->gadget->export('confirmPollDelete',     $this::t('POLLS_CONFIRM_DELETE'));
+        $this->gadget->export('addPoll_title',         $this::t('POLLS_ADD_TITLE'));
+        $this->gadget->export('editPoll_title',        $this::t('POLLS_EDIT_TITLE'));
+        $this->gadget->export('editAnswers_title',     $this::t('POLLS_ANSWERS_TITLE'));
+        $this->gadget->export('legend_title',          $this::t('POLLS_ADD_TITLE'));
 
         $calType = strtolower($this->gadget->registry->fetch('calendar', 'Settings'));
         $calLang = strtolower($this->gadget->registry->fetch('admin_language', 'Settings'));

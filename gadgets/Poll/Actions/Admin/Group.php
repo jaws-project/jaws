@@ -94,11 +94,11 @@ class Poll_Actions_Admin_Group extends Poll_Actions_Admin_Default
     {
         $this->gadget->CheckPermission('ManageGroups');
         $this->AjaxMe('script.js');
-        $this->gadget->define('incompleteGroupsFields',   $this::t('POLLS_INCOMPLETE_FIELDS'));
-        $this->gadget->define('confirmPollGroupDelete',   $this::t('GROUPS_CONFIRM_DELETE'));
-        $this->gadget->define('addPollGroup_title',       $this::t('GROUPS_ADD_TITLE'));
-        $this->gadget->define('editPollGroup_title',      $this::t('GROUPS_EDIT_TITLE'));
-        $this->gadget->define('editPollGroupPolls_title', $this::t('GROUPS_POLLS_TITLE'));
+        $this->gadget->export('incompleteGroupsFields',   $this::t('POLLS_INCOMPLETE_FIELDS'));
+        $this->gadget->export('confirmPollGroupDelete',   $this::t('GROUPS_CONFIRM_DELETE'));
+        $this->gadget->export('addPollGroup_title',       $this::t('GROUPS_ADD_TITLE'));
+        $this->gadget->export('editPollGroup_title',      $this::t('GROUPS_EDIT_TITLE'));
+        $this->gadget->export('editPollGroupPolls_title', $this::t('GROUPS_POLLS_TITLE'));
 
         $tpl = $this->gadget->template->loadAdmin('PollGroups.html');
         $tpl->SetBlock('PollGroups');
