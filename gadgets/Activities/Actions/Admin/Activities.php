@@ -116,7 +116,7 @@ class Activities_Actions_Admin_Activities extends Activities_Actions_Admin_Defau
         $btnCancel->SetStyle('display:none;');
         $tpl->SetVariable('btn_cancel', $btnCancel->Get());
 
-        $this->gadget->define('confirmActivitiesDelete', Jaws::t('CONFIRM_DELETE'));
+        $this->gadget->export('confirmActivitiesDelete', Jaws::t('CONFIRM_DELETE'));
 
         $tpl->ParseBlock('Activities');
         return $tpl->Get();
