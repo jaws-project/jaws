@@ -21,9 +21,9 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
     function Comments($req_gadget = '', $menubar = '')
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmCommentDelete', $this::t('CONFIRM_DELETE'));
+        $this->gadget->export('confirmCommentDelete', $this::t('CONFIRM_DELETE'));
 
-        $this->gadget->define('LANGUAGE', array(
+        $this->gadget->export('LANGUAGE', array(
             'gadget'=> Jaws::t('GADGETS'),
             'comment'=> $this::t('COMMENT'),
             'username'=> Jaws::t('USERNAME'),
@@ -51,9 +51,9 @@ class Comments_Actions_Admin_Comments extends Comments_Actions_Admin_Default
             Comments_Info::COMMENTS_STATUS_SPAM => $this::t('STATUS_SPAM'),
             Comments_Info::COMMENTS_STATUS_PRIVATE => $this::t('STATUS_PRIVATE'),
         );
-        $this->gadget->define('gadgetList', array_column($gadgetsList, 'title', 'name'));
-        $this->gadget->define('statusItems', $statusItems);
-        $this->gadget->define('status', array(
+        $this->gadget->export('gadgetList', array_column($gadgetsList, 'title', 'name'));
+        $this->gadget->export('statusItems', $statusItems);
+        $this->gadget->export('status', array(
             'approve' => Comments_Info::COMMENTS_STATUS_APPROVED,
             'waiting' => Comments_Info::COMMENTS_STATUS_WAITING,
             'spam' => Comments_Info::COMMENTS_STATUS_SPAM,
