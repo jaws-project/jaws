@@ -41,7 +41,7 @@ class Tms_Actions_Admin_Themes extends Jaws_Gadget_Action
     function Themes()
     {
         $this->AjaxMe('script.js');
-        $this->gadget->define('confirmDeleteTheme', $this::t('THEMES_DELETE_CONFIRM'));
+        $this->gadget->export('confirmDeleteTheme', $this::t('THEMES_DELETE_CONFIRM'));
 
         $tpl = $this->gadget->template->loadAdmin('Themes.html');
         $tpl->SetBlock('Tms');
