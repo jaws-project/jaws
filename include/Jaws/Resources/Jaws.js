@@ -1893,9 +1893,13 @@ var Jaws_Gadget = (function () {
                 if (Jaws.gadgets[gadget]) {
                     objGadget.defines = Jaws.gadgets[gadget].defines;
                     objGadget.actions = Jaws.gadgets[gadget].actions;
+                    objGadget.registry = Jaws.gadgets[gadget].registry || {};
+                    objGadget.session = Jaws.gadgets[gadget].session || {};
                 } else {
                     objGadget.defines = [];
                     objGadget.actions = {};
+                    objGadget.registry = {};
+                    objGadget.session = {};
                 }
 
                 // shout interface method
