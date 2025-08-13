@@ -45,6 +45,7 @@ class Installer_Settings extends JawsInstaller
             // Create application
             $jawsApp = Jaws::getInstance();
             $jawsApp->registry->init();
+            $jawsApp->session->init();
             $jawsApp->loadPreferences(array('language' => $_SESSION['install']['language']), false);
             Jaws_Translate::getInstance()->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
         }

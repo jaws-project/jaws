@@ -323,6 +323,7 @@ class Installer_Database extends JawsInstaller
         require_once ROOT_JAWS_PATH . 'include/Jaws.php';
         $jawsApp = Jaws::getInstance();
         $jawsApp->registry->init();
+        $jawsApp->session->init();
         $jawsApp->loadPreferences(array('language' => $_SESSION['install']['language']), false);
         Jaws_Translate::getInstance()->LoadTranslation('Install', JAWS_COMPONENT_INSTALL);
 

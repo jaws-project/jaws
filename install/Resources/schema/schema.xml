@@ -31,7 +31,7 @@
             <field>
                 <name>key_name</name>
                 <type>text</type>
-                <length>32</length>
+                <length>48</length>
             </field>
 
             <field>
