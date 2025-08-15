@@ -103,6 +103,14 @@ class DatePicker extends Bin
     var $_langFile = '';
 
     /**
+     * table tag Id
+     *
+     * @access   private
+     * @var      string
+     */
+    var $_tableID;
+
+    /**
      * Button text
      *
      * @access   private
