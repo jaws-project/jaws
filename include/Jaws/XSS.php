@@ -249,13 +249,13 @@ class Jaws_XSS
      * @param   string  $url                URL
      * @param   bool    $deny_remote_url    Deny remote URL
      * @param   bool    $urlencoded         URL is encoded?
-     * @return  string  Returns filtered URL
+     * @return  bool|string  Returns filtered URL otherwise False
      */
     static function filterURL($url, $urlencoded = false, $deny_remote_url = false)
     {
         // parse & encode given url
         if (false === $parsedURL = parse_url(htmlspecialchars_decode($url))) {
-            return '';
+            return false;
         }
 
         foreach ($parsedURL as $part => $value) {
