@@ -2545,67 +2545,14 @@ Jaws.filters = {
      *
      */
     base64_encode: function(input) {
-        const keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-        let result = '';
-        let chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-        let i = 0;
-
-        input = this.utf8_encode(input);
-        while (i < input.length) {
-            chr1 = input.charCodeAt(i++);
-            chr2 = input.charCodeAt(i++);
-            chr3 = input.charCodeAt(i++);
-
-            enc1 = chr1 >> 2;
-            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-            enc4 = chr3 & 63;
-
-            if (isNaN(chr2)) {
-                enc3 = enc4 = 64;
-            } else if (isNaN(chr3)) {
-                enc4 = 64;
-            }
-
-            result = result +
-                keyStr.charAt(enc1) + keyStr.charAt(enc2) +
-                keyStr.charAt(enc3) + keyStr.charAt(enc4);
-        }
-
-        return result;
+        return window.btoa(input);
     },
 
     /**
      *
      */
     base64_decode: function(input) {
-        const keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-        let result = '';
-        let chr1, chr2, chr3;
-        let enc1, enc2, enc3, enc4;
-        let i = 0;
-
-        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-        while (i < input.length) {
-            enc1 = keyStr.indexOf(input.charAt(i++));
-            enc2 = keyStr.indexOf(input.charAt(i++));
-            enc3 = keyStr.indexOf(input.charAt(i++));
-            enc4 = keyStr.indexOf(input.charAt(i++));
-
-            chr1 = (enc1 << 2) | (enc2 >> 4);
-            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-            chr3 = ((enc3 & 3) << 6) | enc4;
-
-            result = result + String.fromCharCode(chr1);
-            if (enc3 != 64) {
-                result = result + String.fromCharCode(chr2);
-            }
-            if (enc4 != 64) {
-                result = result + String.fromCharCode(chr3);
-            }
-        }
-
-        return this.utf8_decode(result);
+        return window.atob(input);
     },
 
     /**
@@ -2676,6 +2623,37 @@ Jaws.filters = {
         input = input.replace(/&amp;/g, '&');
 
         return input;
+    },
+
+    /**
+     * Converts a packed internet address to a human readable representation
+     * @see  https://github.com/locutusjs/locutus
+     */
+    inet_ntop: function(ip) {
+        let i = 0;
+        let m = '';
+        const c = [];
+
+        ip += '';
+        if (ip.length === 4) {
+            // IPv4
+            return [ip.charCodeAt(0), ip.charCodeAt(1), ip.charCodeAt(2), ip.charCodeAt(3)].join('.');
+        } else if (ip.length === 16) {
+            // IPv6
+            for (i = 0; i < 16; i++) {
+                c.push(((ip.charCodeAt(i++) << 8) + ip.charCodeAt(i)).toString(16));
+            }
+
+            return c.join(':').replace(
+                /((^|:)0(?=:|$))+:?/g,
+                function (t) {
+                    m = t.length > m.length ? t : m;
+                    return t;
+                }).replace(m || ' ', '::');
+        } else {
+            // Invalid length
+            return null;
+        }
     },
 
     /**
