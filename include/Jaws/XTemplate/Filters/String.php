@@ -568,12 +568,18 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
      * Encodes data with MIME base64
      *
      * @param   mixed   $input  The data to encode
+     * @param   bool    $trim   Trim equal(=) characters
      *
      * @return  string  The encoded data, as a string
      */
-    public static function base64_encode($input)
+    public static function base64_encode($input, $trim = false)
     {
-        return base64_encode($input);
+        if (!is_string($input)) {
+            return $input;
+        }
+
+        $result = base64_encode($input);
+        return $trim? rtrim($result, '=') : $result;
     }
 
     /**
@@ -646,6 +652,19 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
     public static function inet_ntop($ip)
     {
         return inet_ntop($ip);
+    }
+
+    /**
+     * Converts a human readable IP address to its packed in_addr representation
+     *
+     * @param   string  $ip A human readable IPv4 or IPv6 address
+     *
+     * @return  string|False Returns the in_addr representation of the given ip,
+     *                       or false if a syntactically invalid ip is given
+     */
+    public static function inet_pton($ip)
+    {
+        return inet_pton($ip)?: null;
     }
 
     /**
