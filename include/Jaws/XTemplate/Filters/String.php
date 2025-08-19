@@ -637,6 +637,18 @@ class Jaws_XTemplate_Filters_String extends Jaws_XTemplate_Filters
     }
 
     /**
+     * Converts a packed internet address to a human readable representation
+     *
+     * @param   string  $ip A 32bit IPv4, or 128bit IPv6 address
+     *
+     * @return  string|False Returns a string representation of the address or false on failure
+     */
+    public static function inet_ntop($ip)
+    {
+        return inet_ntop($ip);
+    }
+
+    /**
      * Encrypt text by RSA algorithm
      *
      * @param   string  $input Plain text
