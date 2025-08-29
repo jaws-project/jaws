@@ -9,6 +9,17 @@
 /**
  * Index actions
  */
+// Domain
+$actions['getDomain'] = array(
+    'standalone' => true,
+    'file' => 'Domain',
+    'acls' => array('DomainGet'),
+);
+$actions['getDomains'] = array(
+    'standalone' => true,
+    'file' => 'Domain',
+    'acls' => array('DomainList'),
+);
 $actions['Login'] = array(
     'normal' => true,
     'layout' => true,

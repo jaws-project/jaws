@@ -21,7 +21,7 @@ class Users_Actions_Admin_Groups extends Users_Actions_Admin_Default
         $assigns = array();
         $assigns['menubar'] =  empty($menubar)? $this->MenuBar('Groups') : $menubar;
         if ($this->gadget->registry->fetch('multi_domain') == 'true') {
-            $assigns['domains'] = $this->gadget->model->load('Domains')->getDomains();
+            $assigns['domains'] = $this->gadget->model->load('Domain')->list();
         }
 
         $assigns['components'] = Jaws_Gadget::getInstance('Components')

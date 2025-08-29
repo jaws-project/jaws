@@ -69,7 +69,7 @@ class Users_Account_Default_Login extends Users_Account_Default
 
         // domain
         if ($this->gadget->registry->fetch('multi_domain') == 'true') {
-            $assigns['domains'] = $this->gadget->model->load('Domains')->getDomains();
+            $assigns['domains'] = $this->gadget->model->load('Domain')->list();
             if (Jaws_Error::IsError($assigns['domains'])) {
                 $assigns['domains'] = array();
             }

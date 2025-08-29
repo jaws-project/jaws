@@ -46,6 +46,8 @@ class Users_Installer extends Jaws_Gadget_Installer
      * @access  private
      */
     var $_ACLKeys = array(
+        'DomainGet',
+        'DomainList',
         'ManageUsers',
         'ManageGroups',
         'ManageOnlineUsers',
@@ -502,6 +504,12 @@ class Users_Installer extends Jaws_Gadget_Installer
 
         if (version_compare($old, '5.8.0', '<')) {
             $this->gadget->registry->insert('login_steps', 'user,password');
+        }
+
+        if (version_compare($old, '5.9.0', '<')) {
+            // ACL keys
+            $this->gadget->acl->insert('DomainGet');
+            $this->gadget->acl->insert('DomainList');
         }
 
         return true;

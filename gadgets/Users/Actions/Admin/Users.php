@@ -37,7 +37,7 @@ class Users_Actions_Admin_Users extends Users_Actions_Admin_Default
         $assigns['dob'] = $this->gadget->action->load('DatePicker')->xcalendar(array('name' => 'dob'));
 
         if ($this->gadget->registry->fetch('multi_domain') == 'true') {
-            $assigns['domains'] = $this->gadget->model->load('Domains')->getDomains();
+            $assigns['domains'] = $this->gadget->model->load('Domain')->list();
         }
         $assigns['components'] = Jaws_Gadget::getInstance('Components')
             ->model->load('Gadgets')
