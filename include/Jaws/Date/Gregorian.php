@@ -79,7 +79,7 @@ class Jaws_Date_Gregorian extends Jaws_Date
                 'mon'     => str_pad($date['mon'],  2, '0', STR_PAD_LEFT),
                 'year'    => str_pad($date['year'], 4, '0', STR_PAD_LEFT),
                 'yday'    => $date['yday'],
-                'wday'    => $this->DayString($date['wday']),
+                'weekday' => $this->DayString($date['wday']),
                 'month'   => $this->MonthString($date['mon']),
             );
     }

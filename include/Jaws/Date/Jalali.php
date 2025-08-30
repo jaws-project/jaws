@@ -351,7 +351,7 @@ class Jaws_Date_Jalali extends Jaws_Date
                 'wday'    => $wday,
                 'mon'     => $month,
                 'year'    => $year,
-                'wday'     => $this->DayString($wday),
+                'weekday' => $this->DayString($wday),
                 'month'   => $this->MonthString($month),
             );
     }
