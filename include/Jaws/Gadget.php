@@ -248,11 +248,11 @@ class Jaws_Gadget
      */
     static function ExecuteMainRequest()
     {
-        $IsIndex = false;
         $objAction = null;
         $reqGadgetVersion = '';
         $isReqActionStandAlone = false;
         $jawsApp = Jaws::getInstance();
+        $requestURL = Jaws_Utils::getRequestURL();
 
         // Only registered user can access not global website
         $privateAccess = $jawsApp->registry->fetch('global_website', 'Settings') == 'false';
@@ -266,7 +266,6 @@ class Jaws_Gadget
             $reqAction = Jaws_Gadget::filter($jawsApp->request->fetch('reqAction'));
 
             if (empty($reqGadget)) {
-                $IsIndex = true;
                 if (JAWS_SCRIPT == 'index') {
                     // FIXME:: there is no layout attribute!
                     $reqGadget = $jawsApp->registry->fetchByUser(
@@ -325,7 +324,7 @@ class Jaws_Gadget
                 Jaws_Header::Location(
                     Jaws_Gadget::getInstance('Users')->gadget->url(
                         'Login',
-                        array('referrer' => bin2hex(Jaws_Utils::getRequestURL()))
+                        array('referrer' => bin2hex($requestURL))
                     )
                 );
             }
@@ -336,7 +335,7 @@ class Jaws_Gadget
             $reqAction = null;
         }
 
-        $jawsApp->mainIndex = $IsIndex;
+        $jawsApp->mainIndex = in_array($requestURL, ['', JAWS_SCRIPT]); 
         // Run auto-load methods before standalone actions too
         $jawsApp->RunAutoload();
         // Init layout if action mode not standalone
