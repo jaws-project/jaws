@@ -39,6 +39,9 @@ define('JAWS_NOTICE',    6);  // Normal but significant condition
 define('JAWS_INFO',      7);  // Informational
 define('JAWS_DEBUG',     8);  // debug-level messages
 
+define('JAWS_AUTOLOAD_PRE',  0);  // pre-load
+define('JAWS_AUTOLOAD_POST', 1);  // post-load
+
 define('ACTION_MODE_NORMAL', 'normal');         // Normal action
 define('ACTION_MODE_LAYOUT', 'layout');         // Layout action
 define('ACTION_MODE_STANDALONE', 'standalone'); // Standalone action

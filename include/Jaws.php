@@ -525,24 +525,36 @@ class Jaws
      * Executes the autoload gadgets
      *
      * @access  public
+     * @param   int     $trigger    load trigger (JAWS_AUTOLOAD_PRE, JAWS_AUTOLOAD_POST)
      * @return  void
      */
-    function RunAutoload()
+    function RunAutoload($trigger = JAWS_AUTOLOAD_PRE)
     {
-        $data    = $this->registry->fetch('gadgets_autoload_items');
-        $gadgets = array_filter(explode(',', $data));
-        foreach($gadgets as $gadget) {
-            if (Jaws_Gadget::IsGadgetEnabled($gadget)) {
-                $objGadget = Jaws_Gadget::getInstance($gadget);
-                if (Jaws_Error::IsError($objGadget)) {
-                    continue;
+        static $hooks = array();
+        if (!isset($instances[$hooks])) {
+            $data = $this->registry->fetch('gadgets_autoload_items');
+            $gadgets = array_filter(explode(',', $data));
+            foreach($gadgets as $gadget) {
+                if (Jaws_Gadget::IsGadgetEnabled($gadget)) {
+                    $objGadget = Jaws_Gadget::getInstance($gadget);
+                    if (Jaws_Error::IsError($objGadget)) {
+                        continue;
+                    }
+                    $objHook = $objGadget->hook->load('Autoload');
+                    if (Jaws_Error::IsError($objHook)) {
+                        continue;
+                    }
+                    $hooks[$gadget] = $objHook;
                 }
-                $objHook = $objGadget->hook->load('Autoload');
-                if (Jaws_Error::IsError($objHook)) {
-                    continue;
-                }
+            }
+        }
 
-                $result = $objHook->Execute();
+        foreach($hooks as $objHook) {
+            // for backward compatibility, if loadTrigger not defined we load it as pre-load
+            $loadTriggers = property_exists($objHook, 'loadTriggers')? $objHook::$loadTriggers : [JAWS_AUTOLOAD_PRE];
+
+            if (in_array($trigger, $loadTriggers)) {
+                $result = $objHook->Execute($trigger);
                 if (Jaws_Error::IsError($result)) {
                     //do nothing;
                 }

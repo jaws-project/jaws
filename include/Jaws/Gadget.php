@@ -336,8 +336,8 @@ class Jaws_Gadget
         }
 
         $jawsApp->mainIndex = in_array($requestURL, ['', JAWS_SCRIPT]); 
-        // Run auto-load methods before standalone actions too
-        $jawsApp->RunAutoload();
+        // Run pre autoload methods
+        $jawsApp->RunAutoload(JAWS_AUTOLOAD_PRE);
         // Init layout if action mode not standalone
         if (!$isReqActionStandAlone) {
             $jawsApp->layout->Load();
@@ -369,6 +369,9 @@ class Jaws_Gadget
         } else {
             $reqResult = Jaws_HTTPError::Get($reqError);
         }
+
+        // Run post autoload methods
+        $jawsApp->RunAutoload(JAWS_AUTOLOAD_POST);
 
         return array(
             'gadget'  => $reqGadget,
