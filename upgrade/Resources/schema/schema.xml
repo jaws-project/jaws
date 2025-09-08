@@ -31,7 +31,7 @@
             <field>
                 <name>key_name</name>
                 <type>text</type>
-                <length>32</length>
+                <length>48</length>
             </field>
 
             <field>
@@ -486,33 +486,33 @@
             </field>
 
             <field>
+                <name>title</name>
+                <type>text</type>
+                <length>64</length>
+            </field>
+
+            <field>
                 <name>device</name>
-                <comments>1:mobile, 2:tablet, 3:pc, 4:others</comments>
+                <comments>1:mobile, 2:tablet, 3:desktop, 4: tv, 5:others</comments>
                 <type>integer</type>
                 <length>2</length>
                 <default>0</default>
             </field>
 
             <field>
-                <name>os</name>
-                <type>integer</type>
-                <length>2</length>
-            </field>
-
-            <field>
-                <name>os_version</name>
+                <name>platform</name>
                 <type>text</type>
-                <length>16</length>
+                <length>64</length>
             </field>
 
             <field>
                 <name>browser</name>
-                <type>integer</type>
-                <length>2</length>
+                <type>text</type>
+                <length>64</length>
             </field>
 
             <field>
-                <name>browser_version</name>
+                <name>version</name>
                 <type>text</type>
                 <length>16</length>
             </field>
@@ -528,6 +528,27 @@
                 <unique>true</unique>
                 <field>
                     <name>hash</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>agent_device</name>
+                <field>
+                    <name>device</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>agent_platform</name>
+                <field>
+                    <name>platform</name>
+                </field>
+            </index>
+
+            <index>
+                <name><variable>table_prefix</variable>agent_browser</name>
+                <field>
+                    <name>browser</name>
                 </field>
             </index>
 

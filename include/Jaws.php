@@ -212,6 +212,22 @@ class Jaws
             } else {
                 $this->_Preferences['language'] = $this->registry->fetchByUser($user, 'admin_language', 'Settings');
             }
+
+            // pass user session data to client
+            $this->export(
+                '',
+                JAWS_EXPORT_SESSION,
+                array(
+                    'user' => array(
+                        'id'        => $this->session->user->id,
+                        'username'  => $this->session->user->username,
+                        'superadmin'=> $this->session->user->superadmin,
+                        'nickname'  => $this->session->user->nickname,
+                        'logged'    => $this->session->user->logged,
+                        'avatar'    => $this->session->user->avatar,
+                    ),
+                )
+            );
         }
 
         // merge default with passed preferences
@@ -230,22 +246,6 @@ class Jaws
 
         // pass preferences to client
         $this->export('', JAWS_EXPORT_UNTYPE, $this->_Preferences);
-
-        // pass user session data to client
-        $this->export(
-            '',
-            JAWS_EXPORT_SESSION,
-            array(
-                'user' => array(
-                    'id'        => $this->session->user->id,
-                    'username'  => $this->session->user->username,
-                    'superadmin'=> $this->session->user->superadmin,
-                    'nickname'  => $this->session->user->nickname,
-                    'logged'    => $this->session->user->logged,
-                    'avatar'    => $this->session->user->avatar,
-                ),
-            )
-        );
     }
 
     /**

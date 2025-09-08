@@ -32,21 +32,8 @@ class Upgrader_Report extends JawsUpgrader
         $jawsApp->loadPreferences(array('language' => $_SESSION['upgrade']['language']), false);
 
         $supportedversions = array(
-            array('version' => '1.9.0', 'stage' => '16'),
-            array('version' => '1.8.0', 'stage' => '15'),
-            array('version' => '1.7.0', 'stage' => '14'),
-            array('version' => '1.6.0', 'stage' => '13'),
-            array('version' => '1.5.0', 'stage' => '12'),
-            array('version' => '1.4.0', 'stage' => '11'),
-            array('version' => '1.3.0', 'stage' => '10'),
-            array('version' => '1.2.0', 'stage' => '9'),
-            array('version' => '1.1.1', 'stage' => '8'),
-            array('version' => '1.1.0', 'stage' => '7'),
-            array('version' => '1.0.0', 'stage' => '6'),
-            array('version' => '0.9.3', 'stage' => null),
-            array('version' => '0.9.2', 'stage' => null),
-            array('version' => '0.9.1', 'stage' => null),
-            array('version' => '0.9.0', 'stage' => null),
+            array('version' => '2.1.0', 'stage' => '7'),
+            array('version' => '2.0.0', 'stage' => '6'),
         );
 
         _log(JAWS_DEBUG,"Checking/Reporting previous missed installations");

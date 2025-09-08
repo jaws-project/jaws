@@ -1,17 +1,17 @@
 <?php
 /**
- * Jaws Upgrade Stage - From 1.0.0 to 1.1.0
+ * Jaws Upgrade Stage - From 1.9.0 to 2.0.0
  *
  * @category    Application
  * @package     UpgradeStage
  * @author      Ali Fazelzadeh <afz@php.net>
- * @copyright   2014-2024 Jaws Development Group
+ * @copyright   2020-2024 Jaws Development Group
  * @license     http://www.gnu.org/copyleft/lesser.html
  */
-class Upgrader_100To110 extends JawsUpgrader
+class Upgrader_190To200 extends JawsUpgrader
 {
     /**
-     * Builds the upgader page.
+     * Builds the upgrader page.
      *
      * @access  public
      * @return  string A block of valid XHTML to display an introduction and form.
@@ -19,14 +19,14 @@ class Upgrader_100To110 extends JawsUpgrader
     function Display()
     {
         $tpl = new Jaws_Template(false, false);
-        $tpl->Load('display.html', 'stages/100To110/templates');
-        $tpl->SetBlock('100To110');
+        $tpl->Load('display.html', 'stages/190To200/templates');
+        $tpl->SetBlock('190To200');
 
-        $tpl->setVariable('lbl_info',  $this::t('VER_INFO', '1.0.0', '1.1.0'));
+        $tpl->setVariable('lbl_info',  $this::t('VER_INFO', '1.9.0', '2.0.0'));
         $tpl->setVariable('lbl_notes', $this::t('VER_NOTES'));
         $tpl->SetVariable('next',      Jaws::t('NEXT'));
 
-        $tpl->ParseBlock('100To110');
+        $tpl->ParseBlock('190To200');
         return $tpl->Get();
     }
 
@@ -43,8 +43,36 @@ class Upgrader_100To110 extends JawsUpgrader
         require_once ROOT_JAWS_PATH . 'include/Jaws/DB.php';
         $objDatabase = Jaws_DB::getInstance('default', $_SESSION['upgrade']['Database']);
         if (Jaws_Error::IsError($objDatabase)) {
-            _log(JAWS_DEBUG,"There was a problem connecting to the database, please check the details and try again");
+            _log(
+                JAWS_DEBUG,
+                "There was a problem connecting to the database, please check the details and try again"
+            );
             return new Jaws_Error($this::t('DB_RESPONSE_CONNECT_FAILED'), 0, JAWS_ERROR_WARNING);
+        }
+
+        $schema_array = array(
+            '1.9.0' => '2.0.0'
+        );
+        foreach ($schema_array as $old => $new) {
+            // upgrade core database schema
+            $old_schema = ROOT_JAWS_PATH . "upgrade/Resources/schema/$old.xml";
+            $new_schema = ROOT_JAWS_PATH . "upgrade/Resources/schema/$new.xml";
+            if (!Jaws_FileManagement_File::file_exists($old_schema)) {
+                return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', "$old.xml"),0 , JAWS_ERROR_ERROR);
+            }
+
+            if (!Jaws_FileManagement_File::file_exists($new_schema)) {
+                return new Jaws_Error(Jaws::t('ERROR_SQLFILE_NOT_EXISTS', "$new.xml"),0 , JAWS_ERROR_ERROR);
+            }
+
+            _log(JAWS_DEBUG,"Upgrading core schema");
+            $result = Jaws_DB::getInstance()->installSchema($new_schema, array(), $old_schema);
+            if (Jaws_Error::isError($result)) {
+                _log(JAWS_ERROR, $result->getMessage());
+                if ($result->getCode() !== MDB2_ERROR_ALREADY_EXISTS) {
+                    return new Jaws_Error($result->getMessage(), 0, JAWS_ERROR_ERROR);
+                }
+            }
         }
 
         // Create application
@@ -52,7 +80,7 @@ class Upgrader_100To110 extends JawsUpgrader
         Jaws::getInstance()->registry->init();
 
         // Upgrading core gadgets
-        $gadgets = array('Settings', 'Layout', 'Users');
+        $gadgets = array('Users');
         foreach ($gadgets as $gadget) {
             $objGadget = Jaws_Gadget::getInstance($gadget);
             if (Jaws_Error::IsError($objGadget)) {

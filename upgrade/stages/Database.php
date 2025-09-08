@@ -320,6 +320,7 @@ class Upgrader_Database extends JawsUpgrader
 
         _log(JAWS_DEBUG,"Checking current database");
 
+        require_once ROOT_JAWS_PATH . 'include/Jaws/ORM.php';
         // json encode all registry key value
         $tblReg = Jaws_ORM::getInstance()->table('registry');
         $regData = $tblReg->select('id:integer', 'key_value')->fetchAll();

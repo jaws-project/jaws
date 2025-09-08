@@ -18,8 +18,8 @@ define('JAWS_COMPONENT_INSTALL', 4);
 define('JAWS_COMPONENT_UPGRADE', 5);
 
 // Version of the unpacked Jaws (not the one in registry)
-define('JAWS_VERSION', '2.0.0');
-define('JAWS_VERSION_CODENAME', '20 years celebration');
+define('JAWS_VERSION', '2.1.0');
+define('JAWS_VERSION_CODENAME', 'Forward, Always.');
 
 // Jaws export data type
 define('JAWS_EXPORT_REGISTRY', 1);

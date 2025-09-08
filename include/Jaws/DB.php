@@ -1,6 +1,6 @@
 <?php
 require_once PEAR_PATH. 'MDB2.php';
-require ROOT_JAWS_PATH . 'include/Jaws/ORM.php';
+require_once ROOT_JAWS_PATH . 'include/Jaws/ORM.php';
 
 /**
  * Wrapper of Jaws queries and MDB2
