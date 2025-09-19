@@ -109,7 +109,7 @@ class Jaws_Session
         $hash = hash64($addr['proxy'] . $addr['client']);
         $this->app->ip = Jaws_ORM::getInstance()
             ->table('ip')
-            ->select('id:integer', 'robot:boolean')
+            ->select('id:integer')
             ->igsert(
                 array(
                     'hash'   => $hash,
@@ -130,16 +130,37 @@ class Jaws_Session
         // get agent record id from database
         $agent = Jaws_XSS::filter($_SERVER['HTTP_USER_AGENT']);
         $hash  = hash64($agent);
+
+        $agenData = array(
+            'hash' => $hash,
+            'agent' => $agent,
+            'robot' => false,
+        );
+
+        // Attempts to detect user's browser, by lookingup the browser's agent in the browscap.ini file.
+        if (function_exists('get_browser')) {
+            if (false != $browser = get_browser($agent, true)) {
+                $agenData['platform'] = $browser['platform']?? '';
+                $agenData['browser'] = $browser['browser']?? '';
+                $agenData['version'] = $browser['version']?? '';
+                $agenData['device'] = JAWS_DEVICE_TYPE[$browser['device_type']?? '']?? 0;
+                $agenData['robot'] = !empty($browser['crawler']);
+
+                if ($browser['browser_name_pattern'] == '*') {
+                    $agenData['title'] = $agenData['agent'];
+                } else {
+                    $agenData['title'] = $agenData['browser'];
+                    if (!empty($browser['version']) && $browser['version'] != '0.0') {
+                        $agenData['title'] = $agenData['title'] . ' '. $browser['version'];
+                    }
+                }
+            }
+        }
+
         $this->app->agent = Jaws_ORM::getInstance()
             ->table('agent')
-            ->select('id:integer', 'robot:boolean')
-            ->igsert(
-                array(
-                    'hash'  => $hash,
-                    'agent' => $agent,
-                    'robot' => false
-                )
-            )->where('hash', $hash)
+            ->upsert($agenData)
+            ->where('hash', $hash)
             ->exec();
         if (Jaws_Error::IsError($this->app->agent)) {
             Jaws_Error::Fatal('Internal error(2)!, please try again');
@@ -239,14 +260,14 @@ class Jaws_Session
 
             // client ip
             if ($this->app->registry->fetch('session_ip_sensitive', 'Policy') &&
-                $this->app->ip['id'] != $this->session['ip']
+                $this->app->ip != $this->session['ip']
             ) {
                 throw new Exception('Previous session ip has been changed', JAWS_NOTICE);
             }
 
             // browser agent
             if ($this->app->registry->fetch('session_agent_sensitive', 'Policy') &&
-                $this->app->agent['id'] != $this->session['agent']
+                $this->app->agent != $this->session['agent']
             ) {
                 throw new Exception('Previous session agent has been changed', JAWS_NOTICE);
             }
@@ -368,8 +389,8 @@ class Jaws_Session
                 $remember? 'session_login_remember_timeout' : 'session_anony_remember_timeout',
                 'Policy'
             ) * 60,
-            'ip'        => $this->app->ip['id'],
-            'agent'     => $this->app->agent['id'],
+            'ip'        => $this->app->ip,
+            'agent'     => $this->app->agent,
             'webpush'   => $this->session['webpush'],
         );
 
