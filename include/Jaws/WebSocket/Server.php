@@ -18,6 +18,27 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
      */
     private $liveSocks;
 
+    /**
+     * Disconnect callback function
+     *
+     * @access  private
+     * @var     mixed
+     */
+    private $disconnectCallback = null;
+
+
+    /**
+     * Set callback function for client disconnect event
+     *
+     * @access  public
+     * @param   mixed   $callback   Callback called with (keySock) when a client disconnects
+     * @return  void
+     */
+    public function onDisconnect($callback)
+    {
+        $this->disconnectCallback = $callback;
+    }
+
 
     /**
      * Listen network port over given address
@@ -67,6 +88,14 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
                     if (!socket_recv($sock, $buffer, 4096, 0)) {
                         unset($readySocks[$keySock], $this->liveSocks[$keySock]);
                         socket_close($sock);
+                        // notify application layer about disconnect
+                        if (!is_null($this->disconnectCallback)) {
+                            if (is_array($this->disconnectCallback)) {
+                                $this->disconnectCallback[0]->{$this->disconnectCallback[1]}($keySock);
+                            } else {
+                                ($this->disconnectCallback)($keySock);
+                            }
+                        }
                         continue;
                     }
 
@@ -104,7 +133,7 @@ class Jaws_WebSocket_Server extends Jaws_WebSocket
                     }
                 }
             }
-            usleep(500);
+            usleep(5000);
         }
 
         $this->close($this->socket);

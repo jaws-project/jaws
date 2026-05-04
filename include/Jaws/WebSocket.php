@@ -137,20 +137,43 @@ class Jaws_WebSocket
     protected function decode($data)
     {
         $result = '';
-        if (!empty($data)) {
-            $length = ord($data[1]) & 127;
-            $dataPos = ($length == 126) ? 4 : (($length == 127)? 10 : 2);
+        if (empty($data) || strlen($data) < 2) {
+            return $result;
+        }
 
-            if ($masked = (bool)(ord($data[1]) >> 7)) {
-                $mask = substr($data, $dataPos, 4);
-                $data = substr($data, $dataPos + 4);
+        $masked  = (bool)(ord($data[1]) >> 7);
+        $length  = ord($data[1]) & 127;
 
-                for ($i = 0; $i < strlen($data); ++$i) {
-                    $result.= $data[$i] ^ $mask[$i%4];
-                }
-            } else {
-                $result = substr($data, $dataPos);
+        if ($length == 126) {
+            if (strlen($data) < 4) {
+                return $result;
             }
+            $length  = unpack('n', substr($data, 2, 2))[1];
+            $dataPos = 4;
+        } elseif ($length == 127) {
+            if (strlen($data) < 10) {
+                return $result;
+            }
+            // unpack as two 32-bit unsigned ints (big-endian) and combine
+            $parts   = unpack('N2', substr($data, 2, 8));
+            $length  = ($parts[1] << 32) | $parts[2];
+            $dataPos = 10;
+        } else {
+            $dataPos = 2;
+        }
+
+        if ($masked) {
+            if (strlen($data) < $dataPos + 4) {
+                return $result;
+            }
+            $mask   = substr($data, $dataPos, 4);
+            $data   = substr($data, $dataPos + 4, $length);
+            $dlen   = strlen($data);
+            for ($i = 0; $i < $dlen; ++$i) {
+                $result .= $data[$i] ^ $mask[$i % 4];
+            }
+        } else {
+            $result = substr($data, $dataPos, $length);
         }
 
         return $result;
