@@ -1,6 +1,6 @@
 <?php
 /**
- * Get Alexa rank
+ * Get site rank (NetAPI Top 1M, formerly Alexa)
  *
  * @category    Scripts
  * @package     Launcher
@@ -66,7 +66,10 @@ class AlexaRank
     }
 
     /**
-     * Gets Alexa Rank
+     * Gets site rank
+     *
+     * data.alexa.com no longer exists (Alexa was retired in 2022), so the rank comes from
+     * the free NetAPI Top 1M (https://netapi.com/top-1-mln-websites/), no API key needed
      *
      * @access  public
      * @param   string  $url
@@ -75,16 +78,13 @@ class AlexaRank
     function getRank($url)
     {
         $ranks = array();
-        $rdata = $this->getURL("http://data.alexa.com/data?cli=10&url=". urlencode($url));
+        $host  = parse_url($url, PHP_URL_HOST);
+        $rdata = $this->getURL("https://netapi.com/api-json/?method=domain-rank&domain=". urlencode($host));
         if (!empty($rdata)) {
-            $xmlData = simplexml_load_string($rdata, 'SimpleXMLElement', LIBXML_NOERROR);
-            if ($xmlData && isset($xmlData->SD[0])) {
-                $nodeAttributes = $xmlData->SD[0]->POPULARITY->attributes();
-                $ranks['Popularity'] = (string)$nodeAttributes['TEXT'];
-                $nodeAttributes = $xmlData->SD[0]->RANK->attributes();
-                $ranks['Delta'] = (string)$nodeAttributes['DELTA'];
-                $nodeAttributes = $xmlData->SD[0]->COUNTRY->attributes();
-                $ranks[(string)$nodeAttributes['NAME']] = (string)$nodeAttributes['RANK'];
+            $jsonData = json_decode($rdata, true);
+            if (is_array($jsonData) && !empty($jsonData['rank'])) {
+                $ranks['Popularity'] = (string)$jsonData['rank'];
+                $ranks['.'. $jsonData['tld']] = (string)$jsonData['rank_in_tld'];
             }
         }
 
